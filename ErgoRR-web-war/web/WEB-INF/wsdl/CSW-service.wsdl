@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.kzen.be/ergorr/interfaces/soap" 
+xmlns:tns="http://www.kzen.be/ergorr/interfaces/soap"
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
+xmlns:ows="http://www.opengis.net/ows/1.1">
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="2.0.2">
+            <xsd:include schemaLocation="xsd/csw/2.0.2/CSW-discovery.xsd"/>
+            <xsd:include schemaLocation="xsd/csw/2.0.2/CSW-publication.xsd"/>
+            <xsd:include schemaLocation="xsd/ows/1.1.0/owsExceptionReport.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="GetCapabilitiesRequest">
+        <wsdl:part name="Body" element="csw:GetCapabilities"/>
+    </wsdl:message>
+    <wsdl:message name="GetCapabilitiesResponse">
+        <wsdl:part element="csw:Capabilities" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="DescribeRecordRequest">
+        <wsdl:part name="Body" element="csw:DescribeRecord"/>
+    </wsdl:message>
+    <wsdl:message name="DescribeRecordResponse">
+        <wsdl:part element="csw:DescribeRecordResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordsRequest">
+        <wsdl:part name="Body" element="csw:GetRecords"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordsResponse">
+        <wsdl:part element="csw:GetRecordsResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordByIdRequest">
+        <wsdl:part name="Body" element="csw:GetRecordById"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordByIdResponse">
+        <wsdl:part element="csw:GetRecordByIdResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="GetDomainRequest">
+        <wsdl:part name="Body" element="csw:GetDomain"/>
+    </wsdl:message>
+    <wsdl:message name="GetDomainResponse">
+        <wsdl:part element="csw:GetDomainResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="HarvestRequest">
+        <wsdl:part name="Body" element="csw:Harvest"/>
+    </wsdl:message>
+    <wsdl:message name="HarvestResponse">
+        <wsdl:part element="csw:HarvestResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="TransactionRequest">
+        <wsdl:part name="Body" element="csw:Transaction"/>
+    </wsdl:message>
+    <wsdl:message name="TransactionResponse">
+        <wsdl:part element="csw:TransactionResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="ServiceExceptionReport">
+        <wsdl:part element="ows:ExceptionReport" name="Body"/>
+    </wsdl:message>
+    <wsdl:portType name="CswPortType">
+        <wsdl:operation name="csw.getCapabilities">
+            <wsdl:input message="tns:GetCapabilitiesRequest"/>
+            <wsdl:output message="tns:GetCapabilitiesResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.describeRecord">
+            <wsdl:input message="tns:DescribeRecordRequest"/>
+            <wsdl:output message="tns:DescribeRecordResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecords">
+            <wsdl:input message="tns:GetRecordsRequest"/>
+            <wsdl:output message="tns:GetRecordsResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecordById">
+            <wsdl:input message="tns:GetRecordByIdRequest"/>
+            <wsdl:output message="tns:GetRecordByIdResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getDomain">
+            <wsdl:input message="tns:GetDomainRequest"/>
+            <wsdl:output message="tns:GetDomainResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.harvest">
+            <wsdl:input message="tns:HarvestRequest"/>
+            <wsdl:output message="tns:HarvestResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.transaction">
+            <wsdl:input message="tns:TransactionRequest"/>
+            <wsdl:output message="tns:TransactionResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CswBinding" type="tns:CswPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="csw.getCapabilities">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetCapabilities"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.describeRecord">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#DescribeRecord"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecords">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecordById">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecordsById"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getDomain">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetDomain"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.harvest">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#Harvest"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.transaction">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#Transaction"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="webservice">
+        <wsdl:port name="CswPort" binding="tns:CswBinding">
+            <soap:address location="TO_BE_REPLACED_AT_RUNTIME"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
