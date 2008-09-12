@@ -1,0 +1,16 @@
+*Buddata ebXML Registry/Repository* (or "Buddata ebRR", in short) is an open source implementation of the [http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=regrep OASIS ebXML Registry] and [http://www.opengeospatial.org/standards/cat OGC Catalogue Service]. Much experience has been drawn from the OMAR ebXML Registry open source project (also known as "[http://ebxmlrr.sourceforge.net/wiki/index.php/Overview#What_is_freebXML_Registry freebXML]").
+
+The project is initiated by kZen Labs - the R&D division of 4C Technologies N.V., a Belgian IT company - and funded by the European Space Agency (ESA) in support of the cataloguing activity for the Heterogeneous Mission Accessibility - Interoperability program (HMA-I) via the ESA ERGO project. Intecs S.p.A.- an Italian IT company specialized in space system development - is contributing by providing a test framework (based on the OGC TEAM engine).
+
+Buddata ebRR put's a strong focus on its geospatial capabilities and the goal of the project is to include all so-called "ebRIM Profiles" or "extension packages" as defined by the OGC Catalogue Service, but also to support [http://ebxmlrr.sourceforge.net/wiki/index.php/Overview#Profiles_of_ebXML_Registry_Standard any other ebRIM profiles].
+
+Natively it implements (Secured) SOAP Web Service interfaces based on the OASIS ebXML RS 3.0 and OGC Catalogue Service specifications. Its main other features are (1) a harvesting component with transformation capabilities to translate XML-based metadata in GML and ISO formats to ebXML RIM (with OGC geospatial extensions) and (2) a Java API to access the ebRR directly from Java code.
+
+First release of the Buddata ebRR will be available in *September 2008*.
+
+----
+*About HMA-I*
+
+HMA-I started in 2005 in the framework of the GMES Preparatory activities with the purpose of defining the interoperability concept across the ground segments of the European and Canadian missions which will contribute to the GMES initial phase. These missions have developed or are in the process of developing EO satellites that can offer essential capacity to the GMES Space Component.
+
+ 
