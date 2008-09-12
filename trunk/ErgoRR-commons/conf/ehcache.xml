@@ -1,0 +1,79 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd">
+
+    <diskStore path="java.io.tmpdir"/>
+    
+    <cacheManagerEventListenerFactory class="" properties=""/>
+    
+    
+    <!-- (Enable for distributed operation) -->
+
+    <!--cacheManagerPeerProviderFactory
+        class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+        properties="peerDiscovery=automatic,
+        multicastGroupAddress=230.0.0.1,
+    multicastGroupPort=4446, timeToLive=1"/-->
+    
+    
+    <!-- (Enable for distributed operation) -->
+    <!--cacheManagerPeerListenerFactory
+        class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/-->
+    
+    
+    <!-- Cache configuration -->
+
+    <!--
+    Mandatory Default Cache configuration. These settings will be applied to caches
+    created programmtically using CacheManager.add(String cacheName)
+    -->
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
+        overflowToDisk="true"
+        maxElementsOnDisk="10000000"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="120"
+        memoryStoreEvictionPolicy="LRU"
+    />
+    
+    <cache name="server"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="FIFO"
+    />
+    
+    <cache name="security-config"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="FIFO"
+    />
+    
+    <cache name="document"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="FIFO"
+    />
+    
+    <cache name="credential"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="FIFO"
+    />
+</ehcache>
