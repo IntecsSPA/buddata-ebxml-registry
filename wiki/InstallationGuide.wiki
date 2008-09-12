@@ -1,0 +1,10 @@
+#labels installation
+=Requirements=
+
+- JDK 1.6
+
+- Glassfish 2.2
+
+=Installation=
+
+- TODO
