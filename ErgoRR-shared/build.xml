@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project name="ErgoRR-persistence" default="glassfish-libs" basedir=".">
+    <property environment="env"/> 
+    <target name="glassfish-libs">
+        <echo message="Copying libraries to ${env.AS_HOME}/lib"></echo>
+        <copy file="hibernate3-2/antlr-2.7.6.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/asm.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/asm-attrs.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/c3p0-0.9.1.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/cglib-2.1.3.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/commons-collections-2.1.1.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/commons-logging-1.0.4.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/concurrent-1.3.2.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/dom4j-1.6.1.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/hibernate3.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/hibernate-annotations.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/hibernate-commons-annotations.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/hibernate-entitymanager.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/hibernate-validator.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/javassist.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate3-2/jboss-archive-browsing.jar" todir="${env.AS_HOME}/lib"/>
+        
+        <copy file="hibernate-spatial/hibernate-spatial-1.0-M1.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="hibernate-spatial/hibernate-spatial-postgis-1.0-M1.jar" todir="${env.AS_HOME}/lib"/>
+        
+        <copy file="jts-1.8.0/acme.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="jts-1.8.0/jdom.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="jts-1.8.0/jts-1.8.jar" todir="${env.AS_HOME}/lib"/>
+        <copy file="jts-1.8.0/jtsio-1.8.jar" todir="${env.AS_HOME}/lib"/>
+                
+        <copy file="postgis/postgis_1.3.3.jar" todir="${env.AS_HOME}/lib"/>
+        
+        <copy file="postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.AS_HOME}/lib"/>
+    </target>
+</project>
+
