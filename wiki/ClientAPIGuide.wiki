@@ -57,7 +57,7 @@ InsertType insert = new InsertType();
 // XML file with root XML element rim:RegistryObjectList,
 // any rim:RegistryObject, hma:EarthObservation or any of its sub types.
 // You can also unmarshal from a stream or leave unmarshalling out
-// and construct the content manually with the jaxb bindings from ErgoRR-jaxb.
+// and construct the content manually with the jaxb binding classes from ErgoRR-jaxb.
 File file = new File("/path/to/RegistryObjectList/file.xml");
 JAXBElement jaxbEl = (JAXBElement) unmarshaller.unmarshal(file);
 insert.getAny().add(jaxbEl);
