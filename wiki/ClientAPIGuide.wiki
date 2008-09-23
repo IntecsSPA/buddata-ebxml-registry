@@ -1,0 +1,78 @@
+*Dependencies*
+
+The client API ErgoRR-client depends on ErgoRR-commons and ErgoRR-jaxb modules.
+
+*GetRecords*
+
+Example demostrates querying 30 ExtrinsicObjects with objectType "urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct"
+
+{{{
+URL serviceURL = new URL("http://urltoservice");
+CswClient client = new CswClient(serviceURL);
+GetRecordsType request = new GetRecordsType();
+request.setMaxRecords(BigInteger.valueOf(30));
+
+QueryType query = new QueryType();
+request.setAbstractQuery(OFactory.csw.createQuery(query));
+
+// set the query object to return
+QName rimQName = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ExtrinsicObject");
+query.setElementSetName(new ElementSetNameType());
+query.getElementSetName().getTypeNames().add(rimQName);
+
+// set the objects to query
+query.getTypeNames().add(rimQName);
+
+QueryConstraintType constraint = new QueryConstraintType();
+query.setConstraint(constraint);
+
+FilterType filter = new FilterType();
+constraint.setFilter(filter);
+
+BinaryLogicOpType andType = new BinaryLogicOpType();
+filter.setLogicOps(OFactory.ogc.createAnd(andType));
+
+BinaryComparisonOpType propEqualType = new BinaryComparisonOpType();
+PropertyIsEqualTo propEqual = new PropertyIsEqualTo(propEqualType);
+andType.getComparisonOpsOrSpatialOpsOrLogicOps().add(propEqual);
+
+PropertyNameType propName = new PropertyNameType();
+propName.getContent().add("/rim:ExtrinsicObject/@objectType");
+propEqualType.getExpression().add(OFactory.ogc.createPropertyName(propName));
+
+LiteralType literal = new LiteralType();
+literal.getContent().add("urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct");
+propEqualType.getExpression().add(OFactory.ogc.createLiteral(literal));
+
+GetRecordsResponseType response = client.getRecords(request);
+}}}
+
+*Transaction*
+{{{
+URL serviceURL = new URL("http://urltoservice");
+CswClient client = new CswClient(serviceURL);
+TransactionType t = new TransactionType();
+InsertType insert = new InsertType();
+
+File file = new File("/path/to/RegistryObjectList/file.xml);
+JAXBElement jaxbEl = (JAXBElement) unmarshaller.unmarshal(file);
+insert.getAny().add(jaxbEl);
+t.getInsertOrUpdateOrDelete().add(insert);
+client.transact(t);
+}}}
+*GetRecordById*
+{{{
+URL serviceURL = new URL("http://urltoservice");
+CswClient client = new CswClient(serviceURL);
+GetRecordByIdType request = new GetRecordByIdType();
+request.getId().add("urn:uuid:2eb09d2f-38ea-4fd6-84a6-b78730e40f74");
+ElementSetNameType setName = new ElementSetNameType();
+setName.setValue(ElementSetType.FULL);
+request.setElementSetName(setName);
+        
+GetRecordByIdResponseType response = client.getRecordById(request);
+
+// print the response
+System.out.println(JAXBUtil.getInstance()
+    .marshall(OFactory.csw.createGetRecordByIdResponse(response)));
+}}}
