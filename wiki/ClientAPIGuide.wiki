@@ -2,7 +2,7 @@
 
 The client API ErgoRR-client depends on ErgoRR-commons and ErgoRR-jaxb modules.
 
-If you build the client API with netbeans it will build and compile the dependencies for you.
+If you build the client API with netbeans it will build the dependencies for you.
 
 *GetRecords*
 
