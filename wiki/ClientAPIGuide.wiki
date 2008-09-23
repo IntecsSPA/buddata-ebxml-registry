@@ -54,7 +54,9 @@ CswClient client = new CswClient(serviceURL);
 TransactionType t = new TransactionType();
 InsertType insert = new InsertType();
 
-File file = new File("/path/to/RegistryObjectList/file.xml);
+// XML file with root XML element rim:RegistryObjectList,
+// any rim:RegistryObject, hma:EarthObservation or any of its sub types.
+File file = new File("/path/to/RegistryObjectList/file.xml");
 JAXBElement jaxbEl = (JAXBElement) unmarshaller.unmarshal(file);
 insert.getAny().add(jaxbEl);
 t.getInsertOrUpdateOrDelete().add(insert);
