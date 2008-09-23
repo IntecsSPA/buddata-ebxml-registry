@@ -35,7 +35,15 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 
 *3. Checkout the source from google code and put it all under one directory.*
 
-*4. Enable log4j for Glassfish *
+*4. Copy libraries to Glassfish*
+  * Make sure that you have the environment varial AS_HOME (which is the Glassfish installation directory).
+    * If you have _Ant_ install just run the following command from the path <ergo_source_dir>/ErgoRR-shared
+{{{
+ant
+}}}
+This will copy all the needed libraries to <AS_HOME>/lib directory.
+
+*5. Enable log4j for Glassfish *
   * When Glassfish is running open the web administration portal. (default port 4848).
   * Go to _Application Server_ from the left menu. Then _JVM Settings_ tab, followed by _Path Settings_ tab.
   * In the _System Classpath_ text field set the path of the log4j library and the directory of log4j.properties. These files can be found in the path <ergo_source_dir>/ErgoRR-shared/logging. An example input would be:
@@ -44,7 +52,7 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 /home/me/proj/ErgoRR-shared/logging/
 }}}
 
-*5. Add Postgres connection datasource to Glassfish *
+*6. Add Postgres connection datasource to Glassfish *
   * In the administration portal, from the left menu, click through _Resources_ > _JDBC_ > _Connection Pools_ and click _New_ to create a new pool with the following values.
     * Name: postgresPool
     * Resource Type: javax.sql.DataSource
@@ -57,7 +65,7 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
   * And click _OK_ to finish.
 
 
-*6. Open the 5 netbeans projects.*
+*7. Open the 5 netbeans projects.*
   *ErgoRR-client < the client API
 
   *ErgoRR-commons < common classes
@@ -72,13 +80,13 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 
   *There is another folder "ErgoRR-shared": these are just libraries.
 
-*7. Add Glassfish to Netbeans* 
+*8. Add Glassfish to Netbeans* 
   * This can be done from the top menu _Tools_ > _Servers_.
   * Now you can set the project to run on your Glassfish installation.
     * Right click on the project _ErgoRR-enterprice_ to select _Properties_.
     * In the properties window select _Run_ from the left menu and select the server you have just configured in the _Server_ property field.
 
-*8 You are done. Run the ErgoRR-enterprise project and hope for the best.
+*9 You are done. Run the ErgoRR-enterprise project and hope for the best.
 
 
 *Note: The installation process will be simplified in the future :) *
