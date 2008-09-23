@@ -45,7 +45,7 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 }}}
 
 *5. Add Postgres connection datasource to Glassfish *
-  * From the left menu click through _Resources_ > _JDBC_ > _Connection Pools_ and click _New_ to create a new pool with the following values.
+  * In the administration portal, from the left menu, click through _Resources_ > _JDBC_ > _Connection Pools_ and click _New_ to create a new pool with the following values.
     * Name: postgresPool
     * Resource Type: javax.sql.DataSource
     * Database Vendor: PostgreSQL
