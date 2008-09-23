@@ -2,6 +2,8 @@
 
 The client API ErgoRR-client depends on ErgoRR-commons and ErgoRR-jaxb modules.
 
+If you build the client API with netbeans it will build and compile the dependencies for you.
+
 *GetRecords*
 
 Example demostrates querying 30 ExtrinsicObjects with objectType "urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct"
