@@ -36,4 +36,17 @@ public class CommonFunctions {
         int idx = obj.indexOf(":");
         return (idx > 0) ? obj.substring(idx + 1) : obj;
     }
+    
+    /**
+     * Get the XML element name from a XML complexType name.
+     * E.g: If <code>typeName</code> is "ExtrinsicObjectType" then
+     * this method will return "ExtrinsicObject".
+     * This method assumes that all complexTypes end with "Type". 
+     * 
+     * @param typeName ComplexType name.
+     * @return Element name.
+     */
+    public static String getElementName(String typeName) {
+        return typeName.substring(0, typeName.length() - 4);
+    }
 }

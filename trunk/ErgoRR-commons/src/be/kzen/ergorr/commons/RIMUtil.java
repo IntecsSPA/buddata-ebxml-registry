@@ -18,7 +18,7 @@
  */
 package be.kzen.ergorr.commons;
 
-import be.kzen.ergorr.model.rim.AssociationType1;
+import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
@@ -156,8 +156,8 @@ public class RIMUtil {
         return e;
     }
     
-    public static AssociationType1 createAssociation(String id, String type, String source, String target) {
-        AssociationType1 asso = new AssociationType1();
+    public static AssociationType createAssociation(String id, String type, String source, String target) {
+        AssociationType asso = new AssociationType();
         asso.setId(id);
         asso.setAssociationType(type);
         asso.setSourceObject(source);

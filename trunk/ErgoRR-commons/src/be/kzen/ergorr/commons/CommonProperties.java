@@ -20,7 +20,8 @@ package be.kzen.ergorr.commons;
 
 import java.io.IOException;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Common properties used by different packages.
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class CommonProperties {
 
-    private static Logger log = Logger.getLogger(CommonProperties.class);
+    private static Logger logger = Logger.getLogger(CommonProperties.class.getName());
     private static CommonProperties instance = null;
     private Properties props;
 
@@ -57,7 +58,7 @@ public class CommonProperties {
             props = new Properties();
             props.load(this.getClass().getResourceAsStream("common.properties"));
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, "Could not load common.properties");
         }
     }
 
@@ -87,7 +88,7 @@ public class CommonProperties {
         try {
             i = Integer.parseInt(props.getProperty(key));
         } catch (Throwable t) {
-            log.error("Could not parse Integer value", t);
+            logger.log(Level.SEVERE, "Could not parse Integer value", t);
         }
         
         return i;
@@ -98,7 +99,7 @@ public class CommonProperties {
         try {
             l = Long.parseLong(props.getProperty(key));
         } catch (Throwable t) {
-            log.error("Could not parse Long value", t);
+            logger.log(Level.SEVERE, "Could not parse Long value", t);
         }
         
         return l;
@@ -110,8 +111,7 @@ public class CommonProperties {
         try {
             b = Boolean.valueOf(props.getProperty(key));
         } catch (Throwable t) {
-            log.error("Could not parse Boolean value", t);
-            
+            logger.log(Level.SEVERE, "Could not parse Boolean value", t);
         }
         
         return b;
