@@ -37,4 +37,11 @@ public class CommonFunctionsTest {
         String result = CommonFunctions.removePrefix(obj);
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testGetElementName() {
+        String expResult = "ExtrinsicObject";
+        String result = CommonFunctions.getElementName("ExtrinsicObjectType");
+        assertEquals(expResult, result);
+    }
 }

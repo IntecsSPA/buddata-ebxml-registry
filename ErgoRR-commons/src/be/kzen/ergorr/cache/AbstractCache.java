@@ -18,13 +18,12 @@
  */
 package be.kzen.ergorr.cache;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import org.apache.log4j.Logger;
 
 /**
  * Abstract class for all caches.
@@ -32,7 +31,7 @@ import org.apache.log4j.Logger;
  * @author Yaman Ustuntas
  */
 public abstract class AbstractCache {
-    private static Logger log = Logger.getLogger(AbstractCache.class);
+    private static Logger logger = Logger.getLogger(AbstractCache.class.getName());
     protected static CacheManager cacheManager;
     protected Cache cache;
     
@@ -44,7 +43,7 @@ public abstract class AbstractCache {
             try {
                 cacheManager = new CacheManager(this.getClass().getResourceAsStream("ehcache.xml"));
             } catch (CacheException ex) {
-                log.error("Could not load cache manager", ex);
+                logger.log(Level.SEVERE, "Could not load cache manager", ex);
             }
         }
     }
