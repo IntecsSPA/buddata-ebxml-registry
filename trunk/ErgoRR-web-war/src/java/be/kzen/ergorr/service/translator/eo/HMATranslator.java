@@ -43,7 +43,7 @@ import be.kzen.ergorr.model.gml.PointType;
 import be.kzen.ergorr.model.gml.SurfaceArrayPropertyType;
 import be.kzen.ergorr.model.gml.SurfacePropertyType;
 import be.kzen.ergorr.model.gml.TimePeriodType;
-import be.kzen.ergorr.model.rim.AssociationType1;
+import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
@@ -55,11 +55,12 @@ import be.kzen.ergorr.commons.RIMUtil;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -67,7 +68,7 @@ import org.apache.log4j.Logger;
  */
 public class HMATranslator implements Translator {
 
-    private static Logger log = Logger.getLogger(HMATranslator.class);
+    private static Logger logger = Logger.getLogger(HMATranslator.class.getName());
     private EarthObservationType eo;
     protected RegistryObjectListType regObjList;
     protected WrsExtrinsicObjectType eoProduct;
@@ -85,7 +86,7 @@ public class HMATranslator implements Translator {
 
     public RegistryObjectListType translate() {
         String id = "";
-        AssociationType1 asso;
+        AssociationType asso;
 
         JAXBElement<WrsExtrinsicObjectType> eProduct = OFactory.wrs.createExtrinsicObject(translateProduct());
         regObjList.getIdentifiable().add(eProduct);
@@ -257,7 +258,7 @@ public class HMATranslator implements Translator {
                         SlotType1 slotBeginPos = RIMUtil.createWrsSlot(EOPConstants.S_BEGIN_POSITION, EOPConstants.T_DATETIME, cal);
                         e.getSlot().add(slotBeginPos);
                     } catch (DatatypeConfigurationException ex) {
-                        log.error("Invalid date at element beginPosition", ex);
+                        logger.log(Level.WARNING, "Invalid date at element beginPosition", ex);
                     }
                 }
 
@@ -269,7 +270,7 @@ public class HMATranslator implements Translator {
                         SlotType1 slotEndPos = RIMUtil.createWrsSlot(EOPConstants.S_END_POSITION, EOPConstants.T_DATETIME, cal);
                         e.getSlot().add(slotEndPos);
                     } catch (DatatypeConfigurationException ex) {
-                        log.error("Invalid date at element endPosition", ex);
+                        logger.log(Level.WARNING, "Invalid date at element endPosition", ex);
                     }
                 }
             }

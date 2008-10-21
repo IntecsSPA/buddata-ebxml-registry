@@ -20,8 +20,9 @@ package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.IDGenerator;
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
-import be.kzen.ergorr.model.rim.AssociationType1;
+import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ClassificationType;
@@ -31,15 +32,12 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.rim.SlotType1;
-import be.kzen.ergorr.model.util.JAXBUtil;
-import be.kzen.ergorr.persist.dao.RimDAO;
-import be.kzen.ergorr.persist.model.IdentifiableDM;
-import be.kzen.ergorr.commons.SlotTypes;
-import java.lang.reflect.Constructor;
+import be.kzen.ergorr.persist.InternalSlotTypes;
+import be.kzen.ergorr.persist.service.RimService;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
-import org.apache.log4j.Logger;
 
 /**
  * Life Cycle Manager for RIM objects.
@@ -47,12 +45,11 @@ import org.apache.log4j.Logger;
  * @author Yaman Ustuntas
  */
 public class LCManager {
+    
+    private RequestContext requestContext;
 
-    private static Logger log = Logger.getLogger(LCManager.class);
-    private RimDAO rimDao;
-
-    public LCManager(RimDAO rimDao) {
-        this.rimDao = rimDao;
+    public LCManager(RequestContext requestContext) {
+        this.requestContext = requestContext;
     }
 
     public void submit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
@@ -61,36 +58,32 @@ public class LCManager {
 
         flatten(idents, flatIdents);
 
-        // check if all slot name/type pairs are unique.
         for (IdentifiableType ident : flatIdents) {
+            if (ident instanceof RegistryObjectType) {
+                RegistryObjectType ro = (RegistryObjectType) ident;
+                ro.setStatus(RIMConstants.CN_STATUS_TYPE_ID_Submitted);
+
+                if (!ro.isSetLid()) {
+                    ro.setLid(ro.getId());
+                }
+            }
+
             for (SlotType1 s : ident.getSlot()) {
                 try {
-                    SlotTypes.getInstance().putSlotType(s.getName(), s.getSlotType());
+                    // check if all slot name/type pairs are unique.
+                    InternalSlotTypes.getInstance().putSlotType(s.getName(), s.getSlotType());
                 } catch (Exception ex) {
                     throw new ServiceExceptionReport(ex.getMessage());
                 }
             }
         }
 
-        for (IdentifiableType ident : flatIdents) {
+        RimService service = new RimService(requestContext);
 
-            if (log.isTraceEnabled()) {
-                log.trace("submitting jaxb object");
-                try {
-                    log.trace(JAXBUtil.getInstance().marshall(ident));
-                } catch (Exception ex) {
-                    log.trace("Error while marshalling JAXBElement", ex);
-                }
-            }
-
-            try {
-                Class dmClass = Class.forName(ident.getDatabaseModelClass());
-                Constructor constructor = dmClass.getConstructor(ident.getClass(), RimDAO.class);
-                IdentifiableDM identDM = (IdentifiableDM) constructor.newInstance(ident, rimDao);
-                rimDao.save(identDM);
-            } catch (Exception ex) {
-                throw new ServiceExceptionReport("Could not load class " + ident.getDatabaseModelClass() + " for type " + ident.getClass().getSimpleName(), ex);
-            }
+        try {
+            service.insert(flatIdents);
+        } catch (SQLException ex) {
+            throw new ServiceExceptionReport("Could not insert objects", ex);
         }
     }
 
@@ -138,7 +131,7 @@ public class LCManager {
                         !rp.getRegistryObjectList().getIdentifiable().isEmpty()) {
 
                     for (JAXBElement<? extends IdentifiableType> identEl : rp.getRegistryObjectList().getIdentifiable()) {
-                        AssociationType1 asso = new AssociationType1();
+                        AssociationType asso = new AssociationType();
                         String id = IDGenerator.generateUuid();
                         asso.setId(id);
                         asso.setLid(id);
@@ -156,6 +149,8 @@ public class LCManager {
                 ClassificationSchemeType cs = (ClassificationSchemeType) ident;
 
                 if (cs.isSetClassificationNode() && !cs.getClassificationNode().isEmpty()) {
+                    // Make sure that the child ClassificationNode parent attribute is set to
+                    // the ID of the parent ClassificationScheme <code>cs</code>.
                     for (ClassificationNodeType cn : cs.getClassificationNode()) {
                         cn.setParent(cs.getId());
                     }
@@ -173,6 +168,11 @@ public class LCManager {
                         flatIdents.add(childCn);
 
                         if (childCn.isSetClassificationNode() && !childCn.getClassificationNode().isEmpty()) {
+                            // Make sure that the child ClassificationNode parent attribute is set to
+                            // the ID of the parent ClassificationNode <code>cn</code>.
+                            for (ClassificationNodeType childOfChildCn : childCn.getClassificationNode()) {
+                                childOfChildCn.setParent(childCn.getId());
+                            }
                             flatten(childCn.getClassificationNode(), flatIdents);
                         }
                     }

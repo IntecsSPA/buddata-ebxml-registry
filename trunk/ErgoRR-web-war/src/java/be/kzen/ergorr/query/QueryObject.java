@@ -18,37 +18,47 @@
  */
 package be.kzen.ergorr.query;
 
+import be.kzen.ergorr.exceptions.QueryException;
+import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.persist.dao.GenericObjectDAO;
+import be.kzen.ergorr.persist.dao.IdentifiableTypeDAO;
+
 /**
  *
  * @author Yaman Ustuntas
  */
 public class QueryObject {
-    private String objectType;
+
+    private String objectName;
     private String sqlAlias;
     private boolean returnType;
+    private Class objClass;
 
     public QueryObject() {
     }
 
-    public QueryObject(String objectType, String sqlAlias) {
-        this.objectType = objectType;
+    public QueryObject(String objectName, String sqlAlias) throws QueryException {
+        this.objectName = objectName;
         this.sqlAlias = sqlAlias;
-    }
-    
-    public String getObjectType() {
-        return objectType;
+
+        try {
+            objClass = OFactory.getRimClassByElementName(objectName);
+        } catch (ClassNotFoundException ex) {
+            throw new QueryException("Could not find object: " + objectName, ex);
+        }
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public Class getObjClass() {
+        return objClass;
+    }
+
+    public String getTableName() {
+        return objectName.toLowerCase();
     }
 
     public String getSqlAlias() {
         return sqlAlias;
-    }
-
-    public void setSqlAlias(String sqlAlias) {
-        this.sqlAlias = sqlAlias;
     }
 
     public boolean isReturnType() {

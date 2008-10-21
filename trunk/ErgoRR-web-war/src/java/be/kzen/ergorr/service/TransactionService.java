@@ -19,7 +19,7 @@
 package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.exceptions.TranslationException;
-import be.kzen.ergorr.interfaces.soap.RequestContext;
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.DeleteType;
@@ -37,8 +37,9 @@ import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.service.translator.TranslationFactory;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -46,21 +47,21 @@ import org.apache.log4j.Logger;
  */
 public class TransactionService {
 
-    private static Logger log = Logger.getLogger(TransactionService.class);
-    private RequestContext request;
+    private static Logger logger = Logger.getLogger(TransactionService.class.getName());
+    private RequestContext requestContext;
 
     public TransactionService() {
     }
 
-    public TransactionService(RequestContext request) {
-        this.request = request;
+    public TransactionService(RequestContext requestContext) {
+        this.requestContext = requestContext;
     }
 
     public TransactionResponseType process() throws ServiceExceptionReport {
         TransactionResponseType response = new TransactionResponseType();
         response.setVersion("1.0");
 
-        List<Object> iuds = ((TransactionType) request.getRequest()).getInsertOrUpdateOrDelete();
+        List<Object> iuds = ((TransactionType) requestContext.getRequest()).getInsertOrUpdateOrDelete();
 
         for (Object iud : iuds) {
             if (iud instanceof InsertType) {
@@ -70,7 +71,7 @@ public class TransactionService {
             } else if (iud instanceof DeleteType) {
                 doDelete((DeleteType) iud);
             } else {
-                log.error("Transaction request not an Insert, Update or Delete");
+                logger.severe("Transaction request not an Insert, Update or Delete");
             }
         }
 
@@ -78,16 +79,16 @@ public class TransactionService {
     }
 
     private TransactionResponseType doInsert(InsertType insert) throws ServiceExceptionReport {
-        log.debug("Transtaction.doInsert");
+        logger.fine("Transtaction.doInsert");
         TranslationFactory transFac = new TranslationFactory();
         RegistryObjectListType regObjList = new RegistryObjectListType();
 
         try {
             for (Object o : insert.getAny()) {
                 Object obj = ((JAXBElement) o).getValue();
-                
-                if (log.isDebugEnabled()) {
-                    log.debug("Translation root object: " + obj.getClass().toString());
+
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("Translation root object: " + obj.getClass().toString());
                 }
                 if (obj instanceof IdentifiableType) {
                     regObjList.getIdentifiable().add((JAXBElement<? extends IdentifiableType>) o);
@@ -99,8 +100,10 @@ public class TransactionService {
                 }
             }
 
-            log.debug("Got " + regObjList.getIdentifiable().size() + " translated objects");
-            LCManager lcm = new LCManager(request.getRimDAO());
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Got " + regObjList.getIdentifiable().size() + " translated objects");
+            }
+            LCManager lcm = new LCManager(requestContext);
             lcm.submit(regObjList);
 
             // prepare response

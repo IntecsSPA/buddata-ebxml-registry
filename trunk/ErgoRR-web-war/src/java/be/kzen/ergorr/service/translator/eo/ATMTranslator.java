@@ -22,7 +22,7 @@ import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.model.eo.atm.DataLayerType;
 import be.kzen.ergorr.model.eo.atm.EarthObservationResultType;
 import be.kzen.ergorr.model.eo.atm.EarthObservationType;
-import be.kzen.ergorr.model.rim.AssociationType1;
+import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.SlotType1;
@@ -68,7 +68,7 @@ public class ATMTranslator extends HMATranslator implements Translator {
             JAXBElement<WrsExtrinsicObjectType> dataLayer = OFactory.wrs.createExtrinsicObject(e);
             regObjList.getIdentifiable().add(dataLayer);
             
-            AssociationType1 asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eoProduct.getId(), e.getId());
+            AssociationType asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eoProduct.getId(), e.getId());
             regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
         }
 

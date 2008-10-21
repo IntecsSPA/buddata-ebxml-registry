@@ -24,7 +24,7 @@
             </ul>
             <br/><br/>
             <b>License:</b>
-            Apache License, Version 2.0
+            General Public License version 3 (GPL3)
         </div>
     </body>
 </html>
