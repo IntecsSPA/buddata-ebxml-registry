@@ -19,7 +19,7 @@
 package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.exceptions.TranslationException;
-import be.kzen.ergorr.interfaces.soap.RequestContext;
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.HarvestResponseType;
 import be.kzen.ergorr.model.csw.HarvestType;
@@ -29,9 +29,9 @@ import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.service.translator.TranslationFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class HarvestService {
 
-    private static Logger log = Logger.getLogger(HarvestService.class);
+    private static Logger logger = Logger.getLogger(HarvestService.class.getName());
     private RequestContext requestContext;
     private HarvestType request;
 
@@ -69,7 +69,7 @@ public class HarvestService {
 
             TransactionService transService = new TransactionService();
             response.setTransactionResponse(transService.buildResponse(regObjList));
-            LCManager lcm = new LCManager(requestContext.getRimDAO());
+            LCManager lcm = new LCManager(requestContext);
             lcm.submit(regObjList);
             return response;
 

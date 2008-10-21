@@ -24,7 +24,7 @@ import be.kzen.ergorr.service.translator.eo.OPTTranslator;
 import be.kzen.ergorr.service.translator.eo.ATMTranslator;
 import be.kzen.ergorr.service.translator.eo.HMATranslator;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  */
 public class TranslationFactory {
 
-    private static Logger log = Logger.getLogger(TranslationFactory.class);
+    private static Logger logger = Logger.getLogger(TranslationFactory.class.getName());
 
     public RegistryObjectListType translate(Object obj) throws TranslationException {
         Translator translator = null;
@@ -46,7 +46,7 @@ public class TranslationFactory {
         } else if (obj instanceof be.kzen.ergorr.model.eo.hma.EarthObservationType) {
             translator = new HMATranslator((be.kzen.ergorr.model.eo.hma.EarthObservationType) obj);
         } else {
-            log.error("Objects translation is not supported");
+            logger.warning("Objects translation is not supported");
             throw new TranslationException("Translation of this object is not supported");
         }
 

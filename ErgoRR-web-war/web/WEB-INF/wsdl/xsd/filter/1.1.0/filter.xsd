@@ -206,16 +206,16 @@
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    <xsd:complexType name="DistanceType">
+    <!--xsd:complexType name="DistanceType">
         <xsd:sequence>
             <xsd:any minOccurs="0"/>
         </xsd:sequence>
         <xsd:attribute name="units" type="xsd:string" use="required"/>
-    </xsd:complexType>
+    </xsd:complexType-->
    <!-- original OGC version -->
-   <!--xsd:complexType name="DistanceType">
+   <xsd:complexType name="DistanceType" mixed="true">
       <xsd:attribute name="units" type="xsd:string" use="required"/>
-   </xsd:complexType-->
+   </xsd:complexType>
     <xsd:complexType name="BinaryLogicOpType">
         <xsd:complexContent>
             <xsd:extension base="ogc:LogicOpsType">

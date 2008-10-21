@@ -18,11 +18,12 @@
  */
 package be.kzen.ergorr.query;
 
-import be.kzen.ergorr.commons.SrsTools;
-import be.kzen.ergorr.commons.Transformer;
+import be.kzen.ergorr.commons.CommonProperties;
+import be.kzen.ergorr.commons.InternalConstants;
+import be.kzen.ergorr.geometry.GeometryTranslator;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.exceptions.TransformException;
-import be.kzen.ergorr.interfaces.soap.RequestContext;
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.QueryType;
 import be.kzen.ergorr.model.gml.EnvelopeType;
@@ -37,22 +38,24 @@ import be.kzen.ergorr.model.ogc.PropertyIsBetweenType;
 import be.kzen.ergorr.model.ogc.PropertyIsLikeType;
 import be.kzen.ergorr.model.ogc.PropertyIsNullType;
 import be.kzen.ergorr.model.ogc.PropertyNameType;
-import be.kzen.ergorr.commons.SlotTypes;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
+import be.kzen.ergorr.persist.InternalSlotTypes;
+import be.kzen.ergorr.model.util.JAXBUtil;
+import be.kzen.ergorr.model.util.OFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
-import org.apache.log4j.Logger;
 
 /**
  * Build an SQL/HQL query string from a given OGC Query XML element.
@@ -61,15 +64,15 @@ import org.apache.log4j.Logger;
  */
 public class QueryBuilder {
 
-    private static Logger log = Logger.getLogger(QueryBuilder.class);
+    private static Logger logger = Logger.getLogger(QueryBuilder.class.getName());
     private StringBuilder sql;
     private GetRecordsType request;
     private QueryType queryType;
-    private Map<String, QueryObject> queryTypes;
+    private Map<String, QueryObject> queryObjectTypes;
+    private QueryObject returnObjectType;
     // stores Geometry and Date objects to be passed as parameters to the SQL query.
-    private Map<String, Object> queryParams;
+    private List<Object> queryParams;
     private int queryObjectIdx;
-    private int paramIdx;
     private int maxResults;
     private int startPosition;
     private static final String EQUAL_SIGN = " = ";
@@ -82,7 +85,6 @@ public class QueryBuilder {
     private static final String ESCAPE_CHAR = "!";
     private static final String WILDCARD_CHAR = "%";
     private static final String OBJECT_ALIAS = "o";
-    private static final String PARAM_ALIAS = "p";
 
     /**
      * Constructor.
@@ -93,11 +95,10 @@ public class QueryBuilder {
     public QueryBuilder(RequestContext requestContext) throws QueryException {
         request = (GetRecordsType) requestContext.getRequest();
         queryType = (QueryType) request.getAbstractQuery().getValue();
-        sql = new StringBuilder(128);
-        queryTypes = new HashMap<String, QueryObject>();
-        queryParams = new HashMap<String, Object>();
+        sql = new StringBuilder(512);
+        queryObjectTypes = new HashMap<String, QueryObject>();
+        queryParams = new ArrayList<Object>();
         queryObjectIdx = 1;
-        paramIdx = 1;
         maxResults = 0;
         startPosition = 0;
         initQueryParameters();
@@ -108,7 +109,7 @@ public class QueryBuilder {
      * 
      * @return Parameters.
      */
-    public Map<String, Object> getParameters() {
+    public List<Object> getParameters() {
         return queryParams;
     }
 
@@ -133,21 +134,11 @@ public class QueryBuilder {
 
     /**
      * Get the object to be returned in the query result.
-     * Returns <code>null</code> if object not found in <code>queryTypes</code>.
      * 
      * @return Object to be returned in query.
      */
-    private QueryObject getReturnObject() {
-        Iterator<String> it = queryTypes.keySet().iterator();
-
-        while (it.hasNext()) {
-            QueryObject qo = queryTypes.get(it.next());
-
-            if (qo.isReturnType()) {
-                return qo;
-            }
-        }
-        return null;
+    public QueryObject getReturnObject() {
+        return returnObjectType;
     }
 
     /**
@@ -157,15 +148,6 @@ public class QueryBuilder {
      */
     private String getNextQueryObjectAlias() {
         return OBJECT_ALIAS + queryObjectIdx++;
-    }
-
-    /**
-     * Get a unique parameter alias.
-     * 
-     * @return Unique alias.
-     */
-    private String getNextParamAlias() {
-        return PARAM_ALIAS + paramIdx++;
     }
 
     /**
@@ -209,13 +191,18 @@ public class QueryBuilder {
                     if (idx > 0) {
                         String[] split = fullType.split("_");
                         qo = new QueryObject(split[0], getNextQueryObjectAlias());
-                        queryTypes.put(split[1], qo);
+                        queryObjectTypes.put(split[1], qo);
                     } else {
                         qo = new QueryObject(fullType, getNextQueryObjectAlias());
-                        queryTypes.put(fullType, qo);
+                        queryObjectTypes.put(fullType, qo);
                     }
 
-                    qo.setReturnType(returnTypeNames.contains(fullType));
+                    if (returnTypeNames.contains(fullType)) {
+                        qo.setReturnType(true);
+                        returnObjectType = qo;
+                    } else {
+                        qo.setReturnType(false);
+                    }
                 } else {
                     throw new QueryException("Invalid QName in Query elements typeNames attribute");
                 }
@@ -246,9 +233,9 @@ public class QueryBuilder {
             queryOperator = filter.getSpatialOps();
         } else {
             // query all
-            QueryObject queryObject = getReturnObject();
-            if (queryObject != null) {
-                sql.append("select ").append(queryObject.getSqlAlias()).append(" from ").append(queryObject.getObjectType()).append(" ").append(queryObject.getSqlAlias());
+            if (returnObjectType != null) {
+                sql.append("select ").append(returnObjectType.getSqlAlias()).append(".* from ")
+                        .append(returnObjectType.getTableName()).append(" ").append(returnObjectType.getSqlAlias());
             } else {
                 throw new QueryException("No return object provided in the query");
             }
@@ -263,32 +250,27 @@ public class QueryBuilder {
      * for the SQL query without the conditions.
      */
     private void createSelectFromClause() {
-        Iterator<String> it = queryTypes.keySet().iterator();
+        Iterator<String> it = queryObjectTypes.keySet().iterator();
 
-        StringBuilder selectClause = new StringBuilder("select ");
         StringBuilder fromClause = new StringBuilder(" from ");
 
-        log.debug("Query params:");
+        logger.fine("Query params:");
         while (it.hasNext()) {
             String key = it.next();
-            QueryObject qo = queryTypes.get(key);
+            QueryObject qo = queryObjectTypes.get(key);
 
-            if (log.isDebugEnabled()) {
-                log.debug("  alias: " + key);
-                log.debug("  obj: " + qo.getObjectType());
-                log.debug("  sqlAlias: " + qo.getSqlAlias());
-                log.debug("  return: " + qo.isReturnType());
-                log.debug("");
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("  alias: " + key);
+                logger.fine("  obj: " + qo.getTableName());
+                logger.fine("  sqlAlias: " + qo.getSqlAlias());
+                logger.fine("  return: " + qo.isReturnType());
+                logger.fine("");
             }
 
-            fromClause.append(qo.getObjectType()).append(" ").append(qo.getSqlAlias()).append(", ");
-
-            if (qo.isReturnType()) {
-                selectClause.append(qo.getSqlAlias()).append(", ");
-            }
+            fromClause.append(qo.getTableName()).append(" ").append(qo.getSqlAlias()).append(", ");
         }
-
-        sql.append(selectClause.substring(0, selectClause.length() - 2)); // strip the last ", "
+        
+        sql.append("select ").append(returnObjectType.getSqlAlias()).append(".*");
         sql.append(fromClause.substring(0, fromClause.length() - 2)); // strip the last ", "
         sql.append(" where ");
     }
@@ -302,13 +284,9 @@ public class QueryBuilder {
      */
     public String createCountQuery() {
         StringBuilder countSql = new StringBuilder();
-
-
-        int idx1 = sql.indexOf(" ") + 1;
         int idx2 = sql.indexOf(" from ");
 
-        countSql.append(sql.substring(0, idx1)).append("count(");
-        countSql.append(sql.substring(idx1, idx2)).append(")");
+        countSql.append("select count(").append(returnObjectType.getSqlAlias()).append(")");
         countSql.append(sql.substring(idx2));
 
         return countSql.toString();
@@ -325,8 +303,8 @@ public class QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void recurseQueryOperator(JAXBElement queryOperator) throws QueryException {
-        if (log.isDebugEnabled()) {
-            log.debug("queryOperator: " + queryOperator.getClass().toString());
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("queryOperator: " + queryOperator.getClass().toString());
         }
 
         String opName = "op" + queryOperator.getClass().getSimpleName();
@@ -428,10 +406,10 @@ public class QueryBuilder {
                     }
 
                     if (xp.isSlotQuery()) {
-                        sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                        sql.append(xp.getSlotName()).append("' and s.").append(queriedSlotType).append("Value");
+                        sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from slot s where s.slotname = '");
+                        sql.append(xp.getSlotName()).append("' and s.").append(queriedSlotType).append("value");
                     } else {
-                        sql.append("(").append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
+                        sql.append("(").append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
                         sql.append(xp.getObjectAttribute());
                     }
 
@@ -454,7 +432,7 @@ public class QueryBuilder {
      */
     private void opPropertyIsNull(PropertyIsNullType propNull) throws QueryException {
         PropertyNameType propName = propNull.getPropertyName();
-        String queriedSlotType = "";
+        String internalSlotType = "";
 
         if (!propName.getContent().isEmpty()) {
             String xpath = (String) propName.getContent().get(0);
@@ -462,13 +440,12 @@ public class QueryBuilder {
             xp.process();
 
             if (xp.isSlotQuery()) {
-                queriedSlotType = SlotTypes.getInternalSlotType(xp.getSlotName());
-                queriedSlotType = (queriedSlotType == null) ? "string" : queriedSlotType;
+                internalSlotType = InternalSlotTypes.getInternalSlotType(xp.getSlotType());
 
-                sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                sql.append(xp.getSlotName()).append("' and s.").append(queriedSlotType).append("Value");
+                sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from slot s where s.slotname = '");
+                sql.append(xp.getSlotName()).append("' and s.").append(internalSlotType).append("value");
             } else {
-                sql.append("(").append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
+                sql.append("(").append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
                 sql.append(xp.getObjectAttribute());
             }
             sql.append(" is null)");
@@ -544,7 +521,7 @@ public class QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsBetween(PropertyIsBetweenType propBetween) throws QueryException {
-        String queriedSlotType = "";
+        String internalSlotType = "";
 
         if (propBetween.isSetExpression()) {
             Object valObj1 = propBetween.getExpression().getValue();
@@ -558,15 +535,14 @@ public class QueryBuilder {
                     xp.process();
 
                     if (xp.isSlotQuery()) {
-                        queriedSlotType = SlotTypes.getInternalSlotType(xp.getSlotName());
-                        queriedSlotType = (queriedSlotType == null) ? "string" : queriedSlotType;
+                        internalSlotType = InternalSlotTypes.getInternalSlotType(xp.getSlotType());
 
-                        sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                        sql.append(xp.getSlotName()).append("' and s.").append(queriedSlotType).append("Value");
+                        sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from slot s where s.slotname = '");
+                        sql.append(xp.getSlotName()).append("' and s.").append(internalSlotType).append("value");
                     } else {
-                        sql.append("(").append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
+                        sql.append("(").append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
                         sql.append(xp.getObjectAttribute());
-                        queriedSlotType = "string";
+                        internalSlotType = InternalConstants.TYPE_STRING;
                     }
                 } else {
                     throw new QueryException("PropertyName does not have a value");
@@ -584,7 +560,7 @@ public class QueryBuilder {
                 Object upperBoundaryObj = propBetween.getUpperBoundary().getExpression().getValue();
 
                 if (lowerBoundaryObj instanceof LiteralType) {
-                    appendLiteralContent((LiteralType) lowerBoundaryObj, queriedSlotType);
+                    appendLiteralContent((LiteralType) lowerBoundaryObj, internalSlotType);
                 } else {
                     throw new QueryException("PropertyName not supported for PropertyIsBetween.LowerBoundary");
                 }
@@ -592,7 +568,7 @@ public class QueryBuilder {
                 sql.append(" and ");
 
                 if (upperBoundaryObj instanceof LiteralType) {
-                    appendLiteralContent((LiteralType) upperBoundaryObj, queriedSlotType);
+                    appendLiteralContent((LiteralType) upperBoundaryObj, internalSlotType);
                 } else {
                     throw new QueryException("PropertyName not supported for PropertyIsBetween.LowerBoundary");
                 }
@@ -610,7 +586,7 @@ public class QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void binaryComparisionQuery(BinaryComparisonOpType binCopmparisonOp, String comparisonOperator) throws QueryException {
-        String queriedSlotType = "";
+        String internalSlotType = "";
 
         if (binCopmparisonOp.getExpression().size() > 1) {
             Object valObj1 = binCopmparisonOp.getExpression().get(0).getValue();
@@ -625,15 +601,14 @@ public class QueryBuilder {
                     xp.process();
 
                     if (xp.isSlotQuery()) {
-                        queriedSlotType = SlotTypes.getInternalSlotType(xp.getSlotName());
-                        queriedSlotType = (queriedSlotType == null) ? "string" : queriedSlotType;
+                        internalSlotType = InternalSlotTypes.getInternalSlotType(xp.getSlotType());
 
-                        sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                        sql.append(xp.getSlotName()).append("' and s.").append(queriedSlotType).append("Value");
+                        sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from slot s where s.slotname = '");
+                        sql.append(xp.getSlotName()).append("' and s.").append(internalSlotType).append("value");
                     } else {
-                        sql.append("(").append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
+                        sql.append("(").append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
                         sql.append(xp.getObjectAttribute());
-                        queriedSlotType = "string";
+                        internalSlotType = InternalConstants.TYPE_STRING;
                     }
                 } else {
                     throw new QueryException("ogc:PropertyName does not have a value");
@@ -655,12 +630,12 @@ public class QueryBuilder {
                     if (xp.isSlotQuery()) {
                         throw new QueryException("Slot query as second parameter not yet supported");
                     } else {
-                        sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
+                        sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".");
                         sql.append(xp.getObjectAttribute());
                     }
                 }
             } else if (valObj2 instanceof LiteralType) {
-                appendLiteralContent((LiteralType) valObj2, queriedSlotType);
+                appendLiteralContent((LiteralType) valObj2, internalSlotType);
             } else {
                 throw new QueryException("Second value of PropertyIsEqualTo was not a PropertyName or Literal element");
             }
@@ -679,7 +654,6 @@ public class QueryBuilder {
 
         if (bbox.isSetEnvelope()) {
             EnvelopeType env = bbox.getEnvelope().getValue();
-            String polygonParamName = getNextParamAlias();
 
             if (bbox.isSetPropertyName() && !bbox.getPropertyName().getContent().isEmpty()) {
                 String xpath = (String) bbox.getPropertyName().getContent().get(0);
@@ -687,8 +661,10 @@ public class QueryBuilder {
                 xp.process();
 
                 if (xp.isSlotQuery()) {
-                    sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                    sql.append(xp.getSlotName()).append("' and within(s.queryGeometryValue, :").append(polygonParamName).append(") = true)");
+                    sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias())
+                            .append(".id in (select s.parent from slot s where s.slotname = '")
+                            .append(xp.getSlotName()).append("' and st_within(s.geometryvalue, transform(geomfromwkb(?),")
+                            .append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true)");
                 } else {
                     throw new QueryException("Can compare BBOX only to Slot values");
                 }
@@ -698,9 +674,8 @@ public class QueryBuilder {
             }
 
             try {
-                Polygon polygon = Transformer.polygonFromEnvelope(env);
-                polygon = (Polygon) SrsTools.getInstance().transformGeometry(polygon);
-                queryParams.put(polygonParamName, polygon);
+                byte[] geom = GeometryTranslator.wkbFromGmlEnvelope(env);
+                queryParams.add(geom);
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform BBOX to Polygon", ex);
             }
@@ -787,10 +762,9 @@ public class QueryBuilder {
      * @param dwithin Dwithin operator.
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
-    private void opDwithin(DistanceBufferType dwithin) throws QueryException {
-
-        if (dwithin.isSetDistance() && dwithin.getDistance().isSetAny()) {
-            String geoParamName = getNextParamAlias();
+    private void opDWithin(DistanceBufferType dwithin) throws QueryException {
+        
+        if (dwithin.isSetDistance() && dwithin.getDistance().isSetContent()) {
 
             if (dwithin.isSetPropertyName() && !dwithin.getPropertyName().getContent().isEmpty()) {
                 String xpath = (String) dwithin.getPropertyName().getContent().get(0);
@@ -798,8 +772,10 @@ public class QueryBuilder {
                 xp.process();
 
                 if (xp.isSlotQuery()) {
-                    sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                    sql.append(xp.getSlotName()).append("' and dwithin(s.queryGeometryValue, :").append(geoParamName).append(",").append(dwithin.getDistance().getAny().toString()).append(") = true)");
+                    sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from slot s where s.slotname = '");
+                    sql.append(xp.getSlotName()).append("' and st_dwithin(s.geometryvalue, transform(geomfromwkb(?),")
+                            .append(CommonProperties.getInstance().get("db.defaultSrsId")).append("),")
+                            .append(dwithin.getDistance().getContent()).append(") = true)");
                 } else {
                     throw new QueryException("Can compare BBOX only to Slot values");
                 }
@@ -808,9 +784,8 @@ public class QueryBuilder {
             }
 
             try {
-                Geometry geometry = Transformer.geometryFromAbstractGeometry(dwithin.getAbstractGeometry().getValue());
-                geometry = SrsTools.getInstance().transformGeometry(geometry);
-                queryParams.put(geoParamName, geometry);
+                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(dwithin.getAbstractGeometry().getValue());
+                queryParams.add(geom);
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform geometry", ex);
             }
@@ -847,16 +822,16 @@ public class QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void binarySpatialQuery(BinarySpatialOpType binSpatialOp, String spatialQueryOperation) throws QueryException {
-        String geoParamName = getNextParamAlias();
 
         if (binSpatialOp.isSetPropertyName() && !binSpatialOp.getPropertyName().getContent().isEmpty()) {
             String xpath = (String) binSpatialOp.getPropertyName().getContent().get(0);
             XPathObject xp = new XPathObject(xpath);
             xp.process();
-
+            
             if (xp.isSlotQuery()) {
-                sql.append(queryTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from Slot s where s.slotName = '");
-                sql.append(xp.getSlotName()).append("' and ").append(spatialQueryOperation).append("(s.queryGeometryValue, :").append(geoParamName).append(") = true)");
+                sql.append(queryObjectTypes.get(xp.getObjectType()).getSqlAlias()).append(".id in (select s.parent from slot s where s.slotname = '");
+                sql.append(xp.getSlotName()).append("' and st_").append(spatialQueryOperation).append("(s.geometryvalue, transform(geomfromwkb(?),")
+                        .append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true)");
             } else {
                 throw new QueryException("Can compare BBOX only to Slot values");
             }
@@ -868,17 +843,15 @@ public class QueryBuilder {
             EnvelopeType env = binSpatialOp.getEnvelope().getValue();
 
             try {
-                Polygon polygon = Transformer.polygonFromEnvelope(env);
-                polygon = (Polygon) SrsTools.getInstance().transformGeometry(polygon);
-                queryParams.put(geoParamName, polygon);
+                byte[] geom = GeometryTranslator.wkbFromGmlEnvelope(env);
+                queryParams.add(geom);
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform Envelope to Polygon", ex);
             }
         } else if (binSpatialOp.isSetAbstractGeometry()) {
             try {
-                Geometry geometry = Transformer.geometryFromAbstractGeometry(binSpatialOp.getAbstractGeometry().getValue());
-                geometry = SrsTools.getInstance().transformGeometry(geometry);
-                queryParams.put(geoParamName, geometry);
+                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(binSpatialOp.getAbstractGeometry().getValue());
+                queryParams.add(geom);
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform geometry", ex);
             }
@@ -896,14 +869,14 @@ public class QueryBuilder {
      */
     private void appendLiteralContent(LiteralType lit, String queriedSlotType) throws QueryException {
         if (!lit.getContent().isEmpty()) {
-            if (queriedSlotType.equals("string")) {
+            if (queriedSlotType.equals(InternalConstants.TYPE_STRING)) {
                 sql.append("'").append(lit.getContent().get(0)).append("'");
-            } else if (queriedSlotType.equals("dateTime")) {
+            } else if (queriedSlotType.equals(InternalConstants.TYPE_DATETIME)) {
                 try {
-                    String paramKey = getNextParamAlias();
                     XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar((String) lit.getContent().get(0));
-                    sql.append(":" + paramKey);
-                    queryParams.put(paramKey, cal.toGregorianCalendar().getTime());
+                    sql.append("?");
+                    Timestamp ts = new Timestamp(cal.normalize().toGregorianCalendar().getTimeInMillis());
+                    queryParams.add(ts);
                 } catch (DatatypeConfigurationException ex) {
                     throw new QueryException("Invalid date: " + lit.getContent().get(0), ex);
                 }

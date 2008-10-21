@@ -18,16 +18,18 @@
  */
 package be.kzen.ergorr.query;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.exceptions.QueryException;
-import be.kzen.ergorr.interfaces.soap.RequestContext;
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.SearchResultsType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
+import be.kzen.ergorr.persist.service.RimService;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
-import org.apache.log4j.Logger;
 
 /**
  * Manages query requests to the server.
@@ -36,7 +38,6 @@ import org.apache.log4j.Logger;
  */
 public class QueryManager {
 
-    private static Logger log = Logger.getLogger(QueryManager.class);
     private RequestContext requestContext;
 
     public QueryManager(RequestContext requestContext) {
@@ -45,27 +46,39 @@ public class QueryManager {
 
     public GetRecordsResponseType query() throws ServiceExceptionReport {
         GetRecordsResponseType response = new GetRecordsResponseType();
-        
+
         try {
-            QueryBuilder qb = new QueryBuilder(requestContext);
-            String sql = qb.build();
-            long recordsMatched = requestContext.getRimDAO().getResultCount(qb.createCountQuery(), qb.getParameters());
-            List<JAXBElement<? extends IdentifiableType>> idents = requestContext.getRimDAO().query(sql, qb.getParameters(), qb.getMaxResults(), qb.getStartPosition());
-            
+            QueryBuilder queryBuilder = new QueryBuilder(requestContext);
+            String sql = queryBuilder.build();
+
+            RimService service = new RimService(requestContext);
+            long recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
+            service.setRequestProperty(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
+            service.setRequestProperty(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
+            List<JAXBElement<? extends IdentifiableType>> idents = 
+                    service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
+
             SearchResultsType searchResult = new SearchResultsType();
             searchResult.setNumberOfRecordsReturned(BigInteger.valueOf(idents.size()));
             searchResult.setNumberOfRecordsMatched(BigInteger.valueOf(recordsMatched));
             searchResult.getAny().addAll(idents);
             response.setSearchResults(searchResult);
 
-        } catch (QueryException e) {
-            throw new ServiceExceptionReport("Error while translating OGC query to SQL", null, e);
+        } catch (QueryException ex) {
+            throw new ServiceExceptionReport("Error while translating OGC query to SQL", null, ex);
+        } catch (SQLException ex) {
+            throw new ServiceExceptionReport("Error while constructing SQL query", null, ex);
         }
 
         return response;
     }
 
-    public List<JAXBElement<? extends IdentifiableType>> getByIds(List<String> ids) {
-        return requestContext.getRimDAO().getByIds(ids);
+    public List<JAXBElement<? extends IdentifiableType>> getByIds(List<String> ids) throws ServiceExceptionReport {
+        RimService service = new RimService(requestContext);
+        try {
+            return service.getByIds(ids);
+        } catch (SQLException ex) {
+            throw new ServiceExceptionReport("Error while constructing SQL query", null, ex);
+        }
     }
 }

@@ -18,6 +18,8 @@
  */
 package be.kzen.ergorr.interfaces.soap;
 
+import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
 import be.kzen.ergorr.model.csw.DescribeRecordResponseType;
 import be.kzen.ergorr.model.csw.DescribeRecordType;
@@ -34,19 +36,24 @@ import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.util.JAXBUtil;
-import be.kzen.ergorr.persist.dao.RimDAO;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
-import be.kzen.ergorr.commons.SlotTypes;
+import be.kzen.ergorr.persist.InternalSlotTypes;
+import be.kzen.ergorr.logging.LoggerSetup;
+import be.kzen.ergorr.persist.service.DbConnectionParams;
+import be.kzen.ergorr.persist.service.RimService;
+import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
+import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import javax.xml.ws.WebServiceContext;
 
 /**
  * SOAP service implementation for CSW.
@@ -58,17 +65,10 @@ targetNamespace = "http://www.kzen.be/ergorr/interfaces/soap",
 endpointInterface = "be.kzen.ergorr.interfaces.soap.CswPortType")
 public class CswServiceImpl implements CswPortType {
 
-    private static Logger log = Logger.getLogger(CswServiceImpl.class);
-    
-    // this singleton is initialized in init(). maybe not the best to
-    // keep the instance here though. It should be kept somewhere so it doesn't get GC'ed.
-    private SlotTypes slotTypes;
-    
-    @EJB
-    RimDAO rimDao;
-
-//    @Resource
-//    private WebServiceContext wsContext;
+    private static Logger logger = Logger.getLogger(CswServiceImpl.class.getName());
+    private InternalSlotTypes slotTypes;
+    @Resource
+    private WebServiceContext wsContext;
     
     public CapabilitiesType cswGetCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         try {
@@ -80,21 +80,36 @@ public class CswServiceImpl implements CswPortType {
     }
 
     public GetRecordsResponseType cswGetRecords(GetRecordsType getRecordsReq) throws ServiceExceptionReport {
-        RequestContext rc = new RequestContext();
-        rc.setRimDAO(rimDao);
-        rc.setRequest(getRecordsReq);
+        RequestContext requestContext = new RequestContext();
+        requestContext.setRequest(getRecordsReq);
 
-        QueryManager qm = new QueryManager(rc);
+        QueryManager qm = new QueryManager(requestContext);
         return qm.query();
     }
 
     public GetRecordByIdResponseType cswGetRecordById(GetRecordByIdType getRecordByIdReq) throws ServiceExceptionReport {
-        RequestContext rc = new RequestContext();
-        rc.setRimDAO(rimDao);
-        rc.setRequest(getRecordByIdReq);
-        
+
+//        Iterator<String> it = wsContext.getMessageContext().keySet().iterator();
+//        logger.info("-----------------------------------");
+//        while (it.hasNext()) {
+//            String key = it.next();
+//            Object o = wsContext.getMessageContext().get(key);
+//            logger.info("key: " + key);
+//            if (o != null) {
+//                logger.info("type: " + o.getClass().getName());
+//                logger.info("content: " + o.toString());
+//            } else {
+//                logger.info("null");
+//            }
+//            logger.info("-------");
+//        }
+//        logger.info("-----------------------------------");
+
+        RequestContext requestContext = new RequestContext();
+        requestContext.setRequest(getRecordByIdReq);
+
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
-        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(rc).getByIds(getRecordByIdReq.getId());
+        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq.getId());
         response.getAny().addAll(idents);
 
         return response;
@@ -105,20 +120,18 @@ public class CswServiceImpl implements CswPortType {
     }
 
     public HarvestResponseType cswHarvest(HarvestType body) throws ServiceExceptionReport {
-        RequestContext rc = new RequestContext();
-        rc.setRimDAO(rimDao);
-        rc.setRequest(body);
-        return new HarvestService(rc).process();
+        RequestContext requestContext = new RequestContext();
+        requestContext.setRequest(body);
+        return new HarvestService(requestContext).process();
     }
 
     public TransactionResponseType cswTransaction(TransactionType transactionReq) throws ServiceExceptionReport {
-        RequestContext rc = new RequestContext();
-        rc.setRimDAO(rimDao);
-        rc.setRequest(transactionReq);
+        RequestContext requestContext = new RequestContext();
+        requestContext.setRequest(transactionReq);
 
-        return new TransactionService(rc).process();
+        return new TransactionService(requestContext).process();
     }
-    
+
     public DescribeRecordResponseType cswDescribeRecord(DescribeRecordType describeRecordReq) throws ServiceExceptionReport {
         throw new ServiceExceptionReport("Not supported");
     }
@@ -128,21 +141,31 @@ public class CswServiceImpl implements CswPortType {
      * 
      * The web container calls the PostConstruct twice.
      * Once when the application is deployed and once the service is invoked for the first time.
-     * When it is called while deploying the dependency injection is not complete
-     * so we leave the initialization work for the second call. In this case when
-     * <code>rimDao</code> is not equal to <code>null</code>.
+     * This code will prevent the init from run twice.
      */
     @PostConstruct
     protected void init() {
-        if (rimDao != null) {
-            log.info(">>> start pre construct");
-            log.info("init slot types");
-            slotTypes = SlotTypes.getInstance();
-            slotTypes.setSlotMap(rimDao.getSlotTypes());
-            log.info("  slots: " + slotTypes.getSlotTypeSize());
-            log.info("init log4j");
-            PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
-            log.info(">>> end pre construct");
+        slotTypes = InternalSlotTypes.getInstance();
+
+        if (slotTypes.getSlotTypeSize() > 0) {
+            slotTypes.clear(); // now we can remove the dummy
+            RimService service = new RimService();
+//            LoggerSetup.setup();
+            logger.info(">>> start init");
+            logger.info("loading slot types cache from database");
+            try {
+                slotTypes.setSlotMap(service.querySlotTypes());
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, "Could not load slot types", ex);
+            }
+            logger.info("  non-string slots: " + slotTypes.getSlotTypeSize());
+            logger.info(">>> end init");
+        } else {
+            try {
+                slotTypes.putSlotType("dummyslot", "string");
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Could not put dummy slot type", ex);
+            }
         }
     }
 }

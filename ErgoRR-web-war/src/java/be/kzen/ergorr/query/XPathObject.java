@@ -20,7 +20,7 @@ package be.kzen.ergorr.query;
 
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.commons.CommonFunctions;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 /**
  * Helper for the XPath within the OGC query.
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  */
 public class XPathObject {
 
-    private static Logger log = Logger.getLogger(XPathObject.class);
+    private static Logger log = Logger.getLogger(XPathObject.class.getName());
     private String xpath;
     private String objectType;
     private String objectAttribute;
