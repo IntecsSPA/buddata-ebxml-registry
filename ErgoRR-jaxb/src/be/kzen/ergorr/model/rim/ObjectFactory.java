@@ -271,8 +271,8 @@ public class ObjectFactory {
      * Create an instance of {@link AssociationType1 }
      * 
      */
-    public AssociationType1 createAssociationType1() {
-        return new AssociationType1();
+    public AssociationType createAssociationType1() {
+        return new AssociationType();
     }
 
     /**
@@ -510,8 +510,8 @@ public class ObjectFactory {
      * 
      */
     @XmlElementDecl(namespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", name = "Association", substitutionHeadNamespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", substitutionHeadName = "Identifiable")
-    public JAXBElement<AssociationType1> createAssociation(AssociationType1 value) {
-        return new JAXBElement<AssociationType1>(_Association_QNAME, AssociationType1 .class, null, value);
+    public JAXBElement<AssociationType> createAssociation(AssociationType value) {
+        return new JAXBElement<AssociationType>(_Association_QNAME, AssociationType .class, null, value);
     }
 
     /**

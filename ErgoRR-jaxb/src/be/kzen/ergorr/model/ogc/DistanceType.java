@@ -3,10 +3,9 @@ package be.kzen.ergorr.model.ogc;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 
 /**
@@ -18,9 +17,6 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="DistanceType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;any/>
- *       &lt;/sequence>
  *       &lt;attribute name="units" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,42 +27,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DistanceType", propOrder = {
-    "any"
+    "content"
 })
-@XmlRootElement
 public class DistanceType {
 
-    @XmlAnyElement(lax = true)
-    protected Object any;
+    @XmlValue
+    protected String content;
     @XmlAttribute(required = true)
     protected String units;
 
     /**
-     * Gets the value of the any property.
+     * Gets the value of the content property.
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link String }
      *     
      */
-    public Object getAny() {
-        return any;
+    public String getContent() {
+        return content;
     }
 
     /**
-     * Sets the value of the any property.
+     * Sets the value of the content property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link String }
      *     
      */
-    public void setAny(Object value) {
-        this.any = value;
+    public void setContent(String value) {
+        this.content = value;
     }
 
-    public boolean isSetAny() {
-        return (this.any!= null);
+    public boolean isSetContent() {
+        return (this.content!= null);
     }
 
     /**

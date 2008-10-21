@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AssociationType1")
-public class AssociationType1
+public class AssociationType
     extends RegistryObjectType
 {
 
