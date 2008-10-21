@@ -51,7 +51,7 @@ import javax.xml.bind.annotation.XmlType;
     ClassificationSchemeType.class,
     ServiceType.class,
     ClassificationNodeType.class,
-    AssociationType1 .class,
+    AssociationType .class,
     OrganizationType.class,
     AdhocQueryType.class,
     RegistryType.class,

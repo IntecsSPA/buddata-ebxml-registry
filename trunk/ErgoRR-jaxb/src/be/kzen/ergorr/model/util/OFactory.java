@@ -17,4 +17,8 @@ public class OFactory {
     public static be.kzen.ergorr.model.purl.terms.ObjectFactory purl_terms = new be.kzen.ergorr.model.purl.terms.ObjectFactory();
     public static be.kzen.ergorr.model.rim.ObjectFactory rim = new be.kzen.ergorr.model.rim.ObjectFactory();
     public static be.kzen.ergorr.model.wrs.ObjectFactory wrs = new be.kzen.ergorr.model.wrs.ObjectFactory();
+    
+    public static Class getRimClassByElementName(String elementName) throws ClassNotFoundException {
+        return Class.forName("be.kzen.ergorr.model.rim." + elementName + "Type");
+    }
 }
