@@ -2,7 +2,33 @@
 
 The client API ErgoRR-client depends on ErgoRR-commons and ErgoRR-jaxb modules.
 
-If you build the client API with netbeans it will build the dependencies for you.
+The backend API ErgoRR-backend-client uses code from the ErgoRR-web-war. To create the a library from ErgoRR-web-war:
+
+  # Build the ErgoRR-web-war project
+  # Run the following ant command from _(ergo-source-dir)/ErgoRR-backend-client_ directory.
+{{{
+ant build-backend 
+}}}
+
+This will create a library in _ErgoRR-backend-client/dist_ called _ErgoRR-backend.jar_ which you will also have to include in your class path together with, ErgoRR-commons lib, ErgoRR-jaxb lib and ErgoRR-persistence lib.
+
+
+*Client initialize*
+
+SOAP interface
+{{{
+URL serviceURL = new URL("http://urltoservice");
+CswClient client = new CswClient(serviceURL);
+}}}
+Backend Interface
+{{{
+DbConnectionParams cp = new DbConnectionParams();
+cp.setDbUrl("localhost:5432");
+cp.setDbName("ergorr");
+cp.setDbUser("theUser");
+cp.setDbPassword("thePassword");
+CswBackendClient client = new CswBackendClient(cp);
+}}}
 
 *GetRecords*
 
