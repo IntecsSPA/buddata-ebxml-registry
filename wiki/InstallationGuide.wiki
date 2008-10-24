@@ -17,7 +17,9 @@ sudo apt-get install postgres postgis
 
 *1. Make sure that the required software is installed properly*
 
-*2. Create database and add spatial functionality*
+*2. Checkout the source from google code and put it all under one directory.*
+
+*3. Create database and add spatial functionality*
   * In Postgres, create the database with the name "ergorr".
   * Change to the postgres user with the command: 
 {{{
@@ -32,27 +34,17 @@ createlang plpgsql ergorr
 psql -d ergorr -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql
 psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 }}}
+  * Run the database script (ergo_source_dir)/ErgoRR-persistence/conf/database.sql
 
-*3. Checkout the source from google code and put it all under one directory.*
 
 *4. Copy libraries to Glassfish*
   * Make sure that you have the environment varial AS_HOME (which is the Glassfish installation directory).
-    * If you have _Ant_ install just run the following command from the path <ergo_source_dir>/ErgoRR-shared
-{{{
-ant
-}}}
-This will copy all the needed libraries to <AS_HOME>/lib directory.
+  * Copy the following files to AS_HOME/lib
+    * (ergo_source_dir)/ErgoRR-shared/postgis/postgis_1.3.3.jar
+    * (ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar
 
-*5. Enable log4j for Glassfish *
-  * When Glassfish is running open the web administration portal. (default port 4848).
-  * Go to _Application Server_ from the left menu. Then _JVM Settings_ tab, followed by _Path Settings_ tab.
-  * In the _System Classpath_ text field set the path of the log4j library and the directory of log4j.properties. These files can be found in the path <ergo_source_dir>/ErgoRR-shared/logging. An example input would be:
-{{{
-/home/me/proj/ErgoRR-shared/logging/log4j-1.2.15.jar
-/home/me/proj/ErgoRR-shared/logging/
-}}}
 
-*6. Add Postgres connection datasource to Glassfish *
+*5. Add Postgres connection datasource to Glassfish *
   * In the administration portal, from the left menu, click through _Resources_ > _JDBC_ > _Connection Pools_ and click _New_ to create a new pool with the following values.
     * Name: postgresPool
     * Resource Type: javax.sql.DataSource
@@ -65,8 +57,10 @@ This will copy all the needed libraries to <AS_HOME>/lib directory.
   * And click _OK_ to finish.
 
 
-*7. Open the 5 netbeans projects.*
-  *ErgoRR-client < the client API
+*6. Open the 7 netbeans projects.*
+  *ErgoRR-client < client API through SOAP interface
+
+  *ErgoRR-backend-client < client API connecting directly to backend
 
   *ErgoRR-commons < common classes
 
@@ -74,19 +68,19 @@ This will copy all the needed libraries to <AS_HOME>/lib directory.
 
   *ErgoRR-jaxb < JAXB bindings
 
-  *ErgoRR-persistence-ejb < persistence layer
+  *ErgoRR-persistence < persistence layer
 
   *ErgoRR-web-war < web application
 
   *There is another folder "ErgoRR-shared": these are just libraries.
 
-*8. Add Glassfish to Netbeans* 
+*7. Add Glassfish to Netbeans* 
   * This can be done from the top menu _Tools_ > _Servers_.
   * Now you can set the project to run on your Glassfish installation.
     * Right click on the project _ErgoRR-enterprice_ to select _Properties_.
     * In the properties window select _Run_ from the left menu and select the server you have just configured in the _Server_ property field.
 
-*9 You are done. Run the ErgoRR-enterprise project and hope for the best.
+*8. You are done. Run the ErgoRR-enterprise project and hope for the best.
 
 
 *Note: The installation process will be simplified in the future :) *
