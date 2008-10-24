@@ -12,7 +12,7 @@ import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.util.JAXBUtil;
-import be.kzen.ergorr.persist.service.RimService;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

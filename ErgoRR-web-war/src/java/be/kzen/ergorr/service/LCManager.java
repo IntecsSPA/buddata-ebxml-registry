@@ -33,7 +33,7 @@ import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.rim.SlotType1;
 import be.kzen.ergorr.persist.InternalSlotTypes;
-import be.kzen.ergorr.persist.service.RimService;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class LCManager {
             }
         }
 
-        RimService service = new RimService(requestContext);
+        SqlPersistence service = new SqlPersistence(requestContext);
 
         try {
             service.insert(flatIdents);

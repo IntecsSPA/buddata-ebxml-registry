@@ -42,7 +42,7 @@ import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.logging.LoggerSetup;
 import be.kzen.ergorr.persist.service.DbConnectionParams;
-import be.kzen.ergorr.persist.service.RimService;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -149,7 +149,7 @@ public class CswServiceImpl implements CswPortType {
 
         if (slotTypes.getSlotTypeSize() > 0) {
             slotTypes.clear(); // now we can remove the dummy
-            RimService service = new RimService();
+            SqlPersistence service = new SqlPersistence();
 //            LoggerSetup.setup();
             logger.info(">>> start init");
             logger.info("loading slot types cache from database");
