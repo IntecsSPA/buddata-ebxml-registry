@@ -107,11 +107,11 @@ is divided into following sections:
         <ant antfile="${project.ErgoRR-jaxb}/build.xml" inheritall="false" target="jar">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
-    </target>
-    <target depends="init" name="deps-j2ee-archive" unless="no.deps">
-        <ant antfile="${project.ErgoRR-persistence-ejb}/build.xml" inheritall="false" target="dist-ear">
+        <ant antfile="${project.ErgoRR-persistence}/build.xml" inheritall="false" target="jar">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
+    </target>
+    <target depends="init" name="deps-j2ee-archive" unless="no.deps">
         <ant antfile="${project.ErgoRR-web-war}/build.xml" inheritall="false" target="dist-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
@@ -125,21 +125,10 @@ is divided into following sections:
         <copy todir="${build.dir}/META-INF">
             <fileset dir="${meta.inf}"/>
         </copy>
-        <copy file="${reference.ErgoRR-persistence-ejb.dist-ear}" todir="${build.dir}//"/>
         <copy file="${reference.ErgoRR-web-war.dist-ear}" todir="${build.dir}//"/>
         <copy file="${reference.ErgoRR-jaxb.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.log4j-1.2.15.jar}" todir="${build.dir}//lib"/>
+        <copy file="${reference.ErgoRR-persistence.jar}" todir="${build.dir}//lib"/>
         <copy file="${reference.ErgoRR-commons.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.geoapi-nogenerics-2.1.0.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.gt2-api-2.4.4.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.gt2-epsg-wkt-2.4.4.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.gt2-gtopo30-2.4.4.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.gt2-main-2.4.4.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.gt2-metadata-2.4.4.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.gt2-referencing-2.4.4.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.jai-core-1.1.3.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.jsr108-0.01.jar}" todir="${build.dir}//lib"/>
-        <copy file="${file.reference.vecmath-1.3.1.jar}" todir="${build.dir}//lib"/>
     </target>
     <target name="post-compile">
         <!-- Empty placeholder for easier customization. -->
@@ -194,7 +183,6 @@ is divided into following sections:
     </target>
     <target name="-run-deploy-am" unless="no.deps">
         <!-- Task to deploy to the Access Manager runtime. -->
-        <ant antfile="${project.ErgoRR-persistence-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
         <ant antfile="${project.ErgoRR-web-war}/build.xml" inheritall="false" target="-run-deploy-am"/>
     </target>
     <target depends="dist,pre-run-deploy,-pre-nbmodule-run-deploy,-run-deploy-nb,-init-deploy-ant,-deploy-ant,-run-deploy-am,-post-nbmodule-run-deploy,post-run-deploy" name="run-deploy"/>
@@ -370,7 +358,7 @@ is divided into following sections:
         <ant antfile="${project.ErgoRR-jaxb}/build.xml" inheritall="false" target="clean">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
-        <ant antfile="${project.ErgoRR-persistence-ejb}/build.xml" inheritall="false" target="clean-ear">
+        <ant antfile="${project.ErgoRR-persistence}/build.xml" inheritall="false" target="clean">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
         <ant antfile="${project.ErgoRR-web-war}/build.xml" inheritall="false" target="clean-ear">
