@@ -25,7 +25,7 @@ import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.SearchResultsType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
-import be.kzen.ergorr.persist.service.RimService;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
@@ -51,10 +51,10 @@ public class QueryManager {
             QueryBuilder queryBuilder = new QueryBuilder(requestContext);
             String sql = queryBuilder.build();
 
-            RimService service = new RimService(requestContext);
+            SqlPersistence service = new SqlPersistence(requestContext);
             long recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
-            service.setRequestProperty(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
-            service.setRequestProperty(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
+            service.addRequestProperty(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
+            service.addRequestProperty(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
             List<JAXBElement<? extends IdentifiableType>> idents = 
                     service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
 
@@ -74,7 +74,7 @@ public class QueryManager {
     }
 
     public List<JAXBElement<? extends IdentifiableType>> getByIds(List<String> ids) throws ServiceExceptionReport {
-        RimService service = new RimService(requestContext);
+        SqlPersistence service = new SqlPersistence(requestContext);
         try {
             return service.getByIds(ids);
         } catch (SQLException ex) {
