@@ -1,39 +1,38 @@
 
 -- =================================================================================== TABLE
-DROP TABLE IF EXISTS association CASCADE
-DROP TABLE IF EXISTS auditableevent CASCADE
-DROP TABLE IF EXISTS affectedobject CASCADE
-DROP TABLE IF EXISTS classification CASCADE
-DROP TABLE IF EXISTS classificationnode CASCADE
-DROP TABLE IF EXISTS classificationscheme CASCADE
-DROP TABLE IF EXISTS externalidentifier CASCADE
-DROP TABLE IF EXISTS externallink CASCADE
-DROP TABLE IF EXISTS extrinsicobject CASCADE
-DROP TABLE IF EXISTS federation CASCADE
-DROP TABLE IF EXISTS localizedname CASCADE
-DROP TABLE IF EXISTS localizeddesc CASCADE
-DROP TABLE IF EXISTS usagedescription CASCADE
-DROP TABLE IF EXISTS objectref CASCADE
-DROP TABLE IF EXISTS organization CASCADE
-DROP TABLE IF EXISTS registrypackage CASCADE
-DROP TABLE IF EXISTS postaladdress CASCADE
-DROP TABLE IF EXISTS emailaddress CASCADE
-DROP TABLE IF EXISTS registry CASCADE
-DROP TABLE IF EXISTS service CASCADE
-DROP TABLE IF EXISTS servicebinding CASCADE
-DROP TABLE IF EXISTS slot CASCADE
-DROP TABLE IF EXISTS specificationlink CASCADE
-DROP TABLE IF EXISTS usageparameter CASCADE
-DROP TABLE IF EXISTS subscription CASCADE
-DROP TABLE IF EXISTS notifyaction CASCADE
-DROP TABLE IF EXISTS notification CASCADE
-DROP TABLE IF EXISTS notificationobject CASCADE
-DROP TABLE IF EXISTS adhocquery CASCADE
-DROP TABLE IF EXISTS usageparameter CASCADE
-DROP TABLE IF EXISTS telephonenumber CASCADE
-DROP TABLE IF EXISTS user_ CASCADE
-DROP TABLE IF EXISTS person CASCADE
-DROP TABLE IF EXISTS slottype CASCADE
+DROP TABLE IF EXISTS association CASCADE;
+DROP TABLE IF EXISTS auditableevent CASCADE;
+DROP TABLE IF EXISTS affectedobject CASCADE;
+DROP TABLE IF EXISTS classification CASCADE;
+DROP TABLE IF EXISTS classificationnode CASCADE;
+DROP TABLE IF EXISTS classificationscheme CASCADE;
+DROP TABLE IF EXISTS externalidentifier CASCADE;
+DROP TABLE IF EXISTS externallink CASCADE;
+DROP TABLE IF EXISTS extrinsicobject CASCADE;
+DROP TABLE IF EXISTS federation CASCADE;
+DROP TABLE IF EXISTS localizedname CASCADE;
+DROP TABLE IF EXISTS localizeddesc CASCADE;
+DROP TABLE IF EXISTS usagedescription CASCADE;
+DROP TABLE IF EXISTS objectref CASCADE;
+DROP TABLE IF EXISTS organization CASCADE;
+DROP TABLE IF EXISTS registrypackage CASCADE;
+DROP TABLE IF EXISTS postaladdress CASCADE;
+DROP TABLE IF EXISTS emailaddress CASCADE;
+DROP TABLE IF EXISTS registry CASCADE;
+DROP TABLE IF EXISTS service CASCADE;
+DROP TABLE IF EXISTS servicebinding CASCADE;
+DROP TABLE IF EXISTS slot CASCADE;
+DROP TABLE IF EXISTS specificationlink CASCADE;
+DROP TABLE IF EXISTS usageparameter CASCADE;
+DROP TABLE IF EXISTS subscription CASCADE;
+DROP TABLE IF EXISTS notifyaction CASCADE;
+DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS notificationobject CASCADE;
+DROP TABLE IF EXISTS adhocquery CASCADE;
+DROP TABLE IF EXISTS telephonenumber CASCADE;
+DROP TABLE IF EXISTS user_ CASCADE;
+DROP TABLE IF EXISTS person CASCADE;
+DROP TABLE IF EXISTS slottype CASCADE;
 
 
 CREATE TABLE association (
@@ -343,7 +342,7 @@ CREATE TABLE servicebinding (
 );
 
 CREATE TABLE slot (
-  seq                      BIGING       NOT NULL DEFAULT 0,
+  seq                      BIGINT       NOT NULL,
   parent                   VARCHAR(256) NOT NULL,
   slotname                 VARCHAR(256) NOT NULL,
   slottype                 VARCHAR(256),
@@ -353,7 +352,7 @@ CREATE TABLE slot (
   datetimevalue            TIMESTAMP WITH TIME ZONE,
   doublevalue              DOUBLE PRECISION,
   intvalue                 INTEGER,
-  geometryvalue            geometry
+  geometryvalue            geometry,
   PRIMARY KEY (seq, parent, slotName)
 );
 
@@ -441,12 +440,6 @@ CREATE TABLE adhocquery (
 --AdhocQuery attributes. Flattend QueryExpression attributes
   querylanguage            VARCHAR(256) NOT NULL,
   query                    VARCHAR(4096) NOT NULL
-);
-
-CREATE TABLE usageparameter (
-  value_                   VARCHAR(1024) NOT NULL,
---The parent SpecificationLink that this is a usage parameter for
-  parent                   VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE telephonenumber (
