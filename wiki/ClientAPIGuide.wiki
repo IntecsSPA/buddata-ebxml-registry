@@ -30,6 +30,8 @@ cp.setDbPassword("thePassword");
 CswBackendClient client = new CswBackendClient(cp);
 }}}
 
+For the rest the interface of the SOAP and backend client are the same. The example below assume that you are using the SOAP client.
+
 *GetRecords*
 
 Example demostrates querying 30 ExtrinsicObjects with objectType "urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct"
