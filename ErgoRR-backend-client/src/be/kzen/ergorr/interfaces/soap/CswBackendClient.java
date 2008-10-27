@@ -41,13 +41,9 @@ public class CswBackendClient {
     private InternalSlotTypes slotTypes;
     private DbConnectionParams dbConnParams;
     
-    public CswBackendClient() {
-        init();
-    }
-    
     public CswBackendClient(DbConnectionParams dbConnParams) {
-        this();
         this.dbConnParams = dbConnParams;
+        init();
     }
 
     public CapabilitiesType getCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
