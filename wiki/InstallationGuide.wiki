@@ -104,7 +104,7 @@ Note: If you edit the name of the deployment file ErgoRR-web-war.war then you ha
 
 Glassfish comes with the require the Metro (webservice) libraries, so it doesn't require it to be packaged with the .war file.
 
-To package this libraries for tomcat:
+To package the Metro libraries for tomcat:
 
   * Right click on the _ErgoRR-web-war_ project and select _Properties_
   * From the left menu select _Libraries_
