@@ -10,6 +10,15 @@
         <copy file="conf/Capabilities.xml" todir="build/web/WEB-INF/classes/be/kzen/ergorr/interfaces/soap"/>
     </target>
     
+    <target name="tomcat-install">
+        <property environment="env"/>
+        <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+        <copy file="../ErgoRR-shared/metro1_2/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
+        <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
+        <copy file="conf/ErgoRR-web-war.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/>
+    </target>
+
+    
     <!--
 
     There exist several targets which are by default empty and which can be 

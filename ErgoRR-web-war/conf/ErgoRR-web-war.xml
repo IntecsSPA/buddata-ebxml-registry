@@ -5,7 +5,7 @@
         type="javax.sql.DataSource"
         factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
         username="postgres"
-        password="iconos11"
+        password="test"
         driverClassName="org.postgresql.Driver"
         url="jdbc:postgresql://localhost:5432/ergorr"
         maxWait="1000"
