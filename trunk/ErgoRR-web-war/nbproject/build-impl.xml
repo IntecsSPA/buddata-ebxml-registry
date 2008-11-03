@@ -517,11 +517,29 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,-do-dist-with-manifest,-do-dist-without-manifest" name="do-dist"/>
     <target depends="init" if="dist.ear.dir" name="library-inclusion-in-manifest">
+        <basename file="${reference.ErgoRR-jaxb.jar}" property="included.lib.reference.ErgoRR-jaxb.jar"/>
+        <copy-ear-war file="${reference.ErgoRR-jaxb.jar}" propname="included.lib.reference.ErgoRR-jaxb.jar.X"/>
+        <basename file="${file.reference.postgis_1.3.3.jar}" property="included.lib.file.reference.postgis_1.3.3.jar"/>
+        <copy-ear-war file="${file.reference.postgis_1.3.3.jar}" propname="included.lib.file.reference.postgis_1.3.3.jar.X"/>
+        <basename file="${reference.ErgoRR-persistence.jar}" property="included.lib.reference.ErgoRR-persistence.jar"/>
+        <copy-ear-war file="${reference.ErgoRR-persistence.jar}" propname="included.lib.reference.ErgoRR-persistence.jar.X"/>
+        <basename file="${reference.ErgoRR-commons.jar}" property="included.lib.reference.ErgoRR-commons.jar"/>
+        <copy-ear-war file="${reference.ErgoRR-commons.jar}" propname="included.lib.reference.ErgoRR-commons.jar.X"/>
+        <basename file="${file.reference.postgresql-8.3-603.jdbc3.jar}" property="included.lib.file.reference.postgresql-8.3-603.jdbc3.jar"/>
+        <copy-ear-war file="${file.reference.postgresql-8.3-603.jdbc3.jar}" propname="included.lib.file.reference.postgresql-8.3-603.jdbc3.jar.X"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
-        <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update"/>
+        <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Class-Path" value="${included.lib.reference.ErgoRR-jaxb.jar} ${included.lib.file.reference.postgis_1.3.3.jar} ${included.lib.reference.ErgoRR-persistence.jar} ${included.lib.reference.ErgoRR-commons.jar} ${included.lib.file.reference.postgresql-8.3-603.jdbc3.jar} "/>
+        </manifest>
         <delete dir="${dist.ear.dir}/temp"/>
     </target>
-    <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir"/>
+    <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
+        <copy file="${reference.ErgoRR-jaxb.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${file.reference.postgis_1.3.3.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${reference.ErgoRR-persistence.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${reference.ErgoRR-commons.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${file.reference.postgresql-8.3-603.jdbc3.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+    </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" name="do-ear-dist">
         <dirname file="${dist.ear.war}" property="dist.jar.dir"/>
         <mkdir dir="${dist.jar.dir}"/>
