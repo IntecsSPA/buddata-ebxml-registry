@@ -39,8 +39,6 @@ import be.kzen.ergorr.model.ogc.PropertyIsLikeType;
 import be.kzen.ergorr.model.ogc.PropertyIsNullType;
 import be.kzen.ergorr.model.ogc.PropertyNameType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
-import be.kzen.ergorr.model.util.JAXBUtil;
-import be.kzen.ergorr.model.util.OFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
