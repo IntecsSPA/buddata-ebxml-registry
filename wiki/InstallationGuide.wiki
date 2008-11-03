@@ -21,19 +21,19 @@ sudo apt-get install postgres postgis
 
 The netbeans projects are:
 
-  *ErgoRR-client < client API through SOAP interface
+  * ErgoRR-client < client API through SOAP interface
 
-  *ErgoRR-backend-client < client API connecting directly to backend
+  * ErgoRR-backend-client < client API connecting directly to backend
 
-  *ErgoRR-commons < common classes
+  * ErgoRR-commons < common classes
 
-  *ErgoRR-jaxb < JAXB bindings
+  * ErgoRR-jaxb < JAXB bindings
 
-  *ErgoRR-persistence < persistence layer
+  * ErgoRR-persistence < persistence layer
 
-  *ErgoRR-web-war < web application
+  * ErgoRR-web-war < web application
 
-  *There is another folder "ErgoRR-shared": these are just libraries.
+  * There is another folder "ErgoRR-shared": these are just libraries.
 
 
 *3. Create database and add spatial functionality*
