@@ -10,14 +10,14 @@
         <copy file="conf/Capabilities.xml" todir="build/web/WEB-INF/classes/be/kzen/ergorr/interfaces/soap"/>
     </target>
     
-    <target name="tomcat-install">
+    <target name="tomcat-setup">
         <property environment="env"/>
         <copy file="../ErgoRR-shared/metro1_2/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
         <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
         <copy file="conf/ErgoRR-web-war.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/>
     </target>
     
-    <target name="glassfish-install">
+    <target name="glassfish-setup">
         <property environment="env"/>
         <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/lib"/>
         <mkdir dir="setup"/>
