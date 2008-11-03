@@ -100,6 +100,20 @@ Edit the file CATALINA_HOME/conf/Catalina/localhost/ErgoRR-web-war.xml to match 
 
 Note: If you edit the name of the deployment file ErgoRR-web-war.war then you have to set the same name for the ErgoRR-web-war.xml.
 
+*6. Configure packaged libraries *
+
+Glassfish comes with the require the Metro (webservice) libraries, so it doesn't require it to be packaged with the .war file.
+
+To package this libraries for tomcat:
+
+  * Right click on the _ErgoRR-web-war_ project and select _Properties_
+  * From the left menu select _Libraries_
+  * From the list of libraries select the checkbox from the _Package_ column for the following libraries:
+    * webservice-extra-api.jar
+    * webservice-extra.jar
+    * webservice-rt.jar
+    * Note: DO NOT select webservice-api.jar
+
 *6. Deploy *
 
   * Build the ErgoRR-web-war project and copy the dist/ErgoRR-web-war.war to Tomcat webapp directory.
