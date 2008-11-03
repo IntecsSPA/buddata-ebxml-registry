@@ -59,7 +59,7 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
   * Make sure that you have the variable AS_HOME set.
   * From (ergo_source_dir)/ErgoRR-web-war directory run the command
 {{{
-ant glassfish-install
+ant glassfish-setup
 }}}
 
 
@@ -83,7 +83,7 @@ ant glassfish-install
   * Make sure that you have the variable CATALINA_HOME set.
   * From (ergo_source_dir)/ErgoRR-web-war directory run the command
 {{{
-ant tomcat-install
+ant tomcat-setup
 }}}
 
 This will copy the following files:
