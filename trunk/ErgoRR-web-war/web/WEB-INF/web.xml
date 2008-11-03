@@ -8,17 +8,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     </listener>
     <servlet>
         <description>JAX-WS endpoint</description>
-        <display-name>csw-interface</display-name>
-        <servlet-name>csw-interface</servlet-name>
+        <display-name>ergorr</display-name>
+        <servlet-name>ergorr</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>csw-interface</servlet-name>
-        <url-pattern>/csw-interface/*</url-pattern>
+        <servlet-name>ergorr</servlet-name>
+        <url-pattern>/webservice/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
 </web-app>
-

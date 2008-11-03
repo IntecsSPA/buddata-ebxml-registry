@@ -3,13 +3,13 @@
 	xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" 
 	version="2.0">
     <endpoint
-    name="csw-interface"
+    name="ergorr"
     interface="be.kzen.ergorr.interfaces.soap.CswPortType"
     implementation="be.kzen.ergorr.interfaces.soap.CswServiceImpl"
     wsdl="WEB-INF/wsdl/CSW-service.wsdl"
     service="{http://www.kzen.be/ergorr/interfaces/soap}webservice"
     port="{http://www.kzen.be/ergorr/interfaces/soap}CswPort"
-    url-pattern="/csw-interface/*"
+    url-pattern="/webservice/*"
     enable-mtom="true"
     mtom-threshold-value="0"/>
 </endpoints>

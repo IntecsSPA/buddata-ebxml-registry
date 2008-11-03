@@ -9,12 +9,6 @@
     <target name="-post-compile">
         <copy file="conf/Capabilities.xml" todir="build/web/WEB-INF/classes/be/kzen/ergorr/interfaces/soap"/>
     </target>
-    <target name="-pre-compile-test">
-        <copy file="../ErgoRR-enterprise/conf/log4j.properties" todir="build/test/classes"/>
-    </target>
-    <target name="-pre-compile-test-single">
-        <copy file="../ErgoRR-enterprise/conf/log4j.properties" todir="build/test/classes"/>
-    </target>
     
     <!--
 
