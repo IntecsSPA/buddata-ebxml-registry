@@ -55,24 +55,16 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 
 == Glassfish specific ==
 
-*4. Copy libraries to Glassfish*
-  * Make sure that you have the environment variable AS_HOME (which is the Glassfish installation directory).
-  * Copy the following files to AS_HOME/lib
-    * (ergo_source_dir)/ErgoRR-shared/postgis/postgis_1.3.3.jar
-    * (ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar
+*4. Copy files to Glassfish*
+  * Make sure that you have the variable AS_HOME set.
+  * From (ergo_source_dir)/ErgoRR-web-war directory run the command
+{{{
+ant glassfish-install
+}}}
 
 
-*5. Add Postgres connection datasource to Glassfish *
-  * In the administration portal, from the left menu, click through _Resources_ > _JDBC_ > _Connection Pools_ and click _New_ to create a new pool with the following values.
-    * Name: postgresPool
-    * Resource Type: javax.sql.DataSource
-    * Database Vendor: PostgreSQL
-  * Click _Next_ to continue. In the following page scroll down and set your database properties (URL, user, password, ...). And click _Finish_.
-  * Now that we have a connection pool, we need to create the data source.
-  * From the left menu click through _Resources_ > _JDBC_ > _JDBC Resources_ and click _New_ to add a new resource with the following values:
-    * JNDI Name: jdbc/ergorr
-    * Pool Name: postgresPool (the one which you created)
-  * And click _OK_ to finish.
+*5. Configure Database *
+  * Edit the file (ergo_source_dir)/ErgoRR-web-war/setup/sun-resources.xml to match your postgres setup.
 
 
 *6. Add Glassfish to Netbeans* 
@@ -80,6 +72,10 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
   * Now you can set the project to run on your Glassfish installation.
     * Right click on the project _ErgoRR-web-war_ to select _Properties_.
     * In the properties window select _Run_ from the left menu and select the server you have just configured in the _Server_ property field.
+
+*7. Deploy*
+
+  * Right click on the project _ErgoRR-web-war_, choose "Undeploy and Deploy".
 
 == Tomcat specific ==
 
