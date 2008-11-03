@@ -19,7 +19,7 @@
 <!-- 
 This file is used by Tomcat for database connection DataSource configuration.
 Set the proper attributes and put this file in:
-<tomcat_dir>/conf/Catalina/localhost
+<tomcat_dir>/conf/Catalina/localhost/
 
 Note: The file name should be the same name as the web application .war file.
       E.g. If the web application is called ErgoRR-web-war.war then 
