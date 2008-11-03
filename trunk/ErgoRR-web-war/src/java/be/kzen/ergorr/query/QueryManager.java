@@ -48,13 +48,13 @@ public class QueryManager {
         GetRecordsResponseType response = new GetRecordsResponseType();
 
         try {
-            QueryBuilder queryBuilder = new QueryBuilder(requestContext);
+            QueryBuilderImpl queryBuilder = new QueryBuilderImpl(requestContext);
             String sql = queryBuilder.build();
+            requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
+            requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
 
             SqlPersistence service = new SqlPersistence(requestContext);
             long recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
-            service.addRequestProperty(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
-            service.addRequestProperty(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
             List<JAXBElement<? extends IdentifiableType>> idents = 
                     service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
 
