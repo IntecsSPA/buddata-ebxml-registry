@@ -83,15 +83,27 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 
 == Tomcat specific ==
 
-*4. Copy libraries to Tomcat*
-  * Make sure that you have the environment variable CATALINA_HOME (which is the Tomcat installation directory).
-  * Copy the following files to CATALINA_HOME/common/lib
-    * (ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar
+*4. Install files to Tomcat*
+  * Make sure that you have the variable CATALINA_HOME set.
+  * From (ergo_source_dir)/ErgoRR-web-war directory run the command
+{{{
+ant tomcat-install
+}}}
 
-*5. Add Postgres connection datasource to Tomcat *
+This will copy the following files:
 
-  * Copy the file (ergo_source_dir)/ErgoRR-web-war/conf/ErgoRR-web-war.xml to CATALINA_HOME/conf/Catalina/localhost
+(ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar to CATALINA_HOME/common/lib
 
-*6. Deploy *
+(ergo_source_dir)/ErgoRR-shared/metro1_2/webservices-api.jar to CATALINA_HOME/common/endorsed
+
+(ergo_source_dir)/ErgoRR-web-war/conf/ErgoRR-web-war.xml to CATALINA_HOME/conf/Catalina/localhost
+
+*6. Configure Database *
+
+Edit the file CATALINA_HOME/conf/Catalina/localhost/ErgoRR-web-war.xml to match to your postgres setup.
+
+Note: If you edit the name of the deployment file ErgoRR-web-war.war then you have to set the same name for the ErgoRR-web-war.xml.
+
+*7. Deploy *
 
   * Build the ErgoRR-web-war project and copy the dist/ErgoRR-web-war.war to Tomcat webapp directory.
