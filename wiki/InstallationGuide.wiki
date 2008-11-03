@@ -2,11 +2,11 @@
 ==Requirements==
 
   * JDK 1.6
-  * Glassfish 2.2
+  * Glassfish 2.2 or Tomcat 5.5.x
   * Postgres 8.2+
   * Postgis 1.3+
 
-I would recommend installing the JDK and Glassfish manually.
+I would recommend installing the JDK and Glassfish or Tomcat manually.
 If you are running Ubuntu 8.04 then these versions of Postgres and Postgis are very easy to install. 
 {{{
 sudo apt-get install postgres postgis
@@ -18,6 +18,23 @@ sudo apt-get install postgres postgis
 *1. Make sure that the required software is installed properly*
 
 *2. Checkout the source from google code and put it all under one directory.*
+
+The netbeans projects are:
+
+  *ErgoRR-client < client API through SOAP interface
+
+  *ErgoRR-backend-client < client API connecting directly to backend
+
+  *ErgoRR-commons < common classes
+
+  *ErgoRR-jaxb < JAXB bindings
+
+  *ErgoRR-persistence < persistence layer
+
+  *ErgoRR-web-war < web application
+
+  *There is another folder "ErgoRR-shared": these are just libraries.
+
 
 *3. Create database and add spatial functionality*
   * In Postgres, create the database with the name "ergorr".
@@ -36,9 +53,10 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 }}}
   * Run the database script (ergo_source_dir)/ErgoRR-persistence/conf/database.sql
 
+== Glassfish specific ==
 
 *4. Copy libraries to Glassfish*
-  * Make sure that you have the environment varial AS_HOME (which is the Glassfish installation directory).
+  * Make sure that you have the environment variable AS_HOME (which is the Glassfish installation directory).
   * Copy the following files to AS_HOME/lib
     * (ergo_source_dir)/ErgoRR-shared/postgis/postgis_1.3.3.jar
     * (ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar
@@ -57,30 +75,23 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
   * And click _OK_ to finish.
 
 
-*6. Open the 7 netbeans projects.*
-  *ErgoRR-client < client API through SOAP interface
-
-  *ErgoRR-backend-client < client API connecting directly to backend
-
-  *ErgoRR-commons < common classes
-
-  *ErgoRR-enterprise < bundles the web application in an EAR
-
-  *ErgoRR-jaxb < JAXB bindings
-
-  *ErgoRR-persistence < persistence layer
-
-  *ErgoRR-web-war < web application
-
-  *There is another folder "ErgoRR-shared": these are just libraries.
-
-*7. Add Glassfish to Netbeans* 
+*6. Add Glassfish to Netbeans* 
   * This can be done from the top menu _Tools_ > _Servers_.
   * Now you can set the project to run on your Glassfish installation.
     * Right click on the project _ErgoRR-enterprice_ to select _Properties_.
     * In the properties window select _Run_ from the left menu and select the server you have just configured in the _Server_ property field.
 
-*8. You are done. Run the ErgoRR-enterprise project and hope for the best.
+== Tomcat specific ==
 
+*4. Copy libraries to Tomcat*
+  * Make sure that you have the environment variable CATALINA_HOME (which is the Tomcat installation directory).
+  * Copy the following files to CATALINA_HOME/common/lib
+    * (ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar
 
-*Note: The installation process will be simplified in the future :) *
+*5. Add Postgres connection datasource to Tomcat *
+
+  * Copy the file (ergo_source_dir)/ErgoRR-web-war/conf/ErgoRR-web-war.xml to CATALINA_HOME/conf/Catalina/localhost
+
+*6. Deploy *
+
+  * Build the ErgoRR-web-war project and copy the dist/ErgoRR-web-war.war to Tomcat webapp directory.
