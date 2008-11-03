@@ -98,12 +98,12 @@ This will copy the following files:
 
 (ergo_source_dir)/ErgoRR-web-war/conf/ErgoRR-web-war.xml to CATALINA_HOME/conf/Catalina/localhost
 
-*6. Configure Database *
+*5. Configure Database *
 
 Edit the file CATALINA_HOME/conf/Catalina/localhost/ErgoRR-web-war.xml to match to your postgres setup.
 
 Note: If you edit the name of the deployment file ErgoRR-web-war.war then you have to set the same name for the ErgoRR-web-war.xml.
 
-*7. Deploy *
+*6. Deploy *
 
   * Build the ErgoRR-web-war project and copy the dist/ErgoRR-web-war.war to Tomcat webapp directory.
