@@ -33,7 +33,7 @@ The netbeans projects are:
 
   * ErgoRR-web-war < web application
 
-  * There is another folder "ErgoRR-shared": these are just libraries.
+  * There is another folder: "ErgoRR-shared" which contains shared libraries.
 
 
 *3. Create database and add spatial functionality*
