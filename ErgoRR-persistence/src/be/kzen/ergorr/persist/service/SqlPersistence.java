@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBElement;
 
@@ -40,10 +40,6 @@ public class SqlPersistence {
 
     public SqlPersistence(RequestContext requestContext) {
         this.requestContext = requestContext;
-    }
-
-    public void addRequestProperty(int key, Object value) {
-        requestContext.putParam(key, value);
     }
 
     public <T extends IdentifiableType> List<JAXBElement<? extends IdentifiableType>> query(String query, List<Object> parameters, Class<T> clazz) throws SQLException {
@@ -75,14 +71,15 @@ public class SqlPersistence {
         try {
             conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
+            
             for (int i = 0; i < parameters.size(); i++) {
-
                 if (logger.isLoggable(Level.FINE)) {
                     logger.fine("Query parameter " + i + ": " + parameters.get(i).toString());
                 }
 
                 stmt.setObject(i + 1, parameters.get(i));
             }
+            
             long startTime = System.currentTimeMillis();
             result = stmt.executeQuery();
             if (logger.isLoggable(Level.FINE)) {
@@ -318,7 +315,7 @@ public class SqlPersistence {
         }
         DataSource ds = null;
         try {
-            ds = (DataSource) new InitialContext().lookup("jdbc/ergorr");
+            ds = (DataSource) new InitialContext().lookup(CommonProperties.getInstance().get("db.datasource"));
         } catch (Exception ex) {
             //logger.log(Level.SEVERE, "Could not get database DateSource", ex);
         }
@@ -338,7 +335,7 @@ public class SqlPersistence {
                     Class.forName("org.postgresql.Driver");
                     return DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
                 } else {
-                    throw new SQLException("DbConnectionParams not set");
+                    throw new SQLException("No DataSource found and DbConnectionParams not set");
                 }
             } catch (ClassNotFoundException ex) {
                 throw new SQLException(ex);
