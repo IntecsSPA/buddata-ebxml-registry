@@ -78,7 +78,7 @@ psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 *6. Add Glassfish to Netbeans* 
   * This can be done from the top menu _Tools_ > _Servers_.
   * Now you can set the project to run on your Glassfish installation.
-    * Right click on the project _ErgoRR-enterprice_ to select _Properties_.
+    * Right click on the project _ErgoRR-web-war_ to select _Properties_.
     * In the properties window select _Run_ from the left menu and select the server you have just configured in the _Server_ property field.
 
 == Tomcat specific ==
