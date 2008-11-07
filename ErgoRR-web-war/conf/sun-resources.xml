@@ -31,8 +31,13 @@
           validate-atmost-once-period-in-seconds="0" 
           validation-table-name="extrinsicobject" 
           wrap-jdbc-objects="false">
-        <property name="URL" value="jdbc:postgresql://localhost:5432/ergorr"/>
+        <property name="DatabaseName" value="ergorr"/>
+        <property name="ServerName" value="localhost"/>
+        <property name="PortNumber" value="5432"/>
         <property name="User" value="postgres"/>
         <property name="Password" value="test"/>
+        <property name="Ssl" value="false"/>
+        <property name="LoginTimeout" value="0"/>
+        <property name="PrepareThreshold" value="0"/>
     </jdbc-connection-pool>
 </resources>
