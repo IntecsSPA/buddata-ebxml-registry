@@ -22,7 +22,7 @@ import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.ValueListType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.AnyValueType;
@@ -73,8 +73,8 @@ public class RIMUtil {
      * @param values Values of slot.
      * @return Slot with one value.
      */
-    public static SlotType1 createSlot(String slotName, String slotType, String value) {
-        SlotType1 slot = new SlotType1();
+    public static SlotType createSlot(String slotName, String slotType, String value) {
+        SlotType slot = new SlotType();
         slot.setName(slotName);
         slot.setSlotType(slotType);
 
@@ -92,8 +92,8 @@ public class RIMUtil {
      * @param values Values of slot.
      * @return Slot with one value.
      */
-    public static SlotType1 createSlot(String slotName, String slotType, List<String> values) {
-        SlotType1 slot = new SlotType1();
+    public static SlotType createSlot(String slotName, String slotType, List<String> values) {
+        SlotType slot = new SlotType();
         slot.setName(slotName);
         slot.setSlotType(slotType);
 
@@ -114,8 +114,8 @@ public class RIMUtil {
      * @param values Values of slot.
      * @return Slot with one value.
      */
-    public static SlotType1 createDateSlots(String slotName, String slotType, List<XMLGregorianCalendar> values) {
-        SlotType1 slot = new SlotType1();
+    public static SlotType createDateSlots(String slotName, String slotType, List<XMLGregorianCalendar> values) {
+        SlotType slot = new SlotType();
         slot.setName(slotName);
         slot.setSlotType(slotType);
 
@@ -130,8 +130,8 @@ public class RIMUtil {
         return slot;
     }
     
-    public static SlotType1 createWrsSlot(String slotName, String slotType, Object o) {
-        SlotType1 slot = new SlotType1();
+    public static SlotType createWrsSlot(String slotName, String slotType, Object o) {
+        SlotType slot = new SlotType();
         slot.setName(slotName);
         slot.setSlotType(slotType);
         
