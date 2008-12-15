@@ -136,9 +136,4 @@ public class EOPConstants {
     public static final String T_DATETIME = "dateTime";
     public static final String T_INT = "int";
     public static final String T_DOUBLE = "double";
-    // ============================
-    // Output schema
-    // ============================
-    public static final String OUT_SCHEMA_RIM = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
-    public static final String OUT_SCHEMA_CSW = "http://www.opengis.net/cat/csw/2.0.2";
 }

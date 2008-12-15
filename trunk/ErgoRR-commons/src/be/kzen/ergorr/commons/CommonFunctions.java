@@ -18,6 +18,9 @@
  */
 package be.kzen.ergorr.commons;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Common functions used across the application.
  * 
@@ -36,7 +39,7 @@ public class CommonFunctions {
         int idx = obj.indexOf(":");
         return (idx > 0) ? obj.substring(idx + 1) : obj;
     }
-    
+
     /**
      * Get the XML element name from a XML complexType name.
      * E.g: If <code>typeName</code> is "ExtrinsicObjectType" then
@@ -47,6 +50,22 @@ public class CommonFunctions {
      * @return Element name.
      */
     public static String getElementName(String typeName) {
-        return typeName.substring(0, typeName.length() - 4);
+        if (typeName.length() > 4 && typeName.toLowerCase().endsWith("type")) {
+            return typeName.substring(0, typeName.length() - 4);
+        } else {
+            return typeName;
+        }
+    }
+
+    public static String listToString(Collection<String> col) {
+        Iterator<String> items = col.iterator();
+        StringBuilder sb = new StringBuilder();
+
+        while (items.hasNext()) {
+            sb.append(items.next().trim()).append(" ");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString();
     }
 }
