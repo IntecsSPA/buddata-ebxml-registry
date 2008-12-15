@@ -22,7 +22,7 @@ import be.kzen.ergorr.service.translator.*;
 import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
 import be.kzen.ergorr.model.eo.sar.AcquisitionType;
 import be.kzen.ergorr.model.eo.sar.EarthObservationType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.commons.EOPConstants;
 import be.kzen.ergorr.commons.RIMUtil;
@@ -59,37 +59,37 @@ public class SARTranslator extends HMATranslator implements Translator {
                     AcquisitionType acq = (AcquisitionType) eoEquip.getAcquisitionParameters().getAcquisition().getValue();
                     
                     if (acq.isSetPolarisationMode()) {
-                        SlotType1 slotPolMode = RIMUtil.createSlot(EOPConstants.S_POLARISATION_MODE, EOPConstants.T_STRING, acq.getPolarisationMode().value());
+                        SlotType slotPolMode = RIMUtil.createSlot(EOPConstants.S_POLARISATION_MODE, EOPConstants.T_STRING, acq.getPolarisationMode().value());
                         e.getSlot().add(slotPolMode);
                     }
                     
                     if (acq.isSetPolarisationChannels()) {
-                        SlotType1 slotPolChannel = RIMUtil.createSlot(EOPConstants.S_POLARISATION_CHANNEL, EOPConstants.T_STRING, acq.getPolarisationChannels().value());
+                        SlotType slotPolChannel = RIMUtil.createSlot(EOPConstants.S_POLARISATION_CHANNEL, EOPConstants.T_STRING, acq.getPolarisationChannels().value());
                         e.getSlot().add(slotPolChannel);
                     }
                     
                     if (acq.isSetAntennaLookDirection()) {
-                        SlotType1 slotAntDirection = RIMUtil.createSlot(EOPConstants.S_ANTENNA_LOOK_DIRECTION, EOPConstants.T_STRING, acq.getAntennaLookDirection());
+                        SlotType slotAntDirection = RIMUtil.createSlot(EOPConstants.S_ANTENNA_LOOK_DIRECTION, EOPConstants.T_STRING, acq.getAntennaLookDirection());
                         e.getSlot().add(slotAntDirection);
                     }
                     
                     if (acq.isSetMinimumIncidenceAngle()) {
-                        SlotType1 slotMinIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MINIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, acq.getMinimumIncidenceAngle().getValue());
+                        SlotType slotMinIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MINIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, acq.getMinimumIncidenceAngle().getValue());
                         e.getSlot().add(slotMinIncAngle);
                     }
                     
                     if (acq.isSetMaximumIncidenceAngle()) {
-                        SlotType1 slotMaxIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MAXIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, acq.getMaximumIncidenceAngle().getValue());
+                        SlotType slotMaxIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MAXIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, acq.getMaximumIncidenceAngle().getValue());
                         e.getSlot().add(slotMaxIncAngle);
                     }
                     
                     if (acq.isSetDopplerFrequency()) {
-                        SlotType1 slotDopperFreq = RIMUtil.createWrsSlot(EOPConstants.S_DOPPER_FREQUENCY, EOPConstants.T_DOUBLE, acq.getDopplerFrequency().getValue());
+                        SlotType slotDopperFreq = RIMUtil.createWrsSlot(EOPConstants.S_DOPPER_FREQUENCY, EOPConstants.T_DOUBLE, acq.getDopplerFrequency().getValue());
                         e.getSlot().add(slotDopperFreq);
                     }
                     
                     if (acq.isSetIncidenceAngleVariation()) {
-                        SlotType1 slotIncAngleVar = RIMUtil.createWrsSlot(EOPConstants.S_INCIDENCE_ANGLE_VARIATION, EOPConstants.T_DOUBLE, acq.getIncidenceAngleVariation().getValue());
+                        SlotType slotIncAngleVar = RIMUtil.createWrsSlot(EOPConstants.S_INCIDENCE_ANGLE_VARIATION, EOPConstants.T_DOUBLE, acq.getIncidenceAngleVariation().getValue());
                         e.getSlot().add(slotIncAngleVar);
                     }
                 }

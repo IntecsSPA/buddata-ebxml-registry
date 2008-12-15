@@ -31,12 +31,15 @@ import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.service.SqlPersistence;
+import be.kzen.ergorr.query.QueryManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -45,13 +48,20 @@ import javax.xml.bind.JAXBElement;
  * @author Yaman Ustuntas
  */
 public class LCManager {
-    
+
+    private static Logger logger = Logger.getLogger(LCManager.class.getName());
     private RequestContext requestContext;
 
     public LCManager(RequestContext requestContext) {
         this.requestContext = requestContext;
     }
 
+    /**
+     * Submit object list to the registry.
+     * 
+     * @param regObjList List to submit.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     public void submit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
@@ -68,7 +78,7 @@ public class LCManager {
                 }
             }
 
-            for (SlotType1 s : ident.getSlot()) {
+            for (SlotType s : ident.getSlot()) {
                 try {
                     // check if all slot name/type pairs are unique.
                     InternalSlotTypes.getInstance().putSlotType(s.getName(), s.getSlotType());
@@ -87,12 +97,96 @@ public class LCManager {
         }
     }
 
-    private void validate(List<IdentifiableType> idents) {
+    public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+        List<String> ids = new ArrayList<String>();
+        List<JAXBElement<? extends IdentifiableType>> updateIdentEls = regObjList.getIdentifiable();
+        RegistryObjectListType newObjList = new RegistryObjectListType();
+
+        for (JAXBElement<? extends IdentifiableType> identEl : updateIdentEls) {
+            ids.add(identEl.getValue().getId());
+        }
+
+        SqlPersistence persist = new SqlPersistence(requestContext);
+        try {
+            List<JAXBElement<? extends IdentifiableType>> existingIdentEls = persist.getByIds(ids);
+
+            for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
+                boolean exists = false;
+
+                for (JAXBElement<? extends IdentifiableType> existingIdentEl : existingIdentEls) {
+                    if (existingIdentEl.getValue().getId().equals(identEl.getValue().getId())) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists) {
+                }
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.WARNING, "Could not fetch object to update by ID");
+            throw new ServiceExceptionReport(ex.getMessage(), ex);
+        }
+
+
+    // check if exists
+    }
+
+    public void delete(RegistryObjectListType regObjList) {
+    }
+
+    /**
+     * Validate that all the references in the identifiables are valid.
+     * 
+     * @param idents Identifiables to validate.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
+    private void validate(List<IdentifiableType> idents) throws ServiceExceptionReport {
 
         for (IdentifiableType ident : idents) {
             if (ident instanceof RegistryObjectType) {
+                String objectType = ((RegistryObjectType) ident).getObjectType();
+
+                if (!findIdentifiableWithId(objectType, idents)) {
+                    throw new ServiceExceptionReport("Could not find objectType '" + objectType + "'");
+                }
             }
         }
+    }
+
+    /**
+     * Find an identifiable with <code>id</code> in the submitted
+     * identifiables <code>idents</code> or in objects in the registry.
+     * 
+     * @param id ID to find.
+     * @param idents Submitted identifiables
+     * @return True if identifiable with <code>id</code> exists.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
+    private boolean findIdentifiableWithId(String id, List<IdentifiableType> idents) throws ServiceExceptionReport {
+        boolean found = false;
+
+        for (IdentifiableType ident : idents) {
+            if (ident.getId().equals(id)) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            SqlPersistence service = new SqlPersistence(requestContext);
+            List<String> ids = new ArrayList<String>();
+
+            try {
+                List<JAXBElement<? extends IdentifiableType>> identEls = service.getByIds(ids);
+                found = identEls.size() > 0;
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
+                throw new ServiceExceptionReport("Error searching for IDs", ex);
+            }
+        }
+
+        return found;
     }
 
     /**

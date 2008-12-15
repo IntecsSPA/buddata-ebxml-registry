@@ -8,20 +8,26 @@
     <import file="nbproject/build-impl.xml"/>
     <target name="-post-compile">
         <copy file="conf/Capabilities.xml" todir="build/web/WEB-INF/classes/be/kzen/ergorr/interfaces/soap"/>
+        <copy file="conf/rim.xsd" todir="build/web/WEB-INF/classes/be/kzen/ergorr/interfaces/soap"/>
+        <copy file="conf/logging.properties" todir="build/web/WEB-INF/classes"/>
     </target>
-    
     <target name="tomcat-setup">
         <property environment="env"/>
         <copy file="../ErgoRR-shared/metro1_2/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
         <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
         <copy file="conf/ErgoRR-web-war.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/>
     </target>
-    
     <target name="glassfish-setup">
         <property environment="env"/>
         <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/lib"/>
         <mkdir dir="setup"/>
         <copy file="conf/sun-resources.xml" todir="setup"/>
+    </target>
+    <target name="deploy-tomcat" depends="dist">
+        <delete file="/home/yaman/dev/tomcat/webapps/ergorr.war"/>
+        <sleep seconds="10"/>
+        <copy file="conf/ergorr.xml" todir="/home/yaman/dev/tomcat/conf/Catalina/localhost"/>
+        <copy file="dist/ergorr.war" todir="/home/yaman/dev/tomcat/webapps"/>
     </target>
 
     

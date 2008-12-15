@@ -2,7 +2,7 @@ package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.CommonProperties;
-import be.kzen.ergorr.commons.EOPConstants;
+import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
@@ -30,7 +30,7 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
     @Override
     public RegistryPackageType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new RegistryPackageType();
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
                 IdentifiableTypeDAO identDAO = new IdentifiableTypeDAO();
                 identDAO.setConnection(connection);
                 IdentifiableType ident = identDAO.newXmlObject(result);
-                QName qName = new QName(EOPConstants.OUT_SCHEMA_RIM, CommonFunctions.getElementName(ident.getClass().getSimpleName()));
+                QName qName = new QName(NamespaceConstants.RIM, CommonFunctions.getElementName(ident.getClass().getSimpleName()));
                 regObjList.getIdentifiable().add(new JAXBElement(qName, ident.getClass(), ident));
             }
         }

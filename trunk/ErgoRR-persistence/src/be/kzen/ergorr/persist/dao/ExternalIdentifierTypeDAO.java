@@ -1,4 +1,3 @@
-
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
@@ -17,17 +16,17 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
 
     public ExternalIdentifierTypeDAO() {
     }
-    
+
     public ExternalIdentifierTypeDAO(ExternalIdentifierType eiXml) {
         super(eiXml);
     }
-    
+
     public void addExternalIdentifiers(RegistryObjectType parent) throws SQLException {
         Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(getParamList()).append(" from ").append(getTableName()).append(" where registryobject = '").append(parent.getId()).append("'");
         ResultSet result = stmt.executeQuery(sql.toString());
-        
+
         while (result.next()) {
             parent.getExternalIdentifier().add(newXmlObject(result));
         }
@@ -36,20 +35,20 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
     @Override
     public ExternalIdentifierType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ExternalIdentifierType();
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
-    
+
     @Override
     protected ExternalIdentifierType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        
-        xmlObject.setRegistryObject(result.getString("registryobject"));
-        xmlObject.setIdentificationScheme(result.getString("identificationscheme"));
-        xmlObject.setValue(result.getString("value_"));
-        
+        if (!isBrief()) {
+            xmlObject.setRegistryObject(result.getString("registryobject"));
+            xmlObject.setIdentificationScheme(result.getString("identificationscheme"));
+            xmlObject.setValue(result.getString("value_"));
+        }
         return xmlObject;
     }
-    
+
     @Override
     protected String createValues() {
         StringBuilder vals = new StringBuilder();
@@ -61,32 +60,31 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         appendStringValue(xmlObject.getIdentificationScheme(), vals);
         vals.append(",");
         appendStringValue(xmlObject.getValue(), vals);
-        
+
         return vals.toString();
     }
-    
+
     @Override
     protected String getParamList() {
         return super.getParamList() + ",registryobject,identificationscheme,value_";
     }
-    
+
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.isEmpty()) {
-            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".registryobject,").append(alias).append(".identificationscheme,")
-                    .append(alias).append(".value_").toString();
+            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".registryobject,").append(alias).append(".identificationscheme,").append(alias).append(".value_").toString();
         } else {
             return getParamList();
         }
     }
-    
+
     @Override
     public String getTableName() {
         return "externalidentifier";
     }
-    
+
     @Override
     public JAXBElement<ExternalIdentifierType> createJAXBElement() {
-            return OFactory.rim.createExternalIdentifier(xmlObject);
+        return OFactory.rim.createExternalIdentifier(xmlObject);
     }
 }

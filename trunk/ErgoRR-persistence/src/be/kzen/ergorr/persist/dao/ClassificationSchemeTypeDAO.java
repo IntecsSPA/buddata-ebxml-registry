@@ -1,4 +1,3 @@
-
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.commons.CommonProperties;
@@ -15,10 +14,12 @@ import javax.xml.bind.JAXBElement;
  * @author Yaman Ustuntas
  */
 public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<ClassificationSchemeType> {
+
     private static Logger logger = Logger.getLogger(ClassificationSchemeTypeDAO.class.getName());
+
     public ClassificationSchemeTypeDAO() {
     }
-    
+
     public ClassificationSchemeTypeDAO(ClassificationSchemeType csXml) {
         super(csXml);
     }
@@ -26,14 +27,16 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     @Override
     public ClassificationSchemeType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationSchemeType();
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
     protected ClassificationSchemeType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        xmlObject.setIsInternal(result.getBoolean("isinternal"));
-        xmlObject.setNodeType(result.getString("nodetype"));
+        if (!isBrief()) {
+            xmlObject.setIsInternal(result.getBoolean("isinternal"));
+            xmlObject.setNodeType(result.getString("nodetype"));
+        }
         return xmlObject;
     }
 
@@ -56,8 +59,7 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.isEmpty()) {
-            return new StringBuilder(super.getQueryParamList()).append(",").append(alias)
-                    .append(".isinternal,").append(alias).append(".nodetype,").toString();
+            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".isinternal,").append(alias).append(".nodetype,").toString();
         } else {
             return getParamList();
         }
@@ -66,7 +68,7 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
-        
+
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("loading child classificationnodes");
         }
@@ -85,9 +87,9 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     public String getTableName() {
         return "classificationscheme";
     }
-    
+
     @Override
     public JAXBElement<ClassificationSchemeType> createJAXBElement() {
-            return OFactory.rim.createClassificationScheme(xmlObject);
+        return OFactory.rim.createClassificationScheme(xmlObject);
     }
 }

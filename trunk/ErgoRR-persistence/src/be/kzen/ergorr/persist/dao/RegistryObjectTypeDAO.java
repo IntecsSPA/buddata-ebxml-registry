@@ -13,7 +13,7 @@ import javax.xml.bind.JAXBElement;
  * @author Yaman Ustuntas
  */
 public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends IdentifiableTypeDAO<T> {
-    
+
     public RegistryObjectTypeDAO() {
     }
 
@@ -23,11 +23,6 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
 
     public RegistryObjectTypeDAO(T roXml) {
         super(roXml);
-    }
-
-    @Override
-    public T newXmlObject(ResultSet result) throws SQLException {
-        return super.newXmlObject(result);
     }
 
     @Override
@@ -61,6 +56,28 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     }
 
     @Override
+    protected String createUpdateValues() {
+        StringBuilder vals = new StringBuilder(super.createUpdateValues());
+        vals.append(",lid=");
+        appendStringValue(xmlObject.getLid(), vals);
+        vals.append(",objecttype=");
+        appendStringValue(xmlObject.getObjectType(), vals);
+        vals.append(",status=");
+        appendStringValue(xmlObject.getStatus(), vals);
+        vals.append(",versionname=");
+
+        if (xmlObject.isSetVersionInfo()) {
+            appendStringValue(xmlObject.getVersionInfo().getVersionName(), vals);
+            vals.append(",versioncomment=");
+            appendStringValue(xmlObject.getVersionInfo().getComment(), vals);
+        } else {
+            vals.append("null,versioncomment=null");
+        }
+        
+        return vals.toString();
+    }
+
+    @Override
     protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
         super.insertRelatedObjects(batchStmt);
 
@@ -79,14 +96,7 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        boolean brief = false;
-
-        if (context != null) {
-            ElementSetType elSet = context.getParam(InternalConstants.ELEMENT_SET, ElementSetType.class);
-            brief = (elSet == ElementSetType.BRIEF);
-        }
-
-        if (!brief) {
+        if (!isBrief()) {
             LocalizedStringNameDAO nameDAO = new LocalizedStringNameDAO();
             nameDAO.setConnection(connection);
             nameDAO.addComposedObjects(xmlObject);
@@ -95,13 +105,15 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
             descDAO.setConnection(connection);
             descDAO.addComposedObjects(xmlObject);
 
-            ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
-            clDAO.setConnection(connection);
-            clDAO.addClassifications(xmlObject);
+            if (!isSummary()) {
+                ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
+                clDAO.setConnection(connection);
+                clDAO.addClassifications(xmlObject);
 
-            ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
-            eiDAO.setConnection(connection);
-            eiDAO.addExternalIdentifiers(xmlObject);
+                ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
+                eiDAO.setConnection(connection);
+                eiDAO.addExternalIdentifiers(xmlObject);
+            }
         }
     }
 

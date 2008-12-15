@@ -43,7 +43,7 @@ public class QueryObject {
         this.sqlAlias = sqlAlias;
 
         try {
-            objClass = OFactory.getRimClassByElementName(objectName);
+            objClass = OFactory.getXmlClassByElementName(objectName);
         } catch (ClassNotFoundException ex) {
             throw new QueryException("Could not find object: " + objectName, ex);
         }
@@ -55,6 +55,10 @@ public class QueryObject {
 
     public String getTableName() {
         return objectName.toLowerCase();
+    }
+
+    public String getObjectName() {
+        return objectName;
     }
 
     public String getSqlAlias() {

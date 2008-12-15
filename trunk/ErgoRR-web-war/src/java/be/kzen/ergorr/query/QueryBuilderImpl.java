@@ -23,7 +23,7 @@ import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.geometry.GeometryTranslator;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.exceptions.TransformException;
-import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.QueryType;
 import be.kzen.ergorr.model.gml.EnvelopeType;
@@ -57,6 +57,7 @@ import javax.xml.namespace.QName;
 
 /**
  * Build an SQL/HQL query string from a given OGC Query XML element.
+ * To be replaced by implementation with SQL JOINS.
  * 
  * @author Yaman Ustuntas
  */
@@ -68,6 +69,7 @@ public class QueryBuilderImpl implements QueryBuilder {
     private QueryType queryType;
     private Map<String, QueryObject> queryObjectTypes;
     private QueryObject returnObjectType;
+    private ElementSetType resultSet;
     // stores Geometry and Date objects to be passed as parameters to the SQL query.
     private List<Object> queryParams;
     private int queryObjectIdx;
@@ -90,8 +92,8 @@ public class QueryBuilderImpl implements QueryBuilder {
      * @param requestContext Request context.
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
-    public QueryBuilderImpl(RequestContext requestContext) throws QueryException {
-        request = (GetRecordsType) requestContext.getRequest();
+    public QueryBuilderImpl(GetRecordsType request) throws QueryException {
+        this.request = request;
         queryType = (QueryType) request.getAbstractQuery().getValue();
         sql = new StringBuilder(512);
         queryObjectTypes = new HashMap<String, QueryObject>();
@@ -129,6 +131,10 @@ public class QueryBuilderImpl implements QueryBuilder {
     public int getMaxResults() {
         return maxResults;
     }
+    
+    public ElementSetType getResultSet() {
+        return resultSet;
+    }
 
     /**
      * Get the object to be returned in the query result.
@@ -162,6 +168,9 @@ public class QueryBuilderImpl implements QueryBuilder {
         }
         if (request.isSetStartPosition()) {
             startPosition = request.getStartPosition().intValue();
+        }
+        if (queryType.getElementSetName().isSetValue()) {
+            resultSet = queryType.getElementSetName().getValue();
         }
 
         // get returned objects

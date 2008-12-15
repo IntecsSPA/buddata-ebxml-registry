@@ -7,7 +7,7 @@ import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.exceptions.TransformException;
 import be.kzen.ergorr.model.gml.AbstractGeometryType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.ValueListType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.AnyValueType;
@@ -28,7 +28,7 @@ import org.postgis.binary.BinaryWriter;
  *
  * @author Yaman Ustuntas
  */
-public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType1, IdentifiableType> {
+public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, IdentifiableType> {
 
     private static Logger logger = Logger.getLogger(SlotTypeDAO.class.getName());
 
@@ -83,51 +83,14 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType1, Identifiabl
         }
     }
 
-    /**
-     * Helper class to store slot values
-     */
-    private class SlotValues {
+    @Override
+    protected String createUpdateValues() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-        public String seq = "";
-        public String parent = "";
-        public String slotName = "";
-        public String slotType = null;
-        public String specType = InternalConstants.SPEC_TYPE_RIM;
-        public String stringValue = null;
-        public String boolValue = "null";
-        public String dateTimeValue = "null";
-        public String doubleValue = "null";
-        public String intValue = "null";
-        public String geometryValue = "null";
-
-        public SlotValues(String parent, String slotName, String slotType) {
-            this.parent = parent;
-            this.slotName = slotName;
-            this.slotType = (slotType != null) ? slotType : null;
-        }
-
-        public String getValues() {
-            StringBuilder sql = new StringBuilder();
-            sql.append(seq).append(",");
-            appendStringValue(parent, sql);
-            sql.append(",");
-            appendStringValue(slotName, sql);
-            sql.append(",");
-            appendStringValue(slotType, sql);
-            sql.append(",");
-            appendStringValue(specType, sql);
-            sql.append(",");
-            appendStringValue(stringValue, sql);
-            sql.append(",");
-            // TODO: check if boolean is handled correctly
-            sql.append(boolValue).append(",");
-            sql.append((dateTimeValue.equals("null") ? dateTimeValue : "'" + dateTimeValue + "'")).append(",");
-//            sql.append(dateTimeValue).append(",");
-            sql.append(doubleValue).append(",");
-            sql.append(intValue).append(",");
-            sql.append(geometryValue);
-            return sql.toString();
-        }
+    @Override
+    protected String getFetchCondition() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -146,7 +109,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType1, Identifiabl
 
     @Override
     public void addComposedObjects(IdentifiableType parent) throws SQLException {
-        Map<String, SlotType1> slotMap = new HashMap<String, SlotType1>();
+        Map<String, SlotType> slotMap = new HashMap<String, SlotType>();
         Statement stmt = connection.createStatement();
 
         StringBuilder sql = new StringBuilder(200);
@@ -157,10 +120,10 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType1, Identifiabl
         while (result.next()) {
             String name = result.getString(1);
 
-            SlotType1 slot = slotMap.get(name);
+            SlotType slot = slotMap.get(name);
 
             if (slot == null) {
-                slot = new SlotType1();
+                slot = new SlotType();
                 slot.setName(name);
                 slot.setSlotType(result.getString(2));
                 String specType = result.getString(3);
@@ -198,9 +161,9 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType1, Identifiabl
     @Override
     public void insert(IdentifiableType parent, Statement batchStmt) throws SQLException {
 
-        List<SlotType1> slots = parent.getSlot();
+        List<SlotType> slots = parent.getSlot();
 
-        for (SlotType1 slot : slots) {
+        for (SlotType slot : slots) {
             String internalSlotType = InternalSlotTypes.getInternalSlotType(slot.getSlotType());
 
             if (slot.isSetValueList()) {
@@ -288,6 +251,53 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType1, Identifiabl
                 batchStmt.addBatch(createInsertStatement());
             }
 
+        }
+    }
+
+     /**
+     * Helper class to store slot values
+     */
+    private class SlotValues {
+
+        public String seq = "";
+        public String parent = "";
+        public String slotName = "";
+        public String slotType = null;
+        public String specType = InternalConstants.SPEC_TYPE_RIM;
+        public String stringValue = null;
+        public String boolValue = "null";
+        public String dateTimeValue = "null";
+        public String doubleValue = "null";
+        public String intValue = "null";
+        public String geometryValue = "null";
+
+        public SlotValues(String parent, String slotName, String slotType) {
+            this.parent = parent;
+            this.slotName = slotName;
+            this.slotType = (slotType != null) ? slotType : null;
+        }
+
+        public String getValues() {
+            StringBuilder sql = new StringBuilder();
+            sql.append(seq).append(",");
+            appendStringValue(parent, sql);
+            sql.append(",");
+            appendStringValue(slotName, sql);
+            sql.append(",");
+            appendStringValue(slotType, sql);
+            sql.append(",");
+            appendStringValue(specType, sql);
+            sql.append(",");
+            appendStringValue(stringValue, sql);
+            sql.append(",");
+            // TODO: check if boolean is handled correctly
+            sql.append(boolValue).append(",");
+            sql.append((dateTimeValue.equals("null") ? dateTimeValue : "'" + dateTimeValue + "'")).append(",");
+//            sql.append(dateTimeValue).append(",");
+            sql.append(doubleValue).append(",");
+            sql.append(intValue).append(",");
+            sql.append(geometryValue);
+            return sql.toString();
         }
     }
 }

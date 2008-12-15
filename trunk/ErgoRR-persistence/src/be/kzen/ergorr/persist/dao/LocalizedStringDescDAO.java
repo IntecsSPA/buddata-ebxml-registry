@@ -73,4 +73,14 @@ public class LocalizedStringDescDAO extends GenericComposedObjectDAO<LocalizedSt
             parent.setDescription(desc);
         }
     }
+
+    @Override
+    protected String createUpdateValues() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected String getFetchCondition() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

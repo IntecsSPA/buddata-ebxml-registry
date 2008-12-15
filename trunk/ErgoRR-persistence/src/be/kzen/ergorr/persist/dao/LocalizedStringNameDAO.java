@@ -74,4 +74,14 @@ public class LocalizedStringNameDAO extends GenericComposedObjectDAO<LocalizedSt
             parent.setName(name);
         }
     }
+
+    @Override
+    protected String createUpdateValues() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected String getFetchCondition() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -25,7 +25,7 @@ import be.kzen.ergorr.model.eo.atm.EarthObservationType;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.service.translator.Translator;
@@ -98,27 +98,27 @@ public class ATMTranslator extends HMATranslator implements Translator {
                             }
 
                             if (layer.isSetUnit()) {
-                                SlotType1 slotUnit = RIMUtil.createSlot(EOPConstants.S_UNIT, EOPConstants.T_STRING, layer.getUnit());
+                                SlotType slotUnit = RIMUtil.createSlot(EOPConstants.S_UNIT, EOPConstants.T_STRING, layer.getUnit());
                                 e.getSlot().add(slotUnit);
                             }
 
                             if (layer.isSetHighestLocation()) {
-                                SlotType1 slotHighLoc = RIMUtil.createWrsSlot(EOPConstants.S_HIGHEST_LOCATION, EOPConstants.T_DOUBLE, layer.getHighestLocation().getValue());
+                                SlotType slotHighLoc = RIMUtil.createWrsSlot(EOPConstants.S_HIGHEST_LOCATION, EOPConstants.T_DOUBLE, layer.getHighestLocation().getValue());
                                 e.getSlot().add(slotHighLoc);
                             }
 
                             if (layer.isSetLowestLocation()) {
-                                SlotType1 slotLowLoc = RIMUtil.createWrsSlot(EOPConstants.S_LOWEST_LOCATION, EOPConstants.T_DOUBLE, layer.getLowestLocation().getValue());
+                                SlotType slotLowLoc = RIMUtil.createWrsSlot(EOPConstants.S_LOWEST_LOCATION, EOPConstants.T_DOUBLE, layer.getLowestLocation().getValue());
                                 e.getSlot().add(slotLowLoc);
                             }
 
                             if (layer.isSetAlgorithmName()) {
-                                SlotType1 slotAlgName = RIMUtil.createWrsSlot(EOPConstants.S_ALGORITHM_NAME, EOPConstants.T_STRING, layer.getAlgorithmName());
+                                SlotType slotAlgName = RIMUtil.createWrsSlot(EOPConstants.S_ALGORITHM_NAME, EOPConstants.T_STRING, layer.getAlgorithmName());
                                 e.getSlot().add(slotAlgName);
                             }
 
                             if (layer.isSetAlgorithmVersion()) {
-                                SlotType1 slotAlgVer = RIMUtil.createWrsSlot(EOPConstants.S_ALGORITHm_VERSION, EOPConstants.T_STRING, layer.getAlgorithmVersion());
+                                SlotType slotAlgVer = RIMUtil.createWrsSlot(EOPConstants.S_ALGORITHm_VERSION, EOPConstants.T_STRING, layer.getAlgorithmVersion());
                                 e.getSlot().add(slotAlgVer);
                             }
 

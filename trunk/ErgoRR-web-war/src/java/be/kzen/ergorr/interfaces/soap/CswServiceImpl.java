@@ -19,7 +19,7 @@
 package be.kzen.ergorr.interfaces.soap;
 
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.commons.InternalConstants;
+import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
 import be.kzen.ergorr.model.csw.DescribeRecordResponseType;
 import be.kzen.ergorr.model.csw.DescribeRecordType;
@@ -40,11 +40,9 @@ import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.persist.InternalSlotTypes;
-import be.kzen.ergorr.logging.LoggerSetup;
-import be.kzen.ergorr.persist.service.DbConnectionParams;
+import be.kzen.ergorr.model.csw.SchemaComponentType;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,13 +51,17 @@ import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.ws.WebServiceContext;
+import org.w3c.dom.Document;
 
 /**
  * SOAP service implementation for CSW.
  * 
  * @author Yaman Ustuntas
  */
+//@SchemaValidation
 @WebService(serviceName = "webservice", portName = "CswPort",
 targetNamespace = "http://www.kzen.be/ergorr/interfaces/soap",
 endpointInterface = "be.kzen.ergorr.interfaces.soap.CswPortType")
@@ -69,12 +71,13 @@ public class CswServiceImpl implements CswPortType {
     private InternalSlotTypes slotTypes;
     @Resource
     private WebServiceContext wsContext;
-    
+
     public CapabilitiesType cswGetCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         try {
             JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("Capabilities.xml"));
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {
+            logger.log(Level.WARNING, "Could not load Capabilities document", ex);
             throw new ServiceExceptionReport("Could not load capabilities document from file.", ex);
         }
     }
@@ -109,7 +112,7 @@ public class CswServiceImpl implements CswPortType {
         requestContext.setRequest(getRecordByIdReq);
 
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
-        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq.getId());
+        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
         response.getAny().addAll(idents);
 
         return response;
@@ -133,7 +136,22 @@ public class CswServiceImpl implements CswPortType {
     }
 
     public DescribeRecordResponseType cswDescribeRecord(DescribeRecordType describeRecordReq) throws ServiceExceptionReport {
-        throw new ServiceExceptionReport("Not supported");
+        DescribeRecordResponseType response = new DescribeRecordResponseType();
+        SchemaComponentType schemaComp = new SchemaComponentType();
+        schemaComp.setTargetNamespace(NamespaceConstants.RIM);
+        schemaComp.setSchemaLanguage(NamespaceConstants.SCHEMA);
+        
+        try {
+            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docBuilder.parse(this.getClass().getResourceAsStream("rim.xsd"));
+            schemaComp.getContent().add(doc.getDocumentElement());
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Could not load RIM schema", ex);
+            throw new ServiceExceptionReport("Could not load RIM schema", ex);
+        }
+
+        response.getSchemaComponent().add(schemaComp);
+        return response;
     }
 
     /**

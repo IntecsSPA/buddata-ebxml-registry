@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBElement;
@@ -71,15 +70,17 @@ public class SqlPersistence {
         try {
             conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
-            
-            for (int i = 0; i < parameters.size(); i++) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine("Query parameter " + i + ": " + parameters.get(i).toString());
-                }
 
-                stmt.setObject(i + 1, parameters.get(i));
+            if (parameters != null) {
+                for (int i = 0; i < parameters.size(); i++) {
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine("Query parameter " + i + ": " + parameters.get(i).toString());
+                    }
+
+                    stmt.setObject(i + 1, parameters.get(i));
+                }
             }
-            
+
             long startTime = System.currentTimeMillis();
             result = stmt.executeQuery();
             if (logger.isLoggable(Level.FINE)) {
@@ -94,11 +95,11 @@ public class SqlPersistence {
         while (result.next()) {
             try {
                 Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + clazz.getSimpleName() + "DAO");
-                IdentifiableTypeDAO identDao = (IdentifiableTypeDAO) daoClass.newInstance();
-                identDao.setConnection(conn);
-                identDao.setContext(requestContext);
-                identDao.newXmlObject(result);
-                idents.add(identDao.createJAXBElement());
+                IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance();
+                identDAO.setConnection(conn);
+                identDAO.setContext(requestContext);
+                identDAO.newXmlObject(result);
+                idents.add(identDAO.createJAXBElement());
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Could not load DAO object for query", ex);
                 closeConnection(conn);
@@ -112,7 +113,7 @@ public class SqlPersistence {
         closeConnection(conn);
         return idents;
     }
-    
+
     public long getResultCount(String query, List<Object> parameters) throws SQLException {
 
         if (logger.isLoggable(Level.FINE)) {
@@ -164,7 +165,7 @@ public class SqlPersistence {
 
             Connection conn = null;
             try {
-                String sql = "select * from identifiable where id in " + values.toString();
+                String sql = "select * from identifiable where id in " + values.toString() + " limit " + ids.size();
 
                 if (logger.isLoggable(Level.FINE)) {
                     logger.log(Level.FINE, "SQL: " + sql);
@@ -177,6 +178,7 @@ public class SqlPersistence {
                 while (results.next()) {
                     IdentifiableTypeDAO identDAO = new IdentifiableTypeDAO();
                     identDAO.setConnection(conn);
+                    identDAO.setContext(requestContext);
                     identDAO.newXmlObject(results);
                     idents.add(identDAO.createJAXBElement());
                 }
@@ -192,6 +194,14 @@ public class SqlPersistence {
     }
 
     public void insert(List<IdentifiableType> idents) throws SQLException {
+        persist(idents, false);
+    }
+
+    public void update(List<IdentifiableType> idents) throws SQLException {
+        persist(idents, true);
+    }
+
+    private void persist(List<IdentifiableType> idents, boolean newObj) throws SQLException {
         Connection conn = getConnection();
 
         try {
@@ -205,7 +215,12 @@ public class SqlPersistence {
                 Constructor constructor = daoClass.getConstructor(ident.getClass());
                 GenericObjectDAO dao = (GenericObjectDAO) constructor.newInstance(ident);
                 dao.setConnection(conn);
-                dao.insert();
+
+                if (newObj) {
+                    dao.insert();
+                } else {
+                    dao.update();
+                }
             }
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Failed to insert objects", ex);
