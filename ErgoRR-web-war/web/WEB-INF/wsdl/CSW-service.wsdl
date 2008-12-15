@@ -2,14 +2,15 @@
 <wsdl:definitions targetNamespace="http://www.kzen.be/ergorr/interfaces/soap" 
 xmlns:tns="http://www.kzen.be/ergorr/interfaces/soap"
 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
 xmlns:ows="http://www.opengis.net/ows/1.1">
     <wsdl:types>
-        <xsd:schema targetNamespace="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="2.0.2">
-            <xsd:include schemaLocation="xsd/csw/2.0.2/CSW-discovery.xsd"/>
-            <xsd:include schemaLocation="xsd/csw/2.0.2/CSW-publication.xsd"/>
-            <xsd:include schemaLocation="xsd/ows/1.1.0/owsExceptionReport.xsd"/>
+        <xsd:schema>
+            <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2" schemaLocation="xsd/csw/2.0.2/CSW-discovery.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2" schemaLocation="xsd/csw/2.0.2/CSW-publication.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/ows/1.1" schemaLocation="xsd/ows/1.1.0/owsExceptionReport.xsd"/>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="GetCapabilitiesRequest">

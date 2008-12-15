@@ -35,7 +35,7 @@
         <property name="ServerName" value="localhost"/>
         <property name="PortNumber" value="5432"/>
         <property name="User" value="postgres"/>
-        <property name="Password" value="test"/>
+        <property name="Password" value="iconos11"/>
         <property name="Ssl" value="false"/>
         <property name="LoginTimeout" value="0"/>
         <property name="PrepareThreshold" value="0"/>

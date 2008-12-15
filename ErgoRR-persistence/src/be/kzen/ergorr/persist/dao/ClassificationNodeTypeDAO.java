@@ -17,6 +17,7 @@ import javax.xml.bind.JAXBElement;
  * @author Yaman Ustuntas
  */
 public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<ClassificationNodeType> {
+
     private static Logger logger = Logger.getLogger(ClassificationNodeTypeDAO.class.getName());
 
     public ClassificationNodeTypeDAO() {
@@ -29,27 +30,41 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
     @Override
     public ClassificationNodeType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationNodeType();
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
     protected ClassificationNodeType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        xmlObject.setCode(result.getString("code"));
-        xmlObject.setParent(result.getString("parent"));
-        xmlObject.setPath(result.getString("path_"));
+
+        if (!isBrief()) {
+            xmlObject.setCode(result.getString("code"));
+            xmlObject.setParent(result.getString("parent"));
+            xmlObject.setPath(result.getString("path_"));
+        }
         return xmlObject;
     }
 
     @Override
     protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
+        StringBuilder vals = new StringBuilder(super.createValues());
         vals.append(",");
         appendStringValue(xmlObject.getCode(), vals);
         vals.append(",");
         appendStringValue(xmlObject.getParent(), vals);
         vals.append(",");
+        appendStringValue(xmlObject.getPath(), vals);
+        return vals.toString();
+    }
+
+    @Override
+    protected String createUpdateValues() {
+        StringBuilder vals = new StringBuilder(super.createUpdateValues());
+        vals.append(",code=");
+        appendStringValue(xmlObject.getCode(), vals);
+        vals.append(",parent=");
+        appendStringValue(xmlObject.getParent(), vals);
+        vals.append(",path_=");
         appendStringValue(xmlObject.getPath(), vals);
         return vals.toString();
     }
@@ -71,7 +86,7 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
-        
+
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("loading cn related");
         }
@@ -80,7 +95,7 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("CN loadNested true, parent id: " + xmlObject.getId());
             }
-            
+
             xmlObject.getClassificationNode().addAll(getAllByParent(xmlObject.getId()));
         }
     }
@@ -90,7 +105,7 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
 
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(getParamList()).append(" from ").append(getTableName()).append(" where parent ='").append(parentId).append("'");
-        
+
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("Select CN by parents SQL: " + sql.toString());
         }
@@ -112,9 +127,9 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
     public String getTableName() {
         return "classificationnode";
     }
-    
+
     @Override
     public JAXBElement<ClassificationNodeType> createJAXBElement() {
-            return OFactory.rim.createClassificationNode(xmlObject);
+        return OFactory.rim.createClassificationNode(xmlObject);
     }
 }

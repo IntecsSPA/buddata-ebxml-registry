@@ -23,7 +23,7 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
 import be.kzen.ergorr.model.eo.opt.AcquisitionType;
 import be.kzen.ergorr.model.eo.opt.EarthObservationResultType;
 import be.kzen.ergorr.model.eo.opt.EarthObservationType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.commons.EOPConstants;
 import be.kzen.ergorr.commons.RIMUtil;
@@ -62,12 +62,12 @@ public class OPTTranslator extends HMATranslator implements Translator {
                     AcquisitionType acq = (AcquisitionType) eoEquip.getAcquisitionParameters().getAcquisition().getValue();
 
                     if (acq.isSetIlluminationAzimuthAngle()) {
-                        SlotType1 slotIlluAziAngle = RIMUtil.createWrsSlot(EOPConstants.S_ILLUMINATION_AZIMUTH_ANGLE, EOPConstants.T_DOUBLE, acq.getIlluminationAzimuthAngle().getValue());
+                        SlotType slotIlluAziAngle = RIMUtil.createWrsSlot(EOPConstants.S_ILLUMINATION_AZIMUTH_ANGLE, EOPConstants.T_DOUBLE, acq.getIlluminationAzimuthAngle().getValue());
                         e.getSlot().add(slotIlluAziAngle);
                     }
 
                     if (acq.isSetIlluminationElevationAngle()) {
-                        SlotType1 slotIlluElevAngle = RIMUtil.createWrsSlot(EOPConstants.S_ILLUMINATION_ELEVATION_ANGLE, EOPConstants.T_DOUBLE, acq.getIlluminationElevationAngle().getValue());
+                        SlotType slotIlluElevAngle = RIMUtil.createWrsSlot(EOPConstants.S_ILLUMINATION_ELEVATION_ANGLE, EOPConstants.T_DOUBLE, acq.getIlluminationElevationAngle().getValue());
                         e.getSlot().add(slotIlluElevAngle);
                     }
                 }
@@ -82,12 +82,12 @@ public class OPTTranslator extends HMATranslator implements Translator {
                     EarthObservationResultType result = (EarthObservationResultType) el.getValue();
                     
                     if (result.isSetCloudCoverPercentage()) {
-                        SlotType1 slotCouldPercent = RIMUtil.createWrsSlot(EOPConstants.S_COULD_COVER_PERCENTAGE, EOPConstants.T_DOUBLE, result.getCloudCoverPercentage().getValue());
+                        SlotType slotCouldPercent = RIMUtil.createWrsSlot(EOPConstants.S_COULD_COVER_PERCENTAGE, EOPConstants.T_DOUBLE, result.getCloudCoverPercentage().getValue());
                         e.getSlot().add(slotCouldPercent);
                     }
                     
                     if (result.isSetSnowCoverPercentage()) {
-                        SlotType1 slotSnowPercent = RIMUtil.createWrsSlot(EOPConstants.S_SNOW_COVER_PERCENTAGE, EOPConstants.T_DOUBLE, result.getSnowCoverPercentage().getValue());
+                        SlotType slotSnowPercent = RIMUtil.createWrsSlot(EOPConstants.S_SNOW_COVER_PERCENTAGE, EOPConstants.T_DOUBLE, result.getSnowCoverPercentage().getValue());
                         e.getSlot().add(slotSnowPercent);
                     }
                 }

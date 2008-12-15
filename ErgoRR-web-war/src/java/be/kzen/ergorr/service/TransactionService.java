@@ -23,8 +23,12 @@ import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.DeleteType;
+import be.kzen.ergorr.model.csw.ElementSetNameType;
+import be.kzen.ergorr.model.csw.ElementSetType;
+import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.InsertResultType;
 import be.kzen.ergorr.model.csw.InsertType;
+import be.kzen.ergorr.model.csw.QueryType;
 import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionSummaryType;
 import be.kzen.ergorr.model.csw.TransactionType;
@@ -33,7 +37,9 @@ import be.kzen.ergorr.model.purl.elements.SimpleLiteral;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
+import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.translator.TranslationFactory;
 import java.math.BigInteger;
 import java.util.List;
@@ -113,11 +119,48 @@ public class TransactionService {
         }
     }
 
-    private void doUpdate(UpdateType update) throws ServiceExceptionReport {
+    private TransactionResponseType doUpdate(UpdateType update) throws ServiceExceptionReport {
+
+        if (update.isSetAny()) {
+            Object updateObj = update.getAny();
+            RegistryObjectListType regObjList = null;
+
+            if (updateObj instanceof RegistryObjectListType) {
+                regObjList = (RegistryObjectListType) updateObj;
+            } else if (updateObj instanceof RegistryObjectType) {
+                regObjList = new RegistryObjectListType();
+                JAXBElement<RegistryObjectType> regObjEl = OFactory.rim.createRegistryObject((RegistryObjectType) updateObj);
+                regObjList.getIdentifiable().add(regObjEl);
+            }
+
+            LCManager lcm = new LCManager(requestContext);
+            lcm.update(regObjList);
+        // process regObjList
+
+        } else {
+            throw new ServiceExceptionReport("No rim:RegistryObject or rim:RegistryObjectList specified for updating");
+        }
         throw new ServiceExceptionReport("Transaction.update not supported");
     }
 
-    private void doDelete(DeleteType delete) throws ServiceExceptionReport {
+    private TransactionResponseType doDelete(DeleteType delete) throws ServiceExceptionReport {
+        // exec query
+        // check if objects have relations
+        //    yes: don't delete
+        //    no: delete
+        GetRecordsType getRecords = new GetRecordsType();
+        QueryType query = new QueryType();
+        ElementSetNameType elSetName = new ElementSetNameType();
+        elSetName.setValue(ElementSetType.BRIEF);
+        query.setConstraint(delete.getConstraint());
+        JAXBElement<QueryType> queryEl = OFactory.csw.createQuery(query);
+        getRecords.setAbstractQuery(queryEl);
+        
+        RequestContext rq = new RequestContext();
+        rq.setRequest(getRecords);
+
+        QueryManager qm = new QueryManager(rq);
+
         throw new ServiceExceptionReport("Transaction.delete not supported");
     }
 
@@ -126,18 +169,18 @@ public class TransactionService {
         InsertResultType insertResult = new InsertResultType();
 
         for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
-            BriefRecordType breifRecord = new BriefRecordType();
+            BriefRecordType briefRecord = new BriefRecordType();
 
             SimpleLiteral identifier = new SimpleLiteral();
             identifier.getContent().add(identEl.getValue().getId());
-            breifRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
+            briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
 
             if (identEl.getValue() instanceof RegistryObjectType) {
                 SimpleLiteral type = new SimpleLiteral();
                 type.getContent().add(((RegistryObjectType) identEl.getValue()).getObjectType());
-                breifRecord.setType(type);
+                briefRecord.setType(type);
             }
-            insertResult.getBriefRecord().add(breifRecord);
+            insertResult.getBriefRecord().add(briefRecord);
         }
 
         response.getInsertResult().add(insertResult);

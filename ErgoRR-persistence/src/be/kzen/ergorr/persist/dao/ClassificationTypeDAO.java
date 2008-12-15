@@ -1,4 +1,3 @@
-
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.ClassificationType;
@@ -17,40 +16,40 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
 
     public ClassificationTypeDAO() {
     }
-    
+
     public ClassificationTypeDAO(ClassificationType clXml) {
         super(clXml);
     }
-    
+
     public void addClassifications(RegistryObjectType parent) throws SQLException {
         Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(getParamList()).append(" from ").append(getTableName()).append(" where classifiedobject = '").append(parent.getId()).append("'");
         ResultSet result = stmt.executeQuery(sql.toString());
-        
+
         while (result.next()) {
             parent.getClassification().add(newXmlObject(result));
         }
     }
-    
+
     @Override
     public ClassificationType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationType();
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
     protected ClassificationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-
-        xmlObject.setClassificationNode(result.getString("classificationnode"));
-        xmlObject.setClassificationScheme(result.getString("classificationscheme"));
-        xmlObject.setClassifiedObject(result.getString("classifiedobject"));
-        xmlObject.setNodeRepresentation(result.getString("noderepresentation"));
-        
+        if (!isBrief()) {
+            xmlObject.setClassificationNode(result.getString("classificationnode"));
+            xmlObject.setClassificationScheme(result.getString("classificationscheme"));
+            xmlObject.setClassifiedObject(result.getString("classifiedobject"));
+            xmlObject.setNodeRepresentation(result.getString("noderepresentation"));
+        }
         return xmlObject;
     }
-    
+
     @Override
     protected String createValues() {
         StringBuilder vals = new StringBuilder();
@@ -64,32 +63,31 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         appendStringValue(xmlObject.getClassifiedObject(), vals);
         vals.append(",");
         appendStringValue(xmlObject.getNodeRepresentation(), vals);
-        
+
         return vals.toString();
     }
-    
+
     @Override
     protected String getParamList() {
         return super.getParamList() + ",classificationnode,classificationscheme,classifiedobject,noderepresentation";
     }
-    
+
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.isEmpty()) {
-            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".classificationnode,").append(alias).append(".classificationscheme,")
-                    .append(alias).append(".classifiedobject,").append(alias).append(".noderepresentation").toString();
+            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".classificationnode,").append(alias).append(".classificationscheme,").append(alias).append(".classifiedobject,").append(alias).append(".noderepresentation").toString();
         } else {
             return getParamList();
         }
     }
-    
+
     @Override
     public String getTableName() {
         return "classification";
     }
-    
+
     @Override
     public JAXBElement<ClassificationType> createJAXBElement() {
-            return OFactory.rim.createClassification(xmlObject);
+        return OFactory.rim.createClassification(xmlObject);
     }
 }

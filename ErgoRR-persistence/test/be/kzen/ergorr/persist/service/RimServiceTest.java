@@ -7,7 +7,7 @@ import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
-import be.kzen.ergorr.model.rim.SlotType1;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.ValueListType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.WrsValueListType;
@@ -48,7 +48,7 @@ public class RimServiceTest extends GenericTest {
         eo.setLid(eo.getId());
         eo.setMimeType("application/xml");
         eo.setStatus("inserted");
-        SlotType1 slot = new SlotType1();
+        SlotType slot = new SlotType();
         slot.setName("blablaname3");
         slot.setSlotType("blablatype");
         ValueListType valList = new ValueListType();
@@ -89,7 +89,7 @@ public class RimServiceTest extends GenericTest {
             ExtrinsicObjectType eo = (ExtrinsicObjectType) identEl.getValue();
             System.out.println(eo.getId());
             
-            for (SlotType1 s : eo.getSlot()) {
+            for (SlotType s : eo.getSlot()) {
                 System.out.println("  Slot name: " + s.getName());
                 System.out.println("  Slot type: " + s.getSlotType());
                 

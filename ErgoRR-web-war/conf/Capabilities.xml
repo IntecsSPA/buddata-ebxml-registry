@@ -90,18 +90,21 @@
                 <ows:DefaultValue>10</ows:DefaultValue>
             </ows:Parameter>
             <ows:Parameter name="TypeNames">
-                <ows:Value>rim:RegistryObject</ows:Value>
+                <ows:Value>rim:ExtrinsicObject</ows:Value>
                 <ows:Value>rim:Association</ows:Value>
                 <ows:Value>rim:Classification</ows:Value>
                 <ows:Value>rim:ClassificationNode</ows:Value>
                 <ows:Value>rim:ClassificationScheme</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ows:Value>
+                <ows:Value>rim:AdhocQuery</ows:Value>
+                <ows:Value>rim:ExternalIdentifier</ows:Value>
+                <ows:Value>rim:RegistryPackage</ows:Value>
+                <!--ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOAcquisitionPlatform</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProductInformation</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOMaskInformation</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOBrowseInformation</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOArchivingInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer</ows:Value>
+                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer</ows:Value-->
             </ows:Parameter>
             <ows:Parameter name="ElementName"/>
             <ows:Parameter name="ElementSetName">
@@ -113,7 +116,7 @@
                 <ows:Value>FILTER</ows:Value>
             </ows:Parameter>
             <ows:Parameter name="constraint"/>
-            <ows:Parameter name="SortBy"/>
+            <!--ows:Parameter name="SortBy"/-->
         </ows:Operation>
         <ows:Operation name="GetRecordById">
             <ows:DCP>
@@ -139,7 +142,7 @@
                 <ows:Value>full</ows:Value>
             </ows:Parameter>
         </ows:Operation>
-        <ows:Operation name="DescribeRecord">
+        <!--ows:Operation name="DescribeRecord">
             <ows:DCP>
                 <ows:HTTP>
                     <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
@@ -178,7 +181,7 @@
             <ows:Parameter name="id">
                 <ows:Value/>
             </ows:Parameter>
-        </ows:Operation>
+        </ows:Operation-->
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>

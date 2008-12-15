@@ -1,4 +1,3 @@
-
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.AssociationType;
@@ -16,7 +15,7 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
 
     public AssociationTypeDAO() {
     }
-    
+
     public AssociationTypeDAO(AssociationType assoXml) {
         super(assoXml);
     }
@@ -24,29 +23,44 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
     @Override
     public AssociationType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new AssociationType();
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
     protected AssociationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        xmlObject.setAssociationType(result.getString("associationtype"));
-        xmlObject.setSourceObject(result.getString("sourceobject"));
-        xmlObject.setTargetObject(result.getString("targetobject"));
+
+        if (!isBrief()) {
+            xmlObject.setAssociationType(result.getString("associationtype"));
+            xmlObject.setSourceObject(result.getString("sourceobject"));
+            xmlObject.setTargetObject(result.getString("targetobject"));
+        }
         return xmlObject;
     }
 
     @Override
     protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
+        StringBuilder vals = new StringBuilder(super.createValues());
         vals.append(",");
         appendStringValue(xmlObject.getAssociationType(), vals);
         vals.append(",");
         appendStringValue(xmlObject.getSourceObject(), vals);
         vals.append(",");
         appendStringValue(xmlObject.getTargetObject(), vals);
-        
+
+        return vals.toString();
+    }
+
+    @Override
+    protected String createUpdateValues() {
+        StringBuilder vals = new StringBuilder(super.createUpdateValues());
+        vals.append(",associationtype=");
+        appendStringValue(xmlObject.getAssociationType(), vals);
+        vals.append(",sourceobject=");
+        appendStringValue(xmlObject.getSourceObject(), vals);
+        vals.append(",targetobject=");
+        appendStringValue(xmlObject.getTargetObject(), vals);
+
         return vals.toString();
     }
 
@@ -58,8 +72,7 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.isEmpty()) {
-            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".associationtype,")
-                    .append(alias).append(".sourceobject,").append(alias).append(".targerobject").toString();
+            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".associationtype,").append(alias).append(".sourceobject,").append(alias).append(".targerobject").toString();
         } else {
             return getParamList();
         }
@@ -69,9 +82,9 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
     public String getTableName() {
         return "association";
     }
-    
+
     @Override
     public JAXBElement<AssociationType> createJAXBElement() {
-            return OFactory.rim.createAssociation(xmlObject);
+        return OFactory.rim.createAssociation(xmlObject);
     }
 }
