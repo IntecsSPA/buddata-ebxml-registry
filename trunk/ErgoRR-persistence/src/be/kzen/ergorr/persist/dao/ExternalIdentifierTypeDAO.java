@@ -71,7 +71,7 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
 
     @Override
     protected String getQueryParamList() {
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".registryobject,").append(alias).append(".identificationscheme,").append(alias).append(".value_").toString();
         } else {
             return getParamList();

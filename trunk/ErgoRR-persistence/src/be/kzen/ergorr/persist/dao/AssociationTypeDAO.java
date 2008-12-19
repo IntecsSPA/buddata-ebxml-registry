@@ -71,7 +71,7 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
 
     @Override
     protected String getQueryParamList() {
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".associationtype,").append(alias).append(".sourceobject,").append(alias).append(".targerobject").toString();
         } else {
             return getParamList();

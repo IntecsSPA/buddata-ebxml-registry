@@ -40,7 +40,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         try {
             daoClass = (Class<? extends GenericObjectDAO>) Class.forName(daoClassName);
         } catch (ClassNotFoundException ex) {
-            throw new SQLException("Could not find DAO class: " + daoClassName, ex);
+            throw new SQLException("Could not find DAO class: " + daoClassName);
         }
 
         try {
@@ -49,7 +49,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
             genericObjDAO.setContext(context);
             return (T) genericObjDAO.newXmlObject(result);
         } catch (Exception ex) {
-            throw new SQLException("Could not load class " + daoClass.getName(), ex);
+            throw new SQLException("Could not load class " + daoClass.getName());
         }
 
     }
@@ -121,7 +121,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     @Override
     protected String getQueryParamList() {
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder().append(alias).append(".id,").append(alias).append(".home").toString();
         } else {
             return getParamList();

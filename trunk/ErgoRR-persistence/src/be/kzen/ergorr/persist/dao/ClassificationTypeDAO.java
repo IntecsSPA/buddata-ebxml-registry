@@ -74,7 +74,7 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
 
     @Override
     protected String getQueryParamList() {
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".classificationnode,").append(alias).append(".classificationscheme,").append(alias).append(".classifiedobject,").append(alias).append(".noderepresentation").toString();
         } else {
             return getParamList();

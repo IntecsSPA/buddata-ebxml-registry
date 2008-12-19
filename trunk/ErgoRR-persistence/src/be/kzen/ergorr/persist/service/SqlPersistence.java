@@ -103,7 +103,7 @@ public class SqlPersistence {
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Could not load DAO object for query", ex);
                 closeConnection(conn);
-                throw new SQLException("Could not load class " + clazz.getName(), ex);
+                throw new SQLException("Could not load class " + clazz.getName() + ": " + ex.toString());
             }
         }
 
@@ -233,7 +233,7 @@ public class SqlPersistence {
         } catch (Throwable t) {
             logger.log(Level.SEVERE, "Failed to insert objects", t);
             closeConnection(conn);
-            throw new SQLException("Could not insert objects", t);
+            throw new SQLException("Could not insert objects: " + t.toString());
         }
 
         closeConnection(conn);
@@ -353,7 +353,7 @@ public class SqlPersistence {
                     throw new SQLException("No DataSource found and DbConnectionParams not set");
                 }
             } catch (ClassNotFoundException ex) {
-                throw new SQLException(ex);
+                throw new SQLException(ex.toString());
             }
         }
     }

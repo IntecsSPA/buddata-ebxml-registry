@@ -58,7 +58,7 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
 
     @Override
     protected String getQueryParamList() {
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".isinternal,").append(alias).append(".nodetype,").toString();
         } else {
             return getParamList();

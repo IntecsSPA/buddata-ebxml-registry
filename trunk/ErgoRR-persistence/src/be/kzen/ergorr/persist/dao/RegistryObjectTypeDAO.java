@@ -125,7 +125,7 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     @Override
     protected String getQueryParamList() {
 
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".lid,").append(alias).append(".objecttype,").append(alias).append(".status,").append(alias).append(".versionname,").append(alias).append(".versioncomment").toString();
         } else {
             return getParamList();
