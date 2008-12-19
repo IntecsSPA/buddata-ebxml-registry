@@ -96,9 +96,9 @@ This will copy the following files:
 
 *5. Configure Database *
 
-Edit the file CATALINA_HOME/conf/Catalina/localhost/ErgoRR-web-war.xml to match to your postgres setup.
+Edit the file CATALINA_HOME/conf/Catalina/localhost/ergorr.xml to match to your postgres setup.
 
-Note: If you edit the name of the deployment file ErgoRR-web-war.war then you have to set the same name for the ErgoRR-web-war.xml.
+Note: If you edit the name of the deployment file ergorr.war then you have to set the same name for the ergorr.xml.
 
 *6. Configure packaged libraries *
 
@@ -116,4 +116,4 @@ To package the Metro libraries for tomcat:
 
 *6. Deploy *
 
-  * Build the ErgoRR-web-war project and copy the dist/ErgoRR-web-war.war to Tomcat webapp directory.
+  * Build the ErgoRR-web-war project and copy the dist/ergorr.war to Tomcat webapp directory.
