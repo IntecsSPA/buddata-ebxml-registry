@@ -71,7 +71,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
         if (result.getString(2).toLowerCase().equals("geometry")) {
 
-            if (val != null && !val.isEmpty()) {
+            if (val != null && !val.equals("")) {
                 BinaryParser parser = new BinaryParser();
                 Geometry geometry = parser.parse(val);
                 return GeometryTranslator.gmlGeometryFromGeometry(geometry);
@@ -149,7 +149,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
             } else {
                 String stringValue = result.getString(4);
 
-                if (stringValue != null && !stringValue.isEmpty()) {
+                if (stringValue != null && !stringValue.equals("")) {
                     slot.getValueList().getValue().getValue().add(result.getString(4));
                 }
             }
@@ -211,7 +211,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                                     }
 
                                 } catch (TransformException ex) {
-                                    throw new SQLException(ex);
+                                    throw new SQLException(ex.toString());
                                 }
                             } else {
 

@@ -133,7 +133,7 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
 
     @Override
     protected String getQueryParamList() {
-        if (alias != null && !alias.isEmpty()) {
+        if (alias != null && !alias.equals("")) {
             return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".isopaque,").append(alias).append(".mimetype,").append(alias).append(".contentversionname,").append(alias).append(".contentversioncomment,").append(alias).append(".spectype,").append(alias).append(",wrsactuate,").append(alias).append(".wrsarcrule,").append(alias).append(".wrshref").append(alias).append(".wrsrole,").append(alias).append(".wrsshow").append(alias).append(".wrstitle").toString();
         } else {
             return getParamList();
