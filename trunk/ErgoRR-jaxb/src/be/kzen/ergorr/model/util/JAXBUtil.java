@@ -12,7 +12,7 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  * JAXB utility to marshall and unmarshall
- * Java object instances from and to XML.
+ * Java object instances to and from XML.
  * 
  * @author Yaman Ustuntas
  */
@@ -21,6 +21,9 @@ public class JAXBUtil {
     private static JAXBUtil instance;
     private JAXBContext jaxbContext;
 
+    /**
+     * Private constructor for the singleton instance.
+     */
     private JAXBUtil() {
         try {
             String pkgs = "be.kzen.ergorr.model.csw:" +

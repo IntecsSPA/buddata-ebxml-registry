@@ -335,8 +335,8 @@ public class ObjectFactory {
      * Create an instance of {@link SlotType1 }
      * 
      */
-    public SlotType1 createSlotType1() {
-        return new SlotType1();
+    public SlotType createSlotType1() {
+        return new SlotType();
     }
 
     /**
@@ -420,8 +420,8 @@ public class ObjectFactory {
      * 
      */
     @XmlElementDecl(namespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", name = "Slot")
-    public JAXBElement<SlotType1> createSlot(SlotType1 value) {
-        return new JAXBElement<SlotType1>(_Slot_QNAME, SlotType1 .class, null, value);
+    public JAXBElement<SlotType> createSlot(SlotType value) {
+        return new JAXBElement<SlotType>(_Slot_QNAME, SlotType .class, null, value);
     }
 
     /**

@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 public class SlotListType {
 
     @XmlElement(name = "Slot")
-    protected List<SlotType1> slot;
+    protected List<SlotType> slot;
 
     /**
      * Gets the value of the slot property.
@@ -59,9 +59,9 @@ public class SlotListType {
      * 
      * 
      */
-    public List<SlotType1> getSlot() {
+    public List<SlotType> getSlot() {
         if (slot == null) {
-            slot = new ArrayList<SlotType1>();
+            slot = new ArrayList<SlotType>();
         }
         return this.slot;
     }
