@@ -27,6 +27,7 @@ import be.kzen.ergorr.model.csw.GetRecordByIdType;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.QueryType;
+import be.kzen.ergorr.model.csw.RequestStatusType;
 import be.kzen.ergorr.model.csw.SearchResultsType;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.AssociationType;
@@ -91,6 +92,9 @@ public class QueryManager {
             searchResult.setNumberOfRecordsMatched(BigInteger.valueOf(recordsMatched));
             searchResult.getAny().addAll(idents);
             response.setSearchResults(searchResult);
+
+            RequestStatusType reqStatus = new RequestStatusType();
+            response.setSearchStatus(reqStatus);
 
         } catch (QueryException ex) {
             throw new ServiceExceptionReport("Error while translating OGC query to SQL", null, ex);
