@@ -984,7 +984,7 @@ CREATE index localizeddesc_id_idx ON localizeddesc (id);
 */
 
 CREATE index slot_parent_idx ON slot (parent);
-CREATE index slot_parent_idx ON slot (slotname);
+CREATE index slot_name_idx ON slot (slotname);
 CREATE index association_source_idx ON association (sourceobject);
 CREATE index association_target_idx ON association (targetobject);
 CREATE index classificationnode_parent_idx ON classificationnode (parent);
