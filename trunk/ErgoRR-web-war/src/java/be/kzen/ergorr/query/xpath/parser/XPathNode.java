@@ -4,11 +4,20 @@ package be.kzen.ergorr.query.xpath.parser;
  *
  * @author yaman
  */
-public class ParsedNode {
+public class XPathNode {
+    private XPathNode parent;
     private String name;
     private String attributeName;
     private String subSelectName;
     private String subSelectValue;
+
+    public XPathNode getParent() {
+        return parent;
+    }
+
+    public void setParent(XPathNode parent) {
+        this.parent = parent;
+    }
 
     public String getAttributeName() {
         return attributeName;

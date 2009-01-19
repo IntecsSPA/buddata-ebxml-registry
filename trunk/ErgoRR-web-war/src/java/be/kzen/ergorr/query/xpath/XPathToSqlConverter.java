@@ -3,7 +3,7 @@ package be.kzen.ergorr.query.xpath;
 import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.query.QueryObject;
-import be.kzen.ergorr.query.xpath.parser.ParsedNode;
+import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import be.kzen.ergorr.query.xpath.parser.SimpleXPathParser;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +31,7 @@ public class XPathToSqlConverter {
     }
 
     public void convert() throws XPathException, ClassNotFoundException {
-        List<ParsedNode> nodes = new ArrayList<ParsedNode>();
+        List<XPathNode> nodes = new ArrayList<XPathNode>();
         SimpleXPathParser parser = new SimpleXPathParser(xpath);
 
         while (parser.hasNext()) {
@@ -39,7 +39,7 @@ public class XPathToSqlConverter {
         }
 
         if (nodes.size() > 0) {
-            ParsedNode n = nodes.get(0);
+            XPathNode n = nodes.get(0);
             QueryObject qo  = queryObjs.get(n.getName());
 
             if (qo == null) {

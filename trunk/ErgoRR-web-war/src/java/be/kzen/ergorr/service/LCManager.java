@@ -27,6 +27,7 @@ import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
+import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
@@ -78,12 +79,16 @@ public class LCManager {
                 }
             }
 
-            for (SlotType s : ident.getSlot()) {
-                try {
-                    // check if all slot name/type pairs are unique.
-                    InternalSlotTypes.getInstance().putSlotType(s.getName(), s.getSlotType());
-                } catch (Exception ex) {
-                    throw new ServiceExceptionReport(ex.getMessage());
+            if (ident instanceof ExtrinsicObjectType &&
+                ((ExtrinsicObjectType) ident).getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
+                
+                for (SlotType s : ident.getSlot()) {
+                    try {
+                        // check if all slot name/type pairs are unique.
+                        InternalSlotTypes.getInstance().putSlot(s.getName(), s.getSlotType());
+                    } catch (Exception ex) {
+                        throw new ServiceExceptionReport(ex.getMessage());
+                    }
                 }
             }
         }
