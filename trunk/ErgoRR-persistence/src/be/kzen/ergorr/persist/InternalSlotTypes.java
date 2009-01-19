@@ -19,9 +19,19 @@
 package be.kzen.ergorr.persist;
 
 import be.kzen.ergorr.commons.*;
+import be.kzen.ergorr.model.rim.ClassificationNodeType;
+import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
+import be.kzen.ergorr.model.rim.SlotType;
+import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.persist.service.SqlPersistence;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBElement;
 
 /**
  * Stores slot type names which are not string values.
@@ -29,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Yaman Ustuntas
  */
 public class InternalSlotTypes {
-
+    private static Logger logger = Logger.getLogger(InternalSlotTypes.class.getName());
     private static InternalSlotTypes instance;
     private Map<String, String> slotMap;
     private static String[] nonStringTypes;
@@ -61,30 +71,35 @@ public class InternalSlotTypes {
         return slotMap.get(slotName);
     }
 
-    public void putSlotType(String slotName, String slotType) throws Exception {
-        slotName = slotName.toLowerCase();
+    public void putSlot(String name, String type) throws Exception {
+        name = name.toLowerCase();
         String st = InternalConstants.TYPE_STRING;
 
-        if (slotType != null) {
-            slotType = slotType.toLowerCase();
+        if (type != null) {
+            type = type.toLowerCase();
 
-            if (isNoneStringType(slotType)) {
-                st = slotType;
+            if (isNoneStringType(type)) {
+                st = type;
             }
         }
 
-        String prevType = slotMap.get(slotName);
+        String prevType = slotMap.get(name);
 
-        if (prevType == null) {
-            slotMap.put(slotName, st);
-
-            if (!st.equals(InternalConstants.TYPE_STRING)) {
-                SqlPersistence service = new SqlPersistence();
-                service.insertSlotType(slotName, st);
+        if (prevType == null && !st.equals(InternalConstants.TYPE_STRING)) {
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "adding slot in cache: " + name + " > " + st);
             }
-        } else if (!prevType.equals(st)) {
-            throw new Exception("Slot type mismatch: Slot " + slotName + " was registered as " + prevType + " but the current request defines it as " + slotType);
+
+            slotMap.put(name, st);
+        } else if (prevType != null && !prevType.equals(st)) {
+            String err = "Slot type mismatch: Slot " + name + " was registered as " + prevType + " but the current request defines it as " + type;
+            logger.log(Level.SEVERE, err);
+            throw new Exception(err);
         }
+    }
+
+    public void remoteSlot(String name) {
+        slotMap.remove(name);
     }
 
     public int getSlotTypeSize() {
@@ -93,6 +108,25 @@ public class InternalSlotTypes {
 
     public void clear() {
         slotMap.clear();
+    }
+
+    public void loadSlots() throws SQLException, ClassNotFoundException {
+        String sql = "select * from extrinsicobject where objecttype='" + RIMConstants.CN_OBJ_DEF + "'";
+
+        SqlPersistence persist = new SqlPersistence();
+        List<JAXBElement<ExtrinsicObjectType>> eoEls =
+                persist.query(sql, new ArrayList<Object>(), OFactory.getXmlClassByElementName("ExtrinsicObject"));
+
+        for (JAXBElement<ExtrinsicObjectType> eoEl : eoEls) {
+            for (SlotType slot : eoEl.getValue().getSlot()) {
+                if (isNoneStringType(slot.getSlotType())) {
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.log(Level.FINE, "slot in cache: " + slot.getName() + " > " + slot.getSlotType());
+                    }
+                    slotMap.put(slot.getName(), slot.getSlotType());
+                }
+            }
+        }
     }
 
     /**
