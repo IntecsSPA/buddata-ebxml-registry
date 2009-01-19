@@ -13,7 +13,7 @@
         maxActive="30"
         maxIdle="10"
         removeAbandonedTimeout="60"
-        validationQuery="select id from extrinsicobject limit 1"
+        validationQuery="select 1 as num"
         logAbandoned="true"/>
 </Context>
 <!-- 
