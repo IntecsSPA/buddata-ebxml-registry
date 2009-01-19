@@ -167,20 +167,20 @@ public class CswServiceImpl implements CswPortType {
 
         if (slotTypes.getSlotTypeSize() > 0) {
             slotTypes.clear(); // now we can remove the dummy
-            SqlPersistence service = new SqlPersistence();
 //            LoggerSetup.setup();
             logger.info(">>> start init");
             logger.info("loading slot types cache from database");
+
             try {
-                slotTypes.setSlotMap(service.querySlotTypes());
-            } catch (SQLException ex) {
+                slotTypes.loadSlots();
+            } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Could not load slot types", ex);
             }
             logger.info("  non-string slots: " + slotTypes.getSlotTypeSize());
             logger.info(">>> end init");
         } else {
             try {
-                slotTypes.putSlotType("dummyslot", "string");
+                slotTypes.putSlot("dummyslot", "string");
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Could not put dummy slot type", ex);
             }

@@ -35,9 +35,9 @@ public class SimpleXPathParser {
         bracketStartPos = -1;
     }
 
-    public ParsedNode getNextNode() throws XPathException {
+    public XPathNode getNextNode() throws XPathException {
         pointer = lastPos;
-        ParsedNode nextNode = new ParsedNode();
+        XPathNode nextNode = new XPathNode();
 
         while (true) {
             if (pointer >= chars.length) {

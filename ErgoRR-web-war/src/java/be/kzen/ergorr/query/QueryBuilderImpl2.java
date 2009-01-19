@@ -54,6 +54,9 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private ElementSetType resultSet;
     private GetRecordsType request;
     private QueryType filterQuery;
+    private StringBuilder sqlSelect;
+    private StringBuilder sqlJoin;
+    private StringBuilder sqlJoinCriteria;
     private StringBuilder sqlCriteria;
     private List<Object> queryParams;
     private int aliasIdx;
@@ -206,7 +209,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         }
 
         String opName = "op" + queryOperator.getClass().getSimpleName();
-
+        
         try {
             Method method = this.getClass().getDeclaredMethod(opName, new Class[]{queryOperator.getValue().getClass()});
             method.invoke(this, new Object[]{queryOperator.getValue()});
