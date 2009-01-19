@@ -148,4 +148,7 @@ public interface RIMConstants {
     // ============================
     public static final String CN_QUERY_LANG_SQL = "urn:oasis:names:tc:ebxml-regrep:QueryLanguage:SQL-92";
     public static final String CN_QUERY_LANG_GML_FILTER = "urn:ogc:def:ebRIM-QueryLanguage:CSW-Filter";
+
+
+    public static final String CN_OBJ_DEF = "urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition";
 }
