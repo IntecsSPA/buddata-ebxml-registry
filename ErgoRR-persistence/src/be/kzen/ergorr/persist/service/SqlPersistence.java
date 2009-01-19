@@ -194,11 +194,11 @@ public class SqlPersistence {
     }
 
     public void insert(List<IdentifiableType> idents) throws SQLException {
-        persist(idents, false);
+        persist(idents, true);
     }
 
     public void update(List<IdentifiableType> idents) throws SQLException {
-        persist(idents, true);
+        persist(idents, false);
     }
 
     private void persist(List<IdentifiableType> idents, boolean newObj) throws SQLException {
@@ -237,81 +237,6 @@ public class SqlPersistence {
         }
 
         closeConnection(conn);
-    }
-
-    public Map<String, String> getSlotTypes() throws SQLException {
-        Map<String, String> slotNameTypes = new ConcurrentHashMap<String, String>();
-
-        Connection conn = null;
-
-        try {
-            conn = getConnection();
-            Statement stmt = conn.createStatement();
-            long startTime = System.currentTimeMillis();
-            ResultSet result = stmt.executeQuery("select distinct(slotname), slottype from slot ");
-
-            if (logger.isLoggable(Level.INFO)) {
-                logger.info("Queried slot types in ms:" + (System.currentTimeMillis() - startTime));
-            }
-
-            while (result.next()) {
-                String slotName = result.getString(1);
-                String slotType = "string";
-
-                if (result.getString(2) != null) {
-                    String val = result.getString(2);
-
-                    if (InternalSlotTypes.isNoneStringType(val)) {
-                        slotType = val;
-                    }
-                }
-
-                slotNameTypes.put(slotName, slotType.toLowerCase());
-            }
-            closeConnection(conn);
-        } catch (SQLException ex) {
-            closeConnection(conn);
-            throw ex;
-        }
-        return slotNameTypes;
-    }
-
-    public Map<String, String> querySlotTypes() throws SQLException {
-        Map<String, String> slotTypes = new ConcurrentHashMap<String, String>();
-
-        Connection conn = null;
-
-        try {
-            conn = getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("select slotname, slottype from slottype");
-
-            while (result.next()) {
-                slotTypes.put(result.getString(1), result.getString(2));
-            }
-            stmt.close();
-            closeConnection(conn);
-
-            return slotTypes;
-        } catch (SQLException ex) {
-            closeConnection(conn);
-            throw ex;
-        }
-    }
-
-    public void insertSlotType(String slotName, String slotType) throws SQLException {
-        Connection conn = null;
-
-        try {
-            conn = getConnection();
-            Statement stmt = conn.createStatement();
-            stmt.execute("insert into slottype (slotname, slottype) values ('" + slotName + "','" + slotType + "')");
-            stmt.close();
-            closeConnection(conn);
-        } catch (SQLException ex) {
-            closeConnection(conn);
-            throw ex;
-        }
     }
 
     public void closeConnection(Connection conn) {

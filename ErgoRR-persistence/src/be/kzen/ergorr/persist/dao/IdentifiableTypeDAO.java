@@ -65,9 +65,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     @Override
     protected String createValues() {
-        StringBuilder vals = new StringBuilder("INSERT INTO ");
-        vals.append(getTableName());
-        vals.append(" VALUES (");
+        StringBuilder vals = new StringBuilder();
         appendStringValue(xmlObject.getId(), vals);
         vals.append(",");
         appendStringValue(xmlObject.getHome(), vals);
@@ -94,12 +92,10 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     @Override
     protected void updateRelatedObjects(Statement batchStmt) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
