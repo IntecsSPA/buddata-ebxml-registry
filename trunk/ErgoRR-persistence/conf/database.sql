@@ -495,11 +495,11 @@ CREATE TABLE person (
 --SELECT AddGeometryColumn('ergorr2', 'slot', 'geometryValue', -1, 'GEOMETRY', 2);
 --SELECT AddGeometryColumn('ergorr2', 'slot', 'qGeometryValue', -1, 'GEOMETRY', 2);
 
-CREATE TABLE slottype (
+/*CREATE TABLE slottype (
     slotname              VARCHAR(256) NOT NULL,
     slottype              VARCHAR(256) NOT NULL,
     PRIMARY KEY (slotname)
-);
+);*/
 -- =================================================================================== VIEW
 
 DROP VIEW IF EXISTS identifiable;
