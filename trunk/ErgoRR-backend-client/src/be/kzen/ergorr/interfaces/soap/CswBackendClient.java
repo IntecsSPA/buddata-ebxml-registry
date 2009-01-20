@@ -108,8 +108,8 @@ public class CswBackendClient {
             SqlPersistence service = new SqlPersistence(requestContext);
 
             try {
-                slotTypes.setSlotMap(service.querySlotTypes());
-            } catch (SQLException ex) {
+                slotTypes.loadSlots();
+            } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Could not load slot types", ex);
             }
         }
