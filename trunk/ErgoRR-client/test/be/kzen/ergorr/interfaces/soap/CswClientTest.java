@@ -4,6 +4,7 @@
  */
 package be.kzen.ergorr.interfaces.soap;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.model.csw.ElementSetNameType;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordByIdResponseType;
@@ -49,7 +50,7 @@ public class CswClientTest {
     public void testTransaction() throws Exception {
         Unmarshaller unmarshaller = JAXBUtil.getInstance().createUnmarshaller();
 
-        File dir = new File("/home/yaman/Desktop/2007-final");
+        File dir = new File(CommonProperties.getInstance().get("sampleDataFolder"));
         File[] files = dir.listFiles();
 
         for (int i = 0; i < files.length; i++) {
