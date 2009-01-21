@@ -279,7 +279,7 @@ public class GeometryTranslator {
             if (geometryValue instanceof Polygon) {
                 Polygon polygon = (Polygon) geometryValue;
                 PolygonType gmlPolygon = new PolygonType();
-                gmlPolygon.setId(IDGenerator.generateIntString());
+                gmlPolygon.setId("ID_" + IDGenerator.generateIntString());
 
                 if (polygon.getSrid() > 0) {
                     gmlPolygon.setSrsName("EPSG:" + polygon.getSrid());
@@ -310,7 +310,7 @@ public class GeometryTranslator {
             } else if (geometryValue instanceof Point) {
                 Point p = (Point) geometryValue;
                 PointType gmlPoint = new PointType();
-                gmlPoint.setId(IDGenerator.generateIntString());
+                gmlPoint.setId("ID_" + IDGenerator.generateIntString());
                 
                 if (p.getSrid() > 0) {
                     gmlPoint.setSrsName("EPSG:" + p.getSrid());
