@@ -279,6 +279,7 @@ public class GeometryTranslator {
             if (geometryValue instanceof Polygon) {
                 Polygon polygon = (Polygon) geometryValue;
                 PolygonType gmlPolygon = new PolygonType();
+                gmlPolygon.setId("");
 
                 if (polygon.getSrid() > 0) {
                     gmlPolygon.setSrsName("EPSG:" + polygon.getSrid());
@@ -308,18 +309,19 @@ public class GeometryTranslator {
 
             } else if (geometryValue instanceof Point) {
                 Point p = (Point) geometryValue;
-                PointType pointJaxb = new PointType();
-
+                PointType gmlPoint = new PointType();
+                gmlPoint.setId("");
+                
                 if (p.getSrid() > 0) {
-                    pointJaxb.setSrsName("EPSG:" + p.getSrid());
+                    gmlPoint.setSrsName("EPSG:" + p.getSrid());
                 }
 
                 DirectPositionType posJaxb = new DirectPositionType();
                 posJaxb.getValue().add(p.getX());
                 posJaxb.getValue().add(p.getY());
-                pointJaxb.setPos(posJaxb);
+                gmlPoint.setPos(posJaxb);
 
-                return OFactory.gml.createPoint(pointJaxb);
+                return OFactory.gml.createPoint(gmlPoint);
             }
         }
         return null;
