@@ -82,4 +82,8 @@ public class IDGenerator {
     public static int generateInt() {
         return (int) (Math.random() * Integer.MAX_VALUE);
     }
+
+    public static String generateIntString() {
+        return String.valueOf(generateInt());
+    }
 }
