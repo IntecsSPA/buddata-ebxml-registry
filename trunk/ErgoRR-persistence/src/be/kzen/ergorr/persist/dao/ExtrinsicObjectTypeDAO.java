@@ -123,7 +123,7 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
 
     @Override
     public String getTableName() {
-        return "extrinsicobject";
+        return "t_extrinsicobject";
     }
 
     @Override

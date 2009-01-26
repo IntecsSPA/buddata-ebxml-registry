@@ -105,7 +105,7 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
 
     @Override
     public String getTableName() {
-        return "adhocquery";
+        return "t_adhocquery";
     }
 
     @Override

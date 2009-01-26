@@ -11,11 +11,11 @@ import java.sql.Statement;
  *
  * @author Yaman Ustuntas
  */
-public class LocalizedStringDescDAO extends GenericComposedObjectDAO<LocalizedStringType, RegistryObjectType> {
+public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType, RegistryObjectType> {
 
     @Override
     public String getTableName() {
-        return "localizeddesc";
+        return "t_description";
     }
 
     @Override

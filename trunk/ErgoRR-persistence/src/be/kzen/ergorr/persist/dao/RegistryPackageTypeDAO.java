@@ -72,6 +72,6 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
 
     @Override
     public String getTableName() {
-        return "registrypackage";
+        return "t_registrypackage";
     }
 }

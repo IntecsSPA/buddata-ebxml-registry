@@ -95,16 +95,16 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
     @Override
     public String getTableName() {
-        return "slot";
+        return "t_slot";
     }
 
     @Override
     public String getParamList() {
-        return "seq,parent,slotname,slottype,spectype,stringvalue,boolvalue,datetimevalue,doublevalue,intvalue,geometryvalue";
+        return "seq,parent,name_,slottype,spectype,stringvalue,boolvalue,datetimevalue,doublevalue,intvalue,geometryvalue";
     }
 
     public String getQueryParamList() {
-        return "slotName,slotType,specType,stringValue";
+        return "name_,slottype,spectype,stringvalue";
     }
 
     @Override
@@ -113,7 +113,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         Statement stmt = connection.createStatement();
 
         StringBuilder sql = new StringBuilder(200);
-        sql.append("select ").append(getQueryParamList()).append(" from slot where parent='").append(parent.getId()).append("'");
+        sql.append("select ").append(getQueryParamList()).append(" from t_slot where parent='").append(parent.getId()).append("'");
 
         ResultSet result = stmt.executeQuery(sql.toString());
 

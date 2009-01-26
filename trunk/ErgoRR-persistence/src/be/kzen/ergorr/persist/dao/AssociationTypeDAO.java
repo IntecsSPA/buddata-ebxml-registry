@@ -80,7 +80,7 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
 
     @Override
     public String getTableName() {
-        return "association";
+        return "t_association";
     }
 
     @Override

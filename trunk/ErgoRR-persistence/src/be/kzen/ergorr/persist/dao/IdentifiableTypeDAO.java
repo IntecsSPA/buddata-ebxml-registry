@@ -107,7 +107,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     @Override
     public String getTableName() {
-        return "identifiable";
+        return "t_identifiable";
     }
 
     @Override
