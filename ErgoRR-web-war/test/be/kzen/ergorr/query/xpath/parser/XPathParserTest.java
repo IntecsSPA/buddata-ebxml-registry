@@ -24,7 +24,9 @@ public class XPathParserTest {
     @Test
     public void testGetNextElement() throws Exception {
 //        String xpath = "$AI/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:archivingDate\"]/rim:ValueList/rim:Value[1]";
-        String xpath = "$AI[@objectType=\"urn:blabla\"]/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:archivingDate\"]/rim:ValueList/rim:Value[1]";
+//        String xpath = "$AI[@objectType=\"urn:blabla\"]/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:archivingDate\"]/rim:ValueList/rim:Value[1]";
+        String xpath = "$ACQPLAT/rim:Name/rim:LocalizedString[@xml:lang=\"en-US\"]/@value";
+//        String xpath = "$ACQPLAT/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:sensorType\"]/rim:ValueList/rim:Value[1]";
 //        String xpath = "rim:Association/@sourceObject";
 //        String xpath = "$asso/@sourceObject";
         SimpleXPathParser parser = new SimpleXPathParser(xpath);
