@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csw:GetRecords startPosition="1" maxRecords="10" version="2.0" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+    <csw:Query typeNames="rim:ExtrinsicObject">
+        <csw:ElementSetName typeNames="rim:ExtrinsicObject">full</csw:ElementSetName>
+        <csw:Constraint version="1.1.0">
+            <ogc:Filter>
+                <ogc:And>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:ExtrinsicObject/@objectType</ogc:PropertyName>
+                        <ogc:Literal>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                    <ogc:PropertyIsGreaterThanOrEqualTo>
+                        <ogc:PropertyName>/rim:ExtrinsicObject/rim:Slot[@name="urn:ogc:def:ebRIM-Slot:OGC-06-131:beginPosition"]/rim:ValueList/rim:Value[1]</ogc:PropertyName>
+                        <ogc:Literal>2007-01-10T00:00:00.000</ogc:Literal>
+                    </ogc:PropertyIsGreaterThanOrEqualTo>
+                </ogc:And>
+            </ogc:Filter>
+        </csw:Constraint>
+    </csw:Query>
+</csw:GetRecords>
