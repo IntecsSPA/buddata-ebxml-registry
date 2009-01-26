@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/ErgoRR-web-war" docBase="ErgoRR-web-war" debug="5" reloadable="true" crossContext="true">
+<Context path="/ergorr" docBase="ErgoRR-web-war" debug="5" reloadable="true" crossContext="true">
     <Resource name="jdbc/ergorr"
         auth="Container"
         type="javax.sql.DataSource"
