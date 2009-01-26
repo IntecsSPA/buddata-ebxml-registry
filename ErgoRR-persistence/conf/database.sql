@@ -1,41 +1,40 @@
 
 -- =================================================================================== TABLE
-DROP TABLE IF EXISTS association CASCADE;
-DROP TABLE IF EXISTS auditableevent CASCADE;
-DROP TABLE IF EXISTS affectedobject CASCADE;
-DROP TABLE IF EXISTS classification CASCADE;
-DROP TABLE IF EXISTS classificationnode CASCADE;
-DROP TABLE IF EXISTS classificationscheme CASCADE;
-DROP TABLE IF EXISTS externalidentifier CASCADE;
-DROP TABLE IF EXISTS externallink CASCADE;
-DROP TABLE IF EXISTS extrinsicobject CASCADE;
-DROP TABLE IF EXISTS federation CASCADE;
-DROP TABLE IF EXISTS localizedname CASCADE;
-DROP TABLE IF EXISTS localizeddesc CASCADE;
-DROP TABLE IF EXISTS usagedescription CASCADE;
-DROP TABLE IF EXISTS objectref CASCADE;
-DROP TABLE IF EXISTS organization CASCADE;
-DROP TABLE IF EXISTS registrypackage CASCADE;
-DROP TABLE IF EXISTS postaladdress CASCADE;
-DROP TABLE IF EXISTS emailaddress CASCADE;
-DROP TABLE IF EXISTS registry CASCADE;
-DROP TABLE IF EXISTS service CASCADE;
-DROP TABLE IF EXISTS servicebinding CASCADE;
-DROP TABLE IF EXISTS slot CASCADE;
-DROP TABLE IF EXISTS specificationlink CASCADE;
-DROP TABLE IF EXISTS usageparameter CASCADE;
-DROP TABLE IF EXISTS subscription CASCADE;
-DROP TABLE IF EXISTS notifyaction CASCADE;
-DROP TABLE IF EXISTS notification CASCADE;
-DROP TABLE IF EXISTS notificationobject CASCADE;
-DROP TABLE IF EXISTS adhocquery CASCADE;
-DROP TABLE IF EXISTS telephonenumber CASCADE;
-DROP TABLE IF EXISTS user_ CASCADE;
-DROP TABLE IF EXISTS person CASCADE;
-DROP TABLE IF EXISTS slottype CASCADE;
+DROP TABLE IF EXISTS t_association CASCADE;
+DROP TABLE IF EXISTS t_auditableevent CASCADE;
+DROP TABLE IF EXISTS t_affectedobject CASCADE;
+DROP TABLE IF EXISTS t_classification CASCADE;
+DROP TABLE IF EXISTS t_classificationnode CASCADE;
+DROP TABLE IF EXISTS t_classificationscheme CASCADE;
+DROP TABLE IF EXISTS t_externalidentifier CASCADE;
+DROP TABLE IF EXISTS t_externallink CASCADE;
+DROP TABLE IF EXISTS t_extrinsicobject CASCADE;
+DROP TABLE IF EXISTS t_federation CASCADE;
+DROP TABLE IF EXISTS t_localizedname CASCADE;
+DROP TABLE IF EXISTS t_localizeddesc CASCADE;
+DROP TABLE IF EXISTS t_usagedescription CASCADE;
+DROP TABLE IF EXISTS t_objectref CASCADE;
+DROP TABLE IF EXISTS t_organization CASCADE;
+DROP TABLE IF EXISTS t_registrypackage CASCADE;
+DROP TABLE IF EXISTS t_postaladdress CASCADE;
+DROP TABLE IF EXISTS t_emailaddress CASCADE;
+DROP TABLE IF EXISTS t_registry CASCADE;
+DROP TABLE IF EXISTS t_service CASCADE;
+DROP TABLE IF EXISTS t_servicebinding CASCADE;
+DROP TABLE IF EXISTS t_slot CASCADE;
+DROP TABLE IF EXISTS t_specificationlink CASCADE;
+DROP TABLE IF EXISTS t_usageparameter CASCADE;
+DROP TABLE IF EXISTS t_subscription CASCADE;
+DROP TABLE IF EXISTS t_notifyaction CASCADE;
+DROP TABLE IF EXISTS t_notification CASCADE;
+DROP TABLE IF EXISTS t_notificationobject CASCADE;
+DROP TABLE IF EXISTS t_adhocquery CASCADE;
+DROP TABLE IF EXISTS t_telephonenumber CASCADE;
+DROP TABLE IF EXISTS t_user CASCADE;
+DROP TABLE IF EXISTS t_person CASCADE;
 
 
-CREATE TABLE association (
+CREATE TABLE t_association (
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
@@ -52,7 +51,7 @@ CREATE TABLE association (
   targetobject  	   VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE auditableevent (
+CREATE TABLE t_auditableevent (
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
@@ -70,7 +69,7 @@ CREATE TABLE auditableevent (
   user_                    VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE affectedobject (
+CREATE TABLE t_affectedobject (
 
 --Each row is a relationship between a RegistryObject and an AuditableEvent
 --Enables many-to-many relationship between effected RegistryObjects and AuditableEvents
@@ -81,7 +80,7 @@ CREATE TABLE affectedobject (
   PRIMARY KEY (id, eventid)
 );
 
-CREATE TABLE classification (
+CREATE TABLE t_classification (
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
@@ -99,7 +98,7 @@ CREATE TABLE classification (
   noderepresentation       VARCHAR(256)
 );
 
-CREATE TABLE classificationnode (
+CREATE TABLE t_classificationnode (
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
@@ -116,7 +115,7 @@ CREATE TABLE classificationnode (
   path_                     VARCHAR(1024)
 );
 
-CREATE TABLE classificationscheme (
+CREATE TABLE t_classificationscheme (
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
@@ -132,7 +131,7 @@ CREATE TABLE classificationscheme (
   nodetype                 VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE externalidentifier (
+CREATE TABLE t_externalidentifier (
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
@@ -149,7 +148,7 @@ CREATE TABLE externalidentifier (
   value_                    VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE externallink (
+CREATE TABLE t_externallink (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -163,7 +162,7 @@ CREATE TABLE externallink (
   externaluri              VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE extrinsicobject (
+CREATE TABLE t_extrinsicobject (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -189,7 +188,7 @@ CREATE TABLE extrinsicobject (
   wrstitle                 VARCHAR(256)
 );
 
-CREATE TABLE federation (
+CREATE TABLE t_federation (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -204,7 +203,7 @@ CREATE TABLE federation (
   replicationsynclatency   VARCHAR(32)
 );
 
-CREATE TABLE localizedname (
+CREATE TABLE t_name (
 --LocalizedString attributes flattened for Name
   charset                  VARCHAR(32),
   lang                     VARCHAR(32) NOT NULL,
@@ -214,7 +213,7 @@ CREATE TABLE localizedname (
   PRIMARY KEY (parent, lang)
 );
 
-CREATE TABLE localizeddesc (
+CREATE TABLE t_description (
 --LocalizedString attributes flattened for Description
   charset                  VARCHAR(32),
   lang                     VARCHAR(32) NOT NULL,
@@ -224,7 +223,7 @@ CREATE TABLE localizeddesc (
   PRIMARY KEY (parent, lang)
 );
 
-CREATE TABLE usagedescription (
+CREATE TABLE t_usagedescription (
 --LocalizedString attributes flattened for UsageDescription
   charset                  VARCHAR(32),
   lang                     VARCHAR(32) NOT NULL,
@@ -234,14 +233,14 @@ CREATE TABLE usagedescription (
   PRIMARY KEY (parent, lang)
 );
 
-CREATE TABLE objectref (
+CREATE TABLE t_objectref (
 --Stores remote ObjectRefs only
 --Identifiable Attributes
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256)
 );
 
-CREATE TABLE organization (
+CREATE TABLE t_organization (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -259,7 +258,7 @@ CREATE TABLE organization (
 --Organization.telephoneNumbers attribute is in TelephoneNumber table
 );
 
-CREATE TABLE registrypackage (
+CREATE TABLE t_registrypackage (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -273,7 +272,7 @@ CREATE TABLE registrypackage (
 --RegistryPackage attributes: currently none defined
 );
 
-CREATE TABLE postaladdress (
+CREATE TABLE t_postaladdress (
   city                     VARCHAR(64),
   country                  VARCHAR(64),
   postalcode               VARCHAR(64),
@@ -284,14 +283,14 @@ CREATE TABLE postaladdress (
   parent                   VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE emailaddress (
+CREATE TABLE t_emailaddress (
   address                  VARCHAR(64) NOT NULL,
   type_                    VARCHAR(256),
 --The parent object that this is an email address for
   parent                   VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE registry (
+CREATE TABLE t_registry (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -311,7 +310,7 @@ CREATE TABLE registry (
   specificationversion     VARCHAR(8) NOT NULL
 );
 
-CREATE TABLE service (
+CREATE TABLE t_service (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -325,7 +324,7 @@ CREATE TABLE service (
 --Service attributes: currently none defined
 );
 
-CREATE TABLE servicebinding (
+CREATE TABLE t_servicebinding (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -341,7 +340,7 @@ CREATE TABLE servicebinding (
   targetbinding	           VARCHAR(256)
 );
 
-CREATE TABLE slot (
+CREATE TABLE t_slot (
   seq                      BIGINT       NOT NULL,
   parent                   VARCHAR(256) NOT NULL,
   slotname                 VARCHAR(256) NOT NULL,
@@ -356,7 +355,7 @@ CREATE TABLE slot (
   PRIMARY KEY (seq, parent, slotname)
 );
 
-CREATE TABLE specificationlink (
+CREATE TABLE t_specificationlink (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -371,13 +370,13 @@ CREATE TABLE specificationlink (
   specificationobject      VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE usageparameter (
+CREATE TABLE t_usageparameter (
   value_                   VARCHAR(1024) NOT NULL,
 --The parent SpecificationLink that this is a usage parameter for
   parent                   VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE subscription (
+CREATE TABLE t_subscription (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -404,7 +403,7 @@ CREATE TABLE notifyaction (
   parent                   VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE notification (
+CREATE TABLE t_notification (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -418,7 +417,7 @@ CREATE TABLE notification (
   subscription             VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE notificationobject (
+CREATE TABLE t_notificationobject (
 
 --Each row is a relationship between a RegistryObject and a Notification
 --Enables a Notification to have multiple RegistryObjects
@@ -427,7 +426,7 @@ CREATE TABLE notificationobject (
   PRIMARY KEY (notificationid, registryobjectid)
 );
 
-CREATE TABLE adhocquery (
+CREATE TABLE t_adhocquery (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -442,7 +441,7 @@ CREATE TABLE adhocquery (
   query                    VARCHAR(4096) NOT NULL
 );
 
-CREATE TABLE telephonenumber (
+CREATE TABLE t_telephonenumber (
   areacode                 VARCHAR(8),
   countrycode              VARCHAR(8),
   extension                VARCHAR(8),
@@ -452,7 +451,7 @@ CREATE TABLE telephonenumber (
   parent                   VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE user_ (
+CREATE TABLE t_user (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -472,7 +471,7 @@ CREATE TABLE user_ (
 --telephoneNumbers is in TelephoneNumber table
 );
 
-CREATE TABLE person (
+CREATE TABLE t_person (
   id                       VARCHAR(256) NOT NULL PRIMARY KEY,
   home                     VARCHAR(256),
 --RegistryObject Attributes
@@ -502,11 +501,11 @@ CREATE TABLE person (
 );*/
 -- =================================================================================== VIEW
 
-DROP VIEW IF EXISTS identifiable;
-DROP VIEW IF EXISTS registryobject;
-DROP VIEW IF EXISTS registryobjectid;
+DROP VIEW IF EXISTS t_identifiable;
+DROP VIEW IF EXISTS t_registryobject;
+DROP VIEW IF EXISTS t_registryobjectid;
 
-CREATE VIEW identifiable (
+CREATE VIEW t_identifiable (
 class_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -549,7 +548,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM association UNION ALL SELECT
+FROM t_association UNION ALL SELECT
 'AuditableEvent' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -570,7 +569,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM auditableevent UNION ALL SELECT
+FROM t_auditableevent UNION ALL SELECT
 'Classification' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -591,7 +590,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM classification UNION ALL SELECT
+FROM t_classification UNION ALL SELECT
 'ClassificationNode' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -612,7 +611,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM classificationnode UNION ALL SELECT
+FROM t_classificationnode UNION ALL SELECT
 'ClassificationScheme' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -633,7 +632,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM classificationscheme UNION ALL SELECT
+FROM t_classificationscheme UNION ALL SELECT
 'ExternalIdentifier' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -654,7 +653,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM externalidentifier UNION ALL SELECT
+FROM t_externalidentifier UNION ALL SELECT
 'ExternalLink' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -675,7 +674,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM externallink UNION ALL SELECT
+FROM t_externallink UNION ALL SELECT
 'ExtrinsicObject' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -696,7 +695,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM extrinsicobject UNION ALL SELECT
+FROM t_extrinsicobject UNION ALL SELECT
 'Federation' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -717,7 +716,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM federation UNION ALL SELECT
+FROM t_federation UNION ALL SELECT
 'Organization' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -738,7 +737,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM organization UNION ALL SELECT
+FROM t_organization UNION ALL SELECT
 'RegistryPackage' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -759,7 +758,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM registrypackage UNION ALL SELECT
+FROM t_registrypackage UNION ALL SELECT
 'Registry' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -780,7 +779,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM registry UNION ALL SELECT
+FROM t_registry UNION ALL SELECT
 'Service' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -801,7 +800,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM service UNION ALL SELECT
+FROM t_service UNION ALL SELECT
 'ServiceBinding' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -822,7 +821,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM servicebinding UNION ALL SELECT
+FROM t_servicebinding UNION ALL SELECT
 'SpecificationLink' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -843,7 +842,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM specificationlink UNION ALL SELECT
+FROM t_specificationlink UNION ALL SELECT
 'Subscription' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -864,7 +863,7 @@ selector, endtime, notificationinterval, starttime,
 null::varchar,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM subscription UNION ALL SELECT
+FROM t_subscription UNION ALL SELECT
 'Notification' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -885,7 +884,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 subscription,
 null::varchar, null::varchar,
 null::varchar, null::varchar, null::varchar
-FROM notification UNION ALL SELECT
+FROM t_notification UNION ALL SELECT
 'AdhocQuery' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -906,7 +905,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 querylanguage, query,
 null::varchar, null::varchar, null::varchar
-FROM adhocquery UNION ALL SELECT
+FROM t_adhocquery UNION ALL SELECT
 'User' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -927,7 +926,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 firstname, middlename, lastname
-FROM user_ UNION ALL SELECT
+FROM t_user UNION ALL SELECT
 'Person' AS clazz_,
 id, home,
 lid, status, objecttype, versionname, versioncomment,
@@ -948,7 +947,7 @@ null::varchar, null::varchar, null::varchar, null::varchar,
 null::varchar,
 null::varchar, null::varchar,
 firstname, middlename, lastname
-FROM person;
+FROM t_person;
 -- =================================================================================== INDEX
 
 DROP INDEX IF EXISTS extrinsicobject_id_idx;
@@ -971,28 +970,28 @@ DROP INDEX IF EXISTS localizeddesc_parent_idx;
 --drop index if exists slot_geometry_idx;
 
 
-CREATE index extrinsicobject_id_idx ON extrinsicobject (id);
-CREATE index association_id_idx ON association (id);
-CREATE index classification_id_idx ON classification (id);
-CREATE index classificationnode_id_idx ON classificationnode (id);
-CREATE index classificationscheme_id_idx ON classificationscheme (id);
-CREATE index externalidentifier_id_idx ON externalidentifier (id);
-CREATE index registrypackage_id_idx ON registrypackage (id);
+CREATE index extrinsicobject_id_idx ON t_extrinsicobject (id);
+CREATE index association_id_idx ON t_association (id);
+CREATE index classification_id_idx ON t_classification (id);
+CREATE index classificationnode_id_idx ON t_classificationnode (id);
+CREATE index classificationscheme_id_idx ON t_classificationscheme (id);
+CREATE index externalidentifier_id_idx ON t_externalidentifier (id);
+CREATE index registrypackage_id_idx ON t_registrypackage (id);
 /*
 CREATE index localizedname_id_idx ON localizedname (id);
 CREATE index localizeddesc_id_idx ON localizeddesc (id);
 */
 
-CREATE index slot_parent_idx ON slot (parent);
-CREATE index slot_name_idx ON slot (slotname);
-CREATE index association_source_idx ON association (sourceobject);
-CREATE index association_target_idx ON association (targetobject);
-CREATE index classificationnode_parent_idx ON classificationnode (parent);
-CREATE index externalidentifier_registryobject_idx ON externalidentifier (registryobject);
-CREATE index classification_classifiedobject_idx ON classification (classifiedobject);
-CREATE index localizedname_parent_idx ON localizedname (parent);
-CREATE index localizeddesc_parent_idx ON localizeddesc (parent);
-CREATE index slot_geometry_idx on slot using gist (geometryvalue);
+CREATE index slot_parent_idx ON t_slot (parent);
+CREATE index slot_name_idx ON t_slot (slotname);
+CREATE index association_source_idx ON t_association (sourceobject);
+CREATE index association_target_idx ON t_association (targetobject);
+CREATE index classificationnode_parent_idx ON t_classificationnode (parent);
+CREATE index externalidentifier_registryobject_idx ON t_externalidentifier (registryobject);
+CREATE index classification_classifiedobject_idx ON t_classification (classifiedobject);
+CREATE index localizedname_parent_idx ON t_name (parent);
+CREATE index localizeddesc_parent_idx ON t_description (parent);
+CREATE index slot_geometry_idx on t_slot using vgist (geometryvalue);
 
 /*ALTER TABLE slot CLUSTER ON slot_geometry_idx;*/
 
