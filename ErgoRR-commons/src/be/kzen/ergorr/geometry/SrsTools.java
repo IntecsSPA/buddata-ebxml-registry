@@ -1,3 +1,4 @@
+
 /*
  * Project: Buddata ebXML RegRep
  * Class: SrsTools.java
@@ -18,6 +19,7 @@
  */
 package be.kzen.ergorr.geometry;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.exceptions.TransformException;
 import java.util.logging.Logger;
 
@@ -29,13 +31,6 @@ public class SrsTools {
 
     private static Logger log = Logger.getLogger(SrsTools.class.getName());
     private static SrsTools instance;
-//    private Map<String, MathTransform> transformers;
-//    private GeometryCoordinateSequenceTransformer coordinateTransformer;
-
-    private SrsTools() {
-//        coordinateTransformer = new GeometryCoordinateSequenceTransformer();
-//        transformers = new ConcurrentHashMap<String, MathTransform>();
-    }
 
     public static synchronized SrsTools getInstance() {
         if (instance == null) {
@@ -60,72 +55,29 @@ public class SrsTools {
      */
     public static int getSrsId(String srsName) throws TransformException {
         try {
-            // check for cases like "http://www.opengis.net/gml/srs/epsg.xml#4326"
-            int idx = srsName.lastIndexOf("#");
 
-            if (idx > 0) {
-                return Integer.valueOf(srsName.substring(idx + 1, srsName.length()));
-            } else {
-                // check for cases like "EPSG:4326" or "urn:ogc:def:crs:EPSG:4326"
-                idx = srsName.lastIndexOf(":");
+            if (srsName != null) {
+
+                // check for cases like "http://www.opengis.net/gml/srs/epsg.xml#4326"
+                int idx = srsName.lastIndexOf("#");
 
                 if (idx > 0) {
                     return Integer.valueOf(srsName.substring(idx + 1, srsName.length()));
                 } else {
-                    return Integer.valueOf(srsName);
+                    // check for cases like "EPSG:4326" or "urn:ogc:def:crs:EPSG:4326"
+                    idx = srsName.lastIndexOf(":");
+
+                    if (idx > 0) {
+                        return Integer.valueOf(srsName.substring(idx + 1, srsName.length()));
+                    } else {
+                        return Integer.valueOf(srsName);
+                    }
                 }
+            } else {
+                return CommonProperties.getInstance().getInt("db.defaultSrsId");
             }
         } catch (Throwable t) {
             throw new TransformException("Could not get SRS ID from SRS Name: " + srsName, t);
         }
     }
-
-//    private Geometry transformGeometry(Geometry geometry, String sourceSrs, String destSrs) throws Exception {
-//        MathTransform mt = transformers.get(sourceSrs);
-//
-//        if (mt == null) {
-//            try {
-//                mt = CRS.findMathTransform(CRS.decode(sourceSrs), CRS.decode(destSrs), false);
-//            } catch (Exception ex) {
-//                log.warn("failed finding coordinate math transformer with lenient = false");
-//            }
-//
-//            if (mt == null) {
-//                mt = CRS.findMathTransform(CRS.decode(sourceSrs), CRS.decode(destSrs), true);
-//            }
-//
-//            transformers.put(sourceSrs, mt);
-//        }
-//
-//        if (log.isDebugEnabled()) {
-//            log.debug("Transforming " + sourceSrs + " to " + destSrs);
-//        }
-//        coordinateTransformer.setMathTransform(mt);
-//        return coordinateTransformer.transform(geometry);
-//    }
-//
-//    /**
-//     * Transform <code>geometry</code> coordinates from
-//     * <code>geometry.getSRID()</code> to the applications internally used srs ID.
-//     * 
-//     * @param geometry Geometry to transform.
-//     * @return Geometry with applications internally used srsName.
-//     * @throws be.kzen.ergorr.exceptions.QueryException
-//     */
-//    public Geometry transformGeometry(Geometry geometry) throws TransformException {
-//        int defaultSrsId = CommonProperties.getInstance().getInt("db.defaultSrsId");
-//
-//        if (geometry.getSRID() != defaultSrsId) {
-//            try {
-//                geometry = SrsTools.getInstance().transformGeometry(geometry, "EPSG:" + geometry.getSRID(),
-//                        CommonProperties.getInstance().get("db.defaultSrsName"));
-//            } catch (Exception ex) {
-//                throw new TransformException("Could not translate geometry to " + CommonProperties.getInstance().get("db.defaultSrsName"), ex);
-//            }
-//        }
-//
-//        geometry.setSRID(defaultSrsId);
-//
-//        return geometry;
-//    }
 }
