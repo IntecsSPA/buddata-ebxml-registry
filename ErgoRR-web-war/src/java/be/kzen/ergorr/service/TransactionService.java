@@ -18,6 +18,8 @@
  */
 package be.kzen.ergorr.service;
 
+import be.kzen.ergorr.commons.CommonFunctions;
+import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
@@ -25,6 +27,7 @@ import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.DeleteType;
 import be.kzen.ergorr.model.csw.ElementSetNameType;
 import be.kzen.ergorr.model.csw.ElementSetType;
+import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.InsertResultType;
 import be.kzen.ergorr.model.csw.InsertType;
@@ -46,6 +49,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 /**
  *
@@ -144,14 +148,17 @@ public class TransactionService {
     }
 
     private TransactionResponseType doDelete(DeleteType delete) throws ServiceExceptionReport {
-        // exec query
-        // check if objects have relations
-        //    yes: don't delete
-        //    no: delete
         GetRecordsType getRecords = new GetRecordsType();
         QueryType query = new QueryType();
+        String typeName = CommonFunctions.removePrefix(delete.getTypeName());
+        QName objQNameToDelete = new QName(NamespaceConstants.RIM, typeName, "rim");
+        query.getTypeNames().add(objQNameToDelete);
+
         ElementSetNameType elSetName = new ElementSetNameType();
+        elSetName.getTypeNames().add(objQNameToDelete);
         elSetName.setValue(ElementSetType.BRIEF);
+        query.setElementSetName(elSetName);
+        
         query.setConstraint(delete.getConstraint());
         JAXBElement<QueryType> queryEl = OFactory.csw.createQuery(query);
         getRecords.setAbstractQuery(queryEl);
@@ -160,6 +167,19 @@ public class TransactionService {
         rq.setRequest(getRecords);
 
         QueryManager qm = new QueryManager(rq);
+
+        GetRecordsResponseType response = qm.query();
+        List<Object> objsToDelete = response.getSearchResults().getAny();
+
+        RegistryObjectListType regObjList = new RegistryObjectListType();
+
+        for (Object objToDelete : objsToDelete) {
+            JAXBElement<? extends IdentifiableType> elToDelete = (JAXBElement<? extends IdentifiableType>) objToDelete;
+            regObjList.getIdentifiable().add(elToDelete);
+        }
+
+        LCManager lcm = new LCManager(requestContext);
+        lcm.delete(regObjList);
 
         throw new ServiceExceptionReport("Transaction.delete not supported");
     }

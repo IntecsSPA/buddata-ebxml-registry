@@ -21,6 +21,8 @@ package be.kzen.ergorr.service;
 import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.model.csw.AcknowledgementType;
+import be.kzen.ergorr.model.csw.EchoedRequestType;
 import be.kzen.ergorr.model.csw.HarvestResponseType;
 import be.kzen.ergorr.model.csw.HarvestType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
@@ -69,6 +71,13 @@ public class HarvestService {
 
             TransactionService transService = new TransactionService();
             response.setTransactionResponse(transService.buildResponse(regObjList));
+
+            AcknowledgementType ack = new AcknowledgementType();
+            EchoedRequestType echo = new EchoedRequestType();
+            echo.setAny(remoteXmlEl);
+            ack.setEchoedRequest(echo);
+            response.setAcknowledgement(ack);
+
             LCManager lcm = new LCManager(requestContext);
             lcm.submit(regObjList);
             return response;

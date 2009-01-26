@@ -32,29 +32,25 @@ public class QueryObject {
 
     private String objectName;
     private String sqlAlias;
-    private boolean returnType;
-    private Class objClass;
 
     public QueryObject() {
     }
 
-    public QueryObject(String objectName, String sqlAlias) throws QueryException {
+    public QueryObject(String objectName, String sqlAlias) {
         this.objectName = objectName;
         this.sqlAlias = sqlAlias;
+    }
 
+    public Class getObjClass() throws QueryException {
         try {
-            objClass = OFactory.getXmlClassByElementName(objectName);
+            return OFactory.getXmlClassByElementName(objectName);
         } catch (ClassNotFoundException ex) {
             throw new QueryException("Could not find object: " + objectName, ex);
         }
     }
 
-    public Class getObjClass() {
-        return objClass;
-    }
-
     public String getTableName() {
-        return objectName.toLowerCase();
+        return "t_" + objectName.toLowerCase();
     }
 
     public String getObjectName() {
@@ -63,13 +59,5 @@ public class QueryObject {
 
     public String getSqlAlias() {
         return sqlAlias;
-    }
-
-    public boolean isReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(boolean returnType) {
-        this.returnType = returnType;
     }
 }

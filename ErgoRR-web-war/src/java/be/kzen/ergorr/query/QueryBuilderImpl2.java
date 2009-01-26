@@ -18,19 +18,33 @@
  */
 package be.kzen.ergorr.query;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.exceptions.QueryException;
+import be.kzen.ergorr.exceptions.TransformException;
+import be.kzen.ergorr.geometry.GeometryTranslator;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.QueryType;
+import be.kzen.ergorr.model.gml.EnvelopeType;
+import be.kzen.ergorr.model.ogc.BBOXType;
 import be.kzen.ergorr.model.ogc.BinaryComparisonOpType;
 import be.kzen.ergorr.model.ogc.BinaryLogicOpType;
+import be.kzen.ergorr.model.ogc.BinarySpatialOpType;
+import be.kzen.ergorr.model.ogc.DistanceBufferType;
+import be.kzen.ergorr.model.ogc.FilterType;
 import be.kzen.ergorr.model.ogc.LiteralType;
+import be.kzen.ergorr.model.ogc.PropertyIsBetweenType;
+import be.kzen.ergorr.model.ogc.PropertyIsLikeType;
+import be.kzen.ergorr.model.ogc.PropertyIsNullType;
 import be.kzen.ergorr.model.ogc.PropertyNameType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
+import be.kzen.ergorr.query.xpath.XPathToSqlConverter;
+import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +55,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+import javax.xml.xpath.XPathException;
 
 /**
  *
@@ -49,19 +64,11 @@ import javax.xml.namespace.QName;
 public class QueryBuilderImpl2 implements QueryBuilder {
 
     private static Logger logger = Logger.getLogger(QueryBuilderImpl2.class.getName());
-    private Map<String, QueryObject> queryrObjs;
-    private QueryObject returnObj;
+    private SqlQuery sqlQuery;
     private ElementSetType resultSet;
     private GetRecordsType request;
     private QueryType filterQuery;
-    private StringBuilder sqlSelect;
-    private StringBuilder sqlJoin;
-    private StringBuilder sqlJoinCriteria;
-    private StringBuilder sqlCriteria;
     private List<Object> queryParams;
-    private int aliasIdx;
-    private int maxResults;
-    private int startPosition;
     private static final String EQUAL_SIGN = " = ";
     private static final String NOT_EQUAL_SIGN = " != ";
     private static final String GREATER_SIGN = " > ";
@@ -76,12 +83,36 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private static final String NAME_ALIAS = "n";
     private static final String DESC_ALIAS = "d";
 
-    public QueryBuilderImpl2() {
-        queryrObjs = new HashMap<String, QueryObject>();
-        sqlCriteria = new StringBuilder(256);
-        aliasIdx = 0;
-        maxResults = 0;
-        startPosition = 0;
+    public QueryBuilderImpl2(GetRecordsType request) throws QueryException {
+        this.request = request;
+        sqlQuery = new SqlQuery();
+        filterQuery = (QueryType) request.getAbstractQuery().getValue();
+        queryParams = new ArrayList<Object>();
+        init();
+    }
+
+    public List<Object> getParameters() {
+        return queryParams;
+    }
+
+    public int getMaxResults() {
+        return sqlQuery.getMaxResults();
+    }
+
+    public int getStartPosition() {
+        return sqlQuery.getStartPosition();
+    }
+
+    public ElementSetType getResultSet() {
+        return resultSet;
+    }
+
+    public QueryObject getReturnObject() {
+        return sqlQuery.getReturnType();
+    }
+
+    public String createCountQuery() {
+        return sqlQuery.buildCountQuery();
     }
 
     /**
@@ -91,10 +122,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      */
     public void init() throws QueryException {
         if (request.isSetMaxRecords()) {
-            maxResults = request.getMaxRecords().intValue();
+            sqlQuery.setMaxResults(request.getMaxRecords().intValue());
         }
         if (request.isSetStartPosition()) {
-            startPosition = request.getStartPosition().intValue();
+            sqlQuery.setStartPosition(request.getStartPosition().intValue());
         }
         if (filterQuery.getElementSetName().isSetValue()) {
             resultSet = filterQuery.getElementSetName().getValue();
@@ -112,35 +143,22 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         String returnType = getReturnType();
         List<QName> qnames = filterQuery.getTypeNames();
 
+
         if (!qnames.isEmpty()) {
             for (QName qname : qnames) {
                 if (qname != null) {
                     String fullType = qname.getLocalPart();
-
-                    int idx = fullType.indexOf("_");
-
-                    QueryObject qo = null;
-                    if (idx > 0) {
-                        String[] split = fullType.split("_");
-                        qo = new QueryObject(split[0], getNextObjectAlias());
-                        queryrObjs.put(split[1], qo);
-                    } else {
-                        qo = new QueryObject(fullType, getNextObjectAlias());
-                        queryrObjs.put(fullType, qo);
-                    }
+                    QueryObject qo = sqlQuery.addNewQueryObject(fullType);
 
                     if (returnType.equals(fullType)) {
-                        qo.setReturnType(true);
-                        returnObj = qo;
-                    } else {
-                        qo.setReturnType(false);
+                        sqlQuery.setReturnType(qo);
                     }
                 } else {
                     throw new QueryException("Invalid QName in Query elements typeNames attribute");
                 }
             }
 
-            if (returnObj == null) {
+            if (sqlQuery.getReturnType() == null) {
                 throw new QueryException("Return type not valid or not specified in the query");
             }
         } else {
@@ -172,25 +190,31 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         return returnType;
     }
 
-    /**
-     * Get a unique queriable object alias.
-     *
-     * @return Unique alias.
-     */
-    private String getNextObjectAlias() {
-        return OBJECT_ALIAS + aliasIdx++;
-    }
-
     public String build() throws QueryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        FilterType filter = filterQuery.getConstraint().getFilter();
+        JAXBElement queryOperator = null;
 
-    public int getStartPosition() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public int getMaxResults() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (filter.isSetLogicOps()) {
+            queryOperator = filter.getLogicOps();
+        } else if (filter.isSetComparisonOps()) {
+            queryOperator = filter.getComparisonOps();
+        } else if (filter.isSetSpatialOps()) {
+            queryOperator = filter.getSpatialOps();
+        } else {
+            // TODO: handle query all in sqlQuery
+//            if (sqlQuery.getReturnType() != null) {
+//                sqlQuery.append("select ").append(sqlQuery.getReturnType().getSqlAlias()).append(".* from ")
+//                        .append(sqlQuery.getReturnType().getTableName()).append(" ").append(sqlQuery.getReturnType().getSqlAlias());
+//            } else {
+//                throw new QueryException("No return object provided in the query");
+//            }
+        }
+        try {
+            recurseQueryOperator(queryOperator);
+        } catch (XPathException ex) {
+            throw new QueryException(ex);
+        }
+        return sqlQuery.buildQuery();
     }
 
     /**
@@ -203,13 +227,13 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @param queryOperator The next query operator to process.
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
-    private void recurseQueryOperator(JAXBElement queryOperator) throws QueryException {
+    private void recurseQueryOperator(JAXBElement queryOperator) throws QueryException, XPathException {
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("queryOperator: " + queryOperator.getClass().toString());
         }
 
         String opName = "op" + queryOperator.getClass().getSimpleName();
-        
+
         try {
             Method method = this.getClass().getDeclaredMethod(opName, new Class[]{queryOperator.getValue().getClass()});
             method.invoke(this, new Object[]{queryOperator.getValue()});
@@ -230,19 +254,19 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @param opAnd And operator.
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
-    private void opAnd(BinaryLogicOpType opAnd) throws QueryException {
+    private void opAnd(BinaryLogicOpType opAnd) throws QueryException, XPathException {
         List<JAXBElement<?>> els = opAnd.getComparisonOpsOrSpatialOpsOrLogicOps();
-        sqlCriteria.append("(");
+        sqlQuery.append("(");
         for (int i = 0; i < els.size(); i++) {
             JAXBElement<?> el = els.get(i);
 
             recurseQueryOperator(el);
 
             if (i + 1 < els.size()) {
-                sqlCriteria.append(" and ");
+                sqlQuery.append(" and ");
             }
         }
-        sqlCriteria.append(")");
+        sqlQuery.append(")");
     }
 
     /**
@@ -250,19 +274,19 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @param opOr Or operator.
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
-    private void opOr(BinaryLogicOpType opOr) throws QueryException {
+    private void opOr(BinaryLogicOpType opOr) throws QueryException, XPathException {
         List<JAXBElement<?>> els = opOr.getComparisonOpsOrSpatialOpsOrLogicOps();
-        sqlCriteria.append("(");
+        sqlQuery.append("(");
         for (int i = 0; i < els.size(); i++) {
             JAXBElement<?> el = els.get(i);
 
             recurseQueryOperator(el);
 
             if (i + 1 < els.size()) {
-                sqlCriteria.append(" or ");
+                sqlQuery.append(" or ");
             }
         }
-        sqlCriteria.append(")");
+        sqlQuery.append(")");
     }
 
     /**
@@ -276,6 +300,56 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     }
 
     /**
+     * Handles OGC query PropertyIsNoyEqualTo operator.
+     *
+     * @param propNotEqual PropertyIsNoyEqualTo operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsNotEqualTo(BinaryComparisonOpType propNotEqual) throws QueryException {
+        binaryComparisionQuery(propNotEqual, NOT_EQUAL_SIGN);
+    }
+
+    /**
+     * Handles OGC query PropertyIsGreaterThan operator.
+     *
+     * @param propGreater PropertyIsGreaterThan operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsGreaterThan(BinaryComparisonOpType propGreater) throws QueryException {
+        binaryComparisionQuery(propGreater, GREATER_SIGN);
+    }
+
+    /**
+     * Handles OGC query PropertyIsGreaterThanOrEqualTo operator.
+     *
+     * @param propGreaterOrEqual PropertyIsGreaterThanOrEqualTo operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsGreaterThanOrEqualTo(BinaryComparisonOpType propGreaterOrEqual) throws QueryException {
+        binaryComparisionQuery(propGreaterOrEqual, GREATER_OR_EQUAL_SIGN);
+    }
+
+    /**
+     * Handles OGC query PropertyIsLessThan operator.
+     *
+     * @param propLess PropertyIsLessThan operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsLessThan(BinaryComparisonOpType propLess) throws QueryException {
+        binaryComparisionQuery(propLess, LESS_SIGN);
+    }
+
+    /**
+     * Handles OGC query PropertyIsLessThanOrEqualTo operator.
+     *
+     * @param propGreaterOrEqual PropertyIsLessThanOrEqualTo operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsLessThanOrEqualTo(BinaryComparisonOpType propGreaterOrEqual) throws QueryException {
+        binaryComparisionQuery(propGreaterOrEqual, LESS_OR_EQUAL_SIGN);
+    }
+
+    /**
      * Generic handler for all OGC query BinaryComparisonOp operators.
      *
      * @param binCopmparisonOp BinaryComparisonOp operator.
@@ -283,61 +357,384 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void binaryComparisionQuery(BinaryComparisonOpType binCopmparisonOp, String comparisonOperator) throws QueryException {
-        String queriedType = "";
 
         if (binCopmparisonOp.getExpression().size() > 1) {
             Object valObj1 = binCopmparisonOp.getExpression().get(0).getValue();
             Object valObj2 = binCopmparisonOp.getExpression().get(1).getValue();
+            XPathNode xpath1 = null;
+
 
             if (valObj1 instanceof PropertyNameType) {
-                queriedType = handlePropertyName((PropertyNameType) valObj1);
-            } else if (valObj1 instanceof LiteralType) {
-                queriedType = InternalConstants.TYPE_STRING;
-                handleLiteral((LiteralType) valObj1);
-            }
+                PropertyNameType prop1 = (PropertyNameType) valObj1;
 
-            sqlCriteria.append(comparisonOperator);
-
-            handleLiteralOrPropertyName(valObj2);
-
-            if (valObj2 instanceof PropertyNameType) {
-                PropertyNameType val2 = (PropertyNameType) valObj2;
-
-                if (!val2.getContent().isEmpty()) {
-                    String xpath = (String) val2.getContent().get(0);
-                    XPathObject xp = new XPathObject(xpath);
-                    xp.process();
-
-                    if (xp.isSlotQuery()) {
-                        throw new QueryException("Slot query as second parameter not yet supported");
-                    } else {
-                        sqlCriteria.append(queryrObjs.get(xp.getObjectType()).getSqlAlias()).append(".");
-                        sqlCriteria.append(xp.getObjectAttribute());
+                if (!prop1.getContent().isEmpty()) {
+                    String prop1XPath = (String) prop1.getContent().get(0);
+                    XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, prop1XPath);
+                    try {
+                        xpath1 = xpathConv.process();
+                    } catch (XPathException ex) {
+                        throw new QueryException(ex);
                     }
+
+                    sqlQuery.append(xpath1.getQueryObject().getSqlAlias()).append(".").append(xpath1.getAttributeName()).append(" ").append(comparisonOperator);
+
+                    if (valObj2 instanceof PropertyNameType) {
+                        PropertyNameType prop2 = (PropertyNameType) valObj2;
+                        String prop2XPath = (String) prop2.getContent().get(0);
+                        xpathConv = new XPathToSqlConverter(sqlQuery, prop2XPath);
+
+                        XPathNode xpath2 = null;
+
+                        try {
+                            xpath2 = xpathConv.process();
+                        } catch (XPathException ex) {
+                            throw new QueryException(ex);
+                        }
+
+                        sqlQuery.append(xpath2.getQueryObject().getSqlAlias()).append(".").append(xpath2.getAttributeName());
+                    } else {
+                        LiteralType lit = (LiteralType) valObj2;
+                        appendLiteralContent(lit, xpath1.getQueryAttrType());
+                    }
+
+                } else {
+                    throw new QueryException("Invalid (empty) value for PropertyName element");
                 }
-            } else if (valObj2 instanceof LiteralType) {
-                appendLiteralContent((LiteralType) valObj2, queriedType);
+            }
+        }
+    }
+
+    /**
+     * Handles OGC query PropertyIsLike operator.
+     *
+     * @param propLike PropertyIsLike operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsLike(PropertyIsLikeType propLike) throws QueryException, XPathException {
+        if (propLike.getLiteral().getContent().size() > 0) {
+            PropertyNameType propName = propLike.getPropertyName();
+
+            if (!propName.getContent().isEmpty()) {
+                String xpath = (String) propName.getContent().get(0);
+
+                if (propLike.isSetLiteral() && !propLike.getLiteral().getContent().isEmpty()) {
+                    String likeClause = (String) propLike.getLiteral().getContent().get(0);
+
+                    if (propLike.isSetWildCard()) {
+                        likeClause = likeClause.replaceAll(propLike.getWildCard(), WILDCARD_CHAR);
+                    }
+
+                    if (propLike.isSetSingleChar()) {
+                        likeClause = likeClause.replaceAll(propLike.getSingleChar(), SINGLE_CHAR);
+                    }
+
+                    if (propLike.isSetEscapeChar()) {
+                        likeClause = likeClause.replaceAll(propLike.getEscapeChar(), ESCAPE_CHAR);
+                    }
+
+                    XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+                    XPathNode xpNode = xpathConv.process();
+
+
+                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(".").append(xpNode.getAttributeName());
+
+                    sqlQuery.append(" like '").append(likeClause).append("'");
+
+
+                } else {
+                    throw new QueryException("ogc:PropertyIsLike/ogc:Literal does not have a content");
+                }
             } else {
-                throw new QueryException("Second value of PropertyIsEqualTo was not a PropertyName or Literal element");
+                throw new QueryException("ogc:PropertyIsLike/ogc:PropertyName does not have a content");
+            }
+        }
+    }
+
+    /**
+     * Handles OGC query PropertyIsNull operator.
+     *
+     * @param propNull PropertyIsNull operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsNull(PropertyIsNullType propNull) throws QueryException, XPathException {
+        PropertyNameType propName = propNull.getPropertyName();
+        String internalSlotType = "";
+
+        if (!propName.getContent().isEmpty()) {
+            String xpath = (String) propName.getContent().get(0);
+            XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+            XPathNode xpNode = xpathConv.process();
+
+            sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(".").append(xpNode.getAttributeName());
+            sqlQuery.append(" is null");
+        } else {
+            throw new QueryException("PropertyName does not have a value");
+        }
+    }
+
+    /**
+     * Handles OGC query PropertyIsBetween operator.
+     *
+     * @param propBetween PropertyIsBetween operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opPropertyIsBetween(PropertyIsBetweenType propBetween) throws QueryException, XPathException {
+        String internalSlotType = "";
+
+        if (propBetween.isSetExpression()) {
+            Object valObj1 = propBetween.getExpression().getValue();
+
+            if (valObj1 instanceof PropertyNameType) {
+                PropertyNameType val1 = (PropertyNameType) valObj1;
+
+                if (!val1.getContent().isEmpty()) {
+                    String xpath = (String) val1.getContent().get(0);
+                    XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+                    XPathNode xpNode = xpathConv.process();
+
+                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(".").append(xpNode.getAttributeName());
+                    internalSlotType = xpNode.getQueryAttrType();
+                } else {
+                    throw new QueryException("PropertyName does not have a value");
+                }
+            } else {
+                throw new QueryException("Could not find PropertyName element");
             }
 
-            sqlCriteria.append(")");
+            sqlQuery.append(" between ");
+
+            if (propBetween.isSetLowerBoundary() && propBetween.getLowerBoundary().isSetExpression() &&
+                    propBetween.isSetUpperBoundary() && propBetween.getUpperBoundary().isSetExpression()) {
+
+                Object lowerBoundaryObj = propBetween.getLowerBoundary().getExpression().getValue();
+                Object upperBoundaryObj = propBetween.getUpperBoundary().getExpression().getValue();
+
+                if (lowerBoundaryObj instanceof LiteralType) {
+                    appendLiteralContent((LiteralType) lowerBoundaryObj, internalSlotType);
+                } else {
+                    throw new QueryException("PropertyName not supported for PropertyIsBetween.LowerBoundary");
+                }
+
+                sqlQuery.append(" and ");
+
+                if (upperBoundaryObj instanceof LiteralType) {
+                    appendLiteralContent((LiteralType) upperBoundaryObj, internalSlotType);
+                } else {
+                    throw new QueryException("PropertyName not supported for PropertyIsBetween.LowerBoundary");
+                }
+            }
         }
     }
 
-    private void handleLiteralOrPropertyName(Object val) {
-        if (val instanceof PropertyNameType) {
-            handlePropertyName((PropertyNameType) val);
-        } else if (val instanceof LiteralType) {
-            handleLiteral((LiteralType) val);
+    /**
+     * Handles OGC query BBOX operator.
+     *
+     * @param bbox BBOX operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opBBOX(BBOXType bbox) throws QueryException, XPathException {
+
+        if (bbox.isSetEnvelope()) {
+            EnvelopeType env = bbox.getEnvelope().getValue();
+
+            if (bbox.isSetPropertyName() && !bbox.getPropertyName().getContent().isEmpty()) {
+                String xpath = (String) bbox.getPropertyName().getContent().get(0);
+                XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+                XPathNode xpNode = xpathConv.process();
+
+                if (xpNode.getQueryObject().getTableName().equals("t_slot")) {
+                    sqlQuery.append("st_within(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),");
+                    sqlQuery.append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
+                } else {
+                    throw new QueryException("XPath not pointing to a geometry value: " + xpath);
+                }
+            } else {
+                throw new QueryException("PropertyName element value missing in BBOX element");
+            }
+
+            try {
+                byte[] geom = GeometryTranslator.wkbFromGmlEnvelope(env);
+                queryParams.add(geom);
+            } catch (TransformException ex) {
+                throw new QueryException("Could not transform BBOX to Polygon", ex);
+            }
+
+        } else {
+            throw new QueryException("BBOX does not have an Envelope element");
         }
     }
 
-    private void handleLiteral(LiteralType lit) {
+    /**
+     * Handles OGC query Disjoint operator.
+     *
+     * @param disjoint Disjoint operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opDisjoint(BinarySpatialOpType disjoint) throws QueryException, XPathException {
+        binarySpatialQuery(disjoint, "disjoint");
     }
 
-    private String handlePropertyName(PropertyNameType propName) {
-        return "";
+    /**
+     * Handles OGC query Overlaps operator.
+     *
+     * @param value Overlaps operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opOverlaps(BinarySpatialOpType value) throws QueryException, XPathException {
+        binarySpatialQuery(value, "overlaps");
+    }
+
+    /**
+     * Handles OGC query Intersects operator.
+     *
+     * @param value Intersects operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opIntersects(BinarySpatialOpType value) throws QueryException, XPathException {
+        binarySpatialQuery(value, "intersects");
+    }
+
+    /**
+     * Handles OGC query Touches operator.
+     *
+     * @param touches Touches operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opTouches(BinarySpatialOpType touches) throws QueryException, XPathException {
+        binarySpatialQuery(touches, "touches");
+    }
+
+    /**
+     * Handles OGC query Beyond operator.
+     *
+     * @param beyond Beyond operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opBeyond(DistanceBufferType beyond) throws QueryException {
+        // how to return a distance value (int or double) if an EO is expected.
+        throw new QueryException("Beyond is not supported yet");
+    }
+
+    /**
+     * Handles OGC query Contains operator.
+     *
+     * @param contains Contains operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opContains(BinarySpatialOpType contains) throws QueryException, XPathException {
+        binarySpatialQuery(contains, "contains");
+    }
+
+    /**
+     * Handles OGC query Crosses operator.
+     *
+     * @param crosses Crosses operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opCrosses(BinarySpatialOpType crosses) throws QueryException, XPathException {
+        binarySpatialQuery(crosses, "crosses");
+    }
+
+    /**
+     * Handles OGC query Equals operator.
+     *
+     * @param equals Equals operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opEquals(BinarySpatialOpType equalz) throws QueryException, XPathException {
+        binarySpatialQuery(equalz, "equals");
+    }
+
+    /**
+     * Handles OGC query Within operator.
+     *
+     * @param within Within operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opWithin(BinarySpatialOpType within) throws QueryException, XPathException {
+        binarySpatialQuery(within, "within");
+    }
+
+    /**
+     * Handles OGC query Dwithin operator.
+     *
+     * @param dwithin Dwithin operator.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void opDWithin(DistanceBufferType dwithin) throws QueryException, XPathException {
+
+        if (dwithin.isSetDistance() && dwithin.getDistance().isSetContent()) {
+
+            if (dwithin.isSetPropertyName() && !dwithin.getPropertyName().getContent().isEmpty()) {
+                String xpath = (String) dwithin.getPropertyName().getContent().get(0);
+
+                XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+                XPathNode xpNode = xpathConv.process();
+
+                if (xpNode.getQueryObject().getTableName().equals("t_slot")) {
+                    sqlQuery.append("st_within(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),");
+                    sqlQuery.append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
+                } else {
+                    throw new QueryException("XPath not pointing to a geometry value: " + xpath);
+                }
+            } else {
+                throw new QueryException("PropertyName element value missing in Disjoint element");
+            }
+
+            try {
+                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(dwithin.getAbstractGeometry().getValue());
+                queryParams.add(geom);
+            } catch (TransformException ex) {
+                throw new QueryException("Could not transform geometry", ex);
+            }
+        } else {
+            throw new QueryException("Distance is not set for DWithin");
+        }
+    }
+
+    /**
+     * Appends <code>BinarySpatialOpType</code> query data to <code>sql</code> statement.
+     *
+     * @param binSpatialOp BinarySpatialOpType query date to append.
+     * @param spatialQueryOperation The operation name of the spatial query.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
+    private void binarySpatialQuery(BinarySpatialOpType binSpatialOp, String spatialQueryOperation) throws QueryException, XPathException {
+
+        if (binSpatialOp.isSetPropertyName() && !binSpatialOp.getPropertyName().getContent().isEmpty()) {
+            String xpath = (String) binSpatialOp.getPropertyName().getContent().get(0);
+            XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+            XPathNode xpNode = xpathConv.process();
+
+            if (xpNode.getQueryObject().getTableName().equals("t_slot")) {
+                sqlQuery.append("st_within(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),");
+                sqlQuery.append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
+            } else {
+                throw new QueryException("XPath not pointing to a geometry value: " + xpath);
+            }
+        } else {
+            throw new QueryException("PropertyName element value missing in" + spatialQueryOperation + " element");
+        }
+
+        if (binSpatialOp.isSetEnvelope()) {
+            EnvelopeType env = binSpatialOp.getEnvelope().getValue();
+
+            try {
+                byte[] geom = GeometryTranslator.wkbFromGmlEnvelope(env);
+                queryParams.add(geom);
+            } catch (TransformException ex) {
+                throw new QueryException("Could not transform Envelope to Polygon", ex);
+            }
+        } else if (binSpatialOp.isSetAbstractGeometry()) {
+            try {
+                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(binSpatialOp.getAbstractGeometry().getValue());
+                queryParams.add(geom);
+            } catch (TransformException ex) {
+                throw new QueryException("Could not transform geometry", ex);
+            }
+        } else {
+            throw new QueryException("Disjoint does not have an Envelope element");
+        }
     }
 
     /**
@@ -349,22 +746,24 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      */
     private void appendLiteralContent(LiteralType lit, String queriedSlotType) throws QueryException {
         if (!lit.getContent().isEmpty()) {
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "adding literal content: " + lit.getContent().get(0).toString());
+            }
             if (queriedSlotType.equals(InternalConstants.TYPE_STRING)) {
-                sqlCriteria.append("'").append(lit.getContent().get(0)).append("'");
+                sqlQuery.append("'").append(lit.getContent().get(0)).append("'");
             } else if (queriedSlotType.equals(InternalConstants.TYPE_DATETIME)) {
                 try {
                     XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar((String) lit.getContent().get(0));
-                    sqlCriteria.append("?");
-                    Timestamp ts = new Timestamp(cal.normalize().toGregorianCalendar().getTimeInMillis());
-                    queryParams.add(ts);
+                    sqlQuery.append("'").append(lit.getContent().get(0)).append("'");
                 } catch (DatatypeConfigurationException ex) {
                     throw new QueryException("Invalid date: " + lit.getContent().get(0), ex);
                 }
             } else {
-                sqlCriteria.append(lit.getContent().get(0));
+                sqlQuery.append(lit.getContent().get(0));
             }
         } else {
-            throw new QueryException("PropertyName does not have a value");
+            throw new QueryException("Literal element does not have a value");
         }
     }
 }

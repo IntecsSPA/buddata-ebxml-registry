@@ -68,7 +68,7 @@ public class QueryManager {
                 request.setAbstractQuery(storeQueryBuilder.build());
             }
             
-            QueryBuilderImpl queryBuilder = new QueryBuilderImpl(request);
+            QueryBuilderImpl2 queryBuilder = new QueryBuilderImpl2(request);
             String sql = queryBuilder.build();
             requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
             requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
@@ -147,7 +147,7 @@ public class QueryManager {
         try {
             for (JAXBElement<? extends IdentifiableType> identEl : identEls) {
                 IdentifiableType ident = identEl.getValue();
-                String sql = "select * from association where targetobject='" + ident.getId() + "' or sourceobject='" + ident.getId() + "'";
+                String sql = "select * from t_association where targetobject='" + ident.getId() + "' or sourceobject='" + ident.getId() + "'";
 
                 SqlPersistence service = new SqlPersistence();
 
