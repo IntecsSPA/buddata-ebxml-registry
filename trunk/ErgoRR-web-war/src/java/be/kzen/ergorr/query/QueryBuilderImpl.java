@@ -205,10 +205,7 @@ public class QueryBuilderImpl implements QueryBuilder {
                     }
 
                     if (returnTypeNames.contains(fullType)) {
-                        qo.setReturnType(true);
                         returnObjectType = qo;
-                    } else {
-                        qo.setReturnType(false);
                     }
                 } else {
                     throw new QueryException("Invalid QName in Query elements typeNames attribute");
@@ -270,7 +267,6 @@ public class QueryBuilderImpl implements QueryBuilder {
                 logger.fine("  alias: " + key);
                 logger.fine("  obj: " + qo.getTableName());
                 logger.fine("  sqlAlias: " + qo.getSqlAlias());
-                logger.fine("  return: " + qo.isReturnType());
                 logger.fine("");
             }
 
@@ -843,7 +839,7 @@ public class QueryBuilderImpl implements QueryBuilder {
                 throw new QueryException("Can compare BBOX only to Slot values");
             }
         } else {
-            throw new QueryException("PropertyName element value missing in Disjoint element");
+            throw new QueryException("PropertyName element value missing in" + spatialQueryOperation + " element");
         }
 
         if (binSpatialOp.isSetEnvelope()) {

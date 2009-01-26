@@ -80,8 +80,8 @@ public class LCManager {
             }
 
             if (ident instanceof ExtrinsicObjectType &&
-                ((ExtrinsicObjectType) ident).getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
-                
+                    ((ExtrinsicObjectType) ident).getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
+
                 for (SlotType s : ident.getSlot()) {
                     try {
                         // check if all slot name/type pairs are unique.
@@ -100,6 +100,71 @@ public class LCManager {
         } catch (SQLException ex) {
             throw new ServiceExceptionReport("Could not insert objects", ex);
         }
+    }
+
+    private boolean validateRelations(IdentifiableType ident, List<IdentifiableType> insertedObjs) throws ServiceExceptionReport {
+        if (ident instanceof RegistryObjectType) {
+            RegistryObjectType regObj = (RegistryObjectType) ident;
+
+        }
+
+        if (ident instanceof AssociationType) {
+            AssociationType asso = (AssociationType) ident;
+            validateAssociation(asso, insertedObjs);
+        }
+
+        return true;
+    }
+
+    private boolean validateAssociation(AssociationType asso, List<IdentifiableType> insertedObjs) throws ServiceExceptionReport {
+        boolean sourceObjValid = false;
+        boolean targetObjValid = false;
+
+        for (IdentifiableType insIdent : insertedObjs) {
+            if (asso.getSourceObject().equals(insIdent.getId())) {
+                sourceObjValid = true;
+            }
+            if (asso.getTargetObject().equals(insIdent.getId())) {
+                targetObjValid = true;
+            }
+            if (sourceObjValid && targetObjValid) {
+                break;
+            }
+        }
+
+
+        if (!sourceObjValid || !targetObjValid) {
+            List<String> ids = new ArrayList<String>();
+            if (!sourceObjValid) {
+                ids.add(asso.getSourceObject());
+            }
+            if (!targetObjValid) {
+                ids.add(asso.getTargetObject());
+            }
+
+            List<String> dbIds = null;
+            SqlPersistence persistence = new SqlPersistence(requestContext);
+            try {
+                dbIds = persistence.idsExist(ids);
+            } catch (SQLException ex) {
+                throw new ServiceExceptionReport("Could not fetch objects", ex);
+            }
+
+            if (dbIds.size() != ids.size()) {
+                String error = "association " + asso.getId();
+
+                if (!dbIds.contains(asso.getSourceObject())) {
+                    error += " has invalid sourceObject '" + asso.getSourceObject() + "'";
+                }
+                if (!dbIds.contains(asso.getTargetObject())) {
+                    error += " has invalid targetObject '" + asso.getTargetObject() + "'";
+                }
+
+                throw new ServiceExceptionReport(error);
+            }
+        }
+
+        return true;
     }
 
     public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
@@ -138,6 +203,13 @@ public class LCManager {
     }
 
     public void delete(RegistryObjectListType regObjList) {
+
+        for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
+            IdentifiableType ident = identEl.getValue();
+            String sql = "select id from association where sourceobject ='" + ident.getId() + "' or targetobject = '" + ident.getId() + "'";
+
+
+        }
     }
 
     /**
