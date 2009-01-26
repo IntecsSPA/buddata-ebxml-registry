@@ -83,7 +83,7 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
 
     @Override
     public String getTableName() {
-        return "classification";
+        return "t_classification";
     }
 
     @Override

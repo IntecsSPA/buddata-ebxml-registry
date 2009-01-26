@@ -85,7 +85,7 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
 
     @Override
     public String getTableName() {
-        return "classificationscheme";
+        return "t_classificationscheme";
     }
 
     @Override

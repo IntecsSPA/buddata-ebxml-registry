@@ -80,7 +80,7 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
 
     @Override
     public String getTableName() {
-        return "externalidentifier";
+        return "t_externalidentifier";
     }
 
     @Override

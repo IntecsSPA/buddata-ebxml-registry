@@ -125,7 +125,7 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
 
     @Override
     public String getTableName() {
-        return "classificationnode";
+        return "t_classificationnode";
     }
 
     @Override

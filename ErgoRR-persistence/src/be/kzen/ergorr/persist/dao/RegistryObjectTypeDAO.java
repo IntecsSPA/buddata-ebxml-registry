@@ -82,12 +82,12 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.insertRelatedObjects(batchStmt);
 
         if (xmlObject.isSetName()) {
-            LocalizedStringNameDAO nameDAO = new LocalizedStringNameDAO();
+            NameDAO nameDAO = new NameDAO();
             nameDAO.insert(xmlObject, batchStmt);
         }
 
         if (xmlObject.isSetDescription()) {
-            LocalizedStringDescDAO descDAO = new LocalizedStringDescDAO();
+            DescriptionDAO descDAO = new DescriptionDAO();
             descDAO.insert(xmlObject, batchStmt);
         }
     }
@@ -97,11 +97,11 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.loadRelatedObjects();
 
         if (!isBrief()) {
-            LocalizedStringNameDAO nameDAO = new LocalizedStringNameDAO();
+            NameDAO nameDAO = new NameDAO();
             nameDAO.setConnection(connection);
             nameDAO.addComposedObjects(xmlObject);
 
-            LocalizedStringDescDAO descDAO = new LocalizedStringDescDAO();
+            DescriptionDAO descDAO = new DescriptionDAO();
             descDAO.setConnection(connection);
             descDAO.addComposedObjects(xmlObject);
 

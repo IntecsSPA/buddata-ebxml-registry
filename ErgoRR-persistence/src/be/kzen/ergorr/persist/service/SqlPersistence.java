@@ -3,7 +3,6 @@ package be.kzen.ergorr.persist.service;
 import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.dao.GenericObjectDAO;
 import be.kzen.ergorr.persist.dao.IdentifiableTypeDAO;
 import be.kzen.ergorr.model.rim.IdentifiableType;
@@ -16,8 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -146,6 +143,54 @@ public class SqlPersistence {
             closeConnection(conn);
             throw ex;
         }
+    }
+
+    public boolean idExist(String id) throws SQLException {
+        List<String> ids = new ArrayList();
+        ids.add(id);
+        List<String> res = idsExist(ids);
+        return res.size() > 0;
+    }
+
+    public List<String> idsExist(List<String> ids) throws SQLException {
+        List<String> dbIds = new ArrayList<String>();
+
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "requested object by id: " + ids.size());
+        }
+
+        if (!ids.isEmpty()) {
+            StringBuilder values = new StringBuilder("(");
+
+            for (String id : ids) {
+                values.append("'").append(id).append("',");
+            }
+            values.replace(values.length() - 1, values.length(), ")");
+
+            Connection conn = null;
+            try {
+                String sql = "select id from identifiable where id in " + values.toString() + " limit " + ids.size();
+
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, "SQL: " + sql);
+                }
+
+                conn = getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet results = stmt.executeQuery(sql);
+
+                while (results.next()) {
+                    dbIds.add(results.getString("id"));
+                }
+            } catch (SQLException ex) {
+                closeConnection(conn);
+                throw ex;
+            }
+
+            closeConnection(conn);
+        }
+
+        return dbIds;
     }
 
     public List<JAXBElement<? extends IdentifiableType>> getByIds(List<String> ids) throws SQLException {

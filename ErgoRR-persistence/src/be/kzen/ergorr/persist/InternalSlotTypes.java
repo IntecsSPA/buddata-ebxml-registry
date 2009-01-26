@@ -68,7 +68,27 @@ public class InternalSlotTypes {
 
     public String getSlotType(String slotName) {
         slotName = slotName.toLowerCase();
-        return slotMap.get(slotName);
+        String type = slotMap.get(slotName);
+
+        if (type == null) {
+            type = InternalConstants.TYPE_STRING;
+        }
+
+        return type;
+    }
+
+    public void putTestSlot(String name, String type) {
+        name = name.toLowerCase();
+        String st = InternalConstants.TYPE_STRING;
+
+        if (type != null) {
+            type = type.toLowerCase();
+
+            if (isNoneStringType(type)) {
+                st = type;
+            }
+        }
+        slotMap.put(name, st);
     }
 
     public void putSlot(String name, String type) throws Exception {
@@ -111,7 +131,7 @@ public class InternalSlotTypes {
     }
 
     public void loadSlots() throws SQLException, ClassNotFoundException {
-        String sql = "select * from extrinsicobject where objecttype='" + RIMConstants.CN_OBJ_DEF + "'";
+        String sql = "select * from t_extrinsicobject where objecttype='" + RIMConstants.CN_OBJ_DEF + "'";
 
         SqlPersistence persist = new SqlPersistence();
         List<JAXBElement<ExtrinsicObjectType>> eoEls =
