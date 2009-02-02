@@ -343,7 +343,7 @@ CREATE TABLE t_servicebinding (
 CREATE TABLE t_slot (
   seq                      BIGINT       NOT NULL,
   parent                   VARCHAR(256) NOT NULL,
-  slotname                 VARCHAR(256) NOT NULL,
+  name_                    VARCHAR(256) NOT NULL,
   slottype                 VARCHAR(256),
   spectype                 VARCHAR(3),
   stringvalue              VARCHAR(4096),
