@@ -124,8 +124,10 @@ public class SqlPersistence {
             conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
 
-            for (int i = 0; i < parameters.size(); i++) {
-                stmt.setObject(i + 1, parameters.get(i));
+            if (parameters != null) {
+                for (int i = 0; i < parameters.size(); i++) {
+                    stmt.setObject(i + 1, parameters.get(i));
+                }
             }
 
             ResultSet result = stmt.executeQuery();
@@ -152,7 +154,28 @@ public class SqlPersistence {
         return res.size() > 0;
     }
 
-    public List<String> idsExist(List<String> ids) throws SQLException {
+    public boolean idExists(String id, Class<? extends IdentifiableType> clazz) throws SQLException {
+        List<String> ids = new ArrayList();
+        ids.add(id);
+        List<String> res = idsExist(ids, clazz);
+        return res.size() > 0;
+    }
+
+    public List<String> idsExist(List<String> ids, Class<? extends IdentifiableType> clazz) throws SQLException {
+        String tableName = "";
+
+        try {
+            Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + clazz.getSimpleName() + "DAO");
+            IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance();
+            tableName = identDAO.getTableName();
+        } catch (Exception ex) {
+            throw new SQLException(ex.toString());
+        }
+
+        return idsExist(ids, tableName);
+    }
+
+    private List<String> idsExist(List<String> ids, String tableName) throws SQLException {
         List<String> dbIds = new ArrayList<String>();
 
         if (logger.isLoggable(Level.FINE)) {
@@ -169,7 +192,7 @@ public class SqlPersistence {
 
             Connection conn = null;
             try {
-                String sql = "select id from identifiable where id in " + values.toString() + " limit " + ids.size();
+                String sql = "select id from " + tableName + " where id in " + values.toString() + " limit " + ids.size();
 
                 if (logger.isLoggable(Level.FINE)) {
                     logger.log(Level.FINE, "SQL: " + sql);
@@ -193,6 +216,10 @@ public class SqlPersistence {
         return dbIds;
     }
 
+    public List<String> idsExist(List<String> ids) throws SQLException {
+        return idsExist(ids, "t_identifiable");
+    }
+
     public List<JAXBElement<? extends IdentifiableType>> getByIds(List<String> ids) throws SQLException {
         List<JAXBElement<? extends IdentifiableType>> idents = new ArrayList<JAXBElement<? extends IdentifiableType>>();
 
@@ -210,7 +237,7 @@ public class SqlPersistence {
 
             Connection conn = null;
             try {
-                String sql = "select * from identifiable where id in " + values.toString() + " limit " + ids.size();
+                String sql = "select * from t_identifiable where id in " + values.toString() + " limit " + ids.size();
 
                 if (logger.isLoggable(Level.FINE)) {
                     logger.log(Level.FINE, "SQL: " + sql);
