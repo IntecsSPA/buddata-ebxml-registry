@@ -352,7 +352,7 @@ CREATE TABLE t_slot (
   doublevalue              DOUBLE PRECISION,
   intvalue                 INTEGER,
   geometryvalue            geometry,
-  PRIMARY KEY (seq, parent, slotname)
+  PRIMARY KEY (seq, parent, name_)
 );
 
 CREATE TABLE t_specificationlink (
@@ -372,8 +372,8 @@ CREATE TABLE t_specificationlink (
 
 CREATE TABLE t_usageparameter (
 --The parent SpecificationLink that this is a usage parameter for
-  parent                   VARCHAR(256) NOT NULL
-  value_                   VARCHAR(1024) NOT NULL,
+  parent                   VARCHAR(256) NOT NULL,
+  value_                   VARCHAR(1024) NOT NULL
 );
 
 CREATE TABLE t_subscription (
@@ -959,7 +959,7 @@ DROP INDEX IF EXISTS externalidentifier_id_idx;
 DROP INDEX IF EXISTS registrypackage_id_idx;
 DROP INDEX IF EXISTS slot_parent_idx;
 DROP INDEX IF EXISTS localizedname_id_idx;
-DROP INDEX IF EXISTS localizeddesc_id_idx; 
+DROP INDEX IF EXISTS localizeddesc_id_idx;
 DROP INDEX IF EXISTS association_source_idx;
 DROP INDEX IF EXISTS association_target_idx;
 DROP INDEX IF EXISTS classificationnode_parent_idx;
@@ -983,7 +983,7 @@ CREATE index localizeddesc_id_idx ON localizeddesc (id);
 */
 
 CREATE index slot_parent_idx ON t_slot (parent);
-CREATE index slot_name_idx ON t_slot (slotname);
+CREATE index slot_name_idx ON t_slot (name_);
 CREATE index association_source_idx ON t_association (sourceobject);
 CREATE index association_target_idx ON t_association (targetobject);
 CREATE index classificationnode_parent_idx ON t_classificationnode (parent);
