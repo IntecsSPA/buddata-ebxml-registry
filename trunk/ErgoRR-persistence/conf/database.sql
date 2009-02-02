@@ -224,12 +224,12 @@ CREATE TABLE t_description (
 );
 
 CREATE TABLE t_usagedescription (
+--The RegistryObject id for the parent RegistryObject for which this is a Name
+  parent                   VARCHAR(256) NOT NULL,
 --LocalizedString attributes flattened for UsageDescription
   charset                  VARCHAR(32),
   lang                     VARCHAR(32) NOT NULL,
   value_                   VARCHAR(1024) NOT NULL,
---The RegistryObject id for the parent RegistryObject for which this is a Name
-  parent                   VARCHAR(256) NOT NULL,
   PRIMARY KEY (parent, lang)
 );
 
@@ -371,9 +371,9 @@ CREATE TABLE t_specificationlink (
 );
 
 CREATE TABLE t_usageparameter (
-  value_                   VARCHAR(1024) NOT NULL,
 --The parent SpecificationLink that this is a usage parameter for
   parent                   VARCHAR(256) NOT NULL
+  value_                   VARCHAR(1024) NOT NULL,
 );
 
 CREATE TABLE t_subscription (
@@ -991,7 +991,7 @@ CREATE index externalidentifier_registryobject_idx ON t_externalidentifier (regi
 CREATE index classification_classifiedobject_idx ON t_classification (classifiedobject);
 CREATE index localizedname_parent_idx ON t_name (parent);
 CREATE index localizeddesc_parent_idx ON t_description (parent);
-CREATE index slot_geometry_idx on t_slot using vgist (geometryvalue);
+CREATE index slot_geometry_idx on t_slot using gist (geometryvalue);
 
 /*ALTER TABLE slot CLUSTER ON slot_geometry_idx;*/
 
