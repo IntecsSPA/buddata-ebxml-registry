@@ -70,7 +70,7 @@ public class CswBackendClient {
         requestContext.setRequest(getRecordByIdReq);
 
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
-        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq.getId());
+        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
         response.getAny().addAll(idents);
 
         return response;
