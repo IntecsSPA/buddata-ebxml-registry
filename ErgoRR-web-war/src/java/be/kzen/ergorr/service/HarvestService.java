@@ -31,9 +31,13 @@ import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.service.translator.TranslationFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 /**
  *
@@ -76,6 +80,12 @@ public class HarvestService {
             EchoedRequestType echo = new EchoedRequestType();
             echo.setAny(remoteXmlEl);
             ack.setEchoedRequest(echo);
+            
+            try {
+                ack.setTimeStamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
+            } catch (DatatypeConfigurationException ex) {
+                logger.log(Level.SEVERE, "Could not convert to XML date");
+            }
             response.setAcknowledgement(ack);
 
             LCManager lcm = new LCManager(requestContext);
@@ -83,11 +93,11 @@ public class HarvestService {
             return response;
 
         } catch (MalformedURLException ex) {
-            throw new ServiceExceptionReport("Provided source URL is not valid", null, ex);
+            throw new ServiceExceptionReport("Provided source URL is not valid", ex);
         } catch (JAXBException ex) {
-            throw new ServiceExceptionReport("Could not unmarshall the data from the provided source URL", null, ex);
+            throw new ServiceExceptionReport("Could not unmarshall the data from the provided source URL", ex);
         } catch (TranslationException ex) {
-            throw new ServiceExceptionReport("Could not translate the data from the provided source URL", null, ex);
+            throw new ServiceExceptionReport("Could not translate the data from the provided source URL", ex);
         }
     }
 }
