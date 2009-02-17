@@ -39,11 +39,11 @@ import static org.junit.Assert.*;
  */
 public class CswClientTest {
 
-    CswClient client;
+    CswSoapClient client;
 
     public CswClientTest() throws MalformedURLException {
         JAXBUtil.getInstance();
-        client = new CswClient();
+        client = new CswSoapClient();
     }
     
     @Test
