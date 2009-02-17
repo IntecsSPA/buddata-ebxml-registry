@@ -36,7 +36,7 @@ import javax.xml.bind.JAXBException;
  *
  * @author Yaman Ustuntas
  */
-public class CswBackendClient {
+public class CswBackendClient implements CswClient {
     private static Logger logger = Logger.getLogger(CswBackendClient.class.getName());
     private InternalSlotTypes slotTypes;
     private DbConnectionParams dbConnParams;
@@ -46,6 +46,9 @@ public class CswBackendClient {
         init();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public CapabilitiesType getCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         try {
             JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("Capabilities.xml"));
@@ -55,6 +58,9 @@ public class CswBackendClient {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public GetRecordsResponseType getRecords(GetRecordsType getRecordsReq) throws ServiceExceptionReport {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
@@ -64,6 +70,9 @@ public class CswBackendClient {
         return qm.query();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public GetRecordByIdResponseType getRecordById(GetRecordByIdType getRecordByIdReq) throws ServiceExceptionReport {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
@@ -76,10 +85,16 @@ public class CswBackendClient {
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public GetDomainResponseType getDomain(GetDomainType getDomainReq) throws ServiceExceptionReport {
         throw new ServiceExceptionReport("Not supported");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public HarvestResponseType harvest(HarvestType body) throws ServiceExceptionReport {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
@@ -87,6 +102,9 @@ public class CswBackendClient {
         return new HarvestService(requestContext).process();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public TransactionResponseType transact(TransactionType transactionReq) throws ServiceExceptionReport {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
@@ -95,6 +113,9 @@ public class CswBackendClient {
         return new TransactionService(requestContext).process();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public DescribeRecordResponseType getRecordDescription(DescribeRecordType describeRecordReq) throws ServiceExceptionReport {
         throw new ServiceExceptionReport("Not supported");
     }
