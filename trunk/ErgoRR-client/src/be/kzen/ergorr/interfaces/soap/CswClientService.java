@@ -23,18 +23,18 @@ import javax.xml.ws.WebServiceFeature;
  * 
  */
 @WebServiceClient(name = "CswService", targetNamespace = "http://www.kzen.be/ergorr/interfaces/soap", wsdlLocation = "file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR/web/WEB-INF/wsdl/CSW-service.wsdl")
-public class CswService
+public class CswClientService
     extends Service
 {
 
     private final static URL CSWSERVICE_WSDL_LOCATION;
-    private final static Logger logger = Logger.getLogger(be.kzen.ergorr.interfaces.soap.CswService.class.getName());
+    private final static Logger logger = Logger.getLogger(be.kzen.ergorr.interfaces.soap.CswClientService.class.getName());
 
     static {
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = be.kzen.ergorr.interfaces.soap.CswService.class.getResource(".");
+            baseUrl = be.kzen.ergorr.interfaces.soap.CswClientService.class.getResource(".");
             url = new URL(baseUrl, "file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR/web/WEB-INF/wsdl/CSW-service.wsdl");
         } catch (MalformedURLException e) {
             logger.warning("Failed to create URL for the wsdl Location: 'file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR/web/WEB-INF/wsdl/CSW-service.wsdl', retrying as a local file");
@@ -43,11 +43,11 @@ public class CswService
         CSWSERVICE_WSDL_LOCATION = url;
     }
 
-    public CswService(URL wsdlLocation, QName serviceName) {
+    public CswClientService(URL wsdlLocation, QName serviceName) {
         super(wsdlLocation, serviceName);
     }
 
-    public CswService() {
+    public CswClientService() {
         super(CSWSERVICE_WSDL_LOCATION, new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswService"));
     }
 
@@ -57,8 +57,8 @@ public class CswService
      *     returns CswPortType
      */
     @WebEndpoint(name = "CswPort")
-    public CswPortType getCswPort() {
-        return super.getPort(new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswPort"), CswPortType.class);
+    public CswClientPortType getCswPort() {
+        return super.getPort(new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswPort"), CswClientPortType.class);
     }
 
     /**
@@ -69,8 +69,8 @@ public class CswService
      *     returns CswPortType
      */
     @WebEndpoint(name = "CswPort")
-    public CswPortType getCswPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswPort"), CswPortType.class, features);
+    public CswClientPortType getCswPort(WebServiceFeature... features) {
+        return super.getPort(new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswPort"), CswClientPortType.class, features);
     }
 
 }
