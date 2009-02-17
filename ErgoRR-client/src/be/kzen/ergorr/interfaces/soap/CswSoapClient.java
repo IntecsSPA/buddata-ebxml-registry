@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
  * 
  * @author Yaman Ustuntas
  */
-public class CswClient {
-    private CswPortType service;
+public class CswSoapClient implements CswClient {
+    private CswClientPortType service;
 
     /**
      * Constructor
@@ -33,7 +33,7 @@ public class CswClient {
      * 
      * @throws java.net.MalformedURLException
      */
-    public CswClient() throws MalformedURLException {
+    public CswSoapClient() throws MalformedURLException {
         this(new URL(CommonProperties.getInstance().get("service.url")));
     }
     
@@ -42,83 +42,55 @@ public class CswClient {
      * 
      * @param serviceUrl URL of the CSW web service.
      */
-    public CswClient(URL serviceUrl) {
+    public CswSoapClient(URL serviceUrl) {
         QName serviceQName = new QName("http://www.kzen.be/ergorr/interfaces/soap", "webservice");
-        service = new CswService(serviceUrl, serviceQName).getCswPort();
+        service = new CswClientService(serviceUrl, serviceQName).getCswPort();
     }
 
     /**
-     * Invokes the CSW GetRecords service operation.
-     * 
-     * @param request 
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public GetRecordsResponseType getRecords(GetRecordsType request) throws ServiceExceptionReport {
         return service.cswGetRecords(request);
     }
     
     /**
-     * Invokes the CSW GetRecordById service operation.
-     * 
-     * @param request
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public GetRecordByIdResponseType getRecordById(GetRecordByIdType request) throws ServiceExceptionReport {
         return service.cswGetRecordById(request);
     }
     
     /**
-     * Invokes the CSW Transaction service operation.
-     * 
-     * @param request
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public TransactionResponseType transact(TransactionType request) throws ServiceExceptionReport {
         return service.cswTransaction(request);
     }
     
     /**
-     * Invokes the CSW Harvest service operation.
-     * 
-     * @param request
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public HarvestResponseType harvest(HarvestType request) throws ServiceExceptionReport {
         return service.cswHarvest(request);
     }
     
     /**
-     * Invokes the CSW RecordDescription service operation.
-     * 
-     * @param request
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public DescribeRecordResponseType getRecordDescription(DescribeRecordType request) throws ServiceExceptionReport {
         return service.cswDescribeRecord(request);
     }
     
     /**
-     * Invokes the CSW Domain service operation.
-     * 
-     * @param request
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public GetDomainResponseType getDomain(GetDomainType request) throws ServiceExceptionReport {
         return service.cswGetDomain(request);
     }
     
     /**
-     * Invokes the CSW Capabilities service operation.
-     * 
-     * @param request
-     * @return
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * {@inheritDoc}
      */
     public CapabilitiesType getCapabilities(GetCapabilitiesType request) throws ServiceExceptionReport {
         return service.cswGetCapabilities(request);
