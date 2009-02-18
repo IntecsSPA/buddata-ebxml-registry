@@ -1,17 +1,11 @@
 #labels installation
 ==Requirements==
 
-  * JDK 1.6
-  * Glassfish 2.2 or Tomcat 5.5.x
-  * Postgres 8.2+
-  * Postgis 1.3+
+  * JDK 1.5+  -  Tomcat 5.5.x  -  Postgres 8.2+  -  Postgis 1.3+
 
-I would recommend installing the JDK and Glassfish or Tomcat manually.
-If you are running Ubuntu 8.04 then these versions of Postgres and Postgis are very easy to install. 
-{{{
-sudo apt-get install postgres postgis
-}}}
-
+Make sure that you have following variables set:
+CATALINA_HOME : Root directory of tomcat
+ERGO_HOME : Root directory of ERGO project. (Where all the modules are)
 
 ==Installation==
 
@@ -22,98 +16,60 @@ sudo apt-get install postgres postgis
 The netbeans projects are:
 
   * ErgoRR-client < client API through SOAP interface
-
   * ErgoRR-backend-client < client API connecting directly to backend
-
   * ErgoRR-commons < common classes
-
   * ErgoRR-jaxb < JAXB bindings
-
   * ErgoRR-persistence < persistence layer
-
   * ErgoRR-web-war < web application
-
   * There is another folder: "ErgoRR-shared" which contains shared libraries.
 
 
-*3. Create database and add spatial functionality*
-  * In Postgres, create the database with the name "ergorr".
+*3. Create a postgre database template*
+  * This template will be used by the deployer to generate new instances.
   * Change to the postgres user with the command: 
 {{{
 sudo su postgres
 }}}
+  * Create the template database
+{{{
+createdb template_postgis
+}}}
   * Enable plpqsql on the newly created database with the command:
 {{{
-createlang plpgsql ergorr
+createlang plpgsql template_postgis
 }}}
-  * Run the postgis scripts on database "ergorr" to enable spatial functionality.
+  * Run the postgis scripts on database "template_postgis" to enable spatial functionality.
 {{{
-psql -d ergorr -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql
-psql -d ergorr -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
-}}}
-  * Run the database script (ergo_source_dir)/ErgoRR-persistence/conf/database.sql
-
-== Glassfish specific ==
-
-*4. Copy files to Glassfish*
-  * Make sure that you have the variable AS_HOME set.
-  * From (ergo_source_dir)/ErgoRR-web-war directory run the command
-{{{
-ant glassfish-setup
+psql -d template_postgis -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql
+psql -d template_postgis -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
 }}}
 
+== Deploy ==
 
-*5. Configure Database *
-  * Edit the file (ergo_source_dir)/ErgoRR-web-war/setup/sun-resources.xml to match your postgres setup.
+*Configure ErgoRR-commons/conf/common.properties.*
+Make sure that properties 'deployName' and the end of the property 'db.datasource' match.
 
+You can deploy difference instance of Ergo just by changing the 'deployName' and the end of the 'db.datasource' property and then running the deployment ant tasks.
 
-*6. Add Glassfish to Netbeans* 
-  * This can be done from the top menu _Tools_ > _Servers_.
-  * Now you can set the project to run on your Glassfish installation.
-    * Right click on the project _ErgoRR-web-war_ to select _Properties_.
-    * In the properties window select _Run_ from the left menu and select the server you have just configured in the _Server_ property field.
+*Go to the Ergo root directory from command line*
 
-*7. Deploy*
-
-  * Right click on the project _ErgoRR-web-war_, choose "Undeploy and Deploy".
-
-== Tomcat specific ==
-
-*4. Install files to Tomcat*
-  * Make sure that you have the variable CATALINA_HOME set.
-  * From (ergo_source_dir)/ErgoRR-web-war directory run the command
+*Tomcat setup ant task (ONLY ONCE)*
 {{{
 ant tomcat-setup
 }}}
 
-This will copy the following files:
+*Restart Tomcat*
 
-(ergo_source_dir)/ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar to CATALINA_HOME/common/lib
-
-(ergo_source_dir)/ErgoRR-shared/metro1_2/webservices-api.jar to CATALINA_HOME/common/endorsed
-
-(ergo_source_dir)/ErgoRR-web-war/conf/ErgoRR-web-war.xml to CATALINA_HOME/conf/Catalina/localhost
-
-*5. Configure Database *
-
-Edit the file CATALINA_HOME/conf/Catalina/localhost/ergorr.xml to match to your postgres setup.
-
-Note: If you edit the name of the deployment file ergorr.war then you have to set the same name for the ergorr.xml.
-
-*6. Configure packaged libraries *
-
-Glassfish comes with the require the Metro (webservice) libraries, so it doesn't require it to be packaged with the .war file.
-
-To package the Metro libraries for tomcat:
-
-  * Right click on the _ErgoRR-web-war_ project and select _Properties_
-  * From the left menu select _Libraries_
-  * From the list of libraries select the checkbox from the _Package_ column for the following libraries:
-    * webservice-extra-api.jar
-    * webservice-extra.jar
-    * webservice-rt.jar
-    * Note: DO NOT select webservice-api.jar
-
-*6. Deploy *
-
-  * Build the ErgoRR-web-war project and copy the dist/ergorr.war to Tomcat webapp directory.
+* Run these ant tasks in the following order*
+{{{
+ant all-build
+}}}
+{{{
+ant db-build
+}}}
+{{{
+ant deploy
+}}}
+{{{
+ant db-load-data
+}}}
