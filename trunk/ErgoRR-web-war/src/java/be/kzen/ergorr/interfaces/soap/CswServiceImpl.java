@@ -43,6 +43,7 @@ import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +54,9 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.rpc.handler.soap.SOAPMessageContext;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 import org.w3c.dom.Document;
 
 /**
@@ -91,22 +94,6 @@ public class CswServiceImpl implements CswPortType {
     }
 
     public GetRecordByIdResponseType cswGetRecordById(GetRecordByIdType getRecordByIdReq) throws ServiceExceptionReport {
-
-//        Iterator<String> it = wsContext.getMessageContext().keySet().iterator();
-//        logger.info("-----------------------------------");
-//        while (it.hasNext()) {
-//            String key = it.next();
-//            Object o = wsContext.getMessageContext().get(key);
-//            logger.info("key: " + key);
-//            if (o != null) {
-//                logger.info("type: " + o.getClass().getName());
-//                logger.info("content: " + o.toString());
-//            } else {
-//                logger.info("null");
-//            }
-//            logger.info("-------");
-//        }
-//        logger.info("-----------------------------------");
 
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(getRecordByIdReq);

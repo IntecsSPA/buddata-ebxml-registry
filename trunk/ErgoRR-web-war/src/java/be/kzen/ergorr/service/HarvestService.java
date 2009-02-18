@@ -73,6 +73,11 @@ public class HarvestService {
                 regObjList = transFac.translate(remoteXml);
             }
 
+            // submit data
+            LCManager lcm = new LCManager(requestContext);
+            lcm.submit(regObjList);
+
+            // create response
             TransactionService transService = new TransactionService();
             response.setTransactionResponse(transService.buildResponse(regObjList));
 
@@ -84,12 +89,10 @@ public class HarvestService {
             try {
                 ack.setTimeStamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
             } catch (DatatypeConfigurationException ex) {
-                logger.log(Level.SEVERE, "Could not convert to XML date");
+                logger.log(Level.SEVERE, "Could not convert to XML date", ex);
             }
             response.setAcknowledgement(ack);
-
-            LCManager lcm = new LCManager(requestContext);
-            lcm.submit(regObjList);
+            
             return response;
 
         } catch (MalformedURLException ex) {
