@@ -126,10 +126,10 @@ public class CswBackendClient implements CswClient {
         if (slotTypes.getSlotTypeSize() == 0) {
             RequestContext requestContext = new RequestContext();
             requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
-            SqlPersistence service = new SqlPersistence(requestContext);
+            SqlPersistence persistence = new SqlPersistence(requestContext);
 
             try {
-                slotTypes.loadSlots();
+                slotTypes.loadSlots(persistence);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Could not load slot types", ex);
             }

@@ -130,10 +130,8 @@ public class InternalSlotTypes {
         slotMap.clear();
     }
 
-    public void loadSlots() throws SQLException, ClassNotFoundException {
+    public void loadSlots(SqlPersistence persist) throws ClassNotFoundException, SQLException {
         String sql = "select * from t_extrinsicobject where objecttype='" + RIMConstants.CN_OBJ_DEF + "'";
-
-        SqlPersistence persist = new SqlPersistence();
         List<JAXBElement<ExtrinsicObjectType>> eoEls =
                 persist.query(sql, new ArrayList<Object>(), OFactory.getXmlClassByElementName("ExtrinsicObject"));
 
@@ -147,6 +145,10 @@ public class InternalSlotTypes {
                 }
             }
         }
+    }
+
+    public void loadSlots() throws SQLException, ClassNotFoundException {
+        loadSlots(new SqlPersistence());
     }
 
     /**
