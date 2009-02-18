@@ -51,6 +51,8 @@ Make sure that properties 'deployName' and the end of the property 'db.datasourc
 
 You can deploy difference instance of Ergo just by changing the 'deployName' and the end of the 'db.datasource' property and then running the deployment ant tasks.
 
+The 'deployName' property will become the database name and the application name for the instance.
+
 *Go to the Ergo root directory from command line*
 
 *Tomcat setup ant task (ONLY ONCE)*
