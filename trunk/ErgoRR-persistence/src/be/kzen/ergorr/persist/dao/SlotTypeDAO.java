@@ -41,7 +41,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
      * @throws be.kzen.ergorr.exceptions.MappingException
      */
     private SlotValues getAnyValueByType(String value, String parent, String slotName, String slotType, String seq) throws SQLException {
-        String internalSlotType = InternalSlotTypes.getInternalSlotType(slotType);
+        String internalSlotType = InternalSlotTypes.getInstance().getSlotType(slotType);
         SlotValues slotValues = new SlotValues(parent, slotName, slotType);
         slotValues.seq = seq;
 
@@ -164,7 +164,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         List<SlotType> slots = parent.getSlot();
 
         for (SlotType slot : slots) {
-            String internalSlotType = InternalSlotTypes.getInternalSlotType(slot.getSlotType());
+            String internalSlotType = InternalSlotTypes.getInstance().getSlotType(slot.getName());
 
             if (slot.isSetValueList()) {
                 if (slot.getValueList().getValue() instanceof WrsValueListType) {
