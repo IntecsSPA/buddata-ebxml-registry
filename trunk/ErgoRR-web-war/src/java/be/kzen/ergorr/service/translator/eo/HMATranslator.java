@@ -79,7 +79,7 @@ public class HMATranslator implements Translator {
         this.eo = eo;
         regObjList = new RegistryObjectListType();
     }
-    
+
     public String getClassification() {
         return CLASSIFICATION;
     }
@@ -94,7 +94,7 @@ public class HMATranslator implements Translator {
         eProduct.getValue().setId(id);
         eProduct.getValue().setLid(id);
         eoProduct = eProduct.getValue();
-        
+
         ClassificationType classification = new ClassificationType();
         id = IDGenerator.generateUuid();
         classification.setId(id);
@@ -206,35 +206,36 @@ public class HMATranslator implements Translator {
         if (eo.isSetTarget() && eo.getTarget().getValue().isSetAbstractFeature()) {
             FootprintType footprint = (FootprintType) eo.getTarget().getValue().getAbstractFeature().getValue();
 
+            JAXBElement<? extends AbstractSurfaceType> absSur = null;
             if (footprint.isSetMultiExtentOf()) {
                 if (footprint.getMultiExtentOf().isSetMultiSurface()) {
                     if (footprint.getMultiExtentOf().getMultiSurface().isSetSurfaceMember()) {
                         List<SurfacePropertyType> surProp = footprint.getMultiExtentOf().getMultiSurface().getSurfaceMember();
                         if (!surProp.isEmpty()) {
-                            JAXBElement<? extends AbstractSurfaceType> absSur = surProp.get(0).getAbstractSurface();
-                            
+                            absSur = surProp.get(0).getAbstractSurface();
+
                             if (!absSur.getValue().isSetSrsName() && footprint.getMultiExtentOf().getMultiSurface().isSetSrsName()) {
                                 absSur.getValue().setSrsName(footprint.getMultiExtentOf().getMultiSurface().getSrsName());
                             }
-                            
-                            SlotType slotMultiExtent = RIMUtil.createWrsSlot(EOPConstants.S_MULTI_EXTENT_OF, EOPConstants.T_GEOMETRY, absSur);
-                            e.getSlot().add(slotMultiExtent);
                         }
                     } else if (footprint.getMultiExtentOf().getMultiSurface().isSetSurfaceMembers()) {
                         SurfaceArrayPropertyType surArrayProp = footprint.getMultiExtentOf().getMultiSurface().getSurfaceMembers();
                         List<JAXBElement<? extends AbstractSurfaceType>> asTypes = surArrayProp.getAbstractSurface();
                         if (!asTypes.isEmpty()) {
-                            JAXBElement<? extends AbstractSurfaceType> absSur = asTypes.get(0);
-                            
+                            absSur = asTypes.get(0);
+
                             if (!absSur.getValue().isSetSrsName() && footprint.getMultiExtentOf().getMultiSurface().isSetSrsName()) {
                                 absSur.getValue().setSrsName(footprint.getMultiExtentOf().getMultiSurface().getSrsName());
                             }
-                            
-                            SlotType slotMultiExtent = RIMUtil.createWrsSlot(EOPConstants.S_MULTI_EXTENT_OF, EOPConstants.T_GEOMETRY, absSur);
-                            e.getSlot().add(slotMultiExtent);
                         }
                     }
                 }
+            }
+
+            if (absSur != null) {
+                absSur.getValue().setId("ID_" + IDGenerator.generateIntString());
+                SlotType slotMultiExtent = RIMUtil.createWrsSlot(EOPConstants.S_MULTI_EXTENT_OF, EOPConstants.T_GEOMETRY, absSur);
+                e.getSlot().add(slotMultiExtent);
             }
 
             if (footprint.isSetCenterOf() && footprint.getCenterOf().isSetPoint()) {
@@ -506,7 +507,7 @@ public class HMATranslator implements Translator {
                             }
 
                             if (info.isSetSize() && info.getSize().isSetValue() && info.getSize().getValue().size() > 0) {
-                                
+
                                 // TODO: how to map MeasureType to int?
                                 SlotType slotSize = RIMUtil.createWrsSlot(EOPConstants.S_SIZE, EOPConstants.T_INT, info.getSize().getValue().get(0));
                                 e.getSlot().add(slotSize);
