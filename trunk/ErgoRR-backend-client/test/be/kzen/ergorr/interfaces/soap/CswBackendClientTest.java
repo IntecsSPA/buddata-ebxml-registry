@@ -25,7 +25,7 @@ public class CswBackendClientTest {
         
         DbConnectionParams cp = new DbConnectionParams();
         cp.setDbUrl(CommonProperties.getInstance().get("db.url"));
-        cp.setDbName(CommonProperties.getInstance().get("db.name"));
+        cp.setDbName(CommonProperties.getInstance().get("deployName"));
         cp.setDbUser(CommonProperties.getInstance().get("db.user"));
         cp.setDbPassword(CommonProperties.getInstance().get("db.password"));
         
