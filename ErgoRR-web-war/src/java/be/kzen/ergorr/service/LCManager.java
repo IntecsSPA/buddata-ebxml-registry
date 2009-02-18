@@ -21,6 +21,7 @@ package be.kzen.ergorr.service;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
@@ -32,10 +33,14 @@ import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
+import be.kzen.ergorr.model.rim.ServiceBindingType;
+import be.kzen.ergorr.model.rim.ServiceType;
 import be.kzen.ergorr.model.rim.SlotType;
+import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.query.QueryManager;
+import be.kzen.ergorr.service.validator.RimValidator;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,103 +73,16 @@ public class LCManager {
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
 
         flatten(idents, flatIdents);
-
-        for (IdentifiableType ident : flatIdents) {
-            if (ident instanceof RegistryObjectType) {
-                RegistryObjectType ro = (RegistryObjectType) ident;
-                ro.setStatus(RIMConstants.CN_STATUS_TYPE_ID_Submitted);
-
-                if (!ro.isSetLid()) {
-                    ro.setLid(ro.getId());
-                }
-            }
-
-            if (ident instanceof ExtrinsicObjectType &&
-                    ((ExtrinsicObjectType) ident).getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
-
-                for (SlotType s : ident.getSlot()) {
-                    try {
-                        // check if all slot name/type pairs are unique.
-                        InternalSlotTypes.getInstance().putSlot(s.getName(), s.getSlotType());
-                    } catch (Exception ex) {
-                        throw new ServiceExceptionReport(ex.getMessage());
-                    }
-                }
-            }
-        }
-
-        SqlPersistence service = new SqlPersistence(requestContext);
-
+        RimValidator validator = new RimValidator(flatIdents);
         try {
+            validator.validate();
+            SqlPersistence service = new SqlPersistence(requestContext);
             service.insert(flatIdents);
         } catch (SQLException ex) {
             throw new ServiceExceptionReport("Could not insert objects", ex);
+        } catch (InvalidReferenceException ex) {
+            throw new ServiceExceptionReport("Could not validate objects", ex);
         }
-    }
-
-    private boolean validateRelations(IdentifiableType ident, List<IdentifiableType> insertedObjs) throws ServiceExceptionReport {
-        if (ident instanceof RegistryObjectType) {
-            RegistryObjectType regObj = (RegistryObjectType) ident;
-
-        }
-
-        if (ident instanceof AssociationType) {
-            AssociationType asso = (AssociationType) ident;
-            validateAssociation(asso, insertedObjs);
-        }
-
-        return true;
-    }
-
-    private boolean validateAssociation(AssociationType asso, List<IdentifiableType> insertedObjs) throws ServiceExceptionReport {
-        boolean sourceObjValid = false;
-        boolean targetObjValid = false;
-
-        for (IdentifiableType insIdent : insertedObjs) {
-            if (asso.getSourceObject().equals(insIdent.getId())) {
-                sourceObjValid = true;
-            }
-            if (asso.getTargetObject().equals(insIdent.getId())) {
-                targetObjValid = true;
-            }
-            if (sourceObjValid && targetObjValid) {
-                break;
-            }
-        }
-
-
-        if (!sourceObjValid || !targetObjValid) {
-            List<String> ids = new ArrayList<String>();
-            if (!sourceObjValid) {
-                ids.add(asso.getSourceObject());
-            }
-            if (!targetObjValid) {
-                ids.add(asso.getTargetObject());
-            }
-
-            List<String> dbIds = null;
-            SqlPersistence persistence = new SqlPersistence(requestContext);
-            try {
-                dbIds = persistence.idsExist(ids);
-            } catch (SQLException ex) {
-                throw new ServiceExceptionReport("Could not fetch objects", ex);
-            }
-
-            if (dbIds.size() != ids.size()) {
-                String error = "association " + asso.getId();
-
-                if (!dbIds.contains(asso.getSourceObject())) {
-                    error += " has invalid sourceObject '" + asso.getSourceObject() + "'";
-                }
-                if (!dbIds.contains(asso.getTargetObject())) {
-                    error += " has invalid targetObject '" + asso.getTargetObject() + "'";
-                }
-
-                throw new ServiceExceptionReport(error);
-            }
-        }
-
-        return true;
     }
 
     public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
@@ -197,9 +115,6 @@ public class LCManager {
             logger.log(Level.WARNING, "Could not fetch object to update by ID");
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
-
-
-    // check if exists
     }
 
     public void delete(RegistryObjectListType regObjList) {
@@ -213,62 +128,9 @@ public class LCManager {
     }
 
     /**
-     * Validate that all the references in the identifiables are valid.
-     * 
-     * @param idents Identifiables to validate.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
-     */
-    private void validate(List<IdentifiableType> idents) throws ServiceExceptionReport {
-
-        for (IdentifiableType ident : idents) {
-            if (ident instanceof RegistryObjectType) {
-                String objectType = ((RegistryObjectType) ident).getObjectType();
-
-                if (!findIdentifiableWithId(objectType, idents)) {
-                    throw new ServiceExceptionReport("Could not find objectType '" + objectType + "'");
-                }
-            }
-        }
-    }
-
-    /**
-     * Find an identifiable with <code>id</code> in the submitted
-     * identifiables <code>idents</code> or in objects in the registry.
-     * 
-     * @param id ID to find.
-     * @param idents Submitted identifiables
-     * @return True if identifiable with <code>id</code> exists.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
-     */
-    private boolean findIdentifiableWithId(String id, List<IdentifiableType> idents) throws ServiceExceptionReport {
-        boolean found = false;
-
-        for (IdentifiableType ident : idents) {
-            if (ident.getId().equals(id)) {
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            SqlPersistence service = new SqlPersistence(requestContext);
-            List<String> ids = new ArrayList<String>();
-
-            try {
-                List<JAXBElement<? extends IdentifiableType>> identEls = service.getByIds(ids);
-                found = identEls.size() > 0;
-            } catch (SQLException ex) {
-                logger.log(Level.SEVERE, null, ex);
-                throw new ServiceExceptionReport("Error searching for IDs", ex);
-            }
-        }
-
-        return found;
-    }
-
-    /**
-     * Flatten the object tree in <code>idents</code> to a flat list <code>flatIdents</code>.
-     * 
+     * Flatten the object trees in <code>idents</code> to a flat list <code>flatIdents</code>.
+     * Example: RegistryObject can have nested Classification.
+     *
      * @param idents IdentifiableType tree.
      * @param flatIdents Flat list of IdentifiableType.
      */
@@ -349,6 +211,29 @@ public class LCManager {
                     }
 
                     cn.unsetClassificationNode();
+                }
+            }
+
+            if (ident instanceof ServiceType) {
+                ServiceType service = (ServiceType) ident;
+
+                if (!service.getServiceBinding().isEmpty()) {
+                    List<ServiceBindingType> bindings = service.getServiceBinding();
+
+                    for (ServiceBindingType binding : bindings) {
+                        binding.setService(service.getId());
+                    }
+                    flatten(bindings, flatIdents);
+                    service.unsetServiceBinding();
+                }
+            }
+
+            if (ident instanceof ServiceBindingType) {
+                ServiceBindingType binding = (ServiceBindingType) ident;
+
+                for (SpecificationLinkType specLink : binding.getSpecificationLink()) {
+                    specLink.setServiceBinding(binding.getId());
+                    flatIdents.add(specLink);
                 }
             }
 
