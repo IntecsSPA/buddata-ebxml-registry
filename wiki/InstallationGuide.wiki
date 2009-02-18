@@ -4,7 +4,9 @@
   * JDK 1.5+  -  Tomcat 5.5.x  -  Postgres 8.2+  -  Postgis 1.3+
 
 Make sure that you have following variables set:
+
 CATALINA_HOME : Root directory of tomcat
+
 ERGO_HOME : Root directory of ERGO project. (Where all the modules are)
 
 ==Installation==
