@@ -977,10 +977,9 @@ CREATE index classificationnode_id_idx ON t_classificationnode (id);
 CREATE index classificationscheme_id_idx ON t_classificationscheme (id);
 CREATE index externalidentifier_id_idx ON t_externalidentifier (id);
 CREATE index registrypackage_id_idx ON t_registrypackage (id);
-/*
-CREATE index localizedname_id_idx ON localizedname (id);
-CREATE index localizeddesc_id_idx ON localizeddesc (id);
-*/
+--CREATE index localizedname_id_idx ON localizedname (id);
+--CREATE index localizeddesc_id_idx ON localizeddesc (id);
+
 
 CREATE index slot_parent_idx ON t_slot (parent);
 CREATE index slot_name_idx ON t_slot (name_);
