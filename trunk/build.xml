@@ -134,6 +134,7 @@
         <replace file="${build-dir}/${deployName}.xml" token="!!db.password!!" value="${db.password}"/>
         <copy file="${build-dir}/${deployName}.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/>
         <unwar src="${dist-dir}/${deployName}.war" dest="${env.CATALINA_HOME}/webapps/${deployName}"/>
+        <sleep seconds="3"/>
     </target>
 
     <path id="libs.ref" description="project libraries">
@@ -147,10 +148,6 @@
             <exclude name="ErgoRR-shared/metro1_4/api/webservice-api.jar"/>
         </fileset>
     </path>
-
-    <target name="sleep10">
-        <sleep seconds="10"/>
-    </target>
 
     <target name="all-compile" depends="init, compile-jaxb, compile-commons, compile-persistence, compile-web"/>
     <target name="all-build" depends="all-compile, build-jaxb, build-commons, build-persistence, build-war"/>
