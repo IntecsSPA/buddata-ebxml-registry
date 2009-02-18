@@ -62,7 +62,7 @@ ant tomcat-setup
 
 *Restart Tomcat*
 
-* Run these ant tasks in the following order*
+* Run these ant tasks in the following order. If you just want to re-deploy the application then you just need to run the 'all-build' and 'deploy' tasks*
 {{{
 ant all-build
 }}}
@@ -75,3 +75,7 @@ ant deploy
 {{{
 ant db-load-data
 }}}
+
+
+
+*Note*: After an instance has been deployed on Tomcat, it sometimes throws an exception because of classpath loading problems. In that case a restart is required. I am looking at how to solve this problem.
