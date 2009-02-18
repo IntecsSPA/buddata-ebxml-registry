@@ -324,12 +324,14 @@ public class SqlPersistence {
     public Connection getConnection() throws SQLException {
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "attempting to get a connection");
+            logger.log(Level.FINE, "datasource: " + CommonProperties.getInstance().get("db.datasource"));
         }
         DataSource ds = null;
         try {
+
             ds = (DataSource) new InitialContext().lookup(CommonProperties.getInstance().get("db.datasource"));
         } catch (Exception ex) {
-            //logger.log(Level.SEVERE, "Could not get database DateSource", ex);
+            logger.log(Level.SEVERE, "Could not get database DateSource", ex);
         }
 
         if (ds != null) {
