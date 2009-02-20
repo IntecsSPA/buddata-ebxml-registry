@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.service;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.commons.RequestContext;
@@ -37,15 +38,25 @@ import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.ServiceType;
 import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
+import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.validator.RimValidator;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -57,9 +68,11 @@ public class LCManager {
 
     private static Logger logger = Logger.getLogger(LCManager.class.getName());
     private RequestContext requestContext;
+    private Map<String, List<IdentifiableType>> identMap;
 
     public LCManager(RequestContext requestContext) {
         this.requestContext = requestContext;
+        identMap = new HashMap<String, List<IdentifiableType>>();
     }
 
     /**
@@ -73,11 +86,13 @@ public class LCManager {
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
 
         flatten(idents, flatIdents);
-        RimValidator validator = new RimValidator(flatIdents);
+        loadMap(flatIdents);
+        RimValidator validator = new RimValidator(flatIdents, identMap);
         try {
             validator.validate();
             SqlPersistence service = new SqlPersistence(requestContext);
             service.insert(flatIdents);
+            insertRepositoryItems();
         } catch (SQLException ex) {
             throw new ServiceExceptionReport("Could not insert objects", ex);
         } catch (InvalidReferenceException ex) {
@@ -124,6 +139,26 @@ public class LCManager {
             String sql = "select id from association where sourceobject ='" + ident.getId() + "' or targetobject = '" + ident.getId() + "'";
 
 
+        }
+    }
+
+    private void insertRepositoryItems() {
+        List<IdentifiableType> eoList = identMap.get(WrsExtrinsicObjectType.class.getName());
+
+        if (eoList != null) {
+            RepositoryManager repoManager = new RepositoryManager();
+
+            for (IdentifiableType ident : eoList) {
+                WrsExtrinsicObjectType eo = (WrsExtrinsicObjectType) ident;
+
+                if (eo.getRepositoryItem() != null) {
+                    try {
+                        repoManager.save(eo.getId(), eo.getRepositoryItem());
+                    } catch (IOException ex) {
+                        logger.log(Level.SEVERE, "Could not save RepositoryItem of object: " + eo.getId(), ex);
+                    }
+                }
+            }
         }
     }
 
@@ -249,5 +284,24 @@ public class LCManager {
         }
 
         return idents;
+    }
+
+    /**
+     * Load <code>indetMap</code> with <code>idents</code>
+     * sorting them by RIM type.
+     */
+    private void loadMap(List<IdentifiableType> idents) {
+        for (IdentifiableType ident : idents) {
+            String key = ident.getClass().getName();
+
+            List<IdentifiableType> list = identMap.get(key);
+
+            if (list == null) {
+                list = new ArrayList<IdentifiableType>();
+                identMap.put(key, list);
+            }
+
+            list.add(ident);
+        }
     }
 }

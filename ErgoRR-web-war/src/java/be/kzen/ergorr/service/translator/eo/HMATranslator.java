@@ -51,13 +51,18 @@ import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.commons.EOPConstants;
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RIMUtil;
 import be.kzen.ergorr.model.rim.ClassificationType;
+import be.kzen.ergorr.model.util.JAXBUtil;
+import com.sun.xml.ws.util.ByteArrayDataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -95,6 +100,14 @@ public class HMATranslator implements Translator {
         eProduct.getValue().setLid(id);
         eoProduct = eProduct.getValue();
 
+        try {
+            byte[] dataBuf = JAXBUtil.getInstance().marshallToByteArr(eo);
+            ByteArrayDataSource dataBufSrc = new ByteArrayDataSource(dataBuf, InternalConstants.CONTENT_TYPE_XML);
+            DataHandler dh = new DataHandler(dataBufSrc);
+            eoProduct.setRepositoryItem(dh);
+        } catch (JAXBException ex) {
+            logger.log(Level.SEVERE, "Could not marshall EarthObservation to byte[]", ex);
+        }
         ClassificationType classification = new ClassificationType();
         id = IDGenerator.generateUuid();
         classification.setId(id);

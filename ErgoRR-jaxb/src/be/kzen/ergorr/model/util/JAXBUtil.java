@@ -56,11 +56,14 @@ public class JAXBUtil {
         }
     }
 
-    public String marshall(Object obj) throws JAXBException {
+    public byte[] marshallToByteArr(Object obj) throws JAXBException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         marshall(obj, baos);
+        return baos.toByteArray();
+    }
 
-        return new String(baos.toByteArray());
+    public String marshallToStr(Object obj) throws JAXBException {
+        return new String(marshallToByteArr(obj));
     }
     
     public Unmarshaller createUnmarshaller() throws JAXBException {
