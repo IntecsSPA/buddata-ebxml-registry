@@ -41,12 +41,17 @@ public class RimValidator {
     private Map<String, List<IdentifiableType>> identMap;
     private List<IdentifiableType> idents;
 
-    public RimValidator(List<IdentifiableType> idents) {
+    public RimValidator(List<IdentifiableType> idents, Map<String, List<IdentifiableType>> identMap) {
+        this.identMap = identMap;
         this.idents = idents;
-        identMap = new HashMap<String, List<IdentifiableType>>();
-        loadMap();
     }
 
+    /**
+     * Start validation of the RegistryObjects.
+     * 
+     * @throws be.kzen.ergorr.exceptions.InvalidReferenceException
+     * @throws java.sql.SQLException
+     */
     public void validate() throws InvalidReferenceException, SQLException {
         for (IdentifiableType ident : idents) {
             String validatorClassName = "be.kzen.ergorr.service.validator." + ident.getClass().getSimpleName() + "V";
@@ -64,25 +69,6 @@ public class RimValidator {
             } catch (ClassNotFoundException ex) {
                 logger.log(Level.SEVERE, null, ex);
             }
-        }
-    }
-
-    /**
-     * Load <code>indetMap</code> with <code>idents</code>
-     * sorting them by RIM type.
-     */
-    private void loadMap() {
-        for (IdentifiableType ident : idents) {
-            String key = ident.getClass().getName();
-
-            List<IdentifiableType> list = identMap.get(key);
-
-            if (list == null) {
-                list = new ArrayList<IdentifiableType>();
-                identMap.put(key, list);
-            }
-            
-            list.add(ident);
         }
     }
 }

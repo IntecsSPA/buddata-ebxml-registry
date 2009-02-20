@@ -105,7 +105,7 @@ public class WsInvokerTask extends Task {
                 t.getInsertOrUpdateOrDelete().add(insert);
                 TransactionResponseType response = service.cswTransaction(t);
 
-                String responseStr = JAXBUtil.getInstance().marshall(OFactory.csw.createTransactionResponse(response));
+                String responseStr = JAXBUtil.getInstance().marshallToStr(OFactory.csw.createTransactionResponse(response));
                 System.out.println(responseStr);
             } catch (ServiceExceptionReport ex) {
                 ex.printStackTrace();

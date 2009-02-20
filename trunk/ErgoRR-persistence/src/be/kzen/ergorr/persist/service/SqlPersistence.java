@@ -322,14 +322,15 @@ public class SqlPersistence {
     }
 
     public Connection getConnection() throws SQLException {
+        String dsName = CommonProperties.getInstance().get("db.datasource") + CommonProperties.getInstance().get("deployName");
+        
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "attempting to get a connection");
-            logger.log(Level.FINE, "datasource: " + CommonProperties.getInstance().get("db.datasource"));
+            logger.log(Level.FINE, "datasource: " + dsName);
         }
         DataSource ds = null;
         try {
-
-            ds = (DataSource) new InitialContext().lookup(CommonProperties.getInstance().get("db.datasource"));
+            ds = (DataSource) new InitialContext().lookup(dsName);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Could not get database DateSource", ex);
         }
