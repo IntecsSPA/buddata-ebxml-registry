@@ -32,6 +32,6 @@ public class CswBackendClientTest {
         CswBackendClient service = new CswBackendClient(cp);
         GetRecordByIdResponseType response = service.getRecordById(getRecordById);
         
-        System.out.println(JAXBUtil.getInstance().marshall(OFactory.csw.createGetRecordByIdResponse(response)));
+        System.out.println(JAXBUtil.getInstance().marshallToStr(OFactory.csw.createGetRecordByIdResponse(response)));
     }
 }
