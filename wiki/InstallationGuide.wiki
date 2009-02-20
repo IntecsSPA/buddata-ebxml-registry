@@ -49,9 +49,8 @@ psql -d template_postgis -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sq
 == Deploy ==
 
 *Configure ErgoRR-commons/conf/common.properties.*
-Make sure that properties 'deployName' and the end of the property 'db.datasource' match.
 
-You can deploy difference instance of Ergo just by changing the 'deployName' and the end of the 'db.datasource' property and then running the deployment ant tasks.
+You can deploy difference instance of Ergo just by changing the 'deployName' property and then running the deployment ant tasks.
 
 The 'deployName' property will become the database name and the application name for the instance.
 
