@@ -85,7 +85,6 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
             boolean valid = idExistsInRequest(rimObject.getObjectType(), ClassificationNodeType.class);
 
             if (!valid) {
-                SqlPersistence persistence = new SqlPersistence();
                 valid = persistence.idExists(rimObject.getObjectType(), ClassificationNodeType.class);
 
                 if (!valid) {

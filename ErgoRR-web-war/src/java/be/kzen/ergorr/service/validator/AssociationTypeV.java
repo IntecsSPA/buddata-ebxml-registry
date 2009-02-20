@@ -47,7 +47,6 @@ public class AssociationTypeV extends RegistryObjectTypeV<AssociationType> {
             }
 
             List<String> dbIds = null;
-            SqlPersistence persistence = new SqlPersistence();
             dbIds = persistence.idsExist(ids);
 
             if (dbIds.size() != ids.size()) {

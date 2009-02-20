@@ -18,8 +18,10 @@
  */
 package be.kzen.ergorr.service.validator;
 
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.model.rim.IdentifiableType;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -32,9 +34,16 @@ import java.util.Map;
 public abstract class AbstractValidator<T extends IdentifiableType> {
     protected Map<String, List<IdentifiableType>> identMap;
     protected T rimObject;
+    protected RequestContext requestContext;
+    protected SqlPersistence persistence;
 
     public void setIdentMap(Map<String, List<IdentifiableType>> identMap) {
         this.identMap = identMap;
+    }
+
+    public void setRequestContext(RequestContext requestContext) {
+        this.requestContext = requestContext;
+        persistence = new SqlPersistence(requestContext);
     }
 
     public T getRimObject() {

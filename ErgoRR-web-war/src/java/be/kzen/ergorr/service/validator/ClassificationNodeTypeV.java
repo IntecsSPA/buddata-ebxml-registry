@@ -40,11 +40,10 @@ public class ClassificationNodeTypeV extends RegistryObjectTypeV<ClassificationN
         }
 
         if (!valid) {
-            SqlPersistence p = new SqlPersistence();
-            valid = p.idExists(rimObject.getParent(), ClassificationNodeType.class);
+            valid = persistence.idExists(rimObject.getParent(), ClassificationNodeType.class);
 
             if (!valid) {
-                valid = p.idExists(rimObject.getParent(), ClassificationSchemeType.class);
+                valid = persistence.idExists(rimObject.getParent(), ClassificationSchemeType.class);
             }
         }
 

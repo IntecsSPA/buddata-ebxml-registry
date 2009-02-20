@@ -38,8 +38,6 @@ public class ClassificationTypeV extends RegistryObjectTypeV<ClassificationType>
 
 
         if (!validCn || !validCo) {
-            SqlPersistence persistence = new SqlPersistence();
-
             if (!validCn) {
                 validCn = persistence.idExists(rimObject.getClassificationNode(), ClassificationNodeType.class);
 

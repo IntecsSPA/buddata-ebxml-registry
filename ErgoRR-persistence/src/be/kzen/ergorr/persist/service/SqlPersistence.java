@@ -328,11 +328,12 @@ public class SqlPersistence {
             logger.log(Level.FINE, "attempting to get a connection");
             logger.log(Level.FINE, "datasource: " + dsName);
         }
+        
         DataSource ds = null;
         try {
             ds = (DataSource) new InitialContext().lookup(dsName);
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Could not get database DateSource", ex);
+            logger.log(Level.SEVERE, "Could not get database DateSource, attempting to get DbConnectionParams");
         }
 
         if (ds != null) {
