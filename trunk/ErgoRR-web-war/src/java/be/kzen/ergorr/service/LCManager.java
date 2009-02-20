@@ -87,7 +87,7 @@ public class LCManager {
 
         flatten(idents, flatIdents);
         loadMap(flatIdents);
-        RimValidator validator = new RimValidator(flatIdents, identMap);
+        RimValidator validator = new RimValidator(flatIdents, identMap, requestContext);
         try {
             validator.validate();
             SqlPersistence service = new SqlPersistence(requestContext);

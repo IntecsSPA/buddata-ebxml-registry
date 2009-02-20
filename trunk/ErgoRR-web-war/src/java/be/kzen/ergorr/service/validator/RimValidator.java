@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.service.validator;
 
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import java.sql.SQLException;
@@ -40,10 +41,12 @@ public class RimValidator {
     private static Logger logger = Logger.getLogger(RimValidator.class.getName());
     private Map<String, List<IdentifiableType>> identMap;
     private List<IdentifiableType> idents;
+    private RequestContext requestContext;
 
-    public RimValidator(List<IdentifiableType> idents, Map<String, List<IdentifiableType>> identMap) {
+    public RimValidator(List<IdentifiableType> idents, Map<String, List<IdentifiableType>> identMap, RequestContext requestContext) {
         this.identMap = identMap;
         this.idents = idents;
+        this.requestContext = requestContext;
     }
 
     /**
@@ -60,6 +63,7 @@ public class RimValidator {
                 AbstractValidator validator = (AbstractValidator) validatorClass.newInstance();
                 validator.setIdentMap(identMap);
                 validator.setRimObject(ident);
+                validator.setRequestContext(requestContext);
                 validator.validate();
                 
             } catch (InstantiationException ex) {

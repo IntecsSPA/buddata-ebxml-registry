@@ -37,7 +37,6 @@ public class SpecificationLinkTypeV extends RegistryObjectTypeV<SpecificationLin
 
 
         if (!valid) {
-            SqlPersistence persistence = new SqlPersistence();
             valid = persistence.idExists(rimObject.getServiceBinding(), ServiceBindingType.class);
 
             if (!valid) {

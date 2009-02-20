@@ -36,7 +36,6 @@ public class ServiceBindingTypeV extends RegistryObjectTypeV<ServiceBindingType>
         boolean valid = idExistsInRequest(rimObject.getService(), ServiceType.class);
 
         if (!valid) {
-            SqlPersistence persistence = new SqlPersistence();
             valid = persistence.idExists(rimObject.getService(), ServiceType.class);
 
             if (!valid) {
