@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>be.kzen</groupId>
+  <artifactId>ErgoRR-web</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>ErgoRR-web Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <licenses>
+		<license>
+			<name>GPL v3</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+			<comments></comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>fanciulli</id>
+			<name>Massimiliano Fanciulli</name>
+			<email>massimiliano.fanciulli@intecs.it</email>
+			<organization>Intecs Informatica e Tecnologia del Software</organization>
+			<organizationUrl>http://www.intecs.it</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+			<properties>
+			</properties>
+		</developer>
+		<developer>
+			<id>ustuntas</id>
+			<name>Yaman Ustuntas</name>
+			<email>cryptosense@gmail.com</email>
+			<organization>Cryptosense</organization>
+			<organizationUrl>http://</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+			<properties>
+			</properties>
+		</developer>
+	</developers>
+	
+	
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>be.kzen</groupId>
+    	<artifactId>ErgoRR-jaxb</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    	<scope>runtime</scope>
+    </dependency>
+    <dependency>
+    	<groupId>be.kzen</groupId>
+    	<artifactId>ErgoRR-commons</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    	<scope>runtime</scope>
+    </dependency>
+    <dependency>
+    	<groupId>be.kzen</groupId>
+    	<artifactId>ErgoRR-persistence</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    	<scope>runtime</scope>
+    </dependency>
+  </dependencies>
+  <build>
+  	<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+
+		</plugins>
+    <finalName>ErgoRR-web</finalName>
+  </build>
+</project>
