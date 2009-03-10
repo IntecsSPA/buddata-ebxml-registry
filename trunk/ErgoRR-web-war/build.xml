@@ -14,7 +14,7 @@
         <copy file="conf/logging.properties" todir="build/web/WEB-INF/classes"/>
     </target>
     <target name="tomcat-setup">
-        <copy file="../ErgoRR-shared/metro1_2/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
+        <copy file="../ErgoRR-shared/metro1_4/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
         <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
         <!--copy file="conf/ergorr.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/-->
     </target>
