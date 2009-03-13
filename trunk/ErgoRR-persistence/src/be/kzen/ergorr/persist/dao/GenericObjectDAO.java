@@ -1,3 +1,21 @@
+/*
+ * Project: Buddata ebXML RegRep
+ * Class: GenericObjectDAO.java
+ * Copyright (C) 2008 Yaman Ustuntas
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package be.kzen.ergorr.persist.dao;
 
 import java.sql.ResultSet;
@@ -22,24 +40,18 @@ public abstract class GenericObjectDAO<T> extends GenericDAO<T> {
     }
 
     public void insert() throws SQLException {
-        Statement batchStmt = connection.createStatement();
         batchStmt.addBatch(createInsertStatement());
         insertRelatedObjects(batchStmt);
-        batchStmt.executeBatch();
     }
 
     public void update() throws SQLException {
-        Statement batchStmt = connection.createStatement();
         batchStmt.addBatch(createUpdateStatement());
         updateRelatedObjects(batchStmt);
-        batchStmt.executeBatch();
     }
 
     public void delete() throws SQLException {
-        Statement batchStmt = connection.createStatement();
         batchStmt.addBatch(createDeleteStatement());
         deleteRelatedObjects(batchStmt);
-        batchStmt.executeBatch();
     }
 
     public T loadCompleteXmlObject(ResultSet result) throws SQLException {

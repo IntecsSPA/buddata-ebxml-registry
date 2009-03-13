@@ -76,7 +76,7 @@ public class RimServiceTest extends GenericTest {
         idents.add(eo);
         
         SqlPersistence instance = new SqlPersistence();
-        instance.insert(idents);
+        instance.persist(idents);
     }
     
     @Test

@@ -13,8 +13,12 @@ import java.util.List;
  */
 public class UsageParameterDAO extends GenericComposedObjectDAO<String, SpecificationLinkType> {
 
+    public UsageParameterDAO(SpecificationLinkType parent) {
+        super(parent);
+    }
+
     @Override
-    public void addComposedObjects(SpecificationLinkType parent) throws SQLException {
+    public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder();
         Statement stmt = connection.createStatement();
 
@@ -28,7 +32,7 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
     }
 
     @Override
-    public void insert(SpecificationLinkType parent, Statement batchStmt) throws SQLException {
+    public void insert(Statement batchStmt) throws SQLException {
 
         for (String param : parent.getUsageParameter()) {
             currentValues = param;
@@ -50,15 +54,4 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
     protected String getQueryParamList() {
         return "value_";
     }
-
-    @Override
-    protected String createUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String getFetchCondition() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

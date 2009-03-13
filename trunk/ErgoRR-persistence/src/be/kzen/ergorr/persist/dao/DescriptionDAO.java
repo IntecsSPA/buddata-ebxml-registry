@@ -13,6 +13,10 @@ import java.sql.Statement;
  */
 public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType, RegistryObjectType> {
 
+    public DescriptionDAO(RegistryObjectType parent) {
+        super(parent);
+    }
+
     @Override
     public String getTableName() {
         return "t_description";
@@ -29,9 +33,9 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
     }
 
     @Override
-    public void insert(RegistryObjectType parent, Statement batchStmt) throws SQLException {
+    public void insert(Statement batchStmt) throws SQLException {
 
-        if (parent.isSetName()) {
+        if (parent.isSetDescription()) {
             InternationalStringType desc = parent.getDescription();
             StringBuilder values = new StringBuilder();
 
@@ -50,7 +54,7 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
     }
 
     @Override
-    public void addComposedObjects(RegistryObjectType parent) throws SQLException {
+    public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
         sql.append("select ").append(getQueryParamList()).append(" from ").append(getTableName()).append(" where parent = '").append(parent.getId()).append("'");
         Statement stmt = connection.createStatement();
@@ -72,15 +76,5 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
         if (desc != null) {
             parent.setDescription(desc);
         }
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String getFetchCondition() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

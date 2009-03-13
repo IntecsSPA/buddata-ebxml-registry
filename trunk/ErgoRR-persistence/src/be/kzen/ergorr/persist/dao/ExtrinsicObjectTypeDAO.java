@@ -1,5 +1,6 @@
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
@@ -42,23 +43,26 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
             String contentVersionName = result.getString("contentversionname");
             String contentVersionComment = result.getString("contentversioncomment");
 
-            if (contentVersionComment != null && contentVersionName != null) {
+            if (contentVersionName != null && contentVersionName.trim().length() > 0) {
                 VersionInfoType versionInfo = new VersionInfoType();
                 versionInfo.setVersionName(contentVersionName);
-                versionInfo.setComment(contentVersionComment);
+
+                if (contentVersionComment != null) {
+                    versionInfo.setComment(contentVersionComment);
+                }
                 xmlObject.setContentVersionInfo(versionInfo);
             }
 
             if (xmlObject instanceof WrsExtrinsicObjectType) {
                 WrsExtrinsicObjectType wrsEo = (WrsExtrinsicObjectType) xmlObject;
-                
+
                 String wrsactuate = result.getString("wrsactuate");
                 String wrsarcrole = result.getString("wrsarcrole");
                 String wrshref = result.getString("wrshref");
                 String wrsrole = result.getString("wrsrole");
                 String wrsshow = result.getString("wrsshow");
                 String wrstitle = result.getString("wrstitle");
-                
+
                 if (wrsactuate != null || wrsarcrole != null || wrshref != null || wrsrole != null || wrsshow != null || wrstitle != null) {
                     SimpleLinkType simpleLink = new SimpleLinkType();
                     simpleLink.setActuate(wrsactuate);
@@ -78,44 +82,54 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
 
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",isopaque=");
         appendBooleanValue(xmlObject.isIsOpaque(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",mimetype=");
         appendStringValue(xmlObject.getMimeType(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",contentversionname=");
 
         if (xmlObject.isSetContentVersionInfo()) {
-            vals.append("'").append(xmlObject.getContentVersionInfo().getVersionName()).append("','");
-            vals.append(xmlObject.getContentVersionInfo().getComment()).append("'");
+            appendStringValue(xmlObject.getContentVersionInfo().getVersionName(), vals);
+            vals.append(xmlObject.isNewObject() ? "," : ",contentversioncomment=");
+            appendStringValue(xmlObject.getContentVersionInfo().getComment(), vals);
         } else {
-            vals.append("null,null");
+            vals.append("''");
+            vals.append(xmlObject.isNewObject() ? ",''" : ",contentversioncomment=''");
         }
 
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",spectype=");
 
         if (xmlObject instanceof WrsExtrinsicObjectType) {
             WrsExtrinsicObjectType wrsEo = (WrsExtrinsicObjectType) xmlObject;
-
-            vals.append("'wrs',");
+            vals.append("'wrs'");
+            vals.append(xmlObject.isNewObject() ? "," : ",wrsactuate=");
 
             if (wrsEo.isSetRepositoryItemRef()) {
                 appendStringValue(wrsEo.getRepositoryItemRef().getActuate(), vals);
-                vals.append(",");
+                vals.append(xmlObject.isNewObject() ? "," : ",wrsarcrole=");
                 appendStringValue(wrsEo.getRepositoryItemRef().getArcrole(), vals);
-                vals.append(",");
+                vals.append(xmlObject.isNewObject() ? "," : ",wrshref=");
                 appendStringValue(wrsEo.getRepositoryItemRef().getHref(), vals);
-                vals.append(",");
+                vals.append(xmlObject.isNewObject() ? "," : ",wrsrole=");
                 appendStringValue(wrsEo.getRepositoryItemRef().getRole(), vals);
-                vals.append(",");
+                vals.append(xmlObject.isNewObject() ? "," : ",wrsshow=");
                 appendStringValue(wrsEo.getRepositoryItemRef().getShow(), vals);
-                vals.append(",");
+                vals.append(xmlObject.isNewObject() ? "," : ",wrstitle=");
                 appendStringValue(wrsEo.getRepositoryItemRef().getTitle(), vals);
             } else {
-                vals.append("null,null,null,null,null,null");
+                if (xmlObject.isNewObject()) {
+                    vals.append("'','','','','',''");
+                } else {
+                    vals.append("'',wrsarcrole='',wrshref='',wrsrole='',wrsshow='',wrstitle=''");
+                }
             }
 
         } else {
-            vals.append("'rim',null,null,null,null,null,null");
+            if (xmlObject.isNewObject()) {
+                vals.append("'rim','','','','','',''");
+            } else {
+                vals.append("'rim',wrsactuate='',wrsarcrole='',wrshref='',wrsrole='',wrsshow='',wrstitle=''");
+            }
         }
 
         return vals.toString();

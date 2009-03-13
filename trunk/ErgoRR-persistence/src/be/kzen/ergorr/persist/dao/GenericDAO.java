@@ -1,9 +1,28 @@
+/*
+ * Project: Buddata ebXML RegRep
+ * Class: GenericDAO.java
+ * Copyright (C) 2008 Yaman Ustuntas
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import java.sql.Connection;
+import java.sql.Statement;
 
 /**
  *
@@ -12,11 +31,16 @@ import java.sql.Connection;
 public abstract class GenericDAO<T> {
 
     protected Connection connection;
+    protected Statement batchStmt;
     protected RequestContext context;
     protected ElementSetType elementSet;
 
     public void setConnection(Connection connection) {
         this.connection = connection;
+    }
+
+    public void setBatchStmt(Statement batchStmt) {
+        this.batchStmt = batchStmt;
     }
 
     public void setContext(RequestContext context) {
@@ -33,7 +57,7 @@ public abstract class GenericDAO<T> {
 
     protected String createUpdateStatement() {
         StringBuilder sql = new StringBuilder("update ");
-        sql.append(getTableName()).append(" set ").append(createUpdateValues());
+        sql.append(getTableName()).append(" set ").append(createValues());
         sql.append(" where ").append(getFetchCondition()).append(";");
         return sql.toString();
     }
@@ -48,7 +72,7 @@ public abstract class GenericDAO<T> {
         if (value != null) {
             sb.append("'").append(value).append("'");
         } else {
-            sb.append("null");
+            sb.append("''");
         }
     }
 
@@ -59,7 +83,7 @@ public abstract class GenericDAO<T> {
             sb.append("null");
         }
     }
-    
+
     public boolean isBrief() {
         return elementSet != null && elementSet == ElementSetType.BRIEF;
     }
@@ -76,6 +100,5 @@ public abstract class GenericDAO<T> {
     protected abstract String getParamList();
     protected abstract String getQueryParamList();
     protected abstract String createValues();
-    protected abstract String createUpdateValues();
     protected abstract String getFetchCondition();
 }

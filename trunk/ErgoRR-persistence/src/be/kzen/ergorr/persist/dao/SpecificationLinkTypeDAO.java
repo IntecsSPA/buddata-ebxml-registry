@@ -23,7 +23,7 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
 
     @Override
     public SpecificationLinkType newXmlObject(ResultSet result) throws SQLException {
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
@@ -52,21 +52,21 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     @Override
     protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
         super.insertRelatedObjects(batchStmt);
-        UsageParameterDAO paramDAO = new UsageParameterDAO();
-        paramDAO.insert(xmlObject, batchStmt);
-        UsageDescriptionDAO descDAO = new UsageDescriptionDAO();
-        descDAO.insert(xmlObject, batchStmt);
+        UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
+        paramDAO.insert(batchStmt);
+        UsageDescriptionDAO descDAO = new UsageDescriptionDAO(xmlObject);
+        descDAO.insert(batchStmt);
     }
 
     protected void loadRelateObjects() throws SQLException {
         if (!isBrief()) {
-            UsageParameterDAO paramDAO = new UsageParameterDAO();
+            UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
             paramDAO.setConnection(connection);
-            paramDAO.addComposedObjects(xmlObject);
+            paramDAO.addComposedObjects();
 
-            UsageDescriptionDAO descDAO = new UsageDescriptionDAO();
+            UsageDescriptionDAO descDAO = new UsageDescriptionDAO(xmlObject);
             descDAO.setConnection(connection);
-            descDAO.addComposedObjects(xmlObject);
+            descDAO.addComposedObjects();
         }
     }
 
@@ -75,9 +75,9 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
 
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",servicebinding=");
         appendStringValue(xmlObject.getServiceBinding(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",specificationlink=");
         appendStringValue(xmlObject.getSpecificationObject(), vals);
 
         return vals.toString();

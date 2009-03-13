@@ -24,7 +24,7 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
 
     @Override
     public ServiceBindingType newXmlObject(ResultSet result) throws SQLException {
-        return loadXmlObject(result);
+        return loadCompleteXmlObject(result);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
 
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",service=");
         appendStringValue(xmlObject.getService(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",accessuri=");
         appendStringValue(xmlObject.getAccessURI(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",targetbinding=");
         appendStringValue(xmlObject.getTargetBinding(), vals);
 
         return vals.toString();

@@ -32,6 +32,10 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
     private static Logger logger = Logger.getLogger(SlotTypeDAO.class.getName());
 
+    public SlotTypeDAO(IdentifiableType parent) {
+        super(parent);
+    }
+
     /**
      * This method covers the problem that Double, Int, DateTime can be
      * submitted as rim:Value although rim:Value is a string.
@@ -40,9 +44,9 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
      * @param slotType Slot type.
      * @throws be.kzen.ergorr.exceptions.MappingException
      */
-    private SlotValues getAnyValueByType(String value, String parent, String slotName, String slotType, String seq) throws SQLException {
+    private SlotValues getAnyValueByType(String value, String slotName, String slotType, String seq) throws SQLException {
         String internalSlotType = InternalSlotTypes.getInstance().getSlotType(slotType);
-        SlotValues slotValues = new SlotValues(parent, slotName, slotType);
+        SlotValues slotValues = new SlotValues(parent.getId(), slotName, slotType);
         slotValues.seq = seq;
 
         value = value.trim();
@@ -84,16 +88,6 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
     }
 
     @Override
-    protected String createUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String getFetchCondition() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public String getTableName() {
         return "t_slot";
     }
@@ -108,7 +102,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
     }
 
     @Override
-    public void addComposedObjects(IdentifiableType parent) throws SQLException {
+    public void addComposedObjects() throws SQLException {
         Map<String, SlotType> slotMap = new HashMap<String, SlotType>();
         Statement stmt = connection.createStatement();
 
@@ -159,8 +153,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
     }
 
     @Override
-    public void insert(IdentifiableType parent, Statement batchStmt) throws SQLException {
-
+    public void insert(Statement batchStmt) throws SQLException {
         List<SlotType> slots = parent.getSlot();
 
         for (SlotType slot : slots) {
@@ -173,17 +166,13 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                     for (int i = 0; i < wrsValueList.getAnyValue().size(); i++) {
                         AnyValueType anyVal = wrsValueList.getAnyValue().get(i);
                         if (!anyVal.getContent().isEmpty()) {
-
                             if (anyVal.getContent().get(0) instanceof JAXBElement) {
                                 JAXBElement anyValEl = (JAXBElement) anyVal.getContent().get(0);
-
                                 try {
                                     if (anyValEl.getValue() instanceof AbstractGeometryType) {
-
                                         AbstractGeometryType gmlGeometry = (AbstractGeometryType) anyValEl.getValue();
-
+                                        
                                         if (internalSlotType.equals(InternalConstants.TYPE_GEOMETRY)) {
-
                                             int defaultSrsId = CommonProperties.getInstance().getInt("db.defaultSrsId");
                                             Geometry geometry = GeometryTranslator.geometryFromGmlGeometry(gmlGeometry);
                                             BinaryWriter binaryWriter = new BinaryWriter();
@@ -214,9 +203,8 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                                     throw new SQLException(ex.toString());
                                 }
                             } else {
-
                                 String val = anyVal.getContent().get(0).toString().trim();
-                                SlotValues slotValues = getAnyValueByType(val, parent.getId(), slot.getName(), slot.getSlotType(), String.valueOf(i));
+                                SlotValues slotValues = getAnyValueByType(val, slot.getName(), slot.getSlotType(), String.valueOf(i));
                                 currentValues = slotValues.getValues();
                                 batchStmt.addBatch(createInsertStatement());
                             }
@@ -227,7 +215,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                     List<String> stringValues = valueList.getValue();
                     if (valueList.isSetValue() && stringValues.size() > 0) {
                         for (int j = 0; j < valueList.getValue().size(); j++) {
-                            SlotValues slotValues = getAnyValueByType(stringValues.get(j), parent.getId(), slot.getName(), slot.getSlotType(), String.valueOf(j));
+                            SlotValues slotValues = getAnyValueByType(stringValues.get(j), slot.getName(), slot.getSlotType(), String.valueOf(j));
                             currentValues = slotValues.getValues();
                             batchStmt.addBatch(createInsertStatement());
                         }
@@ -250,7 +238,6 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                 currentValues = slotValues.getValues();
                 batchStmt.addBatch(createInsertStatement());
             }
-
         }
     }
 

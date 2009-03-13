@@ -1,7 +1,5 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.InternalConstants;
-import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,44 +34,23 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     @Override
     protected String createValues() {
         StringBuilder vals = new StringBuilder(super.createValues());
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",lid=");
         appendStringValue(xmlObject.getLid(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",objecttype=");
         appendStringValue(xmlObject.getObjectType(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",status=");
         appendStringValue(xmlObject.getStatus(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",versionname=");
 
         if (xmlObject.isSetVersionInfo()) {
             appendStringValue(xmlObject.getVersionInfo().getVersionName(), vals);
-            vals.append(",");
+            vals.append(xmlObject.isNewObject() ? "," : ",versioncomment=");
             appendStringValue(xmlObject.getVersionInfo().getComment(), vals);
         } else {
-            vals.append("null,null");
+            vals.append("''");
+            vals.append(xmlObject.isNewObject() ? ",''" : ",versioncomment=''");
         }
 
-        return vals.toString();
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        StringBuilder vals = new StringBuilder(super.createUpdateValues());
-        vals.append(",lid=");
-        appendStringValue(xmlObject.getLid(), vals);
-        vals.append(",objecttype=");
-        appendStringValue(xmlObject.getObjectType(), vals);
-        vals.append(",status=");
-        appendStringValue(xmlObject.getStatus(), vals);
-        vals.append(",versionname=");
-
-        if (xmlObject.isSetVersionInfo()) {
-            appendStringValue(xmlObject.getVersionInfo().getVersionName(), vals);
-            vals.append(",versioncomment=");
-            appendStringValue(xmlObject.getVersionInfo().getComment(), vals);
-        } else {
-            vals.append("null,versioncomment=null");
-        }
-        
         return vals.toString();
     }
 
@@ -82,13 +59,13 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.insertRelatedObjects(batchStmt);
 
         if (xmlObject.isSetName()) {
-            NameDAO nameDAO = new NameDAO();
-            nameDAO.insert(xmlObject, batchStmt);
+            NameDAO nameDAO = new NameDAO(xmlObject);
+            nameDAO.insert(batchStmt);
         }
 
         if (xmlObject.isSetDescription()) {
-            DescriptionDAO descDAO = new DescriptionDAO();
-            descDAO.insert(xmlObject, batchStmt);
+            DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
+            descDAO.insert(batchStmt);
         }
     }
 
@@ -97,13 +74,13 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.loadRelatedObjects();
 
         if (!isBrief()) {
-            NameDAO nameDAO = new NameDAO();
+            NameDAO nameDAO = new NameDAO(xmlObject);
             nameDAO.setConnection(connection);
-            nameDAO.addComposedObjects(xmlObject);
+            nameDAO.addComposedObjects();
 
-            DescriptionDAO descDAO = new DescriptionDAO();
+            DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
             descDAO.setConnection(connection);
-            descDAO.addComposedObjects(xmlObject);
+            descDAO.addComposedObjects();
 
             if (!isSummary()) {
                 ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
@@ -115,6 +92,29 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
                 eiDAO.addExternalIdentifiers(xmlObject);
             }
         }
+    }
+
+    @Override
+    protected void updateRelatedObjects(Statement batchStmt) throws SQLException {
+        super.updateRelatedObjects(batchStmt);
+
+        NameDAO nameDAO = new NameDAO(xmlObject);
+        nameDAO.update(batchStmt);
+        DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
+        descDAO.update(batchStmt);
+    }
+
+    @Override
+    protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
+        super.deleteRelatedObjects(batchStmt);
+        NameDAO nameDAO = new NameDAO(xmlObject);
+        nameDAO.delete(batchStmt);
+        DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
+        descDAO.delete(batchStmt);
+        ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
+        clDAO.deleteClassifications(xmlObject, batchStmt);
+        ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
+        eiDAO.deleteExternalIdentifiers(xmlObject, batchStmt);
     }
 
     @Override
