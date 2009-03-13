@@ -32,6 +32,12 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         }
     }
 
+    public void deleteExternalIdentifiers(RegistryObjectType parent, Statement batchStmt) throws SQLException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("delete from ").append(getTableName()).append(" where registryobject='").append(parent.getId()).append("';");
+        batchStmt.addBatch(sql.toString());
+    }
+
     @Override
     public ExternalIdentifierType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ExternalIdentifierType();
@@ -54,11 +60,11 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
 
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",registryobject=");
         appendStringValue(xmlObject.getRegistryObject(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",identificationscheme=");
         appendStringValue(xmlObject.getIdentificationScheme(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",value_=");
         appendStringValue(xmlObject.getValue(), vals);
 
         return vals.toString();

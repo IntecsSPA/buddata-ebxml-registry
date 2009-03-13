@@ -66,43 +66,38 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     @Override
     protected String createValues() {
         StringBuilder vals = new StringBuilder();
+        if (!xmlObject.isNewObject()) {vals.append("id=");}
         appendStringValue(xmlObject.getId(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",home=");
         appendStringValue(xmlObject.getHome(), vals);
-        return vals.toString();
-    }
-
-    protected String createUpdateValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append("id=");
-        appendStringValue(xmlObject.getId(), vals);
-        vals.append(",home=");
-        appendStringValue(xmlObject.getHome(), vals);
-
         return vals.toString();
     }
 
     @Override
     protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
         if (xmlObject.isSetSlot()) {
-            SlotTypeDAO slotDAO = new SlotTypeDAO();
-            slotDAO.insert(xmlObject, batchStmt);
+            SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+            slotDAO.insert(batchStmt);
         }
     }
 
     @Override
     protected void updateRelatedObjects(Statement batchStmt) throws SQLException {
+        SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+        slotDAO.update(batchStmt);
     }
 
     @Override
     protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
+        SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+        slotDAO.delete(batchStmt);
     }
 
     @Override
     protected void loadRelatedObjects() throws SQLException {
-        SlotTypeDAO slotDAO = new SlotTypeDAO();
+        SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
         slotDAO.setConnection(connection);
-        slotDAO.addComposedObjects(xmlObject);
+        slotDAO.addComposedObjects();
     }
 
     @Override

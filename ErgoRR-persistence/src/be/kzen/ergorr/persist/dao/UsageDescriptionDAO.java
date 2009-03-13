@@ -13,8 +13,12 @@ import java.sql.Statement;
  */
 public class UsageDescriptionDAO extends GenericComposedObjectDAO<InternationalStringType, SpecificationLinkType> {
 
+    public UsageDescriptionDAO(SpecificationLinkType parent) {
+        super(parent);
+    }
+
     @Override
-    public void addComposedObjects(SpecificationLinkType parent) throws SQLException {
+    public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder();
         Statement stmt = connection.createStatement();
 
@@ -38,7 +42,7 @@ public class UsageDescriptionDAO extends GenericComposedObjectDAO<InternationalS
     }
 
     @Override
-    public void insert(SpecificationLinkType parent, Statement batchStmt) throws SQLException {
+    public void insert(Statement batchStmt) throws SQLException {
         if (parent.getDescription() != null) {
             InternationalStringType intString = parent.getDescription();
 
@@ -74,15 +78,5 @@ public class UsageDescriptionDAO extends GenericComposedObjectDAO<InternationalS
     @Override
     protected String getQueryParamList() {
         return "charset,lang,value_";
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String getFetchCondition() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

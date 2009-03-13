@@ -32,6 +32,12 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         }
     }
 
+    public void deleteClassifications(RegistryObjectType parent, Statement batchStmt) throws SQLException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("delete from ").append(getTableName()).append(" where classifiedobject='").append(parent.getId()).append("';");
+        batchStmt.addBatch(sql.toString());
+    }
+
     @Override
     public ClassificationType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationType();
@@ -55,13 +61,13 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
 
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",classificationnode=");
         appendStringValue(xmlObject.getClassificationNode(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",classificationscheme=");
         appendStringValue(xmlObject.getClassificationScheme(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",classifiedobject=");
         appendStringValue(xmlObject.getClassifiedObject(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",noderepresentation=");
         appendStringValue(xmlObject.getNodeRepresentation(), vals);
 
         return vals.toString();

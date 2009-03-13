@@ -44,9 +44,9 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     protected String createValues() {
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",isinternal=");
         appendBooleanValue(xmlObject.isIsInternal(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",nodetype=");
         appendStringValue(xmlObject.getNodeType(), vals);
         return vals.toString();
     }

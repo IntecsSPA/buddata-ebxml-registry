@@ -14,6 +14,10 @@ import java.sql.Statement;
  */
 public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, RegistryObjectType> {
 
+    public NameDAO(RegistryObjectType parent) {
+        super(parent);
+    }
+
     @Override
     public String getTableName() {
         return "t_name";
@@ -30,7 +34,7 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
     }
 
     @Override
-    public void insert(RegistryObjectType parent, Statement batchStmt) throws SQLException {
+    public void insert(Statement batchStmt) throws SQLException {
 
         if (parent.isSetName()) {
             InternationalStringType name = parent.getName();
@@ -51,7 +55,7 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
     }
 
     @Override
-    public void addComposedObjects(RegistryObjectType parent) throws SQLException {
+    public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
         sql.append("select ").append(getQueryParamList()).append(" from ").append(getTableName()).append(" where parent = '").append(parent.getId()).append("'");
         Statement stmt = connection.createStatement();
@@ -73,15 +77,5 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
         if (name != null) {
             parent.setName(name);
         }
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String getFetchCondition() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -41,24 +41,11 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
     @Override
     protected String createValues() {
         StringBuilder vals = new StringBuilder(super.createValues());
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",associationtype=");
         appendStringValue(xmlObject.getAssociationType(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",sourceobject=");
         appendStringValue(xmlObject.getSourceObject(), vals);
-        vals.append(",");
-        appendStringValue(xmlObject.getTargetObject(), vals);
-
-        return vals.toString();
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        StringBuilder vals = new StringBuilder(super.createUpdateValues());
-        vals.append(",associationtype=");
-        appendStringValue(xmlObject.getAssociationType(), vals);
-        vals.append(",sourceobject=");
-        appendStringValue(xmlObject.getSourceObject(), vals);
-        vals.append(",targetobject=");
+        vals.append(xmlObject.isNewObject() ? "," : ",targetobject=");
         appendStringValue(xmlObject.getTargetObject(), vals);
 
         return vals.toString();

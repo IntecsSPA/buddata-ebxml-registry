@@ -58,7 +58,7 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
     protected String createValues() {
         StringBuilder vals = new StringBuilder();
         vals.append(super.createValues());
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",querylanguage=");
 
         if (xmlObject.isSetQueryExpression()) {
             String queryLang = xmlObject.getQueryExpression().getQueryLanguage();
@@ -66,38 +66,15 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
             String queryStr = "";
 
             appendStringValue(queryLang, vals);
-            vals.append(",");
+            vals.append(xmlObject.isNewObject() ? "," : ",query=");
 
             if (queryLang.equals(RIMConstants.CN_QUERY_LANG_GML_FILTER)) {
                 queryStr = (String) content;
             }
             appendStringValue(queryStr.trim(), vals);
         } else {
-            vals.append("null,null");
-        }
-
-        return vals.toString();
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        StringBuilder vals = new StringBuilder(super.createUpdateValues());
-        vals.append(",querylanguage=");
-
-        if (xmlObject.isSetQueryExpression()) {
-            String queryLang = xmlObject.getQueryExpression().getQueryLanguage();
-            Object content = xmlObject.getQueryExpression().getContent().get(0);
-            String queryStr = "";
-
-            appendStringValue(queryLang, vals);
-            vals.append(",query=");
-
-            if (queryLang.equals(RIMConstants.CN_QUERY_LANG_GML_FILTER)) {
-                queryStr = (String) content;
-            }
-            appendStringValue(queryStr.trim(), vals);
-        } else {
-            vals.append("null,query=null");
+            vals.append("''");
+            vals.append(xmlObject.isNewObject() ? ",''" : ",query=''");
         }
 
         return vals.toString();

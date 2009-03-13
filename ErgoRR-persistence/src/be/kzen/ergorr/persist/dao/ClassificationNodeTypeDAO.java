@@ -48,23 +48,11 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
     @Override
     protected String createValues() {
         StringBuilder vals = new StringBuilder(super.createValues());
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",code=");
         appendStringValue(xmlObject.getCode(), vals);
-        vals.append(",");
+        vals.append(xmlObject.isNewObject() ? "," : ",parent=");
         appendStringValue(xmlObject.getParent(), vals);
-        vals.append(",");
-        appendStringValue(xmlObject.getPath(), vals);
-        return vals.toString();
-    }
-
-    @Override
-    protected String createUpdateValues() {
-        StringBuilder vals = new StringBuilder(super.createUpdateValues());
-        vals.append(",code=");
-        appendStringValue(xmlObject.getCode(), vals);
-        vals.append(",parent=");
-        appendStringValue(xmlObject.getParent(), vals);
-        vals.append(",path_=");
+        vals.append(xmlObject.isNewObject() ? "," : ",path_=");
         appendStringValue(xmlObject.getPath(), vals);
         return vals.toString();
     }
