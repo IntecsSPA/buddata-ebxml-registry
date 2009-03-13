@@ -40,11 +40,11 @@ import be.kzen.ergorr.model.purl.elements.SimpleLiteral;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
-import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.translator.TranslationFactory;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,23 +59,35 @@ public class TransactionService {
 
     private static Logger logger = Logger.getLogger(TransactionService.class.getName());
     private RequestContext requestContext;
+    private InsertResultType insertResult;
+    private int inserts;
+    private int updates;
+    private int deletes;
 
     public TransactionService() {
+        insertResult = new InsertResultType();
+        inserts = 0;
+        updates = 0;
+        deletes = 0;
     }
 
     public TransactionService(RequestContext requestContext) {
+        this();
         this.requestContext = requestContext;
     }
 
+    /**
+     * Start processing the transaction request.
+     *
+     * @return Transaction response.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     public TransactionResponseType process() throws ServiceExceptionReport {
-        TransactionResponseType response = new TransactionResponseType();
-        response.setVersion("1.0");
-
         List<Object> iuds = ((TransactionType) requestContext.getRequest()).getInsertOrUpdateOrDelete();
 
         for (Object iud : iuds) {
             if (iud instanceof InsertType) {
-                return doInsert((InsertType) iud);
+                doInsert((InsertType) iud);
             } else if (iud instanceof UpdateType) {
                 doUpdate((UpdateType) iud);
             } else if (iud instanceof DeleteType) {
@@ -85,10 +97,42 @@ public class TransactionService {
             }
         }
 
+        return buildResponse();
+    }
+
+    /**
+     * Builds the transaction response from data collection from insert/update/delete.
+     *
+     * @return Transaction response.
+     */
+    private TransactionResponseType buildResponse() {
+        TransactionResponseType response = new TransactionResponseType();
+        TransactionSummaryType summary = new TransactionSummaryType();
+
+        if (!insertResult.getBriefRecord().isEmpty()) {
+            response.getInsertResult().add(insertResult);
+        }
+        if (inserts > 0) {
+            summary.setTotalInserted(BigInteger.valueOf(inserts));
+        }
+        if (updates > 0) {
+            summary.setTotalUpdated(BigInteger.valueOf(updates));
+        }
+        if (deletes > 0) {
+            summary.setTotalDeleted(BigInteger.valueOf(deletes));
+        }
+
+        response.setTransactionSummary(summary);
         return response;
     }
 
-    private TransactionResponseType doInsert(InsertType insert) throws ServiceExceptionReport {
+    /**
+     * Handles the Insert transaction.
+     *
+     * @param insert Insert data.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
+    private void doInsert(InsertType insert) throws ServiceExceptionReport {
         logger.fine("Transtaction.doInsert");
         TranslationFactory transFac = new TranslationFactory();
         RegistryObjectListType regObjList = new RegistryObjectListType();
@@ -116,17 +160,18 @@ public class TransactionService {
             LCManager lcm = new LCManager(requestContext);
             lcm.submit(regObjList);
 
-            // prepare response
-            return buildResponse(regObjList);
+            inserts += regObjList.getIdentifiable().size();
+            appendBriefRecords(regObjList);
         } catch (TranslationException ex) {
             throw new ServiceExceptionReport("Transaction error", null, ex);
         }
     }
 
-    private TransactionResponseType doUpdate(UpdateType update) throws ServiceExceptionReport {
+    private void doUpdate(UpdateType update) throws ServiceExceptionReport {
 
-        if (update.isSetAny()) {
-            Object updateObj = update.getAny();
+        if (update.isSetAny() && update.getAny() instanceof JAXBElement) {
+            Object updateObj = ((JAXBElement) update.getAny()).getValue();
+
             RegistryObjectListType regObjList = null;
 
             if (updateObj instanceof RegistryObjectListType) {
@@ -135,19 +180,35 @@ public class TransactionService {
                 regObjList = new RegistryObjectListType();
                 JAXBElement<RegistryObjectType> regObjEl = OFactory.rim.createRegistryObject((RegistryObjectType) updateObj);
                 regObjList.getIdentifiable().add(regObjEl);
+            } else {
+                throw new ServiceExceptionReport("Expected RegistryObjectList or any RegistryObject sub type");
             }
 
             LCManager lcm = new LCManager(requestContext);
             lcm.update(regObjList);
-        // process regObjList
 
+            int updateCount = 0;
+            int insertCount = 0;
+
+            for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
+                IdentifiableType ident = identEl.getValue();
+
+                if (ident.isNewObject()) {
+                    insertCount++;
+                    appendBriefRecord(ident);
+                } else {
+                    updateCount++;
+                }
+            }
+
+            inserts += insertCount;
+            updates += updateCount;
         } else {
             throw new ServiceExceptionReport("No rim:RegistryObject or rim:RegistryObjectList specified for updating");
         }
-        throw new ServiceExceptionReport("Transaction.update not supported");
     }
 
-    private TransactionResponseType doDelete(DeleteType delete) throws ServiceExceptionReport {
+    private void doDelete(DeleteType delete) throws ServiceExceptionReport {
         GetRecordsType getRecords = new GetRecordsType();
         QueryType query = new QueryType();
         String typeName = CommonFunctions.removePrefix(delete.getTypeName());
@@ -158,18 +219,18 @@ public class TransactionService {
         elSetName.getTypeNames().add(objQNameToDelete);
         elSetName.setValue(ElementSetType.BRIEF);
         query.setElementSetName(elSetName);
-        
+
         query.setConstraint(delete.getConstraint());
         JAXBElement<QueryType> queryEl = OFactory.csw.createQuery(query);
         getRecords.setAbstractQuery(queryEl);
-        
+
         RequestContext rq = new RequestContext();
         rq.setRequest(getRecords);
 
         QueryManager qm = new QueryManager(rq);
 
-        GetRecordsResponseType response = qm.query();
-        List<Object> objsToDelete = response.getSearchResults().getAny();
+        GetRecordsResponseType queryResponse = qm.query();
+        List<Object> objsToDelete = queryResponse.getSearchResults().getAny();
 
         RegistryObjectListType regObjList = new RegistryObjectListType();
 
@@ -181,33 +242,28 @@ public class TransactionService {
         LCManager lcm = new LCManager(requestContext);
         lcm.delete(regObjList);
 
-        throw new ServiceExceptionReport("Transaction.delete not supported");
+        deletes = regObjList.getIdentifiable().size();
     }
 
-    public TransactionResponseType buildResponse(RegistryObjectListType regObjList) {
-        TransactionResponseType response = new TransactionResponseType();
-        InsertResultType insertResult = new InsertResultType();
+    private void appendBriefRecord(IdentifiableType ident) {
+        BriefRecordType briefRecord = new BriefRecordType();
 
-        for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
-            BriefRecordType briefRecord = new BriefRecordType();
+        SimpleLiteral identifier = new SimpleLiteral();
+        identifier.getContent().add(ident.getId());
+        briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
 
-            SimpleLiteral identifier = new SimpleLiteral();
-            identifier.getContent().add(identEl.getValue().getId());
-            briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
-
-            if (identEl.getValue() instanceof RegistryObjectType) {
-                SimpleLiteral type = new SimpleLiteral();
-                type.getContent().add(((RegistryObjectType) identEl.getValue()).getObjectType());
-                briefRecord.setType(type);
-            }
+        if (ident instanceof RegistryObjectType) {
+            SimpleLiteral type = new SimpleLiteral();
+            type.getContent().add(((RegistryObjectType) ident).getObjectType());
+            briefRecord.setType(type);
             insertResult.getBriefRecord().add(briefRecord);
         }
 
-        response.getInsertResult().add(insertResult);
-        TransactionSummaryType transSummary = new TransactionSummaryType();
-        transSummary.setTotalInserted(BigInteger.valueOf(regObjList.getIdentifiable().size()));
-        response.setTransactionSummary(transSummary);
+    }
 
-        return response;
+    private void appendBriefRecords(RegistryObjectListType regObjList) {
+        for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
+            appendBriefRecord(identEl.getValue());
+        }
     }
 }

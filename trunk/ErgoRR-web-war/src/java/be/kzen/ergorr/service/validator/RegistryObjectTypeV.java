@@ -20,54 +20,33 @@ package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
-import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.ServiceType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
-import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author yamanustuntas
  */
 public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractValidator<T> {
-
+    private static Logger logger = Logger.getLogger(RegistryObjectTypeV.class.getName());
+    
     // Objects which only can have a certain objectType
-    private static final Map<String, String> constObjTypeNames;
     private static final String URN_REGEX = "^urn:[\\w-.]*:[\\w-.:]*";
-
-
-    static {
-        constObjTypeNames = new HashMap<String, String>();
-        constObjTypeNames.put(AssociationType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association");
-        constObjTypeNames.put("_AuditableEvent_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AuditableEvent");
-        constObjTypeNames.put(ClassificationNodeType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode");
-        constObjTypeNames.put(ClassificationSchemeType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme");
-        constObjTypeNames.put(ExternalIdentifierType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier");
-        constObjTypeNames.put("_Federation_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Federation");
-        constObjTypeNames.put("_Organization_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Organization");
-        constObjTypeNames.put(RegistryPackageType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage");
-        constObjTypeNames.put("_Registry_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Registry");
-        constObjTypeNames.put(ServiceType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service");
-        constObjTypeNames.put(ServiceBindingType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ServiceBinding");
-        constObjTypeNames.put(SpecificationLinkType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:SpecificationLink");
-        constObjTypeNames.put("_Subscription_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Subscription");
-        constObjTypeNames.put("_Notification_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Notification");
-        constObjTypeNames.put(AdhocQueryType.class.getName(), "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery");
-        constObjTypeNames.put("_User_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person:User");
-        constObjTypeNames.put("_Person_", "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person");
-    }
 
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
@@ -79,28 +58,38 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
 
         rimObject.setStatus(RIMConstants.CN_STATUS_TYPE_CODE_Submitted);
         rimObject.setLid(rimObject.getId());
-        String constObjTypeName = constObjTypeNames.get(rimObject.getClass().getName());
 
-        if (constObjTypeName == null) {
-            boolean valid = idExistsInRequest(rimObject.getObjectType(), ClassificationNodeType.class);
-
-            if (!valid) {
-                valid = persistence.idExists(rimObject.getObjectType(), ClassificationNodeType.class);
-
-                if (!valid) {
-                    String err = "Object with id '" + rimObject.getId() + "' does not have a valid objectType '" + rimObject.getObjectType() + "'";
-                    throw new InvalidReferenceException(err);
-                }
-            }
+        if (rimObject.getObjectType() == null || rimObject.getObjectType().equals("") || rimObject.hasStaticObjectTypeUrn()) {
+            rimObject.setObjectType(rimObject.getObjectTypeUrn());
         } else {
-            if (rimObject.getObjectType() == null) {
-                rimObject.setObjectType(constObjTypeName);
-            } else {
-                if (!rimObject.getObjectType().equals(constObjTypeName)) {
-                    String err = rimObject.getClass().getSimpleName() + " '" + rimObject.getId() + "' should have the objectType '" + constObjTypeName + "'";
-                    throw new InvalidReferenceException(err);
+            if (!rimObject.getObjectType().equals(rimObject.getObjectTypeUrn())) {
+                boolean valid = idExistsInRequest(rimObject.getObjectType(), ClassificationNodeType.class);
+                
+                if (!valid) {
+                    valid = persistence.idExists(rimObject.getObjectType(), ClassificationNodeType.class);
+
+                    if (!valid) {
+                        String err = rimObject.getClass().getName() + " with id '" + rimObject.getId() + "' does not have a valid objectType '" + rimObject.getObjectType() + "'";
+                        throw new InvalidReferenceException(err);
+                    }
                 }
             }
+        }
+    }
+
+    @Override
+    public void validateToDelete() throws ReferenceExistsException, SQLException {
+        String sql = "select id from t_association where sourceobject ='" + rimObject.getId() + "' or targetobject = '" + rimObject.getId() + "'";
+
+        List<String> ids = persistence.getIds(sql);
+
+        if (!ids.isEmpty()) {
+            String idStr = "";
+            for (String id : ids) {
+                idStr += id + " | ";
+            }
+            String err = "Object " + rimObject.getId() + " to be deleted is used in associations with IDs " + idStr;
+            throw new ReferenceExistsException(err);
         }
     }
 }

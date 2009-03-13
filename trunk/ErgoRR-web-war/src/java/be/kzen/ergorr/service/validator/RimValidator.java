@@ -20,6 +20,7 @@ package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -49,6 +50,11 @@ public class RimValidator {
         this.requestContext = requestContext;
     }
 
+    public RimValidator(List<IdentifiableType> idents, RequestContext requestContext) {
+        this.idents = idents;
+        this.requestContext = requestContext;
+    }
+
     /**
      * Start validation of the RegistryObjects.
      * 
@@ -66,6 +72,28 @@ public class RimValidator {
                 validator.setRequestContext(requestContext);
                 validator.validate();
                 
+            } catch (InstantiationException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void validateToDelete() throws ReferenceExistsException, SQLException {
+        for (IdentifiableType ident : idents) {
+            String validatorClassName = "be.kzen.ergorr.service.validator." + ident.getClass().getSimpleName() + "V";
+            
+            try {
+                Class validatorClass = Class.forName(validatorClassName);
+                AbstractValidator validator = (AbstractValidator) validatorClass.newInstance();
+                validator.setIdentMap(identMap);
+                validator.setRimObject(ident);
+                validator.setRequestContext(requestContext);
+                validator.validateToDelete();
+
             } catch (InstantiationException ex) {
                 logger.log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {

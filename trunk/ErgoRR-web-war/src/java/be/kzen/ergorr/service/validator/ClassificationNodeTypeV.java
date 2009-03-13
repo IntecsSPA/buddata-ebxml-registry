@@ -19,10 +19,11 @@
 package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
-import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -50,6 +51,24 @@ public class ClassificationNodeTypeV extends RegistryObjectTypeV<ClassificationN
         if (!valid) {
             String err = "ClassificationNode with id '" + rimObject.getId() + "' is refering to a not existing parent object '" + rimObject.getParent() + "'";
             throw new InvalidReferenceException(err);
+        }
+    }
+
+    @Override
+    public void validateToDelete() throws ReferenceExistsException, SQLException {
+        super.validateToDelete();
+        List<String> ids = persistence.getIds("select id from t_identifiable where parent='" + rimObject.getId() + "'");
+
+        if (!ids.isEmpty()) {
+            String err = "ClassificationNode " + rimObject.getId() + " cannot be deleted because it classified one or more RegistryObjects";
+            throw new ReferenceExistsException(err);
+        }
+
+        ids = persistence.getIds("select id from t_classification where classificationnode='" + rimObject.getId() + "'");
+
+        if (!ids.isEmpty()) {
+            String err = "ClassificationNode " + rimObject.getId() + " cannot be deleted because it is used by one or more Classifications";
+            throw new ReferenceExistsException(err);
         }
     }
 }

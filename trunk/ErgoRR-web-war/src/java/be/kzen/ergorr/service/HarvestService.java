@@ -22,13 +22,21 @@ import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.AcknowledgementType;
+import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.EchoedRequestType;
 import be.kzen.ergorr.model.csw.HarvestResponseType;
 import be.kzen.ergorr.model.csw.HarvestType;
+import be.kzen.ergorr.model.csw.InsertResultType;
+import be.kzen.ergorr.model.csw.TransactionResponseType;
+import be.kzen.ergorr.model.csw.TransactionSummaryType;
+import be.kzen.ergorr.model.purl.elements.SimpleLiteral;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
+import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.JAXBUtil;
+import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.service.translator.TranslationFactory;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.GregorianCalendar;
@@ -78,8 +86,7 @@ public class HarvestService {
             lcm.submit(regObjList);
 
             // create response
-            TransactionService transService = new TransactionService();
-            response.setTransactionResponse(transService.buildResponse(regObjList));
+            response.setTransactionResponse(buildResponse(regObjList));
 
             AcknowledgementType ack = new AcknowledgementType();
             EchoedRequestType echo = new EchoedRequestType();
@@ -102,5 +109,32 @@ public class HarvestService {
         } catch (TranslationException ex) {
             throw new ServiceExceptionReport("Could not translate the data from the provided source URL", ex);
         }
+    }
+
+    private TransactionResponseType buildResponse(RegistryObjectListType regObjList) {
+        TransactionResponseType response = new TransactionResponseType();
+        InsertResultType insertResult = new InsertResultType();
+
+        for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
+            BriefRecordType briefRecord = new BriefRecordType();
+
+            SimpleLiteral identifier = new SimpleLiteral();
+            identifier.getContent().add(identEl.getValue().getId());
+            briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
+
+            if (identEl.getValue() instanceof RegistryObjectType) {
+                SimpleLiteral type = new SimpleLiteral();
+                type.getContent().add(((RegistryObjectType) identEl.getValue()).getObjectType());
+                briefRecord.setType(type);
+            }
+            insertResult.getBriefRecord().add(briefRecord);
+        }
+
+        response.getInsertResult().add(insertResult);
+        TransactionSummaryType transSummary = new TransactionSummaryType();
+        transSummary.setTotalInserted(BigInteger.valueOf(regObjList.getIdentifiable().size()));
+        response.setTransactionSummary(transSummary);
+
+        return response;
     }
 }
