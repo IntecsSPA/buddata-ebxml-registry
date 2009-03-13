@@ -36,6 +36,13 @@ public class ServiceType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service";
+
+    public ServiceType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "ServiceBinding")
     protected List<ServiceBindingType> serviceBinding;
 

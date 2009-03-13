@@ -36,6 +36,12 @@ public class ExternalLinkType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalLink";
+
+    public ExternalLinkType() {
+        objectTypeUrn = otUrn;
+    }
+
     @XmlAttribute(required = true)
     @XmlSchemaType(name = "anyURI")
     protected String externalURI;

@@ -48,6 +48,12 @@ public class ExtrinsicObjectType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject";
+
+    public ExtrinsicObjectType() {
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "ContentVersionInfo")
     protected VersionInfoType contentVersionInfo;
     @XmlAttribute
@@ -149,10 +155,5 @@ public class ExtrinsicObjectType
 
     public void unsetIsOpaque() {
         this.isOpaque = null;
-    }
-
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.ExtrinsicObjectDM";
     }
 }

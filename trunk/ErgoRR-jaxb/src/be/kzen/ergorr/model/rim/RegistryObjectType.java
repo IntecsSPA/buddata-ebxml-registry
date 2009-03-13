@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -88,6 +89,23 @@ public class RegistryObjectType
     protected String objectType;
     @XmlAttribute
     protected String status;
+
+    @XmlTransient
+    protected String objectTypeUrn = "";
+    @XmlTransient
+    protected boolean hasStaticObjectTypeUrn = false;
+
+    public boolean hasStaticObjectTypeUrn() {
+        return hasStaticObjectTypeUrn;
+    }
+
+    public String getObjectTypeUrn() {
+        return objectTypeUrn;
+    }
+
+    public void setObjectTypeUrn(String objectTypeUrn) {
+        this.objectTypeUrn = objectTypeUrn;
+    }
 
     /**
      * Gets the value of the name property.
@@ -329,10 +347,5 @@ public class RegistryObjectType
 
     public boolean isSetStatus() {
         return (this.status!= null);
-    }
-
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.RegistryObjectDM";
     }
 }

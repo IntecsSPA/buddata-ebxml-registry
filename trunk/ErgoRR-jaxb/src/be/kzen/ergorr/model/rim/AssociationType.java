@@ -41,6 +41,13 @@ public class AssociationType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association";
+
+    public AssociationType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlAttribute(required = true)
     protected String associationType;
     @XmlAttribute(required = true)
@@ -130,10 +137,5 @@ public class AssociationType
 
     public boolean isSetTargetObject() {
         return (this.targetObject!= null);
-    }
-
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.AssociationDM";
     }
 }

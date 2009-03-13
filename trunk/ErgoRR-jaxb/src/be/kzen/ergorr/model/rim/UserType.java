@@ -30,5 +30,10 @@ public class UserType
     extends PersonType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person:User";
+
+    public UserType() {
+        objectTypeUrn = otUrn;
+    }
 
 }

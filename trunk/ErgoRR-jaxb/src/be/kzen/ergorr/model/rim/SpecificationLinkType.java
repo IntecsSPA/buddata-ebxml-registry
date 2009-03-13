@@ -41,6 +41,13 @@ public class SpecificationLinkType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:SpecificationLink";
+
+    public SpecificationLinkType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "UsageDescription")
     protected InternationalStringType usageDescription;
     @XmlElement(name = "UsageParameter")

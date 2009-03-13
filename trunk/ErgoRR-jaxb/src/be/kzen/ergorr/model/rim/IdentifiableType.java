@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -57,6 +58,17 @@ public class IdentifiableType {
     @XmlAttribute
     @XmlSchemaType(name = "anyURI")
     protected String home;
+
+    @XmlTransient
+    protected boolean newObject = false;
+
+    public boolean isNewObject() {
+        return newObject;
+    }
+
+    public void setNewObject(boolean newObject) {
+        this.newObject = newObject;
+    }
 
     /**
      * Gets the value of the slot property.
@@ -149,9 +161,5 @@ public class IdentifiableType {
 
     public boolean isSetHome() {
         return (this.home != null);
-    }
-    
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.IdentifiableDM";
     }
 }
