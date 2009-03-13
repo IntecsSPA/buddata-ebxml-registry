@@ -18,36 +18,28 @@
  */
 package be.kzen.ergorr.service;
 
-import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
-import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.ServiceType;
-import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
-import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.service.SqlPersistence;
-import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.validator.RimValidator;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -82,66 +72,107 @@ public class LCManager {
      * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
      */
     public void submit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+        commit(regObjList);
+    }
+
+    /**
+     * Update object list in the registy.
+     *
+     * @param regObjList List to update.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
+    public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+        commit(regObjList);
+    }
+
+    /**
+     * Handles submit and update of RegistryObjects.
+     * Validates RegistryObjects for invalid object references.
+     * Depending on if the object already exists in the registry
+     * it will insert or update it accordingly.
+     *
+     * @param regObjList List to insert or update.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
+    public void commit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
-
         flatten(idents, flatIdents);
         loadMap(flatIdents);
+
         RimValidator validator = new RimValidator(flatIdents, identMap, requestContext);
         try {
             validator.validate();
-            SqlPersistence service = new SqlPersistence(requestContext);
-            service.insert(flatIdents);
-            insertRepositoryItems();
-        } catch (SQLException ex) {
-            throw new ServiceExceptionReport("Could not insert objects", ex);
         } catch (InvalidReferenceException ex) {
-            throw new ServiceExceptionReport("Could not validate objects", ex);
+            throw new ServiceExceptionReport(ex.getMessage(), ex);
+        } catch (SQLException ex) {
+            throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
-    }
 
-    public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         List<String> ids = new ArrayList<String>();
-        List<JAXBElement<? extends IdentifiableType>> updateIdentEls = regObjList.getIdentifiable();
-        RegistryObjectListType newObjList = new RegistryObjectListType();
 
-        for (JAXBElement<? extends IdentifiableType> identEl : updateIdentEls) {
-            ids.add(identEl.getValue().getId());
+        for (IdentifiableType ident : flatIdents) {
+            ids.add(ident.getId());
         }
 
-        SqlPersistence persist = new SqlPersistence(requestContext);
+        SqlPersistence persistence = new SqlPersistence(requestContext);
+        
         try {
-            List<JAXBElement<? extends IdentifiableType>> existingIdentEls = persist.getByIds(ids);
+            List<JAXBElement<? extends IdentifiableType>> existingIdentEls = persistence.getByIds(ids);
 
-            for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
-                boolean exists = false;
-
+            for (IdentifiableType flatIdent : flatIdents) {
+                boolean isNewObject = true;
+                
                 for (JAXBElement<? extends IdentifiableType> existingIdentEl : existingIdentEls) {
-                    if (existingIdentEl.getValue().getId().equals(identEl.getValue().getId())) {
-                        exists = true;
+                    if (existingIdentEl.getValue().getId().equals(flatIdent.getId())) {
+                        isNewObject = false;
+
+                        if (!existingIdentEl.getValue().getClass().equals(flatIdent.getClass())) {
+                            String err = flatIdent.getClass().getSimpleName() + " with ID " + flatIdent.getId() +
+                                    " has a different type then the existing object: " + existingIdentEl.getValue().getClass().getSimpleName();
+                            throw new ServiceExceptionReport(err);
+                        }
                         break;
                     }
                 }
-
-                if (!exists) {
-                }
+                flatIdent.setNewObject(isNewObject);
             }
+
+            persistence.persist(flatIdents);
+            insertRepositoryItems();
         } catch (SQLException ex) {
-            logger.log(Level.WARNING, "Could not fetch object to update by ID");
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
     }
 
-    public void delete(RegistryObjectListType regObjList) {
+    /**
+     * Deletes the list of Identifiables.
+     *
+     * @param regObjList Identifiables to delete.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
+    public void delete(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+        List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
+        List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
+        flatten(idents, flatIdents);
 
-        for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
-            IdentifiableType ident = identEl.getValue();
-            String sql = "select id from association where sourceobject ='" + ident.getId() + "' or targetobject = '" + ident.getId() + "'";
+        RimValidator validator = new RimValidator(flatIdents, requestContext);
 
+        try {
+            validator.validateToDelete();
+            SqlPersistence persistence = new SqlPersistence(requestContext);
+            persistence.delete(flatIdents);
 
+        } catch (ReferenceExistsException ex) {
+            throw new ServiceExceptionReport(ex.getMessage(), ex);
+        } catch (SQLException ex) {
+            throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
     }
 
+    /**
+     * Puts the RepositoryItems of WrsExtrinsicObjects to the repository.
+     */
     private void insertRepositoryItems() {
         List<IdentifiableType> eoList = identMap.get(WrsExtrinsicObjectType.class.getName());
 
@@ -276,6 +307,12 @@ public class LCManager {
         }
     }
 
+    /**
+     * Utility method to get list of Identifiables from JAXBElements.
+     *
+     * @param identEls JAXBElement to get Identifiables from.
+     * @return List of Identifiables.
+     */
     private List<IdentifiableType> getIdentifiableList(List<JAXBElement<? extends IdentifiableType>> identEls) {
         List<IdentifiableType> idents = new ArrayList<IdentifiableType>();
 

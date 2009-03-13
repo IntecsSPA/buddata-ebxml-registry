@@ -18,6 +18,7 @@
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:doi" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:dopplerFrequency" slotType="double"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:endPosition" slotType="dateTime"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:multiExtentOf" slotType="geometry"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:extentOf" slotType="geometry"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:illuminationAzimuthAngle" slotType="double"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:illuminationElevationAngle" slotType="double"/>

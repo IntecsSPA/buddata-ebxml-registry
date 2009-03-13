@@ -18,7 +18,10 @@
  */
 package be.kzen.ergorr.service.validator;
 
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -26,4 +29,19 @@ import be.kzen.ergorr.model.rim.ClassificationSchemeType;
  */
 public class ClassificationSchemeTypeV extends RegistryObjectTypeV<ClassificationSchemeType> {
 
+    @Override
+    public void validateToDelete() throws ReferenceExistsException, SQLException {
+        super.validateToDelete();
+        List<String> ids = persistence.getIds("select id from t_classificationnode where parent='" + rimObject.getId() + "'");
+
+        if (!ids.isEmpty()) {
+            String idStr = "";
+            for (String id : ids) {
+                idStr += id + " | ";
+            }
+            
+            String err = "ClassificationScheme " + rimObject.getId() + " cannot be deleted because this has child ClassificationNode(s) " + idStr;
+            throw new ReferenceExistsException(err);
+        }
+    }
 }

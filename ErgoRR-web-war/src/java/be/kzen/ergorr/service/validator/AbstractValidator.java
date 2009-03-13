@@ -20,6 +20,7 @@ package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
@@ -92,4 +93,5 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
     }
 
     public abstract void validate() throws InvalidReferenceException, SQLException;
+    public abstract void validateToDelete() throws ReferenceExistsException, SQLException;
 }
