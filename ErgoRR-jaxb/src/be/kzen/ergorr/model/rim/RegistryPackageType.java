@@ -40,6 +40,13 @@ public class RegistryPackageType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage";
+
+    public RegistryPackageType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "RegistryObjectList")
     protected RegistryObjectListType registryObjectList;
 
@@ -69,10 +76,5 @@ public class RegistryPackageType
 
     public boolean isSetRegistryObjectList() {
         return (this.registryObjectList!= null);
-    }
-
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.RegistryPackageDM";
     }
 }

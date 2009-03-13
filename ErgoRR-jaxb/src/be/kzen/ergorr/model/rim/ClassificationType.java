@@ -40,6 +40,12 @@ import javax.xml.bind.annotation.XmlType;
 public class ClassificationType
     extends RegistryObjectType
 {
+
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification";
+
+    public ClassificationType() {
+        objectTypeUrn = otUrn;
+    }
     
     @XmlAttribute
     protected String classificationScheme;
@@ -160,10 +166,5 @@ public class ClassificationType
 
     public boolean isSetNodeRepresentation() {
         return (this.nodeRepresentation!= null);
-    }
-    
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.ClassificationDM";
     }
 }

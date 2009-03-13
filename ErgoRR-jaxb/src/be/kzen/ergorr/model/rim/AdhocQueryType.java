@@ -39,6 +39,13 @@ public class AdhocQueryType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery";
+    
+    public AdhocQueryType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "QueryExpression")
     protected QueryExpressionType queryExpression;
 

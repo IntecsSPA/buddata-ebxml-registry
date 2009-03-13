@@ -47,6 +47,14 @@ import javax.xml.bind.annotation.XmlType;
 public class ClassificationNodeType
     extends RegistryObjectType
 {
+
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode";
+
+    public ClassificationNodeType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "ClassificationNode")
     protected List<ClassificationNodeType> classificationNode;
     @XmlAttribute
@@ -175,10 +183,5 @@ public class ClassificationNodeType
 
     public boolean isSetPath() {
         return (this.path!= null);
-    }
-    
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.ClassificationNodeDM";
     }
 }

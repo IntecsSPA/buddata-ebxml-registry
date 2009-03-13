@@ -46,6 +46,13 @@ public class RegistryType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Registry";
+
+    public RegistryType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlAttribute(required = true)
     protected String operator;
     @XmlAttribute(required = true)

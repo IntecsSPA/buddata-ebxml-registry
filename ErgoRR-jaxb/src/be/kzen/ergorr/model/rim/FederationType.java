@@ -33,6 +33,13 @@ public class FederationType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Federation";
+
+    public FederationType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlAttribute
     protected Duration replicationSyncLatency;
 

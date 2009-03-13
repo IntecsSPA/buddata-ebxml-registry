@@ -44,6 +44,13 @@ public class ClassificationSchemeType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme";
+
+    public ClassificationSchemeType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "ClassificationNode")
     protected List<ClassificationNodeType> classificationNode;
     @XmlAttribute(required = true)
@@ -134,10 +141,5 @@ public class ClassificationSchemeType
 
     public boolean isSetNodeType() {
         return (this.nodeType!= null);
-    }
-
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.ClassificationSchemeDM";
     }
 }

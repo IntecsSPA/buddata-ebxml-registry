@@ -47,6 +47,13 @@ public class SubscriptionType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Subscription";
+
+    public SubscriptionType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElementRef(name = "Action", namespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", type = JAXBElement.class)
     protected List<JAXBElement<? extends ActionType>> action;
     @XmlAttribute(required = true)

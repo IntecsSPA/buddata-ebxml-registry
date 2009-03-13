@@ -43,6 +43,13 @@ public class AuditableEventType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AuditableEvent";
+
+    public AuditableEventType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(required = true)
     protected ObjectRefListType affectedObjects;
     @XmlAttribute(required = true)

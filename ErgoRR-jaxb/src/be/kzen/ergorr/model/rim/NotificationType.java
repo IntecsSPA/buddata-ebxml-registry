@@ -38,6 +38,13 @@ public class NotificationType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Notification";
+
+    public NotificationType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "RegistryObjectList", required = true)
     protected RegistryObjectListType registryObjectList;
     @XmlAttribute(required = true)

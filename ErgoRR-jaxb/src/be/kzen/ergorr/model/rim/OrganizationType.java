@@ -45,6 +45,13 @@ public class OrganizationType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Organization";
+
+    public OrganizationType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "Address")
     protected List<PostalAddressType> address;
     @XmlElement(name = "TelephoneNumber")

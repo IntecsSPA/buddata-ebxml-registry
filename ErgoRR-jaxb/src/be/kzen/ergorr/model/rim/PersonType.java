@@ -48,6 +48,13 @@ public class PersonType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person";
+
+    public PersonType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
+
     @XmlElement(name = "Address")
     protected List<PostalAddressType> address;
     @XmlElement(name = "PersonName")

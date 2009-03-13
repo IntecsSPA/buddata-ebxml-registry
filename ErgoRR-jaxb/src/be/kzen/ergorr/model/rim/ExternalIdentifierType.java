@@ -37,6 +37,12 @@ public class ExternalIdentifierType
     extends RegistryObjectType
 {
 
+    private static final String otUrn = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier";
+
+    public ExternalIdentifierType() {
+        hasStaticObjectTypeUrn = true;
+        objectTypeUrn = otUrn;
+    }
 
     @XmlAttribute(required = true)
     protected String registryObject;
@@ -127,10 +133,5 @@ public class ExternalIdentifierType
 
     public boolean isSetValue() {
         return (this.value!= null);
-    }
-    
-    @Override
-    public String getDatabaseModelClass() {
-        return "be.kzen.ergorr.persist.model.ExternalIdentifierDM";
     }
 }
