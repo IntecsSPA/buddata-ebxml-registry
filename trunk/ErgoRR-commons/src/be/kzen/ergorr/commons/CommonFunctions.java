@@ -68,4 +68,8 @@ public class CommonFunctions {
 
         return sb.toString();
     }
+
+    public static boolean stringHasData(String value) {
+        return (value != null && value.trim().length() > 0);
+    }
 }
