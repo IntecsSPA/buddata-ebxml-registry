@@ -24,7 +24,7 @@ package be.kzen.ergorr.commons;
  * @author Yaman Ustuntas
  */
 public interface RIMConstants {
-    
+
     // ============================
     // ObjectType ClassificationScheme
     // ============================
