@@ -1,4 +1,4 @@
-package be.kzen.ergorr.query.xpath.parser;
+ package be.kzen.ergorr.query.xpath.parser;
 
 import be.kzen.ergorr.commons.CommonFunctions;
 import java.util.ArrayList;

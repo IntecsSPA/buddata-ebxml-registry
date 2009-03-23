@@ -48,12 +48,10 @@ public class RepositoryManager {
      * @param dataHandler Data to save.
      * @throws java.io.IOException
      */
-    public void save(String objId, DataHandler dataHandler) throws IOException {
+    public void save(String objId, String mimeType, DataHandler dataHandler) throws IOException {
         initRepo();
         InputStream inStream = dataHandler.getInputStream();
-        // TODO: For now assumes all RepositoryItems are XML, no good
-
-        File repoFile = new File(repoDir, "/" + objId + ".xml");
+        File repoFile = getRepositoryItemFile(objId);
 
         OutputStream outStream = new FileOutputStream(repoFile);
         byte[] buf = new byte[1024];
@@ -74,7 +72,7 @@ public class RepositoryManager {
      */
     public DataHandler get(String objId) {
         DataHandler dataHandler = null;
-        File repoFile = new File(repoDir, "/" + objId + ".xml");
+        File repoFile = getRepositoryItemFile(objId);
 
         if (repoFile.exists()) {
             dataHandler = new DataHandler(new FileDataSource(repoFile));
@@ -88,7 +86,7 @@ public class RepositoryManager {
      * @param objId ID of object to delete.
      */
     public void delete(String objId) {
-        File repoFile = new File(repoDir, "/" + objId + ".xml");
+        File repoFile = getRepositoryItemFile(objId);
 
         if (repoFile.exists()) {
             repoFile.delete();
@@ -102,5 +100,10 @@ public class RepositoryManager {
         if (!repoDir.exists()) {
             repoDir.mkdirs();
         }
+    }
+
+    private File getRepositoryItemFile(String id) {
+        String t = id.replaceAll(":", "_");
+        return new File(repoDir, t);
     }
 }

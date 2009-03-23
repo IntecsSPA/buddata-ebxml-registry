@@ -29,14 +29,17 @@ import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
+import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.ServiceType;
+import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
+import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.service.validator.RimValidator;
 import java.io.IOException;
@@ -104,8 +107,10 @@ public class LCManager {
         try {
             validator.validate();
         } catch (InvalidReferenceException ex) {
+            logger.log(Level.WARNING, "Validation failed", ex);
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "SQL error while validating", ex);
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
 
@@ -116,13 +121,13 @@ public class LCManager {
         }
 
         SqlPersistence persistence = new SqlPersistence(requestContext);
-        
+
         try {
             List<JAXBElement<? extends IdentifiableType>> existingIdentEls = persistence.getByIds(ids);
 
             for (IdentifiableType flatIdent : flatIdents) {
                 boolean isNewObject = true;
-                
+
                 for (JAXBElement<? extends IdentifiableType> existingIdentEl : existingIdentEls) {
                     if (existingIdentEl.getValue().getId().equals(flatIdent.getId())) {
                         isNewObject = false;
@@ -139,8 +144,10 @@ public class LCManager {
             }
 
             persistence.persist(flatIdents);
+            updateSlotCache(identMap.get(ExtrinsicObjectType.class.getName()));
             insertRepositoryItems();
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Error while committing data", ex);
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
     }
@@ -164,8 +171,10 @@ public class LCManager {
             persistence.delete(flatIdents);
 
         } catch (ReferenceExistsException ex) {
+            logger.log(Level.SEVERE, "Cannot delete object because of existing references", ex);
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "SQL exception while deleting objects", ex);
             throw new ServiceExceptionReport(ex.getMessage(), ex);
         }
     }
@@ -184,7 +193,7 @@ public class LCManager {
 
                 if (eo.getRepositoryItem() != null) {
                     try {
-                        repoManager.save(eo.getId(), eo.getRepositoryItem());
+                        repoManager.save(eo.getId(), eo.getMimeType(), eo.getRepositoryItem());
                     } catch (IOException ex) {
                         logger.log(Level.SEVERE, "Could not save RepositoryItem of object: " + eo.getId(), ex);
                     }
@@ -339,6 +348,24 @@ public class LCManager {
             }
 
             list.add(ident);
+        }
+    }
+
+    private void updateSlotCache(List<IdentifiableType> idents) {
+        if (idents != null) {
+            for (IdentifiableType ident : idents) {
+                ExtrinsicObjectType eo = (ExtrinsicObjectType) ident;
+
+                if (eo.getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
+                    for (SlotType slot : eo.getSlot()) {
+                        try {
+                            InternalSlotTypes.getInstance().putSlot(slot.getName(), slot.getSlotType());
+                        } catch (Exception ex) {
+                            logger.log(Level.WARNING, "Error while updating slot type cache", ex);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -50,8 +50,8 @@ public class SARTranslator extends HMATranslator implements Translator {
         WrsExtrinsicObjectType e = super.translateProduct();
         
         if (eo.isSetUsing()) {
-            if (eo.getUsing().isSetAbstractFeature() && eo.getUsing().getAbstractFeature().getValue() instanceof EarthObservationEquipmentType) {
-                EarthObservationEquipmentType eoEquip = (EarthObservationEquipmentType) eo.getUsing().getAbstractFeature().getValue();
+            if (eo.getUsing().isSetFeature() && eo.getUsing().getFeature().getValue() instanceof EarthObservationEquipmentType) {
+                EarthObservationEquipmentType eoEquip = (EarthObservationEquipmentType) eo.getUsing().getFeature().getValue();
                 
                 if (eoEquip.isSetAcquisitionParameters() && eoEquip.getAcquisitionParameters().isSetAcquisition() &&
                         eoEquip.getAcquisitionParameters().getAcquisition().getValue() instanceof AcquisitionType) {

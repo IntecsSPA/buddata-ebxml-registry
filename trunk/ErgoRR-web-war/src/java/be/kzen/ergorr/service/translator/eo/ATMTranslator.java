@@ -79,8 +79,8 @@ public class ATMTranslator extends HMATranslator implements Translator {
         List<WrsExtrinsicObjectType> es = new ArrayList<WrsExtrinsicObjectType>();
 
         if (eo.isSetResultOf()) {
-            if (eo.getResultOf().isSetAny() && eo.getResultOf().getAny() instanceof JAXBElement) {
-                JAXBElement el = (JAXBElement) eo.getResultOf().getAny();
+            if (eo.getResultOf().isSetObject()) {
+                JAXBElement el = eo.getResultOf().getObject();
 
                 if (el.getValue() instanceof EarthObservationResultType) {
                     EarthObservationResultType result = (EarthObservationResultType) el.getValue();

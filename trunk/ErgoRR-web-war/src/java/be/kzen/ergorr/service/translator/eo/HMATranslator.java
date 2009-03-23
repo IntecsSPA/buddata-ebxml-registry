@@ -171,7 +171,8 @@ public class HMATranslator implements Translator {
 
         MetaDataPropertyType metadata = eo.getMetaDataProperty().get(0);
 
-        EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) metadata.getAbstractMetaData().getValue();
+        JAXBElement el = (JAXBElement) metadata.getAny();
+        EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) el.getValue();
 
         ExternalIdentifierType exIdent = RIMUtil.createExternalIdentifier(IDGenerator.generateUuid(), e.getId(), eoMetadata.getIdentifier(), "");
         e.getExternalIdentifier().add(exIdent);
@@ -216,8 +217,8 @@ public class HMATranslator implements Translator {
             }
         }
 
-        if (eo.isSetTarget() && eo.getTarget().getValue().isSetAbstractFeature()) {
-            FootprintType footprint = (FootprintType) eo.getTarget().getValue().getAbstractFeature().getValue();
+        if (eo.isSetTarget() && eo.getTarget().isSetFeature()) {
+            FootprintType footprint = (FootprintType) eo.getTarget().getFeature().getValue();
 
             JAXBElement<? extends AbstractSurfaceType> absSur = null;
             if (footprint.isSetMultiExtentOf()) {
@@ -225,7 +226,7 @@ public class HMATranslator implements Translator {
                     if (footprint.getMultiExtentOf().getMultiSurface().isSetSurfaceMember()) {
                         List<SurfacePropertyType> surProp = footprint.getMultiExtentOf().getMultiSurface().getSurfaceMember();
                         if (!surProp.isEmpty()) {
-                            absSur = surProp.get(0).getAbstractSurface();
+                            absSur = surProp.get(0).getSurface();
 
                             if (!absSur.getValue().isSetSrsName() && footprint.getMultiExtentOf().getMultiSurface().isSetSrsName()) {
                                 absSur.getValue().setSrsName(footprint.getMultiExtentOf().getMultiSurface().getSrsName());
@@ -233,7 +234,7 @@ public class HMATranslator implements Translator {
                         }
                     } else if (footprint.getMultiExtentOf().getMultiSurface().isSetSurfaceMembers()) {
                         SurfaceArrayPropertyType surArrayProp = footprint.getMultiExtentOf().getMultiSurface().getSurfaceMembers();
-                        List<JAXBElement<? extends AbstractSurfaceType>> asTypes = surArrayProp.getAbstractSurface();
+                        List<JAXBElement<? extends AbstractSurfaceType>> asTypes = surArrayProp.getSurface();
                         if (!asTypes.isEmpty()) {
                             absSur = asTypes.get(0);
 
@@ -259,8 +260,8 @@ public class HMATranslator implements Translator {
             }
         }
 
-        if (eo.isSetValidTime() && eo.getValidTime().isSetAbstractTimePrimitive()) {
-            AbstractTimePrimitiveType absTime = eo.getValidTime().getAbstractTimePrimitive().getValue();
+        if (eo.isSetValidTime() && eo.getValidTime().isSetTimePrimitive()) {
+            AbstractTimePrimitiveType absTime = eo.getValidTime().getTimePrimitive().getValue();
 
             if (absTime instanceof TimePeriodType) {
                 TimePeriodType timePeriod = (TimePeriodType) absTime;
@@ -323,8 +324,8 @@ public class HMATranslator implements Translator {
 
         if (eo.isSetUsing()) {
 
-            if (eo.getUsing().isSetAbstractFeature() && eo.getUsing().getAbstractFeature().getValue() instanceof EarthObservationEquipmentType) {
-                EarthObservationEquipmentType eoEquip = (EarthObservationEquipmentType) eo.getUsing().getAbstractFeature().getValue();
+            if (eo.getUsing().isSetFeature() && eo.getUsing().getFeature().getValue() instanceof EarthObservationEquipmentType) {
+                EarthObservationEquipmentType eoEquip = (EarthObservationEquipmentType) eo.getUsing().getFeature().getValue();
 
                 if (eoEquip.isSetAcquisitionParameters()) {
                     if (eoEquip.getAcquisitionParameters().isSetAcquisition()) {
@@ -440,10 +441,10 @@ public class HMATranslator implements Translator {
         WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
         e.setObjectType(EOPConstants.E_ACQUISITION_PLATFORM);
 
-        if (eo.isSetUsing() && eo.getUsing().isSetAbstractFeature() &&
-                eo.getUsing().getAbstractFeature().getValue() instanceof EarthObservationEquipmentType) {
+        if (eo.isSetUsing() && eo.getUsing().isSetFeature() &&
+                eo.getUsing().getFeature().getValue() instanceof EarthObservationEquipmentType) {
 
-            EarthObservationEquipmentType equipment = (EarthObservationEquipmentType) eo.getUsing().getAbstractFeature().getValue();
+            EarthObservationEquipmentType equipment = (EarthObservationEquipmentType) eo.getUsing().getFeature().getValue();
 
             if (equipment.isSetPlatform() && equipment.getPlatform().isSetPlatform()) {
                 PlatformType platform = equipment.getPlatform().getPlatform();
@@ -502,8 +503,8 @@ public class HMATranslator implements Translator {
         e.setObjectType(EOPConstants.E_PRODUCT_INFORMATION);
 
         if (eo.isSetResultOf()) {
-            if (eo.getResultOf().isSetAny() && eo.getResultOf().getAny() instanceof JAXBElement) {
-                JAXBElement el = (JAXBElement) eo.getResultOf().getAny();
+            if (eo.getResultOf().isSetObject()) {
+                JAXBElement el = eo.getResultOf().getObject();
 
                 if (el.getValue() instanceof EarthObservationResultType) {
                     EarthObservationResultType result = (EarthObservationResultType) el.getValue();
@@ -548,8 +549,8 @@ public class HMATranslator implements Translator {
         e.setObjectType(EOPConstants.E_BROWSE_INFORMATION);
 
         if (eo.isSetResultOf()) {
-            if (eo.getResultOf().isSetAny() && eo.getResultOf().getAny() instanceof JAXBElement) {
-                JAXBElement el = (JAXBElement) eo.getResultOf().getAny();
+            if (eo.getResultOf().isSetObject()) {
+                JAXBElement el = eo.getResultOf().getObject();
 
                 if (el.getValue() instanceof EarthObservationResultType) {
                     EarthObservationResultType result = (EarthObservationResultType) el.getValue();
@@ -597,8 +598,8 @@ public class HMATranslator implements Translator {
         e.setObjectType(EOPConstants.E_MASK_INFORMATION);
 
         if (eo.isSetResultOf()) {
-            if (eo.getResultOf().isSetAny() && eo.getResultOf().getAny() instanceof JAXBElement) {
-                JAXBElement el = (JAXBElement) eo.getResultOf().getAny();
+            if (eo.getResultOf().isSetObject()) {
+                JAXBElement el = eo.getResultOf().getObject();
 
                 if (el.getValue() instanceof EarthObservationResultType) {
                     EarthObservationResultType result = (EarthObservationResultType) el.getValue();
@@ -642,34 +643,40 @@ public class HMATranslator implements Translator {
         e.setObjectType(EOPConstants.E_ARCHIVING_INFORMATION);
 
         MetaDataPropertyType metadata = eo.getMetaDataProperty().get(0);
-        EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) metadata.getAbstractMetaData().getValue();
 
-        if (eoMetadata.isSetArchivedIn()) {
-            List<ArchivingInformationType> archInfos = eoMetadata.getArchivedIn().getArchivingInformation();
+        if (metadata.getAny() instanceof JAXBElement) {
+            JAXBElement el = (JAXBElement) metadata.getAny();
 
-            if (archInfos.size() > 0) {
-                ArchivingInformationType archInfo = archInfos.get(0);
+            if (el.getValue() instanceof EarthObservationMetaDataType) {
+                EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) el.getValue();
 
-                if (archInfo.isSetArchivingCenter()) {
-                    // TODO: ArchivingCenter/value is a string list, how can I map it to a string?
-                    if (archInfo.getArchivingCenter().getValue().size() > 0) {
-                        InternationalStringType name = RIMUtil.createString(archInfo.getArchivingCenter().getValue().get(0));
-                        e.setName(name);
+                if (eoMetadata.isSetArchivedIn()) {
+                    List<ArchivingInformationType> archInfos = eoMetadata.getArchivedIn().getArchivingInformation();
+
+                    if (archInfos.size() > 0) {
+                        ArchivingInformationType archInfo = archInfos.get(0);
+
+                        if (archInfo.isSetArchivingCenter()) {
+                            // TODO: ArchivingCenter/value is a string list, how can I map it to a string?
+                            if (archInfo.getArchivingCenter().getValue().size() > 0) {
+                                InternationalStringType name = RIMUtil.createString(archInfo.getArchivingCenter().getValue().get(0));
+                                e.setName(name);
+                            }
+                        }
+
+                        if (archInfo.isSetArchivingIdentifier()) {
+                            SlotType slotArchIdent = RIMUtil.createSlot(EOPConstants.S_ARCHIVING_IDENTIFIER, EOPConstants.T_STRING, archInfo.getArchivingIdentifier().getValue());
+                            e.getSlot().add(slotArchIdent);
+                        }
+
+                        if (archInfo.isSetArchivingDate()) {
+                            SlotType slotDate = RIMUtil.createWrsSlot(EOPConstants.S_ARCHIVING_DATE, EOPConstants.T_DATETIME, archInfo.getArchivingDate());
+                            e.getSlot().add(slotDate);
+                        }
                     }
-                }
-
-                if (archInfo.isSetArchivingIdentifier()) {
-                    SlotType slotArchIdent = RIMUtil.createSlot(EOPConstants.S_ARCHIVING_IDENTIFIER, EOPConstants.T_STRING, archInfo.getArchivingIdentifier().getValue());
-                    e.getSlot().add(slotArchIdent);
-                }
-
-                if (archInfo.isSetArchivingDate()) {
-                    SlotType slotDate = RIMUtil.createWrsSlot(EOPConstants.S_ARCHIVING_DATE, EOPConstants.T_DATETIME, archInfo.getArchivingDate());
-                    e.getSlot().add(slotDate);
                 }
             }
         }
-
         return e;
     }
 }
