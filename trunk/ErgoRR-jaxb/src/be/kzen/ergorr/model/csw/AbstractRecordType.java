@@ -26,9 +26,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractRecordType")
 @XmlSeeAlso({
+    DCMIRecordType.class,
     SummaryRecordType.class,
-    BriefRecordType.class,
-    DCMIRecordType.class
+    BriefRecordType.class
 })
 public abstract class AbstractRecordType {
 

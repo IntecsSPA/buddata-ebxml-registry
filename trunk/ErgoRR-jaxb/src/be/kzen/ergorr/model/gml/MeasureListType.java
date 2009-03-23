@@ -6,12 +6,15 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * gml:MeasureListType provides for a list of quantities.
+ * List of numbers with a uniform scale.  
+ *       The value of uom (Units Of Measure) attribute is a reference to 
+ *       a Reference System for the amount, either a ratio or position scale. 
  * 
  * <p>Java class for MeasureListType complex type.
  * 
@@ -20,8 +23,8 @@ import javax.xml.bind.annotation.XmlValue;
  * <pre>
  * &lt;complexType name="MeasureListType">
  *   &lt;simpleContent>
- *     &lt;extension base="&lt;http://www.opengis.net/gml/3.2>doubleList">
- *       &lt;attribute name="uom" use="required" type="{http://www.opengis.net/gml/3.2}UomIdentifier" />
+ *     &lt;extension base="&lt;http://www.opengis.net/gml>doubleList">
+ *       &lt;attribute name="uom" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -38,10 +41,11 @@ public class MeasureListType {
     @XmlValue
     protected List<Double> value;
     @XmlAttribute(required = true)
+    @XmlSchemaType(name = "anyURI")
     protected String uom;
 
     /**
-     * A type for a list of values of the respective simple type.Gets the value of the value property.
+     * XML List based on XML Schema double type.  An element of this type contains a space-separated list of double values Gets the value of the value property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

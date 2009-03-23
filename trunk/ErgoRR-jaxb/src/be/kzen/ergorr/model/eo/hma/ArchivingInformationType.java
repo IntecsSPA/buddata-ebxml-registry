@@ -20,7 +20,7 @@ import be.kzen.ergorr.model.gml.CodeListType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="archivingCenter" type="{http://www.opengis.net/gml/3.2}CodeListType"/>
+ *         &lt;element name="archivingCenter" type="{http://www.opengis.net/gml}CodeListType"/>
  *         &lt;element name="archivingDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="archivingIdentifier" type="{http://earth.esa.int/hma}CodeWithAuthorityType" minOccurs="0"/>
  *       &lt;/sequence>

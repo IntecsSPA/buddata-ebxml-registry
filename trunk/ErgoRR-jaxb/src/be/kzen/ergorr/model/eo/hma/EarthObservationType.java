@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * <pre>
  * &lt;complexType name="EarthObservationType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}ObservationType">
+ *     &lt;extension base="{http://www.opengis.net/gml}ObservationType">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>

@@ -15,17 +15,17 @@ import javax.xml.datatype.Duration;
  * <pre>
  * &lt;complexType name="TimePeriodType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractTimeGeometricPrimitiveType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractTimeGeometricPrimitiveType">
  *       &lt;sequence>
  *         &lt;choice>
- *           &lt;element name="beginPosition" type="{http://www.opengis.net/gml/3.2}TimePositionType"/>
- *           &lt;element name="begin" type="{http://www.opengis.net/gml/3.2}TimeInstantPropertyType"/>
+ *           &lt;element name="beginPosition" type="{http://www.opengis.net/gml}TimePositionType"/>
+ *           &lt;element name="begin" type="{http://www.opengis.net/gml}TimeInstantPropertyType"/>
  *         &lt;/choice>
  *         &lt;choice>
- *           &lt;element name="endPosition" type="{http://www.opengis.net/gml/3.2}TimePositionType"/>
- *           &lt;element name="end" type="{http://www.opengis.net/gml/3.2}TimeInstantPropertyType"/>
+ *           &lt;element name="endPosition" type="{http://www.opengis.net/gml}TimePositionType"/>
+ *           &lt;element name="end" type="{http://www.opengis.net/gml}TimeInstantPropertyType"/>
  *         &lt;/choice>
- *         &lt;group ref="{http://www.opengis.net/gml/3.2}timeLength" minOccurs="0"/>
+ *         &lt;group ref="{http://www.opengis.net/gml}timeLength" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

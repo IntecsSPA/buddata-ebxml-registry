@@ -1,8 +1,6 @@
 
 package be.kzen.ergorr.model.gml;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,8 +12,6 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:TimePrimitivePropertyType provides a standard content model for associations between an arbitrary member of the substitution group whose head is gml:AbstractTimePrimitive and another object.
- * 
  * <p>Java class for TimePrimitivePropertyType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -25,10 +21,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence minOccurs="0">
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractTimePrimitive"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}_TimePrimitive"/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}AssociationAttributeGroup"/>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}OwnershipAttributeGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -38,17 +33,18 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TimePrimitivePropertyType", propOrder = {
-    "abstractTimePrimitive"
+    "timePrimitive"
 })
 @XmlSeeAlso({
     RelatedTimeType.class
 })
 public class TimePrimitivePropertyType {
 
-    @XmlElementRef(name = "AbstractTimePrimitive", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractTimePrimitiveType> abstractTimePrimitive;
-    @XmlAttribute
-    protected List<String> nilReason;
+    @XmlElementRef(name = "_TimePrimitive", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected JAXBElement<? extends AbstractTimePrimitiveType> timePrimitive;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
+    @XmlSchemaType(name = "anyURI")
+    protected String remoteSchema;
     /**
      * 
      * 
@@ -70,84 +66,67 @@ public class TimePrimitivePropertyType {
     protected String show;
     @XmlAttribute(namespace = "http://www.w3.org/1999/xlink")
     protected String actuate;
-    @XmlAttribute
-    protected java.lang.Boolean owns;
 
     /**
-     * Gets the value of the abstractTimePrimitive property.
+     * Gets the value of the timePrimitive property.
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractTimePrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TimeEdgeType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TimePeriodType }{@code >}
      *     {@link JAXBElement }{@code <}{@link TimeInstantType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractTimeTopologyPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TimeNodeType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link TimePeriodType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimePrimitiveType }{@code >}
      *     
      */
-    public JAXBElement<? extends AbstractTimePrimitiveType> getAbstractTimePrimitive() {
-        return abstractTimePrimitive;
+    public JAXBElement<? extends AbstractTimePrimitiveType> getTimePrimitive() {
+        return timePrimitive;
     }
 
     /**
-     * Sets the value of the abstractTimePrimitive property.
+     * Sets the value of the timePrimitive property.
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractTimePrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TimeEdgeType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TimePeriodType }{@code >}
      *     {@link JAXBElement }{@code <}{@link TimeInstantType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractTimeTopologyPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TimeNodeType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link TimePeriodType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimePrimitiveType }{@code >}
      *     
      */
-    public void setAbstractTimePrimitive(JAXBElement<? extends AbstractTimePrimitiveType> value) {
-        this.abstractTimePrimitive = ((JAXBElement<? extends AbstractTimePrimitiveType> ) value);
+    public void setTimePrimitive(JAXBElement<? extends AbstractTimePrimitiveType> value) {
+        this.timePrimitive = ((JAXBElement<? extends AbstractTimePrimitiveType> ) value);
     }
 
-    public boolean isSetAbstractTimePrimitive() {
-        return (this.abstractTimePrimitive!= null);
+    public boolean isSetTimePrimitive() {
+        return (this.timePrimitive!= null);
     }
 
     /**
-     * Gets the value of the nilReason property.
+     * Gets the value of the remoteSchema property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the nilReason property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getNilReason().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<String> getNilReason() {
-        if (nilReason == null) {
-            nilReason = new ArrayList<String>();
-        }
-        return this.nilReason;
+    public String getRemoteSchema() {
+        return remoteSchema;
     }
 
-    public boolean isSetNilReason() {
-        return ((this.nilReason!= null)&&(!this.nilReason.isEmpty()));
+    /**
+     * Sets the value of the remoteSchema property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRemoteSchema(String value) {
+        this.remoteSchema = value;
     }
 
-    public void unsetNilReason() {
-        this.nilReason = null;
+    public boolean isSetRemoteSchema() {
+        return (this.remoteSchema!= null);
     }
 
     /**
@@ -316,42 +295,6 @@ public class TimePrimitivePropertyType {
 
     public boolean isSetActuate() {
         return (this.actuate!= null);
-    }
-
-    /**
-     * Gets the value of the owns property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.Boolean }
-     *     
-     */
-    public boolean isOwns() {
-        if (owns == null) {
-            return false;
-        } else {
-            return owns;
-        }
-    }
-
-    /**
-     * Sets the value of the owns property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.Boolean }
-     *     
-     */
-    public void setOwns(boolean value) {
-        this.owns = value;
-    }
-
-    public boolean isSetOwns() {
-        return (this.owns!= null);
-    }
-
-    public void unsetOwns() {
-        this.owns = null;
     }
 
 }

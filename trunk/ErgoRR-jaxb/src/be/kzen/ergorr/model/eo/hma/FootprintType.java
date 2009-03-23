@@ -18,10 +18,10 @@ import be.kzen.ergorr.model.gml.PointPropertyType;
  * <pre>
  * &lt;complexType name="FootprintType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractFeatureType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractFeatureType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}multiExtentOf"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}centerOf" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}multiExtentOf"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}centerOf" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -39,9 +39,9 @@ public class FootprintType
     extends AbstractFeatureType
 {
 
-    @XmlElement(namespace = "http://www.opengis.net/gml/3.2", required = true)
+    @XmlElement(namespace = "http://www.opengis.net/gml", required = true)
     protected MultiSurfacePropertyType multiExtentOf;
-    @XmlElement(namespace = "http://www.opengis.net/gml/3.2")
+    @XmlElement(namespace = "http://www.opengis.net/gml")
     protected PointPropertyType centerOf;
 
     /**

@@ -15,6 +15,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
+ * All complexContent GML elements are directly or indirectly derived from this abstract supertype 
+ * 	to establish a hierarchy of GML types that may be distinguished from other XML types by their ancestry. 
+ * 	Elements in this hierarchy may have an ID and are thus referenceable.
+ * 
  * <p>Java class for AbstractGMLType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -24,9 +28,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;group ref="{http://www.opengis.net/gml/3.2}StandardObjectProperties"/>
+ *         &lt;group ref="{http://www.opengis.net/gml}StandardObjectProperties"/>
  *       &lt;/sequence>
- *       &lt;attribute ref="{http://www.opengis.net/gml/3.2}id use="required""/>
+ *       &lt;attribute ref="{http://www.opengis.net/gml}id"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -37,26 +41,20 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractGMLType", propOrder = {
     "metaDataProperty",
-    "descriptionReference",
-    "identifier",
+    "description",
     "name"
 })
 @XmlSeeAlso({
-    AbstractTimeSliceType.class,
-    CompositeValueType.class,
-    AbstractTimeObjectType.class,
     AbstractGeometryType.class,
-    AbstractTopologyType.class,
-    DefinitionBaseType.class,
+    AbstractTimeObjectType.class,
     AbstractFeatureType.class
 })
 public abstract class AbstractGMLType {
 
     protected List<MetaDataPropertyType> metaDataProperty;
-    protected ReferenceType descriptionReference;
-    protected CodeWithAuthorityType identifier;
+    protected StringOrRefType description;
     protected List<CodeType> name;
-    @XmlAttribute(namespace = "http://www.opengis.net/gml/3.2", required = true)
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")
@@ -100,63 +98,35 @@ public abstract class AbstractGMLType {
     }
 
     /**
-     * Gets the value of the descriptionReference property.
+     * Gets the value of the description property.
      * 
      * @return
      *     possible object is
-     *     {@link ReferenceType }
+     *     {@link StringOrRefType }
      *     
      */
-    public ReferenceType getDescriptionReference() {
-        return descriptionReference;
+    public StringOrRefType getDescription() {
+        return description;
     }
 
     /**
-     * Sets the value of the descriptionReference property.
+     * Sets the value of the description property.
      * 
      * @param value
      *     allowed object is
-     *     {@link ReferenceType }
+     *     {@link StringOrRefType }
      *     
      */
-    public void setDescriptionReference(ReferenceType value) {
-        this.descriptionReference = value;
+    public void setDescription(StringOrRefType value) {
+        this.description = value;
     }
 
-    public boolean isSetDescriptionReference() {
-        return (this.descriptionReference!= null);
+    public boolean isSetDescription() {
+        return (this.description!= null);
     }
 
     /**
-     * Gets the value of the identifier property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CodeWithAuthorityType }
-     *     
-     */
-    public CodeWithAuthorityType getIdentifier() {
-        return identifier;
-    }
-
-    /**
-     * Sets the value of the identifier property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CodeWithAuthorityType }
-     *     
-     */
-    public void setIdentifier(CodeWithAuthorityType value) {
-        this.identifier = value;
-    }
-
-    public boolean isSetIdentifier() {
-        return (this.identifier!= null);
-    }
-
-    /**
-     * Gets the value of the name property.
+     * Multiple names may be provided.  These will often be distinguished by being assigned by different authorities, as indicated by the value of the codeSpace attribute.  In an instance document there will usually only be one name per authority.Gets the value of the name property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

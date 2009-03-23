@@ -8,7 +8,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:AbstractCurveType is an abstraction of a curve to support the different levels of complexity. The curve may always be viewed as a geometric primitive, i.e. is continuous.
+ * An abstraction of a curve to support the different levels of complexity. The curve can always be viewed as a geometric 
+ * 			primitive, i.e. is continuous.
  * 
  * <p>Java class for AbstractCurveType complex type.
  * 
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractCurveType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGeometricPrimitiveType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGeometricPrimitiveType">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -29,9 +30,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "AbstractCurveType")
 @XmlSeeAlso({
     CurveType.class,
-    OrientableCurveType.class,
-    LineStringType.class,
-    CompositeCurveType.class
+    LineStringType.class
 })
 public abstract class AbstractCurveType
     extends AbstractGeometricPrimitiveType

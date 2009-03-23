@@ -40,8 +40,8 @@ import javax.xml.bind.annotation.XmlType;
 public class HTTP {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "Get", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class),
-        @XmlElementRef(name = "Post", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class)
+        @XmlElementRef(name = "Post", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class),
+        @XmlElementRef(name = "Get", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class)
     })
     protected List<JAXBElement<RequestMethodType>> getOrPost;
 

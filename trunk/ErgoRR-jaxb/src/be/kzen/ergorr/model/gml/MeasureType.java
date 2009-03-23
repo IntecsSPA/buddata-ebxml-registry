@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * gml:MeasureType supports recording an amount encoded as a value of XML Schema double, together with a units of measure indicated by an attribute uom, short for "units Of measure". The value of the uom attribute identifies a reference system for the amount, usually a ratio or interval scale.
+ * [MODIFIED from GML 3.2] gml:MeasureType supports recording an amount encoded as a value of XML Schema double, together with a units of measure indicated by an attribute uom, short for "units Of measure". The value of the uom attribute identifies a reference system for the amount, usually a ratio or interval scale.
  * 
  * <p>Java class for MeasureType complex type.
  * 
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlValue;
  * &lt;complexType name="MeasureType">
  *   &lt;simpleContent>
  *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>double">
- *       &lt;attribute name="uom" use="required" type="{http://www.opengis.net/gml/3.2}UomIdentifier" />
+ *       &lt;attribute name="uom" use="required" type="{http://www.opengis.net/gml}UomIdentifier" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -33,15 +33,8 @@ import javax.xml.bind.annotation.XmlValue;
     "value"
 })
 @XmlSeeAlso({
-    AngleType.class,
-    Quantity.class,
-    VolumeType.class,
-    GridLengthType.class,
     LengthType.class,
-    SpeedType.class,
-    ScaleType.class,
-    AreaType.class,
-    TimeType.class
+    AngleType.class
 })
 public class MeasureType {
 

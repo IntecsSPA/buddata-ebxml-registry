@@ -9,27 +9,36 @@ import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
+import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
 import be.kzen.ergorr.model.eo.hma.FootprintType;
+import be.kzen.ergorr.model.eo.hma.HistogramType;
 import be.kzen.ergorr.model.eo.hma.MaskFeatureType;
 import be.kzen.ergorr.model.eo.hma.MaskType;
 
 
 /**
- * Container for an object representing the target or subject of an observation.
+ * A pattern or base for derived types used to specify complex types corresponding to an  unspecified UML association - either composition or aggregation.  Restricts the cardinality of Objects contained in the association to a maximum of one.  An instance of this type can contain an element representing an Object, or serve as a pointer to a remote Object.  
  * 
- * <p>Java class for TargetPropertyType complex type.
+ * Descendents of this type can be restricted in an application schema to 
+ * * allow only specified classes as valid participants in the aggregation
+ * * allow only association by reference (i.e. empty the content model) or by value (i.e. remove the xlinks).    
+ * 
+ * When used for association by reference, the value of the gml:remoteSchema attribute can be used to locate a schema fragment that constrains the target instance.   
+ * 
+ * In many cases it is desirable to impose the constraint prohibiting the occurence of both reference and value in the same instance, as that would be ambiguous.  This is accomplished by adding a directive in the annotation element of the element declaration.  This directive can be in the form of normative prose, or can use a Schematron pattern to automatically constrain co-occurrence - see the declaration for _strictAssociation below.   
+ * 
+ * If co-occurence is not prohibited, then both a link and content may be present.  If this occurs in an instance, then the rule for interpretation is that the instance found by traversing the href provides the normative value of the property, and should be used when possible.  The value(s) included as content may be used if the remote instance cannot be resolved.  This may be considered to be a "cached" version of the value(s).
+ * 
+ * <p>Java class for AssociationType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="TargetPropertyType">
+ * &lt;complexType name="AssociationType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence minOccurs="0">
- *         &lt;choice>
- *           &lt;element ref="{http://www.opengis.net/gml}_Feature"/>
- *           &lt;element ref="{http://www.opengis.net/gml}_Geometry"/>
- *         &lt;/choice>
+ *         &lt;element ref="{http://www.opengis.net/gml}_Object"/>
  *       &lt;/sequence>
  *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *     &lt;/restriction>
@@ -40,16 +49,13 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TargetPropertyType", propOrder = {
-    "feature",
-    "geometry"
+@XmlType(name = "AssociationType", propOrder = {
+    "object"
 })
-public class TargetPropertyType {
+public class AssociationType {
 
-    @XmlElementRef(name = "_Feature", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractFeatureType> feature;
-    @XmlElementRef(name = "_Geometry", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractGeometryType> geometry;
+    @XmlElementRef(name = "_Object", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected JAXBElement<?> object;
     @XmlAttribute(namespace = "http://www.opengis.net/gml")
     @XmlSchemaType(name = "anyURI")
     protected String remoteSchema;
@@ -76,107 +82,101 @@ public class TargetPropertyType {
     protected String actuate;
 
     /**
-     * Gets the value of the feature property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractFeatureCollectionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
-     *     
-     */
-    public JAXBElement<? extends AbstractFeatureType> getFeature() {
-        return feature;
-    }
-
-    /**
-     * Sets the value of the feature property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractFeatureCollectionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
-     *     
-     */
-    public void setFeature(JAXBElement<? extends AbstractFeatureType> value) {
-        this.feature = ((JAXBElement<? extends AbstractFeatureType> ) value);
-    }
-
-    public boolean isSetFeature() {
-        return (this.feature!= null);
-    }
-
-    /**
-     * Gets the value of the geometry property.
+     * Gets the value of the object property.
      * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
-     *     {@link AbstractCurve }
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link AbstractCurve }
+     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link TimePeriodType }{@code >}
      *     {@link JAXBElement }{@code <}{@link LinearRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimePrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link TimeInstantType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link Object }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricAggregateType }{@code >}
      *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractMetaDataType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link EarthObservationMetaDataType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link HistogramType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractGMLType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractFeatureCollectionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimeObjectType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */
-    public JAXBElement<? extends AbstractGeometryType> getGeometry() {
-        return geometry;
+    public JAXBElement<?> getObject() {
+        return object;
     }
 
     /**
-     * Sets the value of the geometry property.
+     * Sets the value of the object property.
      * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
-     *     {@link AbstractCurve }
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link AbstractCurve }
+     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link TimePeriodType }{@code >}
      *     {@link JAXBElement }{@code <}{@link LinearRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimePrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link TimeInstantType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link Object }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricAggregateType }{@code >}
      *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractMetaDataType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link EarthObservationMetaDataType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link HistogramType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractGMLType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractFeatureCollectionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractTimeObjectType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */
-    public void setGeometry(JAXBElement<? extends AbstractGeometryType> value) {
-        this.geometry = ((JAXBElement<? extends AbstractGeometryType> ) value);
+    public void setObject(JAXBElement<?> value) {
+        this.object = ((JAXBElement<?> ) value);
     }
 
-    public boolean isSetGeometry() {
-        return (this.geometry!= null);
+    public boolean isSetObject() {
+        return (this.object!= null);
     }
 
     /**

@@ -157,8 +157,8 @@ public class GetRecordsType
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link QueryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractQueryType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link QueryType }{@code >}
      *     
      */
     public JAXBElement<? extends AbstractQueryType> getAbstractQuery() {
@@ -170,8 +170,8 @@ public class GetRecordsType
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link QueryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractQueryType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link QueryType }{@code >}
      *     
      */
     public void setAbstractQuery(JAXBElement<? extends AbstractQueryType> value) {

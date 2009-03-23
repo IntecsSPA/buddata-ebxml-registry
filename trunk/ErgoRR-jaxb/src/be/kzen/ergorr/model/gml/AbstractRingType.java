@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * An abstraction of a ring to support surface boundaries of different complexity.
+ * 
  * <p>Java class for AbstractRingType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -15,10 +17,8 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractRingType">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *       &lt;/sequence>
- *     &lt;/restriction>
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGeometryType">
+ *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
@@ -28,10 +28,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractRingType")
 @XmlSeeAlso({
-    RingType.class,
     LinearRingType.class
 })
-public abstract class AbstractRingType {
+public abstract class AbstractRingType
+    extends AbstractGeometryType
+{
 
 
 }

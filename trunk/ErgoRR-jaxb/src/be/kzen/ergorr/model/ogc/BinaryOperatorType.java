@@ -59,13 +59,13 @@ public class BinaryOperatorType
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
+     * {@link JAXBElement }{@code <}{@link LiteralType }{@code >}
      * {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ExpressionType }{@code >}
-     * {@link JAXBElement }{@code <}{@link FunctionType }{@code >}
      * {@link JAXBElement }{@code <}{@link PropertyNameType }{@code >}
      * {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
      * {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
-     * {@link JAXBElement }{@code <}{@link LiteralType }{@code >}
+     * {@link JAXBElement }{@code <}{@link ExpressionType }{@code >}
+     * {@link JAXBElement }{@code <}{@link FunctionType }{@code >}
      * 
      * 
      */

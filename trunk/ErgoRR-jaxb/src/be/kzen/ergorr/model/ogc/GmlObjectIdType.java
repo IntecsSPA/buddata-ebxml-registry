@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * &lt;complexType name="GmlObjectIdType">
  *   &lt;complexContent>
  *     &lt;extension base="{http://www.opengis.net/ogc}AbstractIdType">
- *       &lt;attribute ref="{http://www.opengis.net/gml/3.2}id use="required""/>
+ *       &lt;attribute ref="{http://www.opengis.net/gml}id use="required""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -34,7 +34,7 @@ public class GmlObjectIdType
     extends AbstractIdType
 {
 
-    @XmlAttribute(namespace = "http://www.opengis.net/gml/3.2", required = true)
+    @XmlAttribute(namespace = "http://www.opengis.net/gml", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")

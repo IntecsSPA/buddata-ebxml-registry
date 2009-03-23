@@ -19,8 +19,8 @@ import be.kzen.ergorr.model.gml.MeasureType;
  *       &lt;sequence>
  *         &lt;element name="specy" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="unit" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="highestLocation" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="lowestLocation" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
+ *         &lt;element name="highestLocation" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="lowestLocation" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
  *         &lt;element name="algorithmName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="algorithmVersion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>

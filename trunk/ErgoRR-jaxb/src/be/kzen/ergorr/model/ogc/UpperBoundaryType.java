@@ -42,13 +42,13 @@ public class UpperBoundaryType {
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LiteralType }{@code >}
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link ExpressionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link FunctionType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PropertyNameType }{@code >}
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LiteralType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ExpressionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link FunctionType }{@code >}
      *     
      */
     public JAXBElement<?> getExpression() {
@@ -61,13 +61,13 @@ public class UpperBoundaryType {
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LiteralType }{@code >}
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link ExpressionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link FunctionType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PropertyNameType }{@code >}
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
      *     {@link JAXBElement }{@code <}{@link BinaryOperatorType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LiteralType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ExpressionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link FunctionType }{@code >}
      *     
      */
     public void setExpression(JAXBElement<?> value) {

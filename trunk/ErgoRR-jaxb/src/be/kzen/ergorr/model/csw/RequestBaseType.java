@@ -34,12 +34,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RequestBaseType")
 @XmlSeeAlso({
-    GetDomainType.class,
     DescribeRecordType.class,
     GetRecordByIdType.class,
-    TransactionType.class,
+    GetDomainType.class,
+    GetRecordsType.class,
     HarvestType.class,
-    GetRecordsType.class
+    TransactionType.class
 })
 public abstract class RequestBaseType {
 

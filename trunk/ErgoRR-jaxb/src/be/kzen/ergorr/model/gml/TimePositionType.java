@@ -12,13 +12,12 @@ import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * The method for identifying a temporal position is specific to each temporal reference system.  gml:TimePositionType supports the description of temporal position according to the subtypes described in ISO 19108.
- * Values based on calendars and clocks use lexical formats that are based on ISO 8601, as described in XML Schema Part 2:2001. A decimal value may be used with coordinate systems such as GPS time or UNIX time. A URI may be used to provide a reference to some era in an ordinal reference system . 
- * In common with many of the components modelled as data types in the ISO 19100 series of International Standards, the corresponding GML component has simple content. However, the content model gml:TimePositionType is defined in several steps.
- * Three XML attributes appear on gml:TimePositionType:
- * A time value shall be associated with a temporal reference system through the frame attribute that provides a URI reference that identifies a description of the reference system. Following ISO 19108, the Gregorian calendar with UTC is the default reference system, but others may also be used. Components for describing temporal reference systems are described in 14.4, but it is not required that the reference system be described in this, as the reference may refer to anything that may be indentified with a URI.  
- * For time values using a calendar containing more than one era, the (optional) calendarEraName attribute provides the name of the calendar era.  
- * Inexact temporal positions may be expressed using the optional indeterminatePosition attribute.  This takes a value from an enumeration.
+ * Direct representation of a temporal position. 
+ *       Indeterminate time values are also allowed, as described in ISO 19108. The indeterminatePosition 
+ *       attribute can be used alone or it can qualify a specific value for temporal position (e.g. before 
+ *       2002-12, after 1019624400). 
+ *       For time values that identify position within a calendar, the calendarEraName attribute provides 
+ *       the name of the calendar era to which the date is referenced (e.g. the Meiji era of the Japanese calendar).
  * 
  * <p>Java class for TimePositionType complex type.
  * 
@@ -27,10 +26,10 @@ import javax.xml.bind.annotation.XmlValue;
  * <pre>
  * &lt;complexType name="TimePositionType">
  *   &lt;simpleContent>
- *     &lt;extension base="&lt;http://www.opengis.net/gml/3.2>TimePositionUnion">
+ *     &lt;extension base="&lt;http://www.opengis.net/gml>TimePositionUnion">
  *       &lt;attribute name="frame" type="{http://www.w3.org/2001/XMLSchema}anyURI" default="#ISO-8601" />
  *       &lt;attribute name="calendarEraName" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="indeterminatePosition" type="{http://www.opengis.net/gml/3.2}TimeIndeterminateValueType" />
+ *       &lt;attribute name="indeterminatePosition" type="{http://www.opengis.net/gml}TimeIndeterminateValueType" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -55,9 +54,19 @@ public class TimePositionType {
     protected TimeIndeterminateValueType indeterminatePosition;
 
     /**
-     * The simple type gml:TimePositionUnion is a union of XML Schema simple types which instantiate the subtypes for temporal position described in ISO 19108.
-     *  An ordinal era may be referenced via URI.  A decimal value may be used to indicate the distance from the scale origin .  time is used for a position that recurs daily (see ISO 19108:2002 5.4.4.2).
-     *  Finally, calendar and clock forms that support the representation of time in systems based on years, months, days, hours, minutes and seconds, in a notation following ISO 8601, are assembled by gml:CalDate Gets the value of the value property.
+     * The ISO 19108:2002 hierarchy of subtypes for temporal position are collapsed 
+     *       by defining a union of XML Schema simple types for indicating temporal position relative 
+     *       to a specific reference system. 
+     *       
+     *       Dates and dateTime may be indicated with varying degrees of precision.  
+     *       dateTime by itself does not allow right-truncation, except for fractions of seconds. 
+     *       When used with non-Gregorian calendars based on years, months, days, 
+     *       the same lexical representation should still be used, with leading zeros added if the 
+     *       year value would otherwise have fewer than four digits.  
+     *       
+     *       An ordinal position may be referenced via URI identifying the definition of an ordinal era.  
+     *       
+     *       A time coordinate value is indicated as a decimal (e.g. UNIX time, GPS calendar).Gets the value of the value property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

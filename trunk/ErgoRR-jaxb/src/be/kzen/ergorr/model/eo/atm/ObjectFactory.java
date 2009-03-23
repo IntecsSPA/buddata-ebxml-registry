@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _EarthObservation_QNAME = new QName("http://earth.esa.int/atm", "EarthObservation");
+    private final static QName _DataLayers_QNAME = new QName("http://earth.esa.int/atm", "dataLayers");
     private final static QName _EarthObservationResult_QNAME = new QName("http://earth.esa.int/atm", "EarthObservationResult");
     private final static QName _DataLayer_QNAME = new QName("http://earth.esa.int/atm", "DataLayer");
-    private final static QName _DataLayers_QNAME = new QName("http://earth.esa.int/atm", "dataLayers");
-    private final static QName _EarthObservation_QNAME = new QName("http://earth.esa.int/atm", "EarthObservation");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: be.kzen.ergorr.model.eo.atm
@@ -37,19 +37,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EarthObservationResultType }
+     * Create an instance of {@link DataLayerPropertyType }
      * 
      */
-    public EarthObservationResultType createEarthObservationResultType() {
-        return new EarthObservationResultType();
-    }
-
-    /**
-     * Create an instance of {@link EarthObservationType }
-     * 
-     */
-    public EarthObservationType createEarthObservationType() {
-        return new EarthObservationType();
+    public DataLayerPropertyType createDataLayerPropertyType() {
+        return new DataLayerPropertyType();
     }
 
     /**
@@ -61,11 +53,37 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DataLayerPropertyType }
+     * Create an instance of {@link EarthObservationType }
      * 
      */
-    public DataLayerPropertyType createDataLayerPropertyType() {
-        return new DataLayerPropertyType();
+    public EarthObservationType createEarthObservationType() {
+        return new EarthObservationType();
+    }
+
+    /**
+     * Create an instance of {@link EarthObservationResultType }
+     * 
+     */
+    public EarthObservationResultType createEarthObservationResultType() {
+        return new EarthObservationResultType();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EarthObservationType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "EarthObservation", substitutionHeadNamespace = "http://earth.esa.int/hma", substitutionHeadName = "EarthObservation")
+    public JAXBElement<EarthObservationType> createEarthObservation(EarthObservationType value) {
+        return new JAXBElement<EarthObservationType>(_EarthObservation_QNAME, EarthObservationType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DataLayerPropertyType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "dataLayers")
+    public JAXBElement<DataLayerPropertyType> createDataLayers(DataLayerPropertyType value) {
+        return new JAXBElement<DataLayerPropertyType>(_DataLayers_QNAME, DataLayerPropertyType.class, null, value);
     }
 
     /**
@@ -84,24 +102,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "DataLayer")
     public JAXBElement<DataLayerType> createDataLayer(DataLayerType value) {
         return new JAXBElement<DataLayerType>(_DataLayer_QNAME, DataLayerType.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link DataLayerPropertyType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "dataLayers")
-    public JAXBElement<DataLayerPropertyType> createDataLayers(DataLayerPropertyType value) {
-        return new JAXBElement<DataLayerPropertyType>(_DataLayers_QNAME, DataLayerPropertyType.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EarthObservationType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "EarthObservation", substitutionHeadNamespace = "http://earth.esa.int/hma", substitutionHeadName = "EarthObservation")
-    public JAXBElement<EarthObservationType> createEarthObservation(EarthObservationType value) {
-        return new JAXBElement<EarthObservationType>(_EarthObservation_QNAME, EarthObservationType.class, null, value);
     }
 
 }

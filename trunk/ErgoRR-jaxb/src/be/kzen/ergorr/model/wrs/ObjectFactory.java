@@ -25,10 +25,10 @@ import be.kzen.ergorr.model.csw.CapabilitiesType;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _ExtrinsicObject_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "ExtrinsicObject");
     private final static QName _RecordId_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "RecordId");
-    private final static QName _Capabilities_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "Capabilities");
     private final static QName _AnyValue_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "AnyValue");
+    private final static QName _ExtrinsicObject_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "ExtrinsicObject");
+    private final static QName _Capabilities_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "Capabilities");
     private final static QName _ValueList_QNAME = new QName("http://www.opengis.net/cat/wrs/1.0", "ValueList");
 
     /**
@@ -39,26 +39,10 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SimpleLinkType }
+     * Create an instance of {@link WrsValueListType }
      * 
      */
-    public SimpleLinkType createSimpleLinkType() {
-        return new SimpleLinkType();
-    }
-
-    /**
-     * Create an instance of {@link AnyValueType }
-     * 
-     */
-    public AnyValueType createAnyValueType() {
-        return new AnyValueType();
-    }
-
-    /**
-     * Create an instance of {@link ValueListType }
-     * 
-     */
-    public WrsValueListType createValueListType() {
+    public WrsValueListType createWrsValueListType() {
         return new WrsValueListType();
     }
 
@@ -79,12 +63,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link WrsExtrinsicObjectType }{@code >}}
+     * Create an instance of {@link SimpleLinkType }
      * 
      */
-    @XmlElementDecl(namespace = "http://www.opengis.net/cat/wrs/1.0", name = "ExtrinsicObject", substitutionHeadNamespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", substitutionHeadName = "ExtrinsicObject")
-    public JAXBElement<WrsExtrinsicObjectType> createExtrinsicObject(WrsExtrinsicObjectType value) {
-        return new JAXBElement<WrsExtrinsicObjectType>(_ExtrinsicObject_QNAME, WrsExtrinsicObjectType.class, null, value);
+    public SimpleLinkType createSimpleLinkType() {
+        return new SimpleLinkType();
+    }
+
+    /**
+     * Create an instance of {@link AnyValueType }
+     * 
+     */
+    public AnyValueType createAnyValueType() {
+        return new AnyValueType();
     }
 
     /**
@@ -97,21 +88,30 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CapabilitiesType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.opengis.net/cat/wrs/1.0", name = "Capabilities")
-    public JAXBElement<CapabilitiesType> createCapabilities(CapabilitiesType value) {
-        return new JAXBElement<CapabilitiesType>(_Capabilities_QNAME, CapabilitiesType.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link AnyValueType }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://www.opengis.net/cat/wrs/1.0", name = "AnyValue")
     public JAXBElement<AnyValueType> createAnyValue(AnyValueType value) {
         return new JAXBElement<AnyValueType>(_AnyValue_QNAME, AnyValueType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link WrsExtrinsicObjectType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.opengis.net/cat/wrs/1.0", name = "ExtrinsicObject", substitutionHeadNamespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", substitutionHeadName = "ExtrinsicObject")
+    public JAXBElement<WrsExtrinsicObjectType> createExtrinsicObject(WrsExtrinsicObjectType value) {
+        return new JAXBElement<WrsExtrinsicObjectType>(_ExtrinsicObject_QNAME, WrsExtrinsicObjectType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CapabilitiesType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.opengis.net/cat/wrs/1.0", name = "Capabilities")
+    public JAXBElement<CapabilitiesType> createCapabilities(CapabilitiesType value) {
+        return new JAXBElement<CapabilitiesType>(_Capabilities_QNAME, CapabilitiesType.class, null, value);
     }
 
     /**

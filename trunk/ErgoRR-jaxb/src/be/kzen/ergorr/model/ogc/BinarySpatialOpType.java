@@ -4,11 +4,22 @@ package be.kzen.ergorr.model.ogc;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlType;
+import be.kzen.ergorr.model.gml.AbstractCurve;
+import be.kzen.ergorr.model.gml.AbstractGeometricAggregateType;
+import be.kzen.ergorr.model.gml.AbstractGeometricPrimitiveType;
 import be.kzen.ergorr.model.gml.AbstractGeometryType;
+import be.kzen.ergorr.model.gml.AbstractRingType;
+import be.kzen.ergorr.model.gml.AbstractSurfaceType;
+import be.kzen.ergorr.model.gml.CurveType;
 import be.kzen.ergorr.model.gml.EnvelopeType;
-import javax.xml.bind.annotation.XmlElement;
+import be.kzen.ergorr.model.gml.LineStringType;
+import be.kzen.ergorr.model.gml.LinearRingType;
+import be.kzen.ergorr.model.gml.MultiSurfaceType;
+import be.kzen.ergorr.model.gml.PointType;
+import be.kzen.ergorr.model.gml.PolygonType;
 
 
 /**
@@ -23,8 +34,8 @@ import javax.xml.bind.annotation.XmlElement;
  *       &lt;sequence>
  *         &lt;element ref="{http://www.opengis.net/ogc}PropertyName"/>
  *         &lt;choice>
- *           &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractGeometry"/>
- *           &lt;element ref="{http://www.opengis.net/gml/3.2}Envelope"/>
+ *           &lt;element ref="{http://www.opengis.net/gml}_Geometry"/>
+ *           &lt;element ref="{http://www.opengis.net/gml}Envelope"/>
  *         &lt;/choice>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -37,7 +48,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "BinarySpatialOpType", propOrder = {
     "propertyName",
-    "abstractGeometry",
+    "geometry",
     "envelope"
 })
 public class BinarySpatialOpType
@@ -46,10 +57,10 @@ public class BinarySpatialOpType
 
     @XmlElement(name = "PropertyName", required = true)
     protected PropertyNameType propertyName;
-    @XmlElementRef(name = "AbstractGeometry", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractGeometryType> abstractGeometry;
-    @XmlElementRef(name = "Envelope", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<? extends EnvelopeType> envelope;
+    @XmlElementRef(name = "_Geometry", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected JAXBElement<? extends AbstractGeometryType> geometry;
+    @XmlElement(name = "Envelope", namespace = "http://www.opengis.net/gml")
+    protected EnvelopeType envelope;
 
     /**
      * Gets the value of the propertyName property.
@@ -80,87 +91,53 @@ public class BinarySpatialOpType
     }
 
     /**
-     * Gets the value of the abstractGeometry property.
+     * Gets the value of the geometry property.
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link GridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link RectifiedGridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TinType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiPointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link GeometricComplexType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
+     *     {@link AbstractCurve }
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LinearRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricAggregateType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractSolidType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
      *     
      */
-    public JAXBElement<? extends AbstractGeometryType> getAbstractGeometry() {
-        return abstractGeometry;
+    public JAXBElement<? extends AbstractGeometryType> getGeometry() {
+        return geometry;
     }
 
     /**
-     * Sets the value of the abstractGeometry property.
+     * Sets the value of the geometry property.
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link GridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link RectifiedGridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TinType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiPointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link GeometricComplexType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
+     *     {@link AbstractCurve }
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LinearRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricAggregateType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractSolidType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
      *     
      */
-    public void setAbstractGeometry(JAXBElement<? extends AbstractGeometryType> value) {
-        this.abstractGeometry = ((JAXBElement<? extends AbstractGeometryType> ) value);
+    public void setGeometry(JAXBElement<? extends AbstractGeometryType> value) {
+        this.geometry = ((JAXBElement<? extends AbstractGeometryType> ) value);
     }
 
-    public boolean isSetAbstractGeometry() {
-        return (this.abstractGeometry!= null);
+    public boolean isSetGeometry() {
+        return (this.geometry!= null);
     }
 
     /**
@@ -168,11 +145,10 @@ public class BinarySpatialOpType
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link EnvelopeWithTimePeriodType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link EnvelopeType }{@code >}
+     *     {@link EnvelopeType }
      *     
      */
-    public JAXBElement<? extends EnvelopeType> getEnvelope() {
+    public EnvelopeType getEnvelope() {
         return envelope;
     }
 
@@ -181,12 +157,11 @@ public class BinarySpatialOpType
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link EnvelopeWithTimePeriodType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link EnvelopeType }{@code >}
+     *     {@link EnvelopeType }
      *     
      */
-    public void setEnvelope(JAXBElement<? extends EnvelopeType> value) {
-        this.envelope = ((JAXBElement<? extends EnvelopeType> ) value);
+    public void setEnvelope(EnvelopeType value) {
+        this.envelope = value;
     }
 
     public boolean isSetEnvelope() {

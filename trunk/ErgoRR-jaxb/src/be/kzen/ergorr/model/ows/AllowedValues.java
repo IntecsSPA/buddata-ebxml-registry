@@ -39,8 +39,8 @@ import javax.xml.bind.annotation.XmlType;
 public class AllowedValues {
 
     @XmlElements({
-        @XmlElement(name = "Range", type = RangeType.class),
-        @XmlElement(name = "Value", type = ValueType.class)
+        @XmlElement(name = "Value", type = ValueType.class),
+        @XmlElement(name = "Range", type = RangeType.class)
     })
     protected List<Object> valueOrRange;
 
@@ -62,8 +62,8 @@ public class AllowedValues {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link RangeType }
      * {@link ValueType }
+     * {@link RangeType }
      * 
      * 
      */

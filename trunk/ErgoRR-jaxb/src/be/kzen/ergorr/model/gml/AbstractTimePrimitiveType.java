@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * The abstract supertype for temporal primitives.
+ * 
  * <p>Java class for AbstractTimePrimitiveType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -17,9 +19,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractTimePrimitiveType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractTimeObjectType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractTimeObjectType">
  *       &lt;sequence>
- *         &lt;element name="relatedTime" type="{http://www.opengis.net/gml/3.2}RelatedTimeType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="relatedTime" type="{http://www.opengis.net/gml}RelatedTimeType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -33,7 +35,6 @@ import javax.xml.bind.annotation.XmlType;
     "relatedTime"
 })
 @XmlSeeAlso({
-    AbstractTimeTopologyPrimitiveType.class,
     AbstractTimeGeometricPrimitiveType.class
 })
 public abstract class AbstractTimePrimitiveType

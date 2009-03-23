@@ -17,10 +17,10 @@ import be.kzen.ergorr.model.gml.SurfacePropertyType;
  * <pre>
  * &lt;complexType name="MaskFeatureType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractFeatureType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractFeatureType">
  *       &lt;sequence>
  *         &lt;element name="maskType" type="{http://earth.esa.int/hma}CodeWithAuthorityType"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}extentOf"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}extentOf"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -40,7 +40,7 @@ public class MaskFeatureType
 
     @XmlElement(required = true)
     protected CodeWithAuthorityType maskType;
-    @XmlElement(namespace = "http://www.opengis.net/gml/3.2", required = true)
+    @XmlElement(namespace = "http://www.opengis.net/gml", required = true)
     protected SurfacePropertyType extentOf;
 
     /**

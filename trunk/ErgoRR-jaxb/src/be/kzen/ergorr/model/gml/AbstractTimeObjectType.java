@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * The abstract supertype for temporal objects.
+ * 
  * <p>Java class for AbstractTimeObjectType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -15,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractTimeObjectType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGMLType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGMLType">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -26,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractTimeObjectType")
 @XmlSeeAlso({
-    AbstractTimeComplexType.class,
     AbstractTimePrimitiveType.class
 })
 public abstract class AbstractTimeObjectType

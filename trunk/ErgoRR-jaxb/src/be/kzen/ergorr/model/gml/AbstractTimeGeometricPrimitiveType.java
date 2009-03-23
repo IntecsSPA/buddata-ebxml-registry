@@ -10,6 +10,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * The abstract supertype for temporal geometric primitives.
+ *        A temporal geometry must be associated with a temporal reference system via URI. 
+ *        The Gregorian calendar with UTC is the default reference system, following ISO 
+ *        8601. Other reference systems in common use include the GPS calendar and the 
+ *        Julian calendar.
+ * 
  * <p>Java class for AbstractTimeGeometricPrimitiveType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -17,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractTimeGeometricPrimitiveType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractTimePrimitiveType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractTimePrimitiveType">
  *       &lt;attribute name="frame" type="{http://www.w3.org/2001/XMLSchema}anyURI" default="#ISO-8601" />
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -29,8 +35,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractTimeGeometricPrimitiveType")
 @XmlSeeAlso({
-    TimePeriodType.class,
-    TimeInstantType.class
+    TimeInstantType.class,
+    TimePeriodType.class
 })
 public abstract class AbstractTimeGeometricPrimitiveType
     extends AbstractTimePrimitiveType

@@ -53,16 +53,16 @@ public class UnaryLogicOpType
      * 
      * @return
      *     possible object is
-     *     {@link PropertyIsBetween }
-     *     {@link PropertyIsGreaterThan }
-     *     {@link JAXBElement }{@code <}{@link ComparisonOpsType }{@code >}
+     *     {@link PropertyIsLike }
      *     {@link PropertyIsEqualTo }
+     *     {@link JAXBElement }{@code <}{@link ComparisonOpsType }{@code >}
+     *     {@link PropertyIsNull }
+     *     {@link PropertyIsGreaterThan }
+     *     {@link PropertyIsNotEqualTo }
+     *     {@link PropertyIsBetween }
+     *     {@link PropertyIsLessThan }
      *     {@link PropertyIsLessThanOrEqualTo }
      *     {@link PropertyIsGreaterThanOrEqualTo }
-     *     {@link PropertyIsNotEqualTo }
-     *     {@link PropertyIsLessThan }
-     *     {@link PropertyIsLike }
-     *     {@link PropertyIsNull }
      *     
      */
     public JAXBElement<? extends ComparisonOpsType> getComparisonOps() {
@@ -74,16 +74,16 @@ public class UnaryLogicOpType
      * 
      * @param value
      *     allowed object is
-     *     {@link PropertyIsBetween }
-     *     {@link PropertyIsGreaterThan }
-     *     {@link JAXBElement }{@code <}{@link ComparisonOpsType }{@code >}
+     *     {@link PropertyIsLike }
      *     {@link PropertyIsEqualTo }
+     *     {@link JAXBElement }{@code <}{@link ComparisonOpsType }{@code >}
+     *     {@link PropertyIsNull }
+     *     {@link PropertyIsGreaterThan }
+     *     {@link PropertyIsNotEqualTo }
+     *     {@link PropertyIsBetween }
+     *     {@link PropertyIsLessThan }
      *     {@link PropertyIsLessThanOrEqualTo }
      *     {@link PropertyIsGreaterThanOrEqualTo }
-     *     {@link PropertyIsNotEqualTo }
-     *     {@link PropertyIsLessThan }
-     *     {@link PropertyIsLike }
-     *     {@link PropertyIsNull }
      *     
      */
     public void setComparisonOps(JAXBElement<? extends ComparisonOpsType> value) {
@@ -99,18 +99,18 @@ public class UnaryLogicOpType
      * 
      * @return
      *     possible object is
-     *     {@link Touches }
-     *     {@link Crosses }
-     *     {@link Disjoint }
-     *     {@link Intersects }
-     *     {@link BBOX }
-     *     {@link Overlaps }
      *     {@link Contains }
-     *     {@link JAXBElement }{@code <}{@link SpatialOpsType }{@code >}
-     *     {@link Beyond }
      *     {@link DWithin }
+     *     {@link Intersects }
+     *     {@link Disjoint }
+     *     {@link BBOX }
+     *     {@link Touches }
+     *     {@link JAXBElement }{@code <}{@link SpatialOpsType }{@code >}
+     *     {@link Overlaps }
      *     {@link Within }
+     *     {@link Crosses }
      *     {@link Equals }
+     *     {@link Beyond }
      *     
      */
     public JAXBElement<? extends SpatialOpsType> getSpatialOps() {
@@ -122,18 +122,18 @@ public class UnaryLogicOpType
      * 
      * @param value
      *     allowed object is
-     *     {@link Touches }
-     *     {@link Crosses }
-     *     {@link Disjoint }
-     *     {@link Intersects }
-     *     {@link BBOX }
-     *     {@link Overlaps }
      *     {@link Contains }
-     *     {@link JAXBElement }{@code <}{@link SpatialOpsType }{@code >}
-     *     {@link Beyond }
      *     {@link DWithin }
+     *     {@link Intersects }
+     *     {@link Disjoint }
+     *     {@link BBOX }
+     *     {@link Touches }
+     *     {@link JAXBElement }{@code <}{@link SpatialOpsType }{@code >}
+     *     {@link Overlaps }
      *     {@link Within }
+     *     {@link Crosses }
      *     {@link Equals }
+     *     {@link Beyond }
      *     
      */
     public void setSpatialOps(JAXBElement<? extends SpatialOpsType> value) {
@@ -150,9 +150,9 @@ public class UnaryLogicOpType
      * @return
      *     possible object is
      *     {@link And }
-     *     {@link JAXBElement }{@code <}{@link LogicOpsType }{@code >}
      *     {@link Not }
      *     {@link Or }
+     *     {@link JAXBElement }{@code <}{@link LogicOpsType }{@code >}
      *     
      */
     public JAXBElement<? extends LogicOpsType> getLogicOps() {
@@ -165,9 +165,9 @@ public class UnaryLogicOpType
      * @param value
      *     allowed object is
      *     {@link And }
-     *     {@link JAXBElement }{@code <}{@link LogicOpsType }{@code >}
      *     {@link Not }
      *     {@link Or }
+     *     {@link JAXBElement }{@code <}{@link LogicOpsType }{@code >}
      *     
      */
     public void setLogicOps(JAXBElement<? extends LogicOpsType> value) {

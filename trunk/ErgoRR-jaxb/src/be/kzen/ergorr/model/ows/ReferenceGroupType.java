@@ -61,8 +61,8 @@ public class ReferenceGroupType
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link AbstractReferenceBaseType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ReferenceType }{@code >}
      * {@link JAXBElement }{@code <}{@link ServiceReferenceType }{@code >}
+     * {@link JAXBElement }{@code <}{@link ReferenceType }{@code >}
      * 
      * 
      */

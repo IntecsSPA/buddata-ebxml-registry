@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * Curve segment defines a homogeneous segment of a curve.
+ * 
  * <p>Java class for AbstractCurveSegmentType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -18,6 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="AbstractCurveSegmentType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *       &lt;/sequence>
  *       &lt;attribute name="numDerivativesAtStart" type="{http://www.w3.org/2001/XMLSchema}integer" default="0" />
  *       &lt;attribute name="numDerivativesAtEnd" type="{http://www.w3.org/2001/XMLSchema}integer" default="0" />
  *       &lt;attribute name="numDerivativeInterior" type="{http://www.w3.org/2001/XMLSchema}integer" default="0" />
@@ -31,15 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractCurveSegmentType")
 @XmlSeeAlso({
-    ClothoidType.class,
-    CubicSplineType.class,
-    GeodesicStringType.class,
-    LineStringSegmentType.class,
-    ArcStringType.class,
-    BSplineType.class,
-    ArcByCenterPointType.class,
-    OffsetCurveType.class,
-    ArcStringByBulgeType.class
+    ArcByCenterPointType.class
 })
 public abstract class AbstractCurveSegmentType {
 

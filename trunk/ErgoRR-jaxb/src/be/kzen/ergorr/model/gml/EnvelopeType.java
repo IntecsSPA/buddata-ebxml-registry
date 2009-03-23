@@ -8,11 +8,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * Envelope defines an extent using a pair of positions defining opposite corners in arbitrary dimensions. The first direct 
+ * 			position is the "lower corner" (a coordinate position consisting of all the minimal ordinates for each dimension for all points within the envelope), 
+ * 			the second one the "upper corner" (a coordinate position consisting of all the maximal ordinates for each dimension for all points within the 
+ * 			envelope).
+ * 
  * <p>Java class for EnvelopeType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -23,11 +27,14 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
  *         &lt;sequence>
- *           &lt;element name="lowerCorner" type="{http://www.opengis.net/gml/3.2}DirectPositionType"/>
- *           &lt;element name="upperCorner" type="{http://www.opengis.net/gml/3.2}DirectPositionType"/>
+ *           &lt;element name="lowerCorner" type="{http://www.opengis.net/gml}DirectPositionType"/>
+ *           &lt;element name="upperCorner" type="{http://www.opengis.net/gml}DirectPositionType"/>
  *         &lt;/sequence>
+ *         &lt;element ref="{http://www.opengis.net/gml}coord" maxOccurs="2" minOccurs="2"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}pos" maxOccurs="2" minOccurs="2"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}coordinates"/>
  *       &lt;/choice>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}SRSReferenceGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}SRSReferenceGroup"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -38,15 +45,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EnvelopeType", propOrder = {
     "lowerCorner",
-    "upperCorner"
-})
-@XmlSeeAlso({
-    EnvelopeWithTimePeriodType.class
+    "upperCorner",
+    "coord",
+    "pos",
+    "coordinates"
 })
 public class EnvelopeType {
 
     protected DirectPositionType lowerCorner;
     protected DirectPositionType upperCorner;
+    protected List<CoordType> coord;
+    protected List<DirectPositionType> pos;
+    protected CoordinatesType coordinates;
     @XmlAttribute
     @XmlSchemaType(name = "anyURI")
     protected String srsName;
@@ -112,6 +122,108 @@ public class EnvelopeType {
 
     public boolean isSetUpperCorner() {
         return (this.upperCorner!= null);
+    }
+
+    /**
+     * deprecated with GML version 3.0 Gets the value of the coord property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the coord property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCoord().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link CoordType }
+     * 
+     * 
+     */
+    public List<CoordType> getCoord() {
+        if (coord == null) {
+            coord = new ArrayList<CoordType>();
+        }
+        return this.coord;
+    }
+
+    public boolean isSetCoord() {
+        return ((this.coord!= null)&&(!this.coord.isEmpty()));
+    }
+
+    public void unsetCoord() {
+        this.coord = null;
+    }
+
+    /**
+     * Deprecated with GML version 3.1. Use the explicit properties "lowerCorner" and "upperCorner" instead.Gets the value of the pos property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the pos property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getPos().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link DirectPositionType }
+     * 
+     * 
+     */
+    public List<DirectPositionType> getPos() {
+        if (pos == null) {
+            pos = new ArrayList<DirectPositionType>();
+        }
+        return this.pos;
+    }
+
+    public boolean isSetPos() {
+        return ((this.pos!= null)&&(!this.pos.isEmpty()));
+    }
+
+    public void unsetPos() {
+        this.pos = null;
+    }
+
+    /**
+     * Deprecated with GML version 3.1.0. Use the explicit properties "lowerCorner" and "upperCorner" instead.
+     * 
+     * @return
+     *     possible object is
+     *     {@link CoordinatesType }
+     *     
+     */
+    public CoordinatesType getCoordinates() {
+        return coordinates;
+    }
+
+    /**
+     * Sets the value of the coordinates property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link CoordinatesType }
+     *     
+     */
+    public void setCoordinates(CoordinatesType value) {
+        this.coordinates = value;
+    }
+
+    public boolean isSetCoordinates() {
+        return (this.coordinates!= null);
     }
 
     /**

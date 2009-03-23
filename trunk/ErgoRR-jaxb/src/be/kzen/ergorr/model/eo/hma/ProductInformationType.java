@@ -21,7 +21,7 @@ import be.kzen.ergorr.model.gml.MeasureListType;
  *         &lt;element name="referenceSystemIdentifier" type="{http://earth.esa.int/hma}CodeWithAuthorityType" minOccurs="0"/>
  *         &lt;element name="fileName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="size" type="{http://www.opengis.net/gml/3.2}MeasureListType" minOccurs="0"/>
+ *         &lt;element name="size" type="{http://www.opengis.net/gml}MeasureListType" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>

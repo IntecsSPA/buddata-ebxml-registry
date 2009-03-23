@@ -53,8 +53,8 @@ public class TransactionType
 
     @XmlElements({
         @XmlElement(name = "Update", type = UpdateType.class),
-        @XmlElement(name = "Insert", type = InsertType.class),
-        @XmlElement(name = "Delete", type = DeleteType.class)
+        @XmlElement(name = "Delete", type = DeleteType.class),
+        @XmlElement(name = "Insert", type = InsertType.class)
     })
     protected List<Object> insertOrUpdateOrDelete;
     @XmlAttribute
@@ -82,8 +82,8 @@ public class TransactionType
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link UpdateType }
-     * {@link InsertType }
      * {@link DeleteType }
+     * {@link InsertType }
      * 
      * 
      */

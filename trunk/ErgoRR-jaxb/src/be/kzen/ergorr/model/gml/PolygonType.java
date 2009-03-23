@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * A Polygon is a special surface that is defined by a single surface patch. The boundary of this patch is coplanar and the polygon uses planar interpolation in its interior. It is backwards compatible with the Polygon of GML 2, GM_Polygon of ISO 19107 is implemented by PolygonPatch.
+ * 
  * <p>Java class for PolygonType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -17,10 +18,10 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="PolygonType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractSurfaceType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractSurfaceType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}exterior" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}interior" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}exterior" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}interior" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -34,7 +35,6 @@ import javax.xml.bind.annotation.XmlType;
     "exterior",
     "interior"
 })
-@XmlRootElement
 public class PolygonType
     extends AbstractSurfaceType
 {

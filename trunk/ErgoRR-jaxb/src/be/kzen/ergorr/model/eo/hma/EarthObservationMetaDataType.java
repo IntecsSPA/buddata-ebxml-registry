@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlElement;
  * <pre>
  * &lt;complexType name="EarthObservationMetaDataType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractMetaDataType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractMetaDataType">
  *       &lt;sequence>
  *         &lt;element ref="{http://earth.esa.int/hma}identifier"/>
  *         &lt;element ref="{http://earth.esa.int/hma}doi" minOccurs="0"/>
@@ -76,11 +76,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the identifier property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getIdentifier() {
         return identifier;
@@ -88,11 +88,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the identifier property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setIdentifier(String value) {
         this.identifier = value;
@@ -104,11 +104,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the doi property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDoi() {
         return doi;
@@ -116,11 +116,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the doi property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDoi(String value) {
         this.doi = value;
@@ -132,11 +132,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the parentIdentifier property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getParentIdentifier() {
         return parentIdentifier;
@@ -144,11 +144,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the parentIdentifier property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setParentIdentifier(String value) {
         this.parentIdentifier = value;
@@ -160,11 +160,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the acquisitionType property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAcquisitionType() {
         return acquisitionType;
@@ -172,11 +172,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the acquisitionType property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAcquisitionType(String value) {
         this.acquisitionType = value;
@@ -188,11 +188,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the acquisitionSubType property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link CodeListType }
-     *     
+     *
      */
     public CodeListType getAcquisitionSubType() {
         return acquisitionSubType;
@@ -200,11 +200,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the acquisitionSubType property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link CodeListType }
-     *     
+     *
      */
     public void setAcquisitionSubType(CodeListType value) {
         this.acquisitionSubType = value;
@@ -216,11 +216,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the productType property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getProductType() {
         return productType;
@@ -228,11 +228,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the productType property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setProductType(String value) {
         this.productType = value;
@@ -244,11 +244,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the status property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStatus() {
         return status;
@@ -256,11 +256,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the status property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStatus(String value) {
         this.status = value;
@@ -272,11 +272,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the downlinkedTo property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link DownlinkInformationArrayPropertyType }
-     *     
+     *
      */
     public DownlinkInformationArrayPropertyType getDownlinkedTo() {
         return downlinkedTo;
@@ -284,11 +284,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the downlinkedTo property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link DownlinkInformationArrayPropertyType }
-     *     
+     *
      */
     public void setDownlinkedTo(DownlinkInformationArrayPropertyType value) {
         this.downlinkedTo = value;
@@ -300,11 +300,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the archivedIn property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ArchivingInformationArrayPropertyType }
-     *     
+     *
      */
     public ArchivingInformationArrayPropertyType getArchivedIn() {
         return archivedIn;
@@ -312,11 +312,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the archivedIn property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ArchivingInformationArrayPropertyType }
-     *     
+     *
      */
     public void setArchivedIn(ArchivingInformationArrayPropertyType value) {
         this.archivedIn = value;
@@ -328,11 +328,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the imageQualityDegradation property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasureType }
-     *     
+     *
      */
     public MeasureType getImageQualityDegradation() {
         return imageQualityDegradation;
@@ -340,11 +340,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the imageQualityDegradation property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasureType }
-     *     
+     *
      */
     public void setImageQualityDegradation(MeasureType value) {
         this.imageQualityDegradation = value;
@@ -356,11 +356,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the imageQualityDegradationQuotationMode property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getImageQualityDegradationQuotationMode() {
         return imageQualityDegradationQuotationMode;
@@ -368,11 +368,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the imageQualityDegradationQuotationMode property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setImageQualityDegradationQuotationMode(String value) {
         this.imageQualityDegradationQuotationMode = value;
@@ -384,11 +384,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the histograms property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link HistogramArrayPropertyType }
-     *     
+     *
      */
     public HistogramArrayPropertyType getHistograms() {
         return histograms;
@@ -396,11 +396,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the histograms property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link HistogramArrayPropertyType }
-     *     
+     *
      */
     public void setHistograms(HistogramArrayPropertyType value) {
         this.histograms = value;
@@ -412,25 +412,25 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the composedOf property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the composedOf property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getComposedOf().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link EarthObservationPropertyType }
-     * 
-     * 
+     *
+     *
      */
     public List<EarthObservationPropertyType> getComposedOf() {
         if (composedOf == null) {
@@ -449,25 +449,25 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the subsetOf property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the subsetOf property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getSubsetOf().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link EarthObservationPropertyType }
-     * 
-     * 
+     *
+     *
      */
     public List<EarthObservationPropertyType> getSubsetOf() {
         if (subsetOf == null) {
@@ -486,25 +486,25 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the linkedWith property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the linkedWith property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getLinkedWith().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link EarthObservationPropertyType }
-     * 
-     * 
+     *
+     *
      */
     public List<EarthObservationPropertyType> getLinkedWith() {
         if (linkedWith == null) {
@@ -523,11 +523,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the processing property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ProcessingInformationPropertyType }
-     *     
+     *
      */
     public ProcessingInformationPropertyType getProcessing() {
         return processing;
@@ -535,11 +535,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the processing property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ProcessingInformationPropertyType }
-     *     
+     *
      */
     public void setProcessing(ProcessingInformationPropertyType value) {
         this.processing = value;
@@ -551,11 +551,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Gets the value of the vendorSpecific property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link SpecificInformationArrayPropertyType }
-     *     
+     *
      */
     public SpecificInformationArrayPropertyType getVendorSpecific() {
         return vendorSpecific;
@@ -563,11 +563,11 @@ public class EarthObservationMetaDataType
 
     /**
      * Sets the value of the vendorSpecific property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link SpecificInformationArrayPropertyType }
-     *     
+     *
      */
     public void setVendorSpecific(SpecificInformationArrayPropertyType value) {
         this.vendorSpecific = value;
@@ -576,6 +576,4 @@ public class EarthObservationMetaDataType
     public boolean isSetVendorSpecific() {
         return (this.vendorSpecific!= null);
     }
-
-
 }

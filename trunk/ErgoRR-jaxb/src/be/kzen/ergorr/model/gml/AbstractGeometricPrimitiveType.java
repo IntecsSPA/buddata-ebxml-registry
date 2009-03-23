@@ -8,7 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:AbstractGeometricPrimitiveType is the abstract root type of the geometric primitives. A geometric primitive is a geometric object that is not decomposed further into other primitives in the system. All primitives are oriented in the direction implied by the sequence of their coordinate tuples.
+ * This is the abstract root type of the geometric primitives. A geometric primitive is a geometric object that is not 
+ * 			decomposed further into other primitives in the system. All primitives are oriented in the direction implied by the sequence of their 
+ * 			coordinate tuples.
  * 
  * <p>Java class for AbstractGeometricPrimitiveType complex type.
  * 
@@ -17,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractGeometricPrimitiveType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGeometryType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGeometryType">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -30,7 +32,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlSeeAlso({
     PointType.class,
     AbstractSurfaceType.class,
-    AbstractSolidType.class,
     AbstractCurveType.class
 })
 public abstract class AbstractGeometricPrimitiveType

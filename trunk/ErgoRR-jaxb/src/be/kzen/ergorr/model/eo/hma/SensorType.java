@@ -19,9 +19,9 @@ import be.kzen.ergorr.model.gml.MeasureType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="sensorType" type="{http://earth.esa.int/hma}SensorTypePropertyType" minOccurs="0"/>
- *         &lt;element name="operationalMode" type="{http://www.opengis.net/gml/3.2}CodeListType" minOccurs="0"/>
- *         &lt;element name="resolution" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="swathIdentifier" type="{http://www.opengis.net/gml/3.2}CodeListType" minOccurs="0"/>
+ *         &lt;element name="operationalMode" type="{http://www.opengis.net/gml}CodeListType" minOccurs="0"/>
+ *         &lt;element name="resolution" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="swathIdentifier" type="{http://www.opengis.net/gml}CodeListType" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>

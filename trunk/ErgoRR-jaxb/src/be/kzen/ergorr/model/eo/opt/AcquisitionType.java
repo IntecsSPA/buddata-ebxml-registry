@@ -17,8 +17,8 @@ import be.kzen.ergorr.model.gml.AngleType;
  *   &lt;complexContent>
  *     &lt;extension base="{http://earth.esa.int/hma}AcquisitionType">
  *       &lt;sequence>
- *         &lt;element name="illuminationAzimuthAngle" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
- *         &lt;element name="illuminationElevationAngle" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
+ *         &lt;element name="illuminationAzimuthAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
+ *         &lt;element name="illuminationElevationAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
