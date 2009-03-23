@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema targetNamespace="http://www.opengis.net/ogc"
    xmlns:ogc="http://www.opengis.net/ogc"
-   xmlns:gml="http://www.opengis.net/gml/3.2"
+   xmlns:gml="http://www.opengis.net/gml"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
    elementFormDefault="qualified"
    version="1.1.0">
     <xsd:include schemaLocation="expr.xsd"/>
     <xsd:include schemaLocation="sort.xsd"/>
     <xsd:include schemaLocation="filterCapabilities.xsd"/>
-    <xsd:import namespace="http://www.opengis.net/gml/3.2"
-               schemaLocation="../../gml/3.2.1/geometryAggregates.xsd"/><!-- EDIT changed 3.1.1/base to 3.2.1 -->
+    <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/gmlSubset.xsd"/>
     <xsd:element name="_Id" type="ogc:AbstractIdType" abstract="true"/>
     <xsd:element name="FeatureId"
                 type="ogc:FeatureIdType"
@@ -178,7 +177,7 @@
                 <xsd:sequence>
                     <xsd:element ref="ogc:PropertyName"/>
                     <xsd:choice>
-                        <xsd:element ref="gml:AbstractGeometry"/>
+                        <xsd:element ref="gml:_Geometry"/>
                         <xsd:element ref="gml:Envelope"/>
                     </xsd:choice>
                 </xsd:sequence>
@@ -200,7 +199,7 @@
             <xsd:extension base="ogc:SpatialOpsType">
                 <xsd:sequence>
                     <xsd:element ref="ogc:PropertyName"/>
-                    <xsd:element ref="gml:AbstractGeometry"/>
+                    <xsd:element ref="gml:_Geometry"/>
                     <xsd:element name="Distance" type="ogc:DistanceType"/>
                 </xsd:sequence>
             </xsd:extension>
