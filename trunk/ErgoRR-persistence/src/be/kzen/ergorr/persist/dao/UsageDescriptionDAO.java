@@ -42,7 +42,7 @@ public class UsageDescriptionDAO extends GenericComposedObjectDAO<InternationalS
     }
 
     @Override
-    public void insert(Statement batchStmt) throws SQLException {
+    public void insert() throws SQLException {
         if (parent.getDescription() != null) {
             InternationalStringType intString = parent.getDescription();
 

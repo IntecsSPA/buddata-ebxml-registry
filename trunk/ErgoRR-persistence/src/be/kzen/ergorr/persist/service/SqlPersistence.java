@@ -72,7 +72,7 @@ public class SqlPersistence {
         Integer startPosition = requestContext.getParam(InternalConstants.START_POSITION, Integer.class);
         Integer allowedMaxResults = CommonProperties.getInstance().getInt("db.maxResponse");
 
-        if (maxResults != null && maxResults == -1) {
+        if (maxResults != null && maxResults != -1) {
             if (maxResults == null || maxResults == 0 || maxResults > allowedMaxResults) {
                 maxResults = allowedMaxResults;
             }

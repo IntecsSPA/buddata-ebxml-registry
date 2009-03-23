@@ -4,6 +4,8 @@ import be.kzen.ergorr.model.rim.IdentifiableType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -11,7 +13,7 @@ import javax.xml.bind.JAXBElement;
  * @author Yaman Ustuntas
  */
 public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObjectDAO<T> {
-
+    private static Logger logger = Logger.getLogger(IdentifiableTypeDAO.class.getName());
     protected T xmlObject;
     private GenericObjectDAO genericObjDAO;
 
@@ -49,6 +51,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
             genericObjDAO.setContext(context);
             return (T) genericObjDAO.newXmlObject(result);
         } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Could not load class", ex);
             throw new SQLException("Could not load class " + daoClass.getName());
         }
 
@@ -77,20 +80,23 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
         if (xmlObject.isSetSlot()) {
             SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-            slotDAO.insert(batchStmt);
+            slotDAO.setBatchStmt(batchStmt);
+            slotDAO.insert();
         }
     }
 
     @Override
     protected void updateRelatedObjects(Statement batchStmt) throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-        slotDAO.update(batchStmt);
+        slotDAO.setBatchStmt(batchStmt);
+        slotDAO.update();
     }
 
     @Override
     protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-        slotDAO.delete(batchStmt);
+        slotDAO.setBatchStmt(batchStmt);
+        slotDAO.delete();
     }
 
     @Override

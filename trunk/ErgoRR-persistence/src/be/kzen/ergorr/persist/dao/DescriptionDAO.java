@@ -33,7 +33,7 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
     }
 
     @Override
-    public void insert(Statement batchStmt) throws SQLException {
+    public void insert() throws SQLException {
 
         if (parent.isSetDescription()) {
             InternationalStringType desc = parent.getDescription();

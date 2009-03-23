@@ -32,7 +32,7 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
     }
 
     @Override
-    public void insert(Statement batchStmt) throws SQLException {
+    public void insert() throws SQLException {
 
         for (String param : parent.getUsageParameter()) {
             currentValues = param;
