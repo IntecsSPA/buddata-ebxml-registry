@@ -15,6 +15,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * Deprecated in GML 3.1.0
+ * 
  * <p>Java class for LocationPropertyType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -23,15 +25,15 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="LocationPropertyType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
+ *       &lt;sequence minOccurs="0">
  *         &lt;choice>
- *           &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractGeometry"/>
- *           &lt;element ref="{http://www.opengis.net/gml/3.2}LocationKeyWord"/>
- *           &lt;element ref="{http://www.opengis.net/gml/3.2}LocationString"/>
- *           &lt;element ref="{http://www.opengis.net/gml/3.2}Null"/>
+ *           &lt;element ref="{http://www.opengis.net/gml}_Geometry"/>
+ *           &lt;element ref="{http://www.opengis.net/gml}LocationKeyWord"/>
+ *           &lt;element ref="{http://www.opengis.net/gml}LocationString"/>
+ *           &lt;element ref="{http://www.opengis.net/gml}Null"/>
  *         &lt;/choice>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}AssociationAttributeGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -41,15 +43,15 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "LocationPropertyType", propOrder = {
-    "abstractGeometry",
+    "geometry",
     "locationKeyWord",
     "locationString",
     "_null"
 })
 public class LocationPropertyType {
 
-    @XmlElementRef(name = "AbstractGeometry", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractGeometryType> abstractGeometry;
+    @XmlElementRef(name = "_Geometry", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected JAXBElement<? extends AbstractGeometryType> geometry;
     @XmlElement(name = "LocationKeyWord")
     protected CodeType locationKeyWord;
     @XmlElement(name = "LocationString")
@@ -57,8 +59,9 @@ public class LocationPropertyType {
     @XmlList
     @XmlElement(name = "Null")
     protected List<String> _null;
-    @XmlAttribute
-    protected List<String> nilReason;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
+    @XmlSchemaType(name = "anyURI")
+    protected String remoteSchema;
     /**
      * 
      * 
@@ -82,87 +85,53 @@ public class LocationPropertyType {
     protected String actuate;
 
     /**
-     * Gets the value of the abstractGeometry property.
+     * Gets the value of the geometry property.
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link GridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link RectifiedGridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TinType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiPointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link GeometricComplexType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
+     *     {@link AbstractCurve }
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LinearRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricAggregateType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractSolidType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
      *     
      */
-    public JAXBElement<? extends AbstractGeometryType> getAbstractGeometry() {
-        return abstractGeometry;
+    public JAXBElement<? extends AbstractGeometryType> getGeometry() {
+        return geometry;
     }
 
     /**
-     * Sets the value of the abstractGeometry property.
+     * Sets the value of the geometry property.
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link GridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link RectifiedGridType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TinType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiPointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeSolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link OrientableSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link CompositeCurveType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link GeometricComplexType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LineStringType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link CurveType }{@code >}
+     *     {@link AbstractCurve }
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometricPrimitiveType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link LinearRingType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractGeometryType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractGeometricAggregateType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SolidType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractSolidType }{@code >}
      *     {@link JAXBElement }{@code <}{@link PointType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MultiGeometryType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
      *     
      */
-    public void setAbstractGeometry(JAXBElement<? extends AbstractGeometryType> value) {
-        this.abstractGeometry = ((JAXBElement<? extends AbstractGeometryType> ) value);
+    public void setGeometry(JAXBElement<? extends AbstractGeometryType> value) {
+        this.geometry = ((JAXBElement<? extends AbstractGeometryType> ) value);
     }
 
-    public boolean isSetAbstractGeometry() {
-        return (this.abstractGeometry!= null);
+    public boolean isSetGeometry() {
+        return (this.geometry!= null);
     }
 
     /**
@@ -259,40 +228,31 @@ public class LocationPropertyType {
     }
 
     /**
-     * Gets the value of the nilReason property.
+     * Gets the value of the remoteSchema property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the nilReason property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getNilReason().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<String> getNilReason() {
-        if (nilReason == null) {
-            nilReason = new ArrayList<String>();
-        }
-        return this.nilReason;
+    public String getRemoteSchema() {
+        return remoteSchema;
     }
 
-    public boolean isSetNilReason() {
-        return ((this.nilReason!= null)&&(!this.nilReason.isEmpty()));
+    /**
+     * Sets the value of the remoteSchema property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRemoteSchema(String value) {
+        this.remoteSchema = value;
     }
 
-    public void unsetNilReason() {
-        this.nilReason = null;
+    public boolean isSetRemoteSchema() {
+        return (this.remoteSchema!= null);
     }
 
     /**

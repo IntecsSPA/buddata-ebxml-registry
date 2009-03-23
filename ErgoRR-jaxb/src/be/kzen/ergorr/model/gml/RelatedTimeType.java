@@ -8,8 +8,6 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:RelatedTimeType provides a content model for indicating the relative position of an arbitrary member of the substitution group whose head is gml:AbstractTimePrimitive. It extends the generic gml:TimePrimitivePropertyType with an XML attribute relativePosition, whose value is selected from the set of 13 temporal relationships identified by Allen (1983)
- * 
  * <p>Java class for RelatedTimeType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -17,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="RelatedTimeType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}TimePrimitivePropertyType">
+ *     &lt;extension base="{http://www.opengis.net/gml}TimePrimitivePropertyType">
  *       &lt;attribute name="relativePosition">
  *         &lt;simpleType>
  *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">

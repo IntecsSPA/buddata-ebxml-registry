@@ -5,14 +5,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * gml:CodeType is a generalized type to be used for a term, keyword or name.
- * It adds a XML attribute codeSpace to a term, where the value of the codeSpace attribute (if present) shall indicate a dictionary, thesaurus, classification scheme, authority, or pattern for the term.
+ * Name or code with an (optional) authority.  Text token.  
+ *       If the codeSpace attribute is present, then its value should identify a dictionary, thesaurus 
+ *       or authority for the term, such as the organisation who assigned the value, 
+ *       or the dictionary from which it is taken.  
+ *       A text string with an optional codeSpace attribute. 
  * 
  * <p>Java class for CodeType complex type.
  * 
@@ -33,10 +35,6 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CodeType", propOrder = {
     "value"
-})
-@XmlSeeAlso({
-    CodeWithAuthorityType.class,
-    Category.class
 })
 public class CodeType {
 

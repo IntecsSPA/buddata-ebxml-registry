@@ -32,16 +32,16 @@ import be.kzen.ergorr.model.gml.MeasureType;
  *           &lt;/simpleType>
  *         &lt;/element>
  *         &lt;element name="ascendingNodeDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
- *         &lt;element name="ascendingNodeLongitude" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="startTimeFromAscendingNode" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="completionTimeFromAscendingNode" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="orbitDuration" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="acrossTrackIncidenceAngle" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
- *         &lt;element name="alongTrackIncidenceAngle" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
- *         &lt;element name="incidenceAngle" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
- *         &lt;element name="pitch" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
- *         &lt;element name="roll" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
- *         &lt;element name="yaw" type="{http://www.opengis.net/gml/3.2}AngleType" minOccurs="0"/>
+ *         &lt;element name="ascendingNodeLongitude" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="startTimeFromAscendingNode" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="completionTimeFromAscendingNode" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="orbitDuration" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="acrossTrackIncidenceAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
+ *         &lt;element name="alongTrackIncidenceAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
+ *         &lt;element name="incidenceAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
+ *         &lt;element name="pitch" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
+ *         &lt;element name="roll" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
+ *         &lt;element name="yaw" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>

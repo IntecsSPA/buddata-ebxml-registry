@@ -1,7 +1,6 @@
 
 package be.kzen.ergorr.model.wrs;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -33,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SimpleLinkType")
-public class SimpleLinkType implements Serializable {
+public class SimpleLinkType {
 
     /**
      * 

@@ -1,0 +1,17 @@
+
+package be.kzen.ergorr.model.eo.hma;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
+public class Identifier
+    extends JAXBElement<String>
+{
+
+    protected final static QName NAME = new QName("http://earth.esa.int/hma", "identifier");
+
+    public Identifier(String value) {
+        super(NAME, ((Class) String.class), null, value);
+    }
+
+}

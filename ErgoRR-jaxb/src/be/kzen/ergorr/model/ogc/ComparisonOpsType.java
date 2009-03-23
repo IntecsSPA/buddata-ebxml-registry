@@ -27,9 +27,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ComparisonOpsType")
 @XmlSeeAlso({
     BinaryComparisonOpType.class,
-    PropertyIsLikeType.class,
+    PropertyIsNullType.class,
     PropertyIsBetweenType.class,
-    PropertyIsNullType.class
+    PropertyIsLikeType.class
 })
 public abstract class ComparisonOpsType {
 

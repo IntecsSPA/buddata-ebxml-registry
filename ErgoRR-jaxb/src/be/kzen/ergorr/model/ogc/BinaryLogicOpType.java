@@ -65,32 +65,32 @@ public class BinaryLogicOpType
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link PropertyIsEqualTo }
-     * {@link Or }
-     * {@link Intersects }
-     * {@link PropertyIsGreaterThanOrEqualTo }
-     * {@link PropertyIsNotEqualTo }
-     * {@link Contains }
      * {@link DWithin }
-     * {@link PropertyIsNull }
-     * {@link PropertyIsBetween }
-     * {@link Crosses }
-     * {@link And }
-     * {@link JAXBElement }{@code <}{@link LogicOpsType }{@code >}
-     * {@link BBOX }
-     * {@link Overlaps }
-     * {@link PropertyIsLessThan }
-     * {@link Within }
+     * {@link PropertyIsLike }
+     * {@link Intersects }
      * {@link Touches }
-     * {@link Not }
      * {@link PropertyIsLessThanOrEqualTo }
+     * {@link PropertyIsGreaterThanOrEqualTo }
      * {@link Beyond }
-     * {@link PropertyIsGreaterThan }
+     * {@link PropertyIsEqualTo }
      * {@link JAXBElement }{@code <}{@link ComparisonOpsType }{@code >}
      * {@link Disjoint }
+     * {@link Not }
+     * {@link JAXBElement }{@code <}{@link LogicOpsType }{@code >}
+     * {@link PropertyIsNull }
+     * {@link Or }
+     * {@link PropertyIsLessThan }
+     * {@link PropertyIsNotEqualTo }
+     * {@link And }
      * {@link JAXBElement }{@code <}{@link SpatialOpsType }{@code >}
-     * {@link PropertyIsLike }
+     * {@link PropertyIsBetween }
+     * {@link Overlaps }
      * {@link Equals }
+     * {@link Contains }
+     * {@link BBOX }
+     * {@link PropertyIsGreaterThan }
+     * {@link Crosses }
+     * {@link Within }
      * 
      * 
      */

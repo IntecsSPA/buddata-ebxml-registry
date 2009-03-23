@@ -8,6 +8,10 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * Curve is a 1-dimensional primitive. Curves are continuous, connected, and have a measurable length in terms of the coordinate system. 
+ * 				A curve is composed of one or more curve segments. Each curve segment within a curve may be defined using a different interpolation method. The curve segments are connected to one another, with the end point of each segment except the last being the start point of the next segment in the segment list.
+ * 				The orientation of the curve is positive.
+ * 
  * <p>Java class for CurveType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -15,9 +19,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="CurveType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractCurveType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractCurveType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}segments"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}segments"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -38,7 +42,7 @@ public class CurveType
     protected CurveSegmentArrayPropertyType segments;
 
     /**
-     * Gets the value of the segments property.
+     * This element encapsulates the segments of the curve.
      * 
      * @return
      *     possible object is

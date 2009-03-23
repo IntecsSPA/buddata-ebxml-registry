@@ -12,7 +12,10 @@ import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * gml:CodeListType provides for lists of terms. The values in an instance element shall all be valid according to the rules of the dictionary, classification scheme, or authority identified by the value of its codeSpace attribute.
+ * List of values on a uniform nominal scale.  List of text tokens.   
+ *       In a list context a token should not include any spaces, so xsd:Name is used instead of xsd:string.   
+ *       If a codeSpace attribute is present, then its value is a reference to 
+ *       a Reference System for the value, a dictionary or code list.
  * 
  * <p>Java class for CodeListType complex type.
  * 
@@ -21,7 +24,7 @@ import javax.xml.bind.annotation.XmlValue;
  * <pre>
  * &lt;complexType name="CodeListType">
  *   &lt;simpleContent>
- *     &lt;extension base="&lt;http://www.opengis.net/gml/3.2>NameList">
+ *     &lt;extension base="&lt;http://www.opengis.net/gml>NameList">
  *       &lt;attribute name="codeSpace" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
@@ -43,7 +46,7 @@ public class CodeListType {
     protected String codeSpace;
 
     /**
-     * A type for a list of values of the respective simple type.Gets the value of the value property.
+     * XML List based on XML Schema Name type.  An element of this type contains a space-separated list of Name values Gets the value of the value property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

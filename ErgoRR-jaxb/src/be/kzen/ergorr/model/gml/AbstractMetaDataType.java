@@ -1,22 +1,22 @@
 
 package be.kzen.ergorr.model.gml;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
 
 
 /**
+ * An abstract base type for complex metadata types.
+ * 
  * <p>Java class for AbstractMetaDataType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -25,9 +25,7 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
  * &lt;complexType name="AbstractMetaDataType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *       &lt;/sequence>
- *       &lt;attribute ref="{http://www.opengis.net/gml/3.2}id"/>
+ *       &lt;attribute ref="{http://www.opengis.net/gml}id"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -44,49 +42,40 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
 })
 public abstract class AbstractMetaDataType {
 
-    @XmlMixed
-    protected List<String> content;
-    @XmlAttribute(namespace = "http://www.opengis.net/gml/3.2")
+    @XmlValue
+    protected String content;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")
     protected String id;
 
     /**
-     * Gets the value of the content property.
+     * An abstract base type for complex metadata types.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the content property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getContent().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<String> getContent() {
-        if (content == null) {
-            content = new ArrayList<String>();
-        }
-        return this.content;
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * Sets the value of the content property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setContent(String value) {
+        this.content = value;
     }
 
     public boolean isSetContent() {
-        return ((this.content!= null)&&(!this.content.isEmpty()));
-    }
-
-    public void unsetContent() {
-        this.content = null;
+        return (this.content!= null);
     }
 
     /**

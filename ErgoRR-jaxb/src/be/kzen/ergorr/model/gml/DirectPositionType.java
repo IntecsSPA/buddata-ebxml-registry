@@ -8,14 +8,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * Direct position instances hold the coordinates for a position within some coordinate reference system (CRS). Since direct positions, as data types, will often be included in larger objects (such as geometry elements) that have references to CRS, the srsName attribute will in general be missing, if this particular direct position is included in a larger element with such a reference to a CRS. In this case, the CRS is implicitly assumed to take on the value of the containing object's CRS.
- * if no srsName attribute is given, the CRS shall be specified as part of the larger context this geometry element is part of, typically a geometric object like a point, curve, etc.
+ * DirectPosition instances hold the coordinates for a position within some coordinate reference system (CRS). Since 
+ * 			DirectPositions, as data types, will often be included in larger objects (such as geometry elements) that have references to CRS, the 
+ * 			"srsName" attribute will in general be missing, if this particular DirectPosition is included in a larger element with such a reference to a 
+ * 			CRS. In this case, the CRS is implicitly assumed to take on the value of the containing object's CRS.
  * 
  * <p>Java class for DirectPositionType complex type.
  * 
@@ -24,8 +25,8 @@ import javax.xml.bind.annotation.XmlValue;
  * <pre>
  * &lt;complexType name="DirectPositionType">
  *   &lt;simpleContent>
- *     &lt;extension base="&lt;http://www.opengis.net/gml/3.2>doubleList">
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}SRSReferenceGroup"/>
+ *     &lt;extension base="&lt;http://www.opengis.net/gml>doubleList">
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}SRSReferenceGroup"/>
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -36,9 +37,6 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DirectPositionType", propOrder = {
     "value"
-})
-@XmlSeeAlso({
-    VectorType.class
 })
 public class DirectPositionType {
 
@@ -56,7 +54,7 @@ public class DirectPositionType {
     protected List<String> uomLabels;
 
     /**
-     * A type for a list of values of the respective simple type.Gets the value of the value property.
+     * XML List based on XML Schema double type.  An element of this type contains a space-separated list of double values Gets the value of the value property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

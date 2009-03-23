@@ -1,8 +1,6 @@
 
 package be.kzen.ergorr.model.gml;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -12,6 +10,8 @@ import javax.xml.bind.annotation.XmlValue;
 
 
 /**
+ * This type is available wherever there is a need for a "text" type property. It is of string type, so the text can be included inline, but the value can also be referenced remotely via xlinks from the AssociationAttributeGroup. If the remote reference is present, then the value obtained by traversing the link should be used, and the string content of the element can be used for an annotation.
+ * 
  * <p>Java class for StringOrRefType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlValue;
  * &lt;complexType name="StringOrRefType">
  *   &lt;simpleContent>
  *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}AssociationAttributeGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -36,8 +36,9 @@ public class StringOrRefType {
 
     @XmlValue
     protected String value;
-    @XmlAttribute
-    protected List<String> nilReason;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
+    @XmlSchemaType(name = "anyURI")
+    protected String remoteSchema;
     /**
      * 
      * 
@@ -89,40 +90,31 @@ public class StringOrRefType {
     }
 
     /**
-     * Gets the value of the nilReason property.
+     * Gets the value of the remoteSchema property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the nilReason property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getNilReason().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<String> getNilReason() {
-        if (nilReason == null) {
-            nilReason = new ArrayList<String>();
-        }
-        return this.nilReason;
+    public String getRemoteSchema() {
+        return remoteSchema;
     }
 
-    public boolean isSetNilReason() {
-        return ((this.nilReason!= null)&&(!this.nilReason.isEmpty()));
+    /**
+     * Sets the value of the remoteSchema property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRemoteSchema(String value) {
+        this.remoteSchema = value;
     }
 
-    public void unsetNilReason() {
-        this.nilReason = null;
+    public boolean isSetRemoteSchema() {
+        return (this.remoteSchema!= null);
     }
 
     /**

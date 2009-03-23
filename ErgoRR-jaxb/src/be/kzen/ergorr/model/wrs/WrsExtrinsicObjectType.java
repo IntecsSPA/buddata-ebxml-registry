@@ -1,13 +1,12 @@
 
 package be.kzen.ergorr.model.wrs;
 
-import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlMimeType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 
 
 /**
@@ -43,7 +42,6 @@ import javax.xml.bind.annotation.XmlType;
     "repositoryItemRef",
     "repositoryItem"
 })
-@XmlRootElement
 public class WrsExtrinsicObjectType
     extends ExtrinsicObjectType
 {

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:CurveSegmentArrayPropertyType is a container for an array of curve segments.
+ * A container for an array of curve segments.
  * 
  * <p>Java class for CurveSegmentArrayPropertyType complex type.
  * 
@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="CurveSegmentArrayPropertyType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence maxOccurs="unbounded" minOccurs="0">
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractCurveSegment"/>
+ *       &lt;sequence>
+ *         &lt;element ref="{http://www.opengis.net/gml}_CurveSegment" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,63 +33,50 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CurveSegmentArrayPropertyType", propOrder = {
-    "abstractCurveSegment"
+    "curveSegment"
 })
 public class CurveSegmentArrayPropertyType {
 
-    @XmlElementRef(name = "AbstractCurveSegment", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected List<JAXBElement<? extends AbstractCurveSegmentType>> abstractCurveSegment;
+    @XmlElementRef(name = "_CurveSegment", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected List<JAXBElement<? extends AbstractCurveSegmentType>> curveSegment;
 
     /**
-     * Gets the value of the abstractCurveSegment property.
+     * Gets the value of the curveSegment property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the abstractCurveSegment property.
+     * This is why there is not a <CODE>set</CODE> method for the curveSegment property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getAbstractCurveSegment().add(newItem);
+     *    getCurveSegment().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link BSplineType }{@code >}
-     * {@link JAXBElement }{@code <}{@link AbstractCurveSegmentType }{@code >}
-     * {@link JAXBElement }{@code <}{@link LineStringSegmentType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ArcStringType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ArcType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ClothoidType }{@code >}
-     * {@link JAXBElement }{@code <}{@link OffsetCurveType }{@code >}
-     * {@link JAXBElement }{@code <}{@link CircleType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ArcStringByBulgeType }{@code >}
-     * {@link JAXBElement }{@code <}{@link CircleByCenterPointType }{@code >}
-     * {@link JAXBElement }{@code <}{@link GeodesicType }{@code >}
-     * {@link JAXBElement }{@code <}{@link GeodesicStringType }{@code >}
      * {@link JAXBElement }{@code <}{@link ArcByCenterPointType }{@code >}
-     * {@link JAXBElement }{@code <}{@link BezierType }{@code >}
-     * {@link JAXBElement }{@code <}{@link CubicSplineType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ArcByBulgeType }{@code >}
+     * {@link JAXBElement }{@code <}{@link AbstractCurveSegmentType }{@code >}
+     * {@link JAXBElement }{@code <}{@link CircleByCenterPointType }{@code >}
      * 
      * 
      */
-    public List<JAXBElement<? extends AbstractCurveSegmentType>> getAbstractCurveSegment() {
-        if (abstractCurveSegment == null) {
-            abstractCurveSegment = new ArrayList<JAXBElement<? extends AbstractCurveSegmentType>>();
+    public List<JAXBElement<? extends AbstractCurveSegmentType>> getCurveSegment() {
+        if (curveSegment == null) {
+            curveSegment = new ArrayList<JAXBElement<? extends AbstractCurveSegmentType>>();
         }
-        return this.abstractCurveSegment;
+        return this.curveSegment;
     }
 
-    public boolean isSetAbstractCurveSegment() {
-        return ((this.abstractCurveSegment!= null)&&(!this.abstractCurveSegment.isEmpty()));
+    public boolean isSetCurveSegment() {
+        return ((this.curveSegment!= null)&&(!this.curveSegment.isEmpty()));
     }
 
-    public void unsetAbstractCurveSegment() {
-        this.abstractCurveSegment = null;
+    public void unsetCurveSegment() {
+        this.curveSegment = null;
     }
 
 }

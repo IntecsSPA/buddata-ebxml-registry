@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * A MultiSurface is defined by one or more Surfaces, referenced through surfaceMember elements.
+ * 
  * <p>Java class for MultiSurfaceType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -16,10 +18,10 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="MultiSurfaceType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGeometricAggregateType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGeometricAggregateType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}surfaceMember" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}surfaceMembers" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}surfaceMember" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}surfaceMembers" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

@@ -1,8 +1,6 @@
 
 package be.kzen.ergorr.model.gml;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,6 +15,8 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
 
 
 /**
+ * Container for a feature - follow gml:AssociationType pattern.
+ * 
  * <p>Java class for FeaturePropertyType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -26,10 +26,9 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence minOccurs="0">
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractFeature"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}_Feature"/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}OwnershipAttributeGroup"/>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}AssociationAttributeGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -39,16 +38,15 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "FeaturePropertyType", propOrder = {
-    "abstractFeature"
+    "feature"
 })
 public class FeaturePropertyType {
 
-    @XmlElementRef(name = "AbstractFeature", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractFeatureType> abstractFeature;
-    @XmlAttribute
-    protected java.lang.Boolean owns;
-    @XmlAttribute
-    protected List<String> nilReason;
+    @XmlElementRef(name = "_Feature", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected JAXBElement<? extends AbstractFeatureType> feature;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
+    @XmlSchemaType(name = "anyURI")
+    protected String remoteSchema;
     /**
      * 
      * 
@@ -72,154 +70,85 @@ public class FeaturePropertyType {
     protected String actuate;
 
     /**
-     * Gets the value of the abstractFeature property.
+     * Gets the value of the feature property.
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractContinuousCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DirectedObservationAtDistanceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DirectedObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DynamicFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DynamicFeatureCollectionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
      *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractFeatureCollectionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */
-    public JAXBElement<? extends AbstractFeatureType> getAbstractFeature() {
-        return abstractFeature;
+    public JAXBElement<? extends AbstractFeatureType> getFeature() {
+        return feature;
     }
 
     /**
-     * Sets the value of the abstractFeature property.
+     * Sets the value of the feature property.
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractContinuousCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DirectedObservationAtDistanceType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DirectedObservationType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DynamicFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractCoverageType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DynamicFeatureCollectionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
      *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link DiscreteCoverageType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link MaskFeatureType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractFeatureCollectionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */
-    public void setAbstractFeature(JAXBElement<? extends AbstractFeatureType> value) {
-        this.abstractFeature = ((JAXBElement<? extends AbstractFeatureType> ) value);
+    public void setFeature(JAXBElement<? extends AbstractFeatureType> value) {
+        this.feature = ((JAXBElement<? extends AbstractFeatureType> ) value);
     }
 
-    public boolean isSetAbstractFeature() {
-        return (this.abstractFeature!= null);
+    public boolean isSetFeature() {
+        return (this.feature!= null);
     }
 
     /**
-     * Gets the value of the owns property.
+     * Gets the value of the remoteSchema property.
      * 
      * @return
      *     possible object is
-     *     {@link java.lang.Boolean }
+     *     {@link String }
      *     
      */
-    public boolean isOwns() {
-        if (owns == null) {
-            return false;
-        } else {
-            return owns;
-        }
+    public String getRemoteSchema() {
+        return remoteSchema;
     }
 
     /**
-     * Sets the value of the owns property.
+     * Sets the value of the remoteSchema property.
      * 
      * @param value
      *     allowed object is
-     *     {@link java.lang.Boolean }
+     *     {@link String }
      *     
      */
-    public void setOwns(boolean value) {
-        this.owns = value;
+    public void setRemoteSchema(String value) {
+        this.remoteSchema = value;
     }
 
-    public boolean isSetOwns() {
-        return (this.owns!= null);
-    }
-
-    public void unsetOwns() {
-        this.owns = null;
-    }
-
-    /**
-     * Gets the value of the nilReason property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the nilReason property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getNilReason().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
-     */
-    public List<String> getNilReason() {
-        if (nilReason == null) {
-            nilReason = new ArrayList<String>();
-        }
-        return this.nilReason;
-    }
-
-    public boolean isSetNilReason() {
-        return ((this.nilReason!= null)&&(!this.nilReason.isEmpty()));
-    }
-
-    public void unsetNilReason() {
-        this.nilReason = null;
+    public boolean isSetRemoteSchema() {
+        return (this.remoteSchema!= null);
     }
 
     /**

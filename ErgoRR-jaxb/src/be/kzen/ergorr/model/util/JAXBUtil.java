@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -17,7 +19,7 @@ import javax.xml.bind.Unmarshaller;
  * @author Yaman Ustuntas
  */
 public class JAXBUtil {
-
+    private static Logger logger = Logger.getLogger(JAXBUtil.class.getName());
     private static JAXBUtil instance;
     private JAXBContext jaxbContext;
 
@@ -39,7 +41,7 @@ public class JAXBUtil {
             
             jaxbContext = JAXBContext.newInstance(pkgs);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to create JAXBContext", ex);
         }
     }
 

@@ -17,8 +17,8 @@ import be.kzen.ergorr.model.gml.MeasureType;
  *   &lt;complexContent>
  *     &lt;extension base="{http://earth.esa.int/hma}EarthObservationResultType">
  *       &lt;sequence>
- *         &lt;element name="cloudCoverPercentage" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="cloudCoverPercentageAssessmentConfidence" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
+ *         &lt;element name="cloudCoverPercentage" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="cloudCoverPercentageAssessmentConfidence" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
  *         &lt;element name="cloudCoverPercentageQuotationMode" minOccurs="0">
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -27,8 +27,8 @@ import be.kzen.ergorr.model.gml.MeasureType;
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="snowCoverPercentage" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
- *         &lt;element name="snowCoverPercentageAssessmentConfidence" type="{http://www.opengis.net/gml/3.2}MeasureType" minOccurs="0"/>
+ *         &lt;element name="snowCoverPercentage" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
+ *         &lt;element name="snowCoverPercentageAssessmentConfidence" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
  *         &lt;element name="snowCoverPercentageQuotationMode" minOccurs="0">
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">

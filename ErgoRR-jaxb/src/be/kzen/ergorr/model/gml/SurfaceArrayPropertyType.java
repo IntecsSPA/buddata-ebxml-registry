@@ -6,13 +6,12 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:SurfaceArrayPropertyType is a container for an array of surfaces. The elements are always contained in the array property, referencing geometry elements or arrays of geometry elements via XLinks is not supported.
+ * A container for an array of surfaces. The elements are always contained in the array property, referencing geometry elements or arrays of geometry elements is not supported.
  * 
  * <p>Java class for SurfaceArrayPropertyType complex type.
  * 
@@ -22,10 +21,9 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="SurfaceArrayPropertyType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence maxOccurs="unbounded" minOccurs="0">
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractSurface"/>
+ *       &lt;sequence>
+ *         &lt;element ref="{http://www.opengis.net/gml}_Surface" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}OwnershipAttributeGroup"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -35,28 +33,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SurfaceArrayPropertyType", propOrder = {
-    "abstractSurface"
+    "surface"
 })
 public class SurfaceArrayPropertyType {
 
-    @XmlElementRef(name = "AbstractSurface", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected List<JAXBElement<? extends AbstractSurfaceType>> abstractSurface;
-    @XmlAttribute
-    protected java.lang.Boolean owns;
+    @XmlElementRef(name = "_Surface", namespace = "http://www.opengis.net/gml", type = JAXBElement.class)
+    protected List<JAXBElement<? extends AbstractSurfaceType>> surface;
 
     /**
-     * Gets the value of the abstractSurface property.
+     * Gets the value of the surface property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the abstractSurface property.
+     * This is why there is not a <CODE>set</CODE> method for the surface property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getAbstractSurface().add(newItem);
+     *    getSurface().add(newItem);
      * </pre>
      * 
      * 
@@ -64,64 +60,22 @@ public class SurfaceArrayPropertyType {
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link AbstractSurfaceType }{@code >}
      * {@link JAXBElement }{@code <}{@link PolygonType }{@code >}
-     * {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     * {@link JAXBElement }{@code <}{@link TinType }{@code >}
-     * {@link JAXBElement }{@code <}{@link CompositeSurfaceType }{@code >}
-     * {@link JAXBElement }{@code <}{@link OrientableSurfaceType }{@code >}
-     * {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
-     * {@link JAXBElement }{@code <}{@link SurfaceType }{@code >}
      * 
      * 
      */
-    public List<JAXBElement<? extends AbstractSurfaceType>> getAbstractSurface() {
-        if (abstractSurface == null) {
-            abstractSurface = new ArrayList<JAXBElement<? extends AbstractSurfaceType>>();
+    public List<JAXBElement<? extends AbstractSurfaceType>> getSurface() {
+        if (surface == null) {
+            surface = new ArrayList<JAXBElement<? extends AbstractSurfaceType>>();
         }
-        return this.abstractSurface;
+        return this.surface;
     }
 
-    public boolean isSetAbstractSurface() {
-        return ((this.abstractSurface!= null)&&(!this.abstractSurface.isEmpty()));
+    public boolean isSetSurface() {
+        return ((this.surface!= null)&&(!this.surface.isEmpty()));
     }
 
-    public void unsetAbstractSurface() {
-        this.abstractSurface = null;
-    }
-
-    /**
-     * Gets the value of the owns property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.Boolean }
-     *     
-     */
-    public boolean isOwns() {
-        if (owns == null) {
-            return false;
-        } else {
-            return owns;
-        }
-    }
-
-    /**
-     * Sets the value of the owns property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.Boolean }
-     *     
-     */
-    public void setOwns(boolean value) {
-        this.owns = value;
-    }
-
-    public boolean isSetOwns() {
-        return (this.owns!= null);
-    }
-
-    public void unsetOwns() {
-        this.owns = null;
+    public void unsetSurface() {
+        this.surface = null;
     }
 
 }

@@ -3,7 +3,6 @@ package be.kzen.ergorr.model.gml;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
@@ -14,10 +13,7 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
 
 
 /**
- * The basic feature model is given by the gml:AbstractFeatureType.
- * The content model for gml:AbstractFeatureType adds two specific properties suitable for geographic features to the content model defined in gml:AbstractGMLType. 
- * The value of the gml:boundedBy property describes an envelope that encloses the entire feature instance, and is primarily useful for supporting rapid searching for features that occur in a particular location. 
- * The value of the gml:location property describes the extent, position or relative location of the feature.
+ * An abstract feature provides a set of common properties, including id, metaDataProperty, name and description inherited from AbstractGMLType, plus boundedBy.    A concrete feature type must derive from this type and specify additional  properties in an application schema. A feature must possess an identifying attribute ('id' - 'fid' has been deprecated).
  * 
  * <p>Java class for AbstractFeatureType complex type.
  * 
@@ -26,10 +22,10 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
  * <pre>
  * &lt;complexType name="AbstractFeatureType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGMLType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGMLType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}boundedBy" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}location" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}boundedBy" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}location" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -44,12 +40,11 @@ import be.kzen.ergorr.model.eo.hma.MaskType;
     "location"
 })
 @XmlSeeAlso({
-    DynamicFeatureType.class,
-    AbstractCoverageType.class,
-    MaskFeatureType.class,
+    AbstractFeatureCollectionType.class,
     MaskType.class,
-    EarthObservationEquipmentType.class,
+    MaskFeatureType.class,
     FootprintType.class,
+    EarthObservationEquipmentType.class,
     EarthObservationResultType.class,
     ObservationType.class
 })
@@ -57,7 +52,6 @@ public abstract class AbstractFeatureType
     extends AbstractGMLType
 {
 
-    @XmlElement(nillable = true)
     protected BoundingShapeType boundedBy;
     protected LocationPropertyType location;
 
@@ -90,7 +84,7 @@ public abstract class AbstractFeatureType
     }
 
     /**
-     * Gets the value of the location property.
+     * deprecated in GML version 3.1
      * 
      * @return
      *     possible object is

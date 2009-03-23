@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * gml:AbstractSurfaceType is an abstraction of a surface to support the different levels of complexity. A surface is always a continuous region of a plane.
+ * An abstraction of a surface to support the different levels of complexity. A surface is always a continuous region of a plane.
  * 
  * <p>Java class for AbstractSurfaceType complex type.
  * 
@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractSurfaceType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGeometricPrimitiveType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGeometricPrimitiveType">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -28,12 +28,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractSurfaceType")
 @XmlSeeAlso({
-    OrientableSurfaceType.class,
-    PolygonType.class,
-    SurfaceType.class,
-    CompositeSurfaceType.class
+    PolygonType.class
 })
-public abstract class AbstractSurfaceType
+public class AbstractSurfaceType
     extends AbstractGeometricPrimitiveType
 {
 

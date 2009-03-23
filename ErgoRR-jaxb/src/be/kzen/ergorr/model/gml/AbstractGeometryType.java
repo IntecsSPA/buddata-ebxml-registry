@@ -13,10 +13,11 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * All geometry elements are derived directly or indirectly from this abstract supertype. A geometry element may have an identifying attribute (gml:id), one or more names (elements identifier and name) and a description (elements description and descriptionReference) . It may be associated with a spatial reference system (attribute group gml:SRSReferenceGroup).
- * The following rules shall be adhered to:
- * -	Every geometry type shall derive from this abstract type.
- * -	Every geometry element (i.e. an element of a geometry type) shall be directly or indirectly in the substitution group of AbstractGeometry.
+ * All geometry elements are derived directly or indirectly from this abstract supertype. A geometry element may 
+ * 			have an identifying attribute ("gml:id"), a name (attribute "name") and a description (attribute "description"). It may be associated 
+ * 			with a spatial reference system (attribute "srsName"). The following rules shall be adhered: - Every geometry type shall derive 
+ * 			from this abstract type. - Every geometry element (i.e. an element of a geometry type) shall be directly or indirectly in the 
+ * 			substitution group of _Geometry.
  * 
  * <p>Java class for AbstractGeometryType complex type.
  * 
@@ -25,8 +26,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="AbstractGeometryType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractGMLType">
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}SRSReferenceGroup"/>
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractGMLType">
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}SRSReferenceGroup"/>
+ *       &lt;attribute name="gid" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -37,15 +39,16 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractGeometryType")
 @XmlSeeAlso({
-    GeometricComplexType.class,
-    GridType.class,
-    AbstractGeometricPrimitiveType.class,
-    AbstractGeometricAggregateType.class
+    AbstractRingType.class,
+    AbstractGeometricAggregateType.class,
+    AbstractGeometricPrimitiveType.class
 })
 public abstract class AbstractGeometryType
     extends AbstractGMLType
 {
 
+    @XmlAttribute
+    protected String gid;
     @XmlAttribute
     @XmlSchemaType(name = "anyURI")
     protected String srsName;
@@ -56,6 +59,34 @@ public abstract class AbstractGeometryType
     protected List<String> axisLabels;
     @XmlAttribute
     protected List<String> uomLabels;
+
+    /**
+     * Gets the value of the gid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getGid() {
+        return gid;
+    }
+
+    /**
+     * Sets the value of the gid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setGid(String value) {
+        this.gid = value;
+    }
+
+    public boolean isSetGid() {
+        return (this.gid!= null);
+    }
 
     /**
      * Gets the value of the srsName property.

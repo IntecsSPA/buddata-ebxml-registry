@@ -42,8 +42,8 @@ public class EarthObservationResultPropertyType {
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
      *     
      */
     public JAXBElement<? extends be.kzen.ergorr.model.eo.hma.EarthObservationResultType> getEarthObservationResult() {
@@ -56,8 +56,8 @@ public class EarthObservationResultPropertyType {
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
      *     
      */
     public void setEarthObservationResult(JAXBElement<? extends be.kzen.ergorr.model.eo.hma.EarthObservationResultType> value) {

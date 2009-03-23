@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * Omit back-pointers begunBy, endedBy.
+ * 
  * <p>Java class for TimeInstantType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -15,9 +17,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="TimeInstantType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractTimeGeometricPrimitiveType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractTimeGeometricPrimitiveType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}timePosition"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}timePosition"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

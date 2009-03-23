@@ -109,11 +109,11 @@ public class SearchResultsType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link BriefRecordType }{@code >}
-     * {@link JAXBElement }{@code <}{@link AbstractRecordType }{@code >}
-     * {@link JAXBElement }{@code <}{@link DCMIRecordType }{@code >}
-     * {@link JAXBElement }{@code <}{@link SummaryRecordType }{@code >}
      * {@link JAXBElement }{@code <}{@link RecordType }{@code >}
+     * {@link JAXBElement }{@code <}{@link BriefRecordType }{@code >}
+     * {@link JAXBElement }{@code <}{@link SummaryRecordType }{@code >}
+     * {@link JAXBElement }{@code <}{@link DCMIRecordType }{@code >}
+     * {@link JAXBElement }{@code <}{@link AbstractRecordType }{@code >}
      * 
      * 
      */

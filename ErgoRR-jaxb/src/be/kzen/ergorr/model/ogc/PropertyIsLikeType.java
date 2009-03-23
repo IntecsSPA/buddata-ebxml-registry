@@ -3,11 +3,9 @@ package be.kzen.ergorr.model.ogc;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import org.w3c.dom.Element;
 
 
 /**
@@ -42,7 +40,7 @@ public class PropertyIsLikeType
     extends ComparisonOpsType
 {
 
-   @XmlElement(name = "PropertyName", required = true)
+    @XmlElement(name = "PropertyName", required = true)
     protected PropertyNameType propertyName;
     @XmlElement(name = "Literal", required = true)
     protected LiteralType literal;

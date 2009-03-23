@@ -13,10 +13,8 @@ import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * posList instances (and other instances with the content model specified by DirectPositionListType) hold the coordinates for a sequence of direct positions within the same coordinate reference system (CRS).
- * if no srsName attribute is given, the CRS shall be specified as part of the larger context this geometry element is part of, typically a geometric object like a point, curve, etc. 
- * The optional attribute count specifies the number of direct positions in the list. If the attribute count is present then the attribute srsDimension shall be present, too.
- * The number of entries in the list is equal to the product of the dimensionality of the coordinate reference system (i.e. it is a derived value of the coordinate reference system definition) and the number of direct positions.
+ * DirectPositionList instances hold the coordinates for a sequence of direct positions within the same coordinate 
+ * 			reference system (CRS).
  * 
  * <p>Java class for DirectPositionListType complex type.
  * 
@@ -25,8 +23,8 @@ import javax.xml.bind.annotation.XmlValue;
  * <pre>
  * &lt;complexType name="DirectPositionListType">
  *   &lt;simpleContent>
- *     &lt;extension base="&lt;http://www.opengis.net/gml/3.2>doubleList">
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}SRSReferenceGroup"/>
+ *     &lt;extension base="&lt;http://www.opengis.net/gml>doubleList">
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}SRSReferenceGroup"/>
  *       &lt;attribute name="count" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
@@ -58,7 +56,7 @@ public class DirectPositionListType {
     protected List<String> uomLabels;
 
     /**
-     * A type for a list of values of the respective simple type.Gets the value of the value property.
+     * XML List based on XML Schema double type.  An element of this type contains a space-separated list of double values Gets the value of the value property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

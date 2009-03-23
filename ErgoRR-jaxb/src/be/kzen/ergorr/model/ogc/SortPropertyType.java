@@ -3,10 +3,8 @@ package be.kzen.ergorr.model.ogc;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import org.w3c.dom.Element;
 
 
 /**
@@ -36,8 +34,8 @@ import org.w3c.dom.Element;
 })
 public class SortPropertyType {
 
-    @XmlAnyElement
-    protected Element propertyName;
+    @XmlElement(name = "PropertyName", required = true)
+    protected PropertyNameType propertyName;
     @XmlElement(name = "SortOrder")
     protected SortOrderType sortOrder;
 
@@ -46,10 +44,10 @@ public class SortPropertyType {
      * 
      * @return
      *     possible object is
-     *     {@link Element }
+     *     {@link PropertyNameType }
      *     
      */
-    public Element getPropertyName() {
+    public PropertyNameType getPropertyName() {
         return propertyName;
     }
 
@@ -58,10 +56,10 @@ public class SortPropertyType {
      * 
      * @param value
      *     allowed object is
-     *     {@link Element }
+     *     {@link PropertyNameType }
      *     
      */
-    public void setPropertyName(Element value) {
+    public void setPropertyName(PropertyNameType value) {
         this.propertyName = value;
     }
 

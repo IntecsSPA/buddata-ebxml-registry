@@ -1,11 +1,9 @@
 
 package be.kzen.ergorr.model.gml;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import be.kzen.ergorr.model.eo.hma.EarthObservationType;
@@ -19,12 +17,12 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationType;
  * <pre>
  * &lt;complexType name="ObservationType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractFeatureType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractFeatureType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}validTime"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}using" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}target" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}resultOf"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}validTime"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}using" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}target" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}resultOf"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -41,7 +39,6 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationType;
     "resultOf"
 })
 @XmlSeeAlso({
-    DirectedObservationType.class,
     EarthObservationType.class
 })
 public class ObservationType
@@ -50,11 +47,10 @@ public class ObservationType
 
     @XmlElement(required = true)
     protected TimePrimitivePropertyType validTime;
-    protected ProcedurePropertyType using;
-    @XmlElementRef(name = "target", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<TargetPropertyType> target;
+    protected FeaturePropertyType using;
+    protected TargetPropertyType target;
     @XmlElement(required = true)
-    protected ResultType resultOf;
+    protected AssociationType resultOf;
 
     /**
      * Gets the value of the validTime property.
@@ -89,10 +85,10 @@ public class ObservationType
      * 
      * @return
      *     possible object is
-     *     {@link ProcedurePropertyType }
+     *     {@link FeaturePropertyType }
      *     
      */
-    public ProcedurePropertyType getUsing() {
+    public FeaturePropertyType getUsing() {
         return using;
     }
 
@@ -101,10 +97,10 @@ public class ObservationType
      * 
      * @param value
      *     allowed object is
-     *     {@link ProcedurePropertyType }
+     *     {@link FeaturePropertyType }
      *     
      */
-    public void setUsing(ProcedurePropertyType value) {
+    public void setUsing(FeaturePropertyType value) {
         this.using = value;
     }
 
@@ -117,11 +113,10 @@ public class ObservationType
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link TargetPropertyType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TargetPropertyType }{@code >}
+     *     {@link TargetPropertyType }
      *     
      */
-    public JAXBElement<TargetPropertyType> getTarget() {
+    public TargetPropertyType getTarget() {
         return target;
     }
 
@@ -130,12 +125,11 @@ public class ObservationType
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link TargetPropertyType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link TargetPropertyType }{@code >}
+     *     {@link TargetPropertyType }
      *     
      */
-    public void setTarget(JAXBElement<TargetPropertyType> value) {
-        this.target = ((JAXBElement<TargetPropertyType> ) value);
+    public void setTarget(TargetPropertyType value) {
+        this.target = value;
     }
 
     public boolean isSetTarget() {
@@ -147,10 +141,10 @@ public class ObservationType
      * 
      * @return
      *     possible object is
-     *     {@link ResultType }
+     *     {@link AssociationType }
      *     
      */
-    public ResultType getResultOf() {
+    public AssociationType getResultOf() {
         return resultOf;
     }
 
@@ -159,10 +153,10 @@ public class ObservationType
      * 
      * @param value
      *     allowed object is
-     *     {@link ResultType }
+     *     {@link AssociationType }
      *     
      */
-    public void setResultOf(ResultType value) {
+    public void setResultOf(AssociationType value) {
         this.resultOf = value;
     }
 

@@ -1,19 +1,18 @@
 
 package be.kzen.ergorr.model.gml;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
+import org.w3c.dom.Element;
 
 
 /**
+ * Base type for complex metadata property types.
+ * 
  * <p>Java class for MetaDataPropertyType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
@@ -23,9 +22,9 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence minOccurs="0">
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}AbstractMetaData"/>
+ *         &lt;any/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}AssociationAttributeGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *       &lt;attribute name="about" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -36,17 +35,18 @@ import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MetaDataPropertyType", propOrder = {
-    "abstractMetaData"
+    "any"
 })
 public class MetaDataPropertyType {
 
-    @XmlElementRef(name = "AbstractMetaData", namespace = "http://www.opengis.net/gml/3.2", type = JAXBElement.class)
-    protected JAXBElement<? extends AbstractMetaDataType> abstractMetaData;
+    @XmlAnyElement(lax = true)
+    protected Object any;
     @XmlAttribute
     @XmlSchemaType(name = "anyURI")
     protected String about;
-    @XmlAttribute
-    protected List<String> nilReason;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
+    @XmlSchemaType(name = "anyURI")
+    protected String remoteSchema;
     /**
      * 
      * 
@@ -70,33 +70,33 @@ public class MetaDataPropertyType {
     protected String actuate;
 
     /**
-     * Gets the value of the abstractMetaData property.
+     * Gets the value of the any property.
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link EarthObservationMetaDataType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractMetaDataType }{@code >}
+     *     {@link Object }
+     *     {@link Element }
      *     
      */
-    public JAXBElement<? extends AbstractMetaDataType> getAbstractMetaData() {
-        return abstractMetaData;
+    public Object getAny() {
+        return any;
     }
 
     /**
-     * Sets the value of the abstractMetaData property.
+     * Sets the value of the any property.
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link EarthObservationMetaDataType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractMetaDataType }{@code >}
+     *     {@link Object }
+     *     {@link Element }
      *     
      */
-    public void setAbstractMetaData(JAXBElement<? extends AbstractMetaDataType> value) {
-        this.abstractMetaData = ((JAXBElement<? extends AbstractMetaDataType> ) value);
+    public void setAny(Object value) {
+        this.any = value;
     }
 
-    public boolean isSetAbstractMetaData() {
-        return (this.abstractMetaData!= null);
+    public boolean isSetAny() {
+        return (this.any!= null);
     }
 
     /**
@@ -128,40 +128,31 @@ public class MetaDataPropertyType {
     }
 
     /**
-     * Gets the value of the nilReason property.
+     * Gets the value of the remoteSchema property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the nilReason property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getNilReason().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<String> getNilReason() {
-        if (nilReason == null) {
-            nilReason = new ArrayList<String>();
-        }
-        return this.nilReason;
+    public String getRemoteSchema() {
+        return remoteSchema;
     }
 
-    public boolean isSetNilReason() {
-        return ((this.nilReason!= null)&&(!this.nilReason.isEmpty()));
+    /**
+     * Sets the value of the remoteSchema property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRemoteSchema(String value) {
+        this.remoteSchema = value;
     }
 
-    public void unsetNilReason() {
-        this.nilReason = null;
+    public boolean isSetRemoteSchema() {
+        return (this.remoteSchema!= null);
     }
 
     /**

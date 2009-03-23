@@ -15,7 +15,7 @@ import be.kzen.ergorr.model.gml.AbstractFeatureType;
  * <pre>
  * &lt;complexType name="EarthObservationEquipmentType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/gml/3.2}AbstractFeatureType">
+ *     &lt;extension base="{http://www.opengis.net/gml}AbstractFeatureType">
  *       &lt;sequence>
  *         &lt;element name="platform" type="{http://earth.esa.int/hma}PlatformPropertyType" minOccurs="0"/>
  *         &lt;element name="instrument" type="{http://earth.esa.int/hma}InstrumentPropertyType" minOccurs="0"/>

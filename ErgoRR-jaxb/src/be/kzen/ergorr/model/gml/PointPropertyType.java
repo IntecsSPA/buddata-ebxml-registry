@@ -1,8 +1,6 @@
 
 package be.kzen.ergorr.model.gml;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -12,7 +10,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * A property that has a point as its value domain may either be an appropriate geometry element encapsulated in an element of this type or an XLink reference to a remote geometry element (where remote includes geometry elements located elsewhere in the same document). Either the reference or the contained element shall be given, but neither both nor none.
+ * A property that has a point as its value domain can either be an appropriate geometry element encapsulated in an 
+ * 			element of this type or an XLink reference to a remote geometry element (where remote includes geometry elements located 
+ * 			elsewhere in the same document). Either the reference or the contained element must be given, but neither both nor none.
  * 
  * <p>Java class for PointPropertyType complex type.
  * 
@@ -23,10 +23,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence minOccurs="0">
- *         &lt;element ref="{http://www.opengis.net/gml/3.2}Point"/>
+ *         &lt;element ref="{http://www.opengis.net/gml}Point"/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}OwnershipAttributeGroup"/>
- *       &lt;attGroup ref="{http://www.opengis.net/gml/3.2}AssociationAttributeGroup"/>
+ *       &lt;attGroup ref="{http://www.opengis.net/gml}AssociationAttributeGroup"/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -42,10 +41,9 @@ public class PointPropertyType {
 
     @XmlElement(name = "Point")
     protected PointType point;
-    @XmlAttribute
-    protected java.lang.Boolean owns;
-    @XmlAttribute
-    protected List<String> nilReason;
+    @XmlAttribute(namespace = "http://www.opengis.net/gml")
+    @XmlSchemaType(name = "anyURI")
+    protected String remoteSchema;
     /**
      * 
      * 
@@ -97,76 +95,31 @@ public class PointPropertyType {
     }
 
     /**
-     * Gets the value of the owns property.
+     * Gets the value of the remoteSchema property.
      * 
      * @return
      *     possible object is
-     *     {@link java.lang.Boolean }
+     *     {@link String }
      *     
      */
-    public boolean isOwns() {
-        if (owns == null) {
-            return false;
-        } else {
-            return owns;
-        }
+    public String getRemoteSchema() {
+        return remoteSchema;
     }
 
     /**
-     * Sets the value of the owns property.
+     * Sets the value of the remoteSchema property.
      * 
      * @param value
      *     allowed object is
-     *     {@link java.lang.Boolean }
+     *     {@link String }
      *     
      */
-    public void setOwns(boolean value) {
-        this.owns = value;
+    public void setRemoteSchema(String value) {
+        this.remoteSchema = value;
     }
 
-    public boolean isSetOwns() {
-        return (this.owns!= null);
-    }
-
-    public void unsetOwns() {
-        this.owns = null;
-    }
-
-    /**
-     * Gets the value of the nilReason property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the nilReason property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getNilReason().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
-     */
-    public List<String> getNilReason() {
-        if (nilReason == null) {
-            nilReason = new ArrayList<String>();
-        }
-        return this.nilReason;
-    }
-
-    public boolean isSetNilReason() {
-        return ((this.nilReason!= null)&&(!this.nilReason.isEmpty()));
-    }
-
-    public void unsetNilReason() {
-        this.nilReason = null;
+    public boolean isSetRemoteSchema() {
+        return (this.remoteSchema!= null);
     }
 
     /**

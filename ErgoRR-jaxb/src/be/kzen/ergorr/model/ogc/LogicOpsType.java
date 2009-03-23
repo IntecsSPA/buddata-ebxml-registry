@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "LogicOpsType")
 @XmlSeeAlso({
-    UnaryLogicOpType.class,
-    BinaryLogicOpType.class
+    BinaryLogicOpType.class,
+    UnaryLogicOpType.class
 })
 public abstract class LogicOpsType {
 

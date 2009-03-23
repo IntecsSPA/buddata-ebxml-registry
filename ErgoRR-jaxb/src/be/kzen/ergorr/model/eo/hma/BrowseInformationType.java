@@ -27,7 +27,7 @@ import be.kzen.ergorr.model.gml.CodeListType;
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="subType" type="{http://www.opengis.net/gml/3.2}CodeListType" minOccurs="0"/>
+ *         &lt;element name="subType" type="{http://www.opengis.net/gml}CodeListType" minOccurs="0"/>
  *         &lt;element name="referenceSystemIdentifier" type="{http://earth.esa.int/hma}CodeWithAuthorityType"/>
  *         &lt;element name="fileName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>

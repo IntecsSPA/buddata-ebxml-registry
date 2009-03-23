@@ -41,9 +41,9 @@ public class AcquisitionPropertyType {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.AcquisitionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.AcquisitionType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.AcquisitionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.AcquisitionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.AcquisitionType }{@code >}
      *     
      */
     public JAXBElement<? extends be.kzen.ergorr.model.eo.hma.AcquisitionType> getAcquisition() {
@@ -55,9 +55,9 @@ public class AcquisitionPropertyType {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.AcquisitionType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.AcquisitionType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.AcquisitionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.AcquisitionType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.AcquisitionType }{@code >}
      *     
      */
     public void setAcquisition(JAXBElement<? extends be.kzen.ergorr.model.eo.hma.AcquisitionType> value) {
