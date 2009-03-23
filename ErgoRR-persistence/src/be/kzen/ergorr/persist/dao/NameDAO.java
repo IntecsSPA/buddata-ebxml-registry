@@ -34,7 +34,7 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
     }
 
     @Override
-    public void insert(Statement batchStmt) throws SQLException {
+    public void insert() throws SQLException {
 
         if (parent.isSetName()) {
             InternationalStringType name = parent.getName();

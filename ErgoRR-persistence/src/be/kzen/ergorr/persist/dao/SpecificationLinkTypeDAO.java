@@ -53,9 +53,11 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
         super.insertRelatedObjects(batchStmt);
         UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
-        paramDAO.insert(batchStmt);
+        paramDAO.setBatchStmt(batchStmt);
+        paramDAO.insert();
         UsageDescriptionDAO descDAO = new UsageDescriptionDAO(xmlObject);
-        descDAO.insert(batchStmt);
+        descDAO.setBatchStmt(batchStmt);
+        descDAO.insert();
     }
 
     protected void loadRelateObjects() throws SQLException {

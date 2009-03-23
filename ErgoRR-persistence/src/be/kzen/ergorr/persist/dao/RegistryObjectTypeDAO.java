@@ -60,12 +60,14 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
 
         if (xmlObject.isSetName()) {
             NameDAO nameDAO = new NameDAO(xmlObject);
-            nameDAO.insert(batchStmt);
+            nameDAO.setBatchStmt(batchStmt);
+            nameDAO.insert();
         }
 
         if (xmlObject.isSetDescription()) {
             DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
-            descDAO.insert(batchStmt);
+            descDAO.setBatchStmt(batchStmt);
+            descDAO.insert();
         }
     }
 
@@ -99,18 +101,22 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.updateRelatedObjects(batchStmt);
 
         NameDAO nameDAO = new NameDAO(xmlObject);
-        nameDAO.update(batchStmt);
+        nameDAO.setBatchStmt(batchStmt);
+        nameDAO.update();
         DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
-        descDAO.update(batchStmt);
+        descDAO.setBatchStmt(batchStmt);
+        descDAO.update();
     }
 
     @Override
     protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
         super.deleteRelatedObjects(batchStmt);
         NameDAO nameDAO = new NameDAO(xmlObject);
-        nameDAO.delete(batchStmt);
+        nameDAO.setBatchStmt(batchStmt);
+        nameDAO.delete();
         DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
-        descDAO.delete(batchStmt);
+        descDAO.setBatchStmt(batchStmt);
+        descDAO.delete();
         ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
         clDAO.deleteClassifications(xmlObject, batchStmt);
         ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();

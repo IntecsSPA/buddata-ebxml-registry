@@ -39,14 +39,15 @@ import javax.xml.bind.JAXBElement;
  * @author Yaman Ustuntas
  */
 public class InternalSlotTypes {
+
     private static Logger logger = Logger.getLogger(InternalSlotTypes.class.getName());
     private static InternalSlotTypes instance;
     private Map<String, String> slotMap;
-    private static String[] nonStringTypes;
-    
+    private static String[] slotTypes;
+
 
     static {
-        nonStringTypes = CommonProperties.getInstance().getStringArray("rim.nonStringSlotTypes");
+        slotTypes = CommonProperties.getInstance().getStringArray("rim.internalSlotTypes");
     }
 
     public InternalSlotTypes() {
@@ -56,78 +57,30 @@ public class InternalSlotTypes {
     public static synchronized InternalSlotTypes getInstance() {
         if (instance == null) {
             instance = new InternalSlotTypes();
+            try {
+                instance.loadSlots();
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Could not load slots", ex);
+            }
         }
 
         return instance;
     }
 
-    public void setSlotMap(Map<String, String> slotMap) {
-        this.slotMap.clear();
-        this.slotMap.putAll(slotMap);
-    }
-
     public String getSlotType(String slotName) {
-        slotName = slotName.toLowerCase();
-        String type = slotMap.get(slotName);
-
-        if (type == null) {
-            type = InternalConstants.TYPE_STRING;
-        }
-
-        return type;
+        return slotMap.get(slotName);
     }
 
-    public void putTestSlot(String name, String type) {
-        name = name.toLowerCase();
-        String st = InternalConstants.TYPE_STRING;
-
-        if (type != null) {
-            type = type.toLowerCase();
-
-            if (isNoneStringType(type)) {
-                st = type;
-            }
-        }
-        slotMap.put(name, st);
+    public void putSlot(String name, String slotType) throws Exception {
+        slotMap.put(name, slotType);
     }
 
-    public void putSlot(String name, String type) throws Exception {
-        name = name.toLowerCase();
-        String st = InternalConstants.TYPE_STRING;
-
-        if (type != null) {
-            type = type.toLowerCase();
-
-            if (isNoneStringType(type)) {
-                st = type;
-            }
-        }
-
-        String prevType = slotMap.get(name);
-
-        if (prevType == null && !st.equals(InternalConstants.TYPE_STRING)) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.FINE, "adding slot in cache: " + name + " > " + st);
-            }
-
-            slotMap.put(name, st);
-        } else if (prevType != null && !prevType.equals(st)) {
-            String err = "Slot type mismatch: Slot " + name + " was registered as " + prevType + " but the current request defines it as " + type;
-            logger.log(Level.SEVERE, err);
-            throw new Exception(err);
-        }
-    }
-
-    public void remoteSlot(String name) {
+    public void removeSlot(String name) {
         slotMap.remove(name);
     }
 
     public int getSlotTypeSize() {
         return slotMap.size();
-    }
-
-    public void clear() {
-        slotMap.clear();
     }
 
     public void loadSlots(SqlPersistence persist) throws ClassNotFoundException, SQLException {
@@ -137,12 +90,10 @@ public class InternalSlotTypes {
 
         for (JAXBElement<ExtrinsicObjectType> eoEl : eoEls) {
             for (SlotType slot : eoEl.getValue().getSlot()) {
-                if (isNoneStringType(slot.getSlotType())) {
-                    if (logger.isLoggable(Level.FINE)) {
-                        logger.log(Level.FINE, "slot in cache: " + slot.getName() + " > " + slot.getSlotType());
-                    }
-                    slotMap.put(slot.getName(), slot.getSlotType());
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, "slot in cache: " + slot.getName() + " > " + slot.getSlotType());
                 }
+                slotMap.put(slot.getName(), slot.getSlotType());
             }
         }
     }
@@ -151,33 +102,18 @@ public class InternalSlotTypes {
         loadSlots(new SqlPersistence());
     }
 
-    /**
-     * TODO: Read internal slot types from config file.
-     * 
-     * @param slotType
-     * @return
-     */
-    public static String getInternalSlotType(String slotType) {
+    public static boolean isInternalSlotType(String slotType) {
+        boolean isInternal = false;
 
         if (slotType != null) {
-            slotType = slotType.toLowerCase();
-
-            if (slotType.equals("string") || slotType.equals("datetime") || slotType.equals("double") || slotType.equals("int") || slotType.equals("geometry") || slotType.equals("boolean")) {
-                return slotType;
+            for (String type : slotTypes) {
+                if (slotType.equals(type)) {
+                    isInternal = true;
+                    break;
+                }
             }
         }
 
-        return "string";
-    }
-
-    public static boolean isNoneStringType(String slotType) {
-        slotType = slotType.toLowerCase();
-
-        for (String s : nonStringTypes) {
-            if (slotType.equals(s)) {
-                return true;
-            }
-        }
-        return false;
+        return isInternal;
     }
 }
