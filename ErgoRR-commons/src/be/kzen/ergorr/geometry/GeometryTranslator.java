@@ -32,7 +32,6 @@ import be.kzen.ergorr.model.gml.PointType;
 import be.kzen.ergorr.model.gml.PolygonType;
 import be.kzen.ergorr.model.util.OFactory;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -88,7 +87,7 @@ public class GeometryTranslator {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     public static Polygon polygonFromGmlPolygonType(PolygonType gmlPolygon) throws TransformException {
-        LinearRingType exRingType = (LinearRingType) gmlPolygon.getExterior().getAbstractRing().getValue();
+        LinearRingType exRingType = (LinearRingType) gmlPolygon.getExterior().getRing().getValue();
         List<LinearRing> rings = new ArrayList<LinearRing>();
 
         rings.add(linearRingFromGmlLinearRing(exRingType));
@@ -97,7 +96,7 @@ public class GeometryTranslator {
 
         for (int j = 0; j < absRingPropTypes.size(); j++) {
             AbstractRingPropertyType absRingPropType = absRingPropTypes.get(j);
-            LinearRingType inRingType = (LinearRingType) absRingPropType.getAbstractRing().getValue();
+            LinearRingType inRingType = (LinearRingType) absRingPropType.getRing().getValue();
             rings.add(linearRingFromGmlLinearRing(inRingType));
         }
 
@@ -145,10 +144,12 @@ public class GeometryTranslator {
 
         if (exRingType.isSetPosList()) {
             return exRingType.getPosList().getValue();
-        } else if (exRingType.isSetPosOrPointProperty()) {
+        } else if (exRingType.isSetPosOrPointPropertyOrPointRep()) {
             List<Double> list = new ArrayList<Double>();
 
-            for (Object posObj : exRingType.getPosOrPointProperty()) {
+            for (JAXBElement posObjEl : exRingType.getPosOrPointPropertyOrPointRep()) {
+                Object posObj = posObjEl.getValue();
+                
                 if (posObj instanceof DirectPositionType) {
                     DirectPositionType pos = (DirectPositionType) posObj;
                     list.addAll(pos.getValue());
@@ -287,7 +288,7 @@ public class GeometryTranslator {
 
                 AbstractRingPropertyType gmlExAbsRing = new AbstractRingPropertyType();
                 LinearRing exRing = polygon.getRing(0);
-                gmlExAbsRing.setAbstractRing(gmlLinearRingFromLinearRing(exRing));
+                gmlExAbsRing.setRing(gmlLinearRingFromLinearRing(exRing));
                 gmlPolygon.setExterior(gmlExAbsRing);
 
 
@@ -298,7 +299,7 @@ public class GeometryTranslator {
                     for (int i = 1; i < interiorRingsCount; i++) {
                         AbstractRingPropertyType gmlInAbsRing = new AbstractRingPropertyType();
                         LinearRing inRing = polygon.getRing(i);
-                        gmlInAbsRing.setAbstractRing(gmlLinearRingFromLinearRing(inRing));
+                        gmlInAbsRing.setRing(gmlLinearRingFromLinearRing(inRing));
                         gmlPolygon.getInterior().add(gmlInAbsRing);
                     }
                 }
