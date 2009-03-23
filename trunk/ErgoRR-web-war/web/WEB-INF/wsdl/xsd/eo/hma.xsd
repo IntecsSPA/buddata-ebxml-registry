@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2007 sp1 (http://www.altova.com) by jrom (C.N.E.S.) -->
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by jrom (CNES) -->
-<xs:schema xmlns:om="http://www.opengis.net/om" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:hma="http://earth.esa.int/hma" targetNamespace="http://earth.esa.int/hma" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
-	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../gml/3.2.1/feature.xsd"/>
-	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../gml/3.2.1/gmlBase.xsd"/>
-	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../gml/3.2.1/deprecatedTypes.xsd"/>
-	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../gml/3.2.1/observation.xsd"/>
+<xs:schema xmlns:om="http://www.opengis.net/om" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:hma="http://earth.esa.int/hma" targetNamespace="http://earth.esa.int/hma" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml/3.1.1/gmlSubset.xsd"/>
 	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../xlink/1.0.0/xlinks.xsd"/>
 	<!-- ===================================================================== -->
 	<!--   EarthObservation : -->
@@ -35,7 +32,7 @@
 	<!--   		+ made of Platform / Instrument / Sensor / Acquisition  -->
 	<!--   		+ should be found within EarthObservation "using" property -->
 	<!-- ===================================================================== -->
-	<xs:element name="EarthObservationEquipment" type="hma:EarthObservationEquipmentType" substitutionGroup="gml:AbstractFeature"/>
+	<xs:element name="EarthObservationEquipment" type="hma:EarthObservationEquipmentType" substitutionGroup="gml:_Feature"/>
 	<xs:complexType name="EarthObservationEquipmentType">
 		<xs:complexContent>
 			<xs:extension base="gml:AbstractFeatureType">
@@ -124,7 +121,7 @@ HMA/EOLI : N/A</xs:documentation>
 	<!-- 		+ contains properties that do not fit directly inside the observation structure -->
 	<!--   		+ should be under EarthObservation "gml:metadaProperty" property -->
 	<!-- ===================================================================== -->
-	<xs:element name="EarthObservationMetaData" type="hma:EarthObservationMetaDataType" substitutionGroup="gml:AbstractMetaData"/>
+	<xs:element name="EarthObservationMetaData" type="hma:EarthObservationMetaDataType" substitutionGroup="gml:_MetaData"/>
 	<xs:complexType name="EarthObservationMetaDataType" mixed="true">
 		<xs:complexContent mixed="true">
 			<xs:extension base="gml:AbstractMetaDataType">
@@ -334,7 +331,7 @@ be retrieved using codespace. (eg. PHR : PA, XS or PX).</xs:documentation>
 	<!--  		+ this feature defines the observation result, i.e. the Earth Observation Product -->
 	<!--  		+ should be found within EarthObservation "result" property -->
 	<!-- ===================================================================== -->
-	<xs:element name="EarthObservationResult" type="hma:EarthObservationResultType" substitutionGroup="gml:AbstractFeature">
+	<xs:element name="EarthObservationResult" type="hma:EarthObservationResultType" substitutionGroup="gml:_Feature">
 		<xs:annotation>
 			<xs:documentation>Defines the observation result, i.e. the Earth Observation Product</xs:documentation>
 		</xs:annotation>
@@ -360,7 +357,7 @@ be retrieved using codespace. (eg. PHR : PA, XS or PX).</xs:documentation>
 	<!--  		+ this feature defines the acquisition footprint i.e. what is observed by the Instrument -->
 	<!--  		+ should be found within EarthObservation "featureOfInterest" property -->
 	<!-- ===================================================================== -->
-	<xs:element name="Footprint" type="hma:FootprintType" substitutionGroup="gml:AbstractFeature">
+	<xs:element name="Footprint" type="hma:FootprintType" substitutionGroup="gml:_Feature">
 		<xs:annotation>
 			<xs:documentation>Defines the acquisition footprint, i.e. the region observed by the Instrument</xs:documentation>
 		</xs:annotation>
@@ -531,7 +528,7 @@ direct link to the image or WMS/WCS interface), it is assumed that if a client i
 	<!--   Histograms  -->
 	<!-- ===================================================================== -->
 	<xs:element name="histograms" type="hma:HistogramArrayPropertyType"/>
-	<xs:element name="Histogram" type="hma:HistogramType" substitutionGroup="gml:AbstractObject"/>
+	<xs:element name="Histogram" type="hma:HistogramType" substitutionGroup="gml:_Object"/>
 	<xs:complexType name="HistogramArrayPropertyType">
 		<xs:sequence>
 			<xs:element ref="hma:Histogram" maxOccurs="unbounded"/>
@@ -598,9 +595,9 @@ direct link to the image or WMS/WCS interface in case of RASTER mask; direct lin
 	<!-- ===================================================================== -->
 	<!--   Mask  Feature  -->
 	<!-- ===================================================================== -->
-	<xs:element name="Mask" type="hma:MaskType" substitutionGroup="gml:AbstractFeature">
+	<xs:element name="Mask" type="hma:MaskType" substitutionGroup="gml:_Feature">
 		<xs:annotation>
-			<xs:documentation>Mask defined as a feature collection (in the GML 3.2 sense : a feature collection is a feature having a property derived by extension from gml:AbstractFeatureMemberType). Mandates the following optional gml properties inherited from gml:AbstractFeature :
+			<xs:documentation>Mask defined as a feature collection (in the GML 3.2 sense : a feature collection is a feature having a property derived by extension from gml:AbstractFeatureMemberType). Mandates the following optional gml properties inherited from gml:_Feature :
 - gml:id attribute
 - gml:name
 - gml:boundedBy
@@ -623,9 +620,9 @@ Note : the upcoming gml:identifier will replace hma:identifier in GML 3.2</xs:do
 			<xs:element ref="hma:MaskFeature" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="MaskFeature" type="hma:MaskFeatureType" substitutionGroup="gml:AbstractFeature">
+	<xs:element name="MaskFeature" type="hma:MaskFeatureType" substitutionGroup="gml:_Feature">
 		<xs:annotation>
-			<xs:documentation>Mask member : . Mandates the following optional gml properties inherited from gml:AbstractFeature :
+			<xs:documentation>Mask member : . Mandates the following optional gml properties inherited from gml:_Feature :
 - gml:id attribute
 - gml:name
 - gml:boundedBy
