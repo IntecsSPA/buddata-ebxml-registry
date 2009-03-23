@@ -123,7 +123,7 @@ public class CswClientTest {
         
         GetRecordByIdResponseType response = client.getRecordById(request);
         
-        System.out.println(JAXBUtil.getInstance().marshall(OFactory.csw.createGetRecordByIdResponse(response)));
+        System.out.println(JAXBUtil.getInstance().marshallToStr(OFactory.csw.createGetRecordByIdResponse(response)));
     }
 
     @Test
