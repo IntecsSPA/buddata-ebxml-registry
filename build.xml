@@ -66,6 +66,7 @@
     
     <target name="build-war">
         <copy file="${rr-web-dir}/conf/logging.properties" todir="${rr-web-build-dir}"/>
+        <copy file="${rr-web-dir}/conf/rebel.xml" todir="${rr-web-build-dir}"/>
         <war destfile="${dist-dir}/${deployName}.war" webxml="${rr-web-dir}/web/WEB-INF/web.xml">
             <fileset dir="${rr-web-dir}/web"/>
             <lib dir="ErgoRR-shared/metro1_4">
@@ -99,11 +100,17 @@
     <target name="db-load-data">
         <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
         <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/rim-objecttype-scheme.xml"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/rim-datatype-scheme.xml"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/rim-associationtype-scheme.xml"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/eo-rim-model.xml"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/eo-slot-init.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/rim/rim-objecttype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/rim/rim-datatype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/rim/rim-associationtype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/eo/eo-rim-model.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/eo/eo-slot-init.xml"/>
+    </target>
+
+    <target name="db-load-test-data">
+        <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
+        <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/test"/>
     </target>
 
     <!--target name="deploy">
@@ -126,7 +133,7 @@
         <delete file="${env.CATALINA_HOME}/webapps/${deployName}.war"/>
         <delete dir="${env.CATALINA_HOME}/webapps/${deployName}"/>
         <echo message="Waiting 10 seconds for tomcat to undeploy properly ..."/>
-        <sleep seconds="10"/>
+        <!--sleep seconds="10"/-->
         <copy file="${rr-web-dir}/conf/template-datasource.xml" tofile="${build-dir}/${deployName}.xml"/>
         <replace file="${build-dir}/${deployName}.xml" token="!!name!!" value="${deployName}"/>
         <replace file="${build-dir}/${deployName}.xml" token="!!db.url!!" value="${db.url}"/>
