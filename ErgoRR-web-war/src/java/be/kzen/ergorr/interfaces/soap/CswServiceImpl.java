@@ -143,34 +143,10 @@ public class CswServiceImpl implements CswPortType {
 
     /**
      * Put stuff here which should be initialized once.
-     * 
-     * The web container calls the PostConstruct twice.
-     * Once when the application is deployed and once the service is invoked for the first time.
-     * This code will prevent the init from run twice.
      */
     @PostConstruct
     protected void init() {
-        slotTypes = InternalSlotTypes.getInstance();
-
-        if (slotTypes.getSlotTypeSize() > 0) {
-            slotTypes.clear(); // now we can remove the dummy
-//            LoggerSetup.setup();
-            logger.info(">>> start init");
-            logger.info("loading slot types cache from database");
-
-            try {
-                slotTypes.loadSlots();
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Could not load slot types", ex);
-            }
-            logger.info("  non-string slots: " + slotTypes.getSlotTypeSize());
-            logger.info(">>> end init");
-        } else {
-            try {
-                slotTypes.putSlot("dummyslot", "string");
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Could not put dummy slot type", ex);
-            }
-        }
+        logger.info("init slot types");
+        InternalSlotTypes.getInstance();
     }
 }

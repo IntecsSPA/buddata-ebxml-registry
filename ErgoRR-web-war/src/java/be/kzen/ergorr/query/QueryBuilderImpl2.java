@@ -58,6 +58,7 @@ import javax.xml.namespace.QName;
 import javax.xml.xpath.XPathException;
 
 /**
+ * TODO: Prevent SQL injection
  *
  * @author yaman
  */
@@ -78,10 +79,6 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private static final String SINGLE_CHAR = "_";
     private static final String ESCAPE_CHAR = "!";
     private static final String WILDCARD_CHAR = "%";
-    private static final String OBJECT_ALIAS = "o";
-    private static final String SLOT_ALIAS = "s";
-    private static final String NAME_ALIAS = "n";
-    private static final String DESC_ALIAS = "d";
 
     public QueryBuilderImpl2(GetRecordsType request) throws QueryException {
         this.request = request;
@@ -238,12 +235,16 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             Method method = this.getClass().getDeclaredMethod(opName, new Class[]{queryOperator.getValue().getClass()});
             method.invoke(this, new Object[]{queryOperator.getValue()});
         } catch (IllegalArgumentException ex) {
+            logger.log(Level.SEVERE, "", ex);
             throw new QueryException("Illegal argument invoking " + opName, ex);
         } catch (InvocationTargetException ex) {
+            logger.log(Level.SEVERE, "", ex);
             throw new QueryException("Exception invoking " + opName, ex);
         } catch (NoSuchMethodException ex) {
+            logger.log(Level.SEVERE, "", ex);
             throw new QueryException("Method not found: " + opName, ex);
         } catch (IllegalAccessException ex) {
+            logger.log(Level.SEVERE, "", ex);
             throw new QueryException("Illegal access: " + opName, ex);
         }
     }
@@ -458,7 +459,6 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      */
     private void opPropertyIsNull(PropertyIsNullType propNull) throws QueryException, XPathException {
         PropertyNameType propName = propNull.getPropertyName();
-        String internalSlotType = "";
 
         if (!propName.getContent().isEmpty()) {
             String xpath = (String) propName.getContent().get(0);
@@ -535,7 +535,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private void opBBOX(BBOXType bbox) throws QueryException, XPathException {
 
         if (bbox.isSetEnvelope()) {
-            EnvelopeType env = bbox.getEnvelope().getValue();
+            EnvelopeType env = bbox.getEnvelope();
 
             if (bbox.isSetPropertyName() && !bbox.getPropertyName().getContent().isEmpty()) {
                 String xpath = (String) bbox.getPropertyName().getContent().get(0);
@@ -682,7 +682,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             }
 
             try {
-                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(dwithin.getAbstractGeometry().getValue());
+                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(dwithin.getGeometry().getValue());
                 queryParams.add(geom);
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform geometry", ex);
@@ -707,8 +707,9 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             XPathNode xpNode = xpathConv.process();
 
             if (xpNode.getQueryObject().getTableName().equals("t_slot")) {
-                sqlQuery.append("st_within(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),");
-                sqlQuery.append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
+                sqlQuery.append("st_").append(spatialQueryOperation).append("(").append(xpNode.getQueryObject().getSqlAlias())
+                        .append(".geometryvalue, transform(geomfromwkb(?),")
+                        .append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
             } else {
                 throw new QueryException("XPath not pointing to a geometry value: " + xpath);
             }
@@ -717,7 +718,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         }
 
         if (binSpatialOp.isSetEnvelope()) {
-            EnvelopeType env = binSpatialOp.getEnvelope().getValue();
+            EnvelopeType env = binSpatialOp.getEnvelope();
 
             try {
                 byte[] geom = GeometryTranslator.wkbFromGmlEnvelope(env);
@@ -725,9 +726,9 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform Envelope to Polygon", ex);
             }
-        } else if (binSpatialOp.isSetAbstractGeometry()) {
+        } else if (binSpatialOp.isSetGeometry()) {
             try {
-                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(binSpatialOp.getAbstractGeometry().getValue());
+                byte[] geom = GeometryTranslator.wkbFromGmlGeometry(binSpatialOp.getGeometry().getValue());
                 queryParams.add(geom);
             } catch (TransformException ex) {
                 throw new QueryException("Could not transform geometry", ex);

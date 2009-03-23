@@ -53,8 +53,8 @@ public class OPTTranslator extends HMATranslator implements Translator {
         WrsExtrinsicObjectType e = super.translateProduct();
 
         if (eo.isSetUsing()) {
-            if (eo.getUsing().isSetAbstractFeature() && eo.getUsing().getAbstractFeature().getValue() instanceof EarthObservationEquipmentType) {
-                EarthObservationEquipmentType eoEquip = (EarthObservationEquipmentType) eo.getUsing().getAbstractFeature().getValue();
+            if (eo.getUsing().isSetFeature() && eo.getUsing().getFeature().getValue() instanceof EarthObservationEquipmentType) {
+                EarthObservationEquipmentType eoEquip = (EarthObservationEquipmentType) eo.getUsing().getFeature().getValue();
 
                 if (eoEquip.isSetAcquisitionParameters() && eoEquip.getAcquisitionParameters().isSetAcquisition() &&
                         eoEquip.getAcquisitionParameters().getAcquisition().getValue() instanceof AcquisitionType) {
@@ -75,8 +75,8 @@ public class OPTTranslator extends HMATranslator implements Translator {
         }
         
         if (eo.isSetResultOf()) {
-            if (eo.getResultOf().isSetAny() && eo.getResultOf().getAny() instanceof JAXBElement) {
-                JAXBElement el = (JAXBElement) eo.getResultOf().getAny();
+            if (eo.getResultOf().isSetObject()) {
+                JAXBElement el = eo.getResultOf().getObject();
                 
                 if (el.getValue() instanceof EarthObservationResultType) {
                     EarthObservationResultType result = (EarthObservationResultType) el.getValue();

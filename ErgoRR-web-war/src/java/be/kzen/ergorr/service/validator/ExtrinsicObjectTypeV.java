@@ -34,12 +34,10 @@ public class ExtrinsicObjectTypeV extends RegistryObjectTypeV<ExtrinsicObjectTyp
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();
-        if (rimObject.getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
+        if (rimObject.getObjectType() != null && rimObject.getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
             for (SlotType s : rimObject.getSlot()) {
-                try {
-                    InternalSlotTypes.getInstance().putSlot(s.getName(), s.getSlotType());
-                } catch (Exception ex) {
-                    throw new InvalidReferenceException(ex.getMessage());
+                if (s.getSlotType() == null || !InternalSlotTypes.isInternalSlotType(s.getSlotType())) {
+                    throw new InvalidReferenceException("Slot " + s.getName() + " of ExtrinsicObject " + rimObject.getId() + " does not have a valid internalSlotType");
                 }
             }
         }

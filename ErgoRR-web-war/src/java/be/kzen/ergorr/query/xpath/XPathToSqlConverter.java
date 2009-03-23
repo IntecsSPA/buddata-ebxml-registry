@@ -1,19 +1,10 @@
 package be.kzen.ergorr.query.xpath;
 
-import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.InternalConstants;
-import be.kzen.ergorr.model.csw.QueryType;
-import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.persist.InternalSlotTypes;
-import be.kzen.ergorr.query.QueryObject;
 import be.kzen.ergorr.query.SqlQuery;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import be.kzen.ergorr.query.xpath.parser.SimpleXPathParser;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.xpath.XPathException;
@@ -49,14 +40,28 @@ public class XPathToSqlConverter {
                 rootNode.setQueryAttrType(InternalConstants.TYPE_STRING);
                 return rootNode;
             } else {
-                String childNodeName = rootNode.getChild().getName().toLowerCase();
+                XPathNode childNode = rootNode.getChild();
+                String childNodeName = childNode.getName().toLowerCase();
+                
                 if (childNodeName.equals("slot")) {
-                    String queryType = InternalSlotTypes.getInstance().getSlotType(rootNode.getChild().getSubSelectValue());
-                    rootNode.getChild().setAttributeName(queryType + "value");
-                    rootNode.getChild().setQueryAttrType(queryType);
+                    String internalSlotType = null;
+                    
+                    if (childNode.getSubSelectName().equals("name")) {
+                        internalSlotType = InternalSlotTypes.getInstance().getSlotType(childNode.getSubSelectValue());
+
+                        if (internalSlotType == null) {
+                            throw new XPathException("Not a registered slot name: " + childNode.getSubSelectValue());
+                        }
+
+                    } else {
+                        throw new XPathException("Not a queriable slot attribute: " + childNode.getSubSelectName());
+                    }
+
+                    childNode.setAttributeName(internalSlotType + "value");
+                    childNode.setQueryAttrType(internalSlotType);
                 } else if (childNodeName.equals("name") || childNodeName.equals("description")) {
-                    rootNode.getChild().setAttributeName("value_");
-                    rootNode.getChild().setQueryAttrType(InternalConstants.TYPE_STRING);
+                    childNode.setAttributeName("value_");
+                    childNode.setQueryAttrType(InternalConstants.TYPE_STRING);
                 }
                 return rootNode.getChild();
             }

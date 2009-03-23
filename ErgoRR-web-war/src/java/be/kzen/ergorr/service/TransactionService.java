@@ -163,6 +163,7 @@ public class TransactionService {
             inserts += regObjList.getIdentifiable().size();
             appendBriefRecords(regObjList);
         } catch (TranslationException ex) {
+            logger.log(Level.SEVERE, "Transaction error", ex);
             throw new ServiceExceptionReport("Transaction error", null, ex);
         }
     }

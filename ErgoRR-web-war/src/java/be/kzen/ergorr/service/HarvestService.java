@@ -103,11 +103,17 @@ public class HarvestService {
             return response;
 
         } catch (MalformedURLException ex) {
-            throw new ServiceExceptionReport("Provided source URL is not valid", ex);
+            String err = "Provided source URL is not valid";
+            logger.log(Level.SEVERE, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         } catch (JAXBException ex) {
-            throw new ServiceExceptionReport("Could not unmarshall the data from the provided source URL", ex);
+            String err = "Could not unmarshall the data from the provided source URL";
+            logger.log(Level.SEVERE, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         } catch (TranslationException ex) {
-            throw new ServiceExceptionReport("Could not translate the data from the provided source URL", ex);
+            String err = "Could not translate the data from the provided source URL";
+            logger.log(Level.SEVERE, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         }
     }
 
