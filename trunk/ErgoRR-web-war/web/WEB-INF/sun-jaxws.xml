@@ -10,6 +10,6 @@
     service="{http://www.kzen.be/ergorr/interfaces/soap}webservice"
     port="{http://www.kzen.be/ergorr/interfaces/soap}CswPort"
     url-pattern="/webservice/*"
-    enable-mtom="true"
-    mtom-threshold-value="0"/>
+    enable-mtom="false"/>
+    <!-- mtom-threshold-value="10240"/> -->
 </endpoints>
