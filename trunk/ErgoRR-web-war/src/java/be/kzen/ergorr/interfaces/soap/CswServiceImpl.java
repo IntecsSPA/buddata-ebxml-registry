@@ -41,9 +41,6 @@ import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
-import be.kzen.ergorr.persist.service.SqlPersistence;
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,9 +51,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.rpc.handler.soap.SOAPMessageContext;
 import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
 import org.w3c.dom.Document;
 
 /**
@@ -80,7 +75,7 @@ public class CswServiceImpl implements CswPortType {
             JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("Capabilities.xml"));
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {
-            logger.log(Level.WARNING, "Could not load Capabilities document", ex);
+            logger.log(Level.SEVERE, "Could not load Capabilities document", ex);
             throw new ServiceExceptionReport("Could not load capabilities document from file.", ex);
         }
     }
@@ -147,6 +142,6 @@ public class CswServiceImpl implements CswPortType {
     @PostConstruct
     protected void init() {
         logger.info("init slot types");
-        InternalSlotTypes.getInstance();
+        slotTypes = InternalSlotTypes.getInstance();
     }
 }
