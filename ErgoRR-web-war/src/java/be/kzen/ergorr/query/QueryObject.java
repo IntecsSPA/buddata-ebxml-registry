@@ -32,11 +32,15 @@ public class QueryObject {
 
     private String objectName;
     private String sqlAlias;
+    // if object is defined in typeNames but not used in the filter.
+    private boolean usedInQuery;
 
     public QueryObject() {
+        usedInQuery = false;
     }
 
     public QueryObject(String objectName, String sqlAlias) {
+        this();
         this.objectName = objectName;
         this.sqlAlias = sqlAlias;
     }
@@ -59,5 +63,13 @@ public class QueryObject {
 
     public String getSqlAlias() {
         return sqlAlias;
+    }
+
+    public boolean isUsedInQuery() {
+        return usedInQuery;
+    }
+
+    public void setUsedInQuery(boolean usedInQuery) {
+        this.usedInQuery = usedInQuery;
     }
 }

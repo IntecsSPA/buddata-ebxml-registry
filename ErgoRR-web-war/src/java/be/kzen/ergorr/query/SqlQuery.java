@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.xpath.XPathException;
 
 /**
@@ -32,6 +34,7 @@ import javax.xml.xpath.XPathException;
  */
 public class SqlQuery {
 
+    private static Logger logger = Logger.getLogger(SqlQuery.class.getName());
     private StringBuilder whereClause;
     private List<XPathNode> joinNodes;
     private StringBuilder criteria;
@@ -96,7 +99,14 @@ public class SqlQuery {
         while (it.hasNext()) {
             String key = it.next();
             QueryObject qo = selectObjs.get(key);
-            fromClause.append(qo.getTableName()).append(" ").append(qo.getSqlAlias()).append(", ");
+
+            if (qo.isUsedInQuery()) {
+                fromClause.append(qo.getTableName()).append(" ").append(qo.getSqlAlias()).append(", ");
+            } else {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("typeName '" + qo.getObjectName() + "' with alias '" + qo.getSqlAlias() + " is not used in the query");
+                }
+            }
         }
 
         if (!joinNodes.isEmpty()) {
@@ -180,6 +190,7 @@ public class SqlQuery {
             throw new XPathException("Object: " + rootNode.getName() + " not defined in typeNames attribute");
         }
 
+        qo.setUsedInQuery(true);
         rootNode.setQueryObject(qo);
 
         if (rootNode.getChild() != null) {
