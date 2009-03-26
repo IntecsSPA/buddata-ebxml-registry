@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ergorr-deploy" basedir=".">
     <property name="rr-commons-dir" value="ErgoRR-commons"/>
-    <property name="rr-commons-build-dir" value="tmp-ergo/common"/>
+    <property name="rr-commons-build-dir" value="tmp-ergo/build/common"/>
     <property name="rr-jaxb-dir" value="ErgoRR-jaxb"/>
-    <property name="rr-jaxb-build-dir" value="tmp-ergo/jaxb"/>
+    <property name="rr-jaxb-build-dir" value="tmp-ergo/build/jaxb"/>
     <property name="rr-persistence-dir" value="ErgoRR-persistence"/>
-    <property name="rr-persistence-build-dir" value="tmp-ergo/persistence"/>
+    <property name="rr-persistence-build-dir" value="tmp-ergo/build/persistence"/>
     <property name="rr-web-dir" value="ErgoRR-web-war"/>
-    <property name="rr-web-build-dir" value="tmp-ergo/web"/>
-    <property name="build-dir" value="tmp-ergo"/>
+    <property name="rr-web-build-dir" value="tmp-ergo/build/web"/>
+    <property name="rr-soap-client-dir" value="ErgoRR-client"/>
+    <property name="rr-soap-client-build-dir" value="tmp-ergo/build/soapclient"/>
+    <property name="rr-backend-client-dir" value="ErgoRR-backend-client"/>
+    <property name="rr-backend-client-build-dir" value="tmp-ergo/build/soapclient"/>
+    <property name="build-dir" value="tmp-ergo/build"/>
     <property name="dist-dir" value="tmp-ergo/dist"/>
     <property environment="env"/>
 
@@ -38,7 +42,19 @@
             classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
     </target>
 
-    <target name="build-jaxb">
+    <target name="compile-soap-client" depends="compile-jaxb, compile-commons">
+        <javac srcdir="${rr-soap-client-dir}/src"
+            destdir="${rr-soap-client-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="compile-backend-client" depends="compile-jaxb, compile-commons, compile-web">
+        <javac srcdir="${rr-backend-client-dir}/src"
+            destdir="${rr-backend-client-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="build-jaxb" depends="compile-jaxb">
         <jar destfile="${dist-dir}/ErgoRR-jaxb.jar" basedir="${rr-jaxb-build-dir}">
             <manifest>
                 <attribute name="Built-By" value="the_computer"/>
@@ -46,7 +62,7 @@
         </jar>
     </target>
     
-    <target name="build-commons">
+    <target name="build-commons" depends="compile-commons">
         <copy file="${rr-commons-dir}/conf/common.properties" todir="${rr-commons-build-dir}/be/kzen/ergorr/commons"/>
         <copy file="${rr-commons-dir}/conf/ehcache.xml" todir="${rr-commons-build-dir}/be/kzen/ergorr/cache"/>
         <jar destfile="${dist-dir}/ErgoRR-commons.jar" basedir="${rr-commons-build-dir}">
@@ -56,7 +72,7 @@
         </jar>
     </target>
     
-    <target name="build-persistence">
+    <target name="build-persistence" depends="compile-persistence">
         <jar destfile="${dist-dir}/ErgoRR-persistence.jar" basedir="${rr-persistence-build-dir}">
             <manifest>
                 <attribute name="Built-By" value="the_computer"/>
@@ -64,7 +80,7 @@
         </jar>
     </target>
     
-    <target name="build-war">
+    <target name="build-war" depends="compile-web">
         <copy file="${rr-web-dir}/conf/logging.properties" todir="${rr-web-build-dir}"/>
         <copy file="${rr-web-dir}/conf/rebel.xml" todir="${rr-web-build-dir}"/>
         <war destfile="${dist-dir}/${deployName}.war" webxml="${rr-web-dir}/web/WEB-INF/web.xml">
@@ -83,6 +99,27 @@
             </lib>
             <classes dir="${rr-web-build-dir}"/>
         </war>
+    </target>
+
+    <target name="build-soap-client" depends="compile-soap-client">
+        <jar destfile="${dist-dir}/ErgoRR-soap-client.jar" basedir="${rr-soap-client-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="build-backend-client" depends="compile-backend-client, build-backend">
+        <jar destfile="${dist-dir}/ErgoRR-backend-client.jar" basedir="${rr-soap-client-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="build-backend" depends="compile-web">
+        <mkdir dir="./dist"/>
+        <jar destfile="${dist-dir}/ErgoRR-backend.jar" basedir="${rr-web-build-dir}" excludes="**/CswServiceImpl.class, logging.properties, rebel.xml"/>
     </target>
 
     <target name="db-create">
@@ -110,7 +147,8 @@
     <target name="db-load-test-data">
         <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
         <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/test"/>
+        <!--rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/${rr-web-dir}/data/test"/-->
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/../2008-final"/>
     </target>
 
     <!--target name="deploy">
@@ -156,17 +194,20 @@
         </fileset>
     </path>
 
-    <target name="all-compile" depends="init, compile-jaxb, compile-commons, compile-persistence, compile-web"/>
-    <target name="all-build" depends="all-compile, build-jaxb, build-commons, build-persistence, build-war"/>
     <target name="db-build" depends="db-create, db-create-tables"/>
+    <target name="all-build" depends="build-jaxb, build-commons, build-persistence, build-war"/>
+    <target name="all-build-client" depends="build-soap-client, build-backend-client"/>
 
     <target name="init">
-        <delete dir="${build-dir}"/>
+        <delete dir="tmp-ergo"/>
         <mkdir dir="${dist-dir}"/>
+        <mkdir dir="${build-dir}"/>
         <mkdir dir="${rr-commons-build-dir}"/>
         <mkdir dir="${rr-jaxb-build-dir}"/>
         <mkdir dir="${rr-persistence-build-dir}"/>
         <mkdir dir="${rr-web-build-dir}"/>
+        <mkdir dir="${rr-soap-client-build-dir}"/>
+        <mkdir dir="${rr-backend-client-build-dir}"/>
     </target>
 
     <target name="tomcat-setup">
