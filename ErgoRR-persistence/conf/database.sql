@@ -341,7 +341,7 @@ CREATE TABLE t_servicebinding (
 );
 
 CREATE TABLE t_slot (
-  seq                      BIGINT       NOT NULL,
+  seq                      SMALLINT     NOT NULL,
   parent                   VARCHAR(256) NOT NULL,
   name_                    VARCHAR(256) NOT NULL,
   slottype                 VARCHAR(256),
@@ -958,8 +958,8 @@ DROP INDEX IF EXISTS classificationscheme_id_idx;
 DROP INDEX IF EXISTS externalidentifier_id_idx;
 DROP INDEX IF EXISTS registrypackage_id_idx;
 DROP INDEX IF EXISTS slot_parent_idx;
-DROP INDEX IF EXISTS localizedname_id_idx;
-DROP INDEX IF EXISTS localizeddesc_id_idx;
+DROP INDEX IF EXISTS slot_name_idx;
+DROP INDEX IF EXISTS slot_geometry_idx;
 DROP INDEX IF EXISTS association_source_idx;
 DROP INDEX IF EXISTS association_target_idx;
 DROP INDEX IF EXISTS classificationnode_parent_idx;
@@ -967,30 +967,25 @@ DROP INDEX IF EXISTS externalidentifier_registryobject_idx;
 DROP INDEX IF EXISTS classification_classifiedobject_idx;
 DROP INDEX IF EXISTS localizedname_parent_idx;
 DROP INDEX IF EXISTS localizeddesc_parent_idx;
---drop index if exists slot_geometry_idx;
 
 
-CREATE index extrinsicobject_id_idx ON t_extrinsicobject (id);
-CREATE index association_id_idx ON t_association (id);
-CREATE index classification_id_idx ON t_classification (id);
-CREATE index classificationnode_id_idx ON t_classificationnode (id);
-CREATE index classificationscheme_id_idx ON t_classificationscheme (id);
-CREATE index externalidentifier_id_idx ON t_externalidentifier (id);
-CREATE index registrypackage_id_idx ON t_registrypackage (id);
---CREATE index localizedname_id_idx ON localizedname (id);
---CREATE index localizeddesc_id_idx ON localizeddesc (id);
-
-
-CREATE index slot_parent_idx ON t_slot (parent);
-CREATE index slot_name_idx ON t_slot (name_);
-CREATE index association_source_idx ON t_association (sourceobject);
-CREATE index association_target_idx ON t_association (targetobject);
-CREATE index classificationnode_parent_idx ON t_classificationnode (parent);
-CREATE index externalidentifier_registryobject_idx ON t_externalidentifier (registryobject);
-CREATE index classification_classifiedobject_idx ON t_classification (classifiedobject);
-CREATE index localizedname_parent_idx ON t_name (parent);
-CREATE index localizeddesc_parent_idx ON t_description (parent);
-CREATE index slot_geometry_idx on t_slot using gist (geometryvalue);
+CREATE INDEX extrinsicobject_id_idx ON t_extrinsicobject (id);
+CREATE INDEX association_id_idx ON t_association (id);
+CREATE INDEX classification_id_idx ON t_classification (id);
+CREATE INDEX classificationnode_id_idx ON t_classificationnode (id);
+CREATE INDEX classificationscheme_id_idx ON t_classificationscheme (id);
+CREATE INDEX externalidentifier_id_idx ON t_externalidentifier (id);
+CREATE INDEX registrypackage_id_idx ON t_registrypackage (id);
+CREATE INDEX slot_parent_idx ON t_slot (parent);
+CREATE INDEX slot_name_idx ON t_slot (name_);
+CREATE INDEX slot_geometry_idx on t_slot using gist (geometryvalue);
+CREATE INDEX association_source_idx ON t_association (sourceobject);
+CREATE INDEX association_target_idx ON t_association (targetobject);
+CREATE INDEX classificationnode_parent_idx ON t_classificationnode (parent);
+CREATE INDEX externalidentifier_registryobject_idx ON t_externalidentifier (registryobject);
+CREATE INDEX classification_classifiedobject_idx ON t_classification (classifiedobject);
+CREATE INDEX localizedname_parent_idx ON t_name (parent);
+CREATE INDEX localizeddesc_parent_idx ON t_description (parent);
 
 /*ALTER TABLE slot CLUSTER ON slot_geometry_idx;*/
 
