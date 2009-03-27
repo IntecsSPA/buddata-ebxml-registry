@@ -3,11 +3,13 @@ package be.kzen.ergorr.query.xpath;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.query.SqlQuery;
+import be.kzen.ergorr.query.xpath.parser.CustomXPathHandler;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
-import be.kzen.ergorr.query.xpath.parser.SimpleXPathParser;
+import com.werken.saxpath.XPathReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.xpath.XPathException;
+import org.saxpath.SAXPathException;
 
 /**
  *
@@ -30,8 +32,7 @@ public class XPathToSqlConverter {
             logger.log(Level.FINE, "eval xpath: " + xpath);
         }
 
-        SimpleXPathParser parser = new SimpleXPathParser(xpath);
-        XPathNode rootNode = parser.parse();
+        XPathNode rootNode = parseXPath();
 
         if (rootNode != null) {
             sqlQuery.addXPath(rootNode);
@@ -71,5 +72,22 @@ public class XPathToSqlConverter {
             logger.log(Level.SEVERE, err);
             throw new XPathException(err);
         }
+    }
+
+    private XPathNode parseXPath() throws XPathException {
+        // XPath doesn't like $ character which are used in GML filter XPaths, so remove them before processing.
+        xpath = xpath.replaceAll("\\$", "");
+
+        XPathReader reader = new XPathReader();
+        CustomXPathHandler handler = new CustomXPathHandler();
+        reader.setXPathHandler(handler);
+
+        try {
+            reader.parse(xpath);
+        } catch (SAXPathException ex) {
+            throw new XPathException(ex);
+        }
+
+        return handler.getRoot();
     }
 }
