@@ -550,9 +550,10 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.webservices-extra.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.file.reference.webservices-extra.jar" todir="${dist.ear.dir}"/>
         <copyfiles files="${file.reference.webservices-rt.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.file.reference.webservices-rt.jar" todir="${dist.ear.dir}"/>
         <copyfiles files="${file.reference.webservices-tools.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.file.reference.webservices-tools.jar" todir="${dist.ear.dir}"/>
+        <copyfiles files="${file.reference.saxpath.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.file.reference.saxpath.jar" todir="${dist.ear.dir}"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${manifest.reference.ErgoRR-jaxb.jar} ${manifest.file.reference.postgis_1.3.3.jar} ${manifest.reference.ErgoRR-persistence.jar} ${manifest.reference.ErgoRR-commons.jar} ${manifest.file.reference.postgresql-8.3-603.jdbc3.jar} ${manifest.file.reference.webservices-extra-api.jar} ${manifest.file.reference.webservices-extra.jar} ${manifest.file.reference.webservices-rt.jar} ${manifest.file.reference.webservices-tools.jar} "/>
+            <attribute name="Class-Path" value="${manifest.reference.ErgoRR-jaxb.jar} ${manifest.file.reference.postgis_1.3.3.jar} ${manifest.reference.ErgoRR-persistence.jar} ${manifest.reference.ErgoRR-commons.jar} ${manifest.file.reference.postgresql-8.3-603.jdbc3.jar} ${manifest.file.reference.webservices-extra-api.jar} ${manifest.file.reference.webservices-extra.jar} ${manifest.file.reference.webservices-rt.jar} ${manifest.file.reference.webservices-tools.jar} ${manifest.file.reference.saxpath.jar} "/>
         </manifest>
     </target>
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
@@ -565,6 +566,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.webservices-extra.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.webservices-rt.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.webservices-tools.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.saxpath.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" name="do-ear-dist">
         <dirname file="${dist.ear.war}" property="dist.jar.dir"/>
