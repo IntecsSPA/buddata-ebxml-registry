@@ -94,6 +94,9 @@
             <lib dir="ErgoRR-shared/postgreSQL">
                 <include name="postgresql-8.3-603.jdbc3.jar"/>
             </lib>
+            <lib dir="ErgoRR-shared/saxpath">
+                <include name="saxpath.jar"/>
+            </lib>
             <lib dir="${dist-dir}">
                 <include name="*.jar"/>
             </lib>
@@ -109,7 +112,7 @@
         </jar>
     </target>
 
-    <target name="build-backend-client" depends="compile-backend-client, build-backend">
+    <target name="build-backend-client" depends="compile-backend-client">
         <jar destfile="${dist-dir}/ErgoRR-backend-client.jar" basedir="${rr-soap-client-build-dir}">
             <manifest>
                 <attribute name="Built-By" value="the_computer"/>
@@ -117,7 +120,7 @@
         </jar>
     </target>
 
-    <target name="build-backend" depends="compile-web">
+    <target name="build-backend">
         <mkdir dir="./dist"/>
         <jar destfile="${dist-dir}/ErgoRR-backend.jar" basedir="${rr-web-build-dir}" excludes="**/CswServiceImpl.class, logging.properties, rebel.xml"/>
     </target>
@@ -195,8 +198,8 @@
     </path>
 
     <target name="db-build" depends="db-create, db-create-tables"/>
-    <target name="all-build" depends="build-jaxb, build-commons, build-persistence, build-war"/>
-    <target name="all-build-client" depends="build-soap-client, build-backend-client"/>
+    <target name="all-build" depends="init, build-jaxb, build-commons, build-persistence, build-war"/>
+    <target name="all-build-client" depends="build-soap-client, build-backend-client, build-backend"/>
 
     <target name="init">
         <delete dir="tmp-ergo"/>
