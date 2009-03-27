@@ -47,6 +47,25 @@
                 <library>
                     <file>${file.reference.webservices-api.jar}</file>
                 </library>
+                <library>
+                    <file>${file.reference.ant.jar}</file>
+                </library>
+                <library>
+                    <file>${file.reference.xercesImpl.jar}</file>
+                </library>
+                <library>
+                    <file>${file.reference.xml-apis.jar}</file>
+                </library>
+                <library>
+                    <file>${file.reference.catalina-ant.jar}</file>
+                </library>
+                <library>
+                    <file>${file.reference.ant-launcher.jar}</file>
+                </library>
+                <library>
+                    <file>${file.reference.saxpath.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
