@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+    <rim:ClassificationScheme lid="urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType" id="urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType" isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+        <rim:Name>
+            <rim:LocalizedString charset="UTF-8" value="ObjectType"/>
+        </rim:Name>
+        <rim:Description>
+            <rim:LocalizedString charset="UTF-8" value="This is the canonical ClassificationScheme for object type hierarchy"/>
+        </rim:Description>
+        <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject" code="RegistryObject" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject">
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery"  code="AdhocQuery" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association"  code="Association" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AuditableEvent"  code="AuditableEvent" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AuditableEvent"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"  code="Classification" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"  code="ClassificationNode" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"  code="ExternalIdentifier" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalLink"  code="ExternalLink" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalLink"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Notification"  code="Notification" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Notification"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Organization"  code="Organization" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Organization"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person"  code="Person" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person">
+                <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person:User"  code="User" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Person:User"/>
+            </rim:ClassificationNode>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ServiceBinding"  code="ServiceBinding" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ServiceBinding"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:SpecificationLink"  code="SpecificationLink" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:SpecificationLink"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Subscription"  code="Subscription" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Subscription"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"  code="ClassificationScheme" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Federation"  code="Federation" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Federation"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Registry"  code="Registry" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Registry"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage"  code="RegistryPackage" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service"  code="Service" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service"/>
+            <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject"  code="ExtrinsicObject" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+                <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XACML"  code="XACML" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XACML">
+                    <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XACML:Policy"  code="Policy" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XACML:Policy"/>
+                    <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XACML:PolicySet"  code="PolicySet" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XACML:PolicySet"/>
+                </rim:ClassificationNode>
+                <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XML"  code="XML" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XML"/>
+                <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XHTML"  code="XHTML" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XHTML">
+                    <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XHTML:XForm"  code="XForm" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XHTML:XForm"/>
+                </rim:ClassificationNode>
+                <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XSLT"  code="XSLT" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XSLT"/>
+                <rim:ClassificationNode lid="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XMLSchema"  code="XMLSchema" id="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XMLSchema"/>
+            </rim:ClassificationNode>
+        </rim:ClassificationNode>
+    </rim:ClassificationScheme>
+</rim:RegistryObjectList>
