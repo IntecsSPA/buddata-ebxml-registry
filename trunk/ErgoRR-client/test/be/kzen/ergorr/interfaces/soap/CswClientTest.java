@@ -26,6 +26,7 @@ import be.kzen.ergorr.model.util.OFactory;
 import java.io.File;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
+import java.net.URL;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
@@ -43,10 +44,11 @@ public class CswClientTest {
 
     public CswClientTest() throws MalformedURLException {
         JAXBUtil.getInstance();
-        client = new CswSoapClient();
+        client = new CswSoapClient(new URL("http://localhost:8080/esa1/webservice?wsdl"));
     }
-    
+
     @Test
+    @Ignore
     public void testTransaction() throws Exception {
         Unmarshaller unmarshaller = JAXBUtil.getInstance().createUnmarshaller();
 
@@ -71,9 +73,9 @@ public class CswClientTest {
         }
     }
 
-    @Test(timeout= 5000)
-    @Ignore
+    @Test(timeout = 5000)
     public void testGetRecords() throws Exception {
+        System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "true");
         GetRecordsType request = new GetRecordsType();
         request.setMaxRecords(BigInteger.valueOf(30));
 
@@ -109,10 +111,14 @@ public class CswClientTest {
         literal.getContent().add("urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct");
         propEqualType.getExpression().add(OFactory.ogc.createLiteral(literal));
 
-        GetRecordsResponseType response = client.getRecords(request);
+        try {
+            GetRecordsResponseType response = client.getRecords(request);
+        } catch (ServiceExceptionReport ex) {
+            ex.printStackTrace();
+        }
     }
 
-    @Test(timeout=5000)
+    @Test(timeout = 5000)
     @Ignore
     public void testGetRecordById() throws Exception {
         GetRecordByIdType request = new GetRecordByIdType();
@@ -120,9 +126,9 @@ public class CswClientTest {
         ElementSetNameType setName = new ElementSetNameType();
         setName.setValue(ElementSetType.FULL);
         request.setElementSetName(setName);
-        
+
         GetRecordByIdResponseType response = client.getRecordById(request);
-        
+
         System.out.println(JAXBUtil.getInstance().marshallToStr(OFactory.csw.createGetRecordByIdResponse(response)));
     }
 
