@@ -140,7 +140,7 @@
         password="${db.password}" src="${rr-persistence-dir}/src/main/config/database.sql"/>
     </target>
 
-    <target name="db-load-data">
+    <target name="db-load-model">
         <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
         <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-objecttype-scheme.xml"/>
