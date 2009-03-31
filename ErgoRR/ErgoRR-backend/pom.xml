@@ -4,7 +4,7 @@
   <groupId>be.kzen</groupId>
   <artifactId>ErgoRR-backend</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <name>ErgoRR-backend</name>
   <url>http://maven.apache.org</url>
   <dependencies>
