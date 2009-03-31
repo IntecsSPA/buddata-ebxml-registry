@@ -18,6 +18,11 @@
  */
 package be.kzen.ergorr.interfaces;
 
+import javax.servlet.http.HttpServletRespons;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 /**
  *
  * @author yamanustuntas
