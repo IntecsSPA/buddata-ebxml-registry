@@ -68,7 +68,7 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
+   <!--  <dependency>
     	<groupId>be.kzen</groupId>
     	<artifactId>ErgoRR-commons</artifactId>
     	<version>1.0-SNAPSHOT</version>
@@ -85,6 +85,6 @@
     	<artifactId>ErgoRR-persistence</artifactId>
     	<version>1.0-SNAPSHOT</version>
     	<scope>runtime</scope>
-    </dependency>
+    </dependency> -->
   </dependencies>
 </project>
