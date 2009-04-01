@@ -17,6 +17,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
         <servlet-name>ergorr</servlet-name>
         <url-pattern>/webservice/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>repo</servlet-name>
+        <servlet-class>be.kzen.ergorr.interfaces.RepositoryServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>repo</servlet-name>
+        <url-pattern>/repo</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
