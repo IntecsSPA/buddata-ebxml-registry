@@ -64,6 +64,21 @@ public class RepositoryManager {
     }
 
     /**
+     * Check if repository item exists.
+     *
+     * @param objId ID of the object.
+     * @return True if repository item exists.
+     */
+    public boolean exists(String objId) {
+        File repoFile = getRepositoryItemFile(objId);
+        return repoFile.exists();
+    }
+
+    public File getFile(String objId) {
+        return getRepositoryItemFile(objId);
+    }
+
+    /**
      * Get repository item.
      *
      * @param objId Object id whoes repository item to get.
