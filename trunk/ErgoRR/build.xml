@@ -193,6 +193,7 @@
         <pathelement location="${rr-jaxb-build-dir}"/>
         <pathelement location="${rr-persistence-build-dir}"/>
         <pathelement location="${rr-web-build-dir}"/>
+        <pathelement path="${env.CATALINA_HOME}/common/lib/servlet-api.jar"/>
         <!--extdirs location="/Users/yamanustuntas/tmp"/-->
         <fileset dir="../ErgoRR-shared">
             <include name="**/*.jar"/>
