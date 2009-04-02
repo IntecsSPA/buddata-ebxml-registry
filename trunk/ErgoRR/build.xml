@@ -96,16 +96,16 @@
         <!--copy file="${rr-web-dir}/conf/rebel.xml" todir="${rr-web-build-dir}"/-->
         <war destfile="${dist-dir}/${deployName}.war" webxml="${rr-web-dir}/src/main/webapp/WEB-INF/web.xml">
             <fileset dir="${rr-web-dir}/src/main/webapp"/>
-            <lib dir="../ErgoRR-shared/metro1_4">
+            <lib dir="ErgoRR-shared/metro1_4">
                 <exclude name="webservices-api.jar"/>
             </lib>
-            <lib dir="../ErgoRR-shared/postgis">
+            <lib dir="ErgoRR-shared/postgis">
                 <include name="postgis_1.3.3.jar"/>
             </lib>
-            <lib dir="../ErgoRR-shared/postgreSQL">
+            <lib dir="ErgoRR-shared/postgreSQL">
                 <include name="postgresql-8.3-603.jdbc3.jar"/>
             </lib>
-            <lib dir="../ErgoRR-shared/saxpath">
+            <lib dir="ErgoRR-shared/saxpath">
                 <include name="saxpath.jar"/>
             </lib>
             <lib dir="${dist-dir}">
@@ -145,7 +145,7 @@
     </target>
 
     <target name="db-create-tables">
-        <sql driver="org.postgresql.Driver" classpath="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar"
+        <sql driver="org.postgresql.Driver" classpath="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar"
         url="jdbc:postgresql://${db.url}/${deployName}"
         userid="${db.user}"
         password="${db.password}" src="${rr-persistence-dir}/src/main/config/database.sql"/>
@@ -207,9 +207,9 @@
         <pathelement location="${rr-backend-build-dir}"/>
         <pathelement path="${env.CATALINA_HOME}/common/lib/servlet-api.jar"/>
         <!--extdirs location="/Users/yamanustuntas/tmp"/-->
-        <fileset dir="../ErgoRR-shared">
+        <fileset dir="ErgoRR-shared">
             <include name="**/*.jar"/>
-            <exclude name="../ErgoRR-shared/metro1_4/api/webservice-api.jar"/>
+            <exclude name="ErgoRR-shared/metro1_4/api/webservice-api.jar"/>
         </fileset>
     </path>
 
@@ -231,8 +231,8 @@
     </target>
 
     <target name="tomcat-setup">
-        <copy file="../ErgoRR-shared/metro1_4/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
-        <copy file="../ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
+        <copy file="ErgoRR-shared/metro1_4/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
+        <copy file="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
         <echo>***********************************</echo>
         <echo>*         Restart Tomcat</echo>
         <echo>***********************************</echo>
