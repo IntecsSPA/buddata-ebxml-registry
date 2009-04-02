@@ -111,7 +111,7 @@ public class RepositoryServlet extends HttpServlet {
             return JAXBUtil.getInstance().marshallToStr(exRep);
         } catch (JAXBException ex1) {
             logger.log(Level.SEVERE, "Error marshalling exception report", ex1);
-            return "<error>oops</error>";
+            return "<error>Oops. Could not Marshall the error message XML. Error message:" + error +"</error>";
         }
     }
 }
