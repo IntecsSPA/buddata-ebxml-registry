@@ -39,7 +39,11 @@ import be.kzen.ergorr.model.csw.TransactionType;
     be.kzen.ergorr.model.ows.ObjectFactory.class,
     be.kzen.ergorr.model.csw.ObjectFactory.class,
     be.kzen.ergorr.model.ogc.ObjectFactory.class,
-    be.kzen.ergorr.model.purl.elements.ObjectFactory.class
+    be.kzen.ergorr.model.purl.elements.ObjectFactory.class,
+    be.kzen.ergorr.model.eo.hma.ObjectFactory.class,
+    be.kzen.ergorr.model.eo.atm.ObjectFactory.class,
+    be.kzen.ergorr.model.eo.opt.ObjectFactory.class,
+    be.kzen.ergorr.model.eo.sar.ObjectFactory.class
 })
 public interface CswPortType {
 

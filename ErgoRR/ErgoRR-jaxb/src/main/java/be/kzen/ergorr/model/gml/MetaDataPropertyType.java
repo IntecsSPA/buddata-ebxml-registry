@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 
@@ -37,6 +38,7 @@ import org.w3c.dom.Element;
 @XmlType(name = "MetaDataPropertyType", propOrder = {
     "any"
 })
+@XmlRootElement
 public class MetaDataPropertyType {
 
     @XmlAnyElement(lax = true)
