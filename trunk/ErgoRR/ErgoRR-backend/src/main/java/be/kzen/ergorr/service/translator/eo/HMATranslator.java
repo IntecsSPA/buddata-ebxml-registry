@@ -99,6 +99,7 @@ public class HMATranslator implements Translator {
         eProduct.getValue().setId(id);
         eProduct.getValue().setLid(id);
         eoProduct = eProduct.getValue();
+        eoProduct.setMimeType("text/xml");
 
         try {
             byte[] dataBuf = JAXBUtil.getInstance().marshallToByteArr(eo);

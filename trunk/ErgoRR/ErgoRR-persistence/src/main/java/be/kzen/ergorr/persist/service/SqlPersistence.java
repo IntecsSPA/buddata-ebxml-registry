@@ -504,7 +504,7 @@ public class SqlPersistence {
         try {
             ds = (DataSource) new InitialContext().lookup(dsName);
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Could not get database DateSource, attempting to get DbConnectionParams");
+            logger.log(Level.INFO, "Could not get database DateSource, attempting to get DbConnectionParams");
         }
 
         if (ds != null) {
@@ -514,7 +514,6 @@ public class SqlPersistence {
                 DbConnectionParams connParams = requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS, DbConnectionParams.class);
 
                 if (connParams != null) {
-                    System.out.println(connParams.toString());
                     if (logger.isLoggable(Level.FINE)) {
                         logger.fine("Connection: " + connParams.toString());
                     }

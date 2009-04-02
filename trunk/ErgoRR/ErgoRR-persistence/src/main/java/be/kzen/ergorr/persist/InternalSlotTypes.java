@@ -57,11 +57,6 @@ public class InternalSlotTypes {
     public static synchronized InternalSlotTypes getInstance() {
         if (instance == null) {
             instance = new InternalSlotTypes();
-            try {
-                instance.loadSlots();
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Could not load slots", ex);
-            }
         }
 
         return instance;

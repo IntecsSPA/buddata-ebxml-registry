@@ -143,5 +143,11 @@ public class CswServiceImpl implements CswPortType {
     protected void init() {
         logger.info("init slot types");
         slotTypes = InternalSlotTypes.getInstance();
+
+        try {
+            slotTypes.loadSlots();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Could not initialize slots", ex);
+        }
     }
 }
