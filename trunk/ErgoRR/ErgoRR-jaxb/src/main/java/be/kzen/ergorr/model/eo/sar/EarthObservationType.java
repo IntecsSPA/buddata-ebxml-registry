@@ -4,6 +4,7 @@ package be.kzen.ergorr.model.eo.sar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -26,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EarthObservationType")
+@XmlRootElement
 public class EarthObservationType
     extends be.kzen.ergorr.model.eo.hma.EarthObservationType
 {
