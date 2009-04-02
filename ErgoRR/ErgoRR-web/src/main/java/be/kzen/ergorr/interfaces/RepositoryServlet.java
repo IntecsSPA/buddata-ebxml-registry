@@ -1,6 +1,6 @@
 /*
  * Project: Buddata ebXML RegRep
- * Class: CswServiceImpl.java
+ * Class: RepositoryServlet.java
  * Copyright (C) 2008 Yaman Ustuntas
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,6 +46,23 @@ public class RepositoryServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request, response);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request, response);
+    }
+
+    /**
+     * Process request for repository items.
+     *
+     * @param request HTTP request.
+     * @param response HTTP response,
+     * @throws javax.servlet.ServletException
+     * @throws java.io.IOException
+     */
+    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/xml"); // TODO - read from ExtrinsicObject contenttype
         ServletOutputStream out = response.getOutputStream();
         String id = request.getParameter("id");
@@ -53,7 +70,7 @@ public class RepositoryServlet extends HttpServlet {
         if (id != null && !id.trim().equals("")) {
             RepositoryManager repoMngr = new RepositoryManager();
             File file = repoMngr.getFile(id);
-            
+
             if (logger.isLoggable(Level.INFO)) {
                 logger.info("Request for repo file: " + file.getAbsolutePath());
             }
@@ -74,11 +91,13 @@ public class RepositoryServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().print("Post not supported");
-    }
-
+    /**
+     * Create an XML <code>ExceptionReport</code>.
+     *
+     * @param error Error message.
+     * @param code Error code.
+     * @return Exception as XML string.
+     */
     private String createException(String error, String code) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLang(CommonProperties.getInstance().get("lang"));
