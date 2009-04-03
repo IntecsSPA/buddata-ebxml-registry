@@ -63,7 +63,7 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
                 String wrsshow = result.getString("wrsshow");
                 String wrstitle = result.getString("wrstitle");
 
-                if (wrsactuate != null || wrsarcrole != null || wrshref != null || wrsrole != null || wrsshow != null || wrstitle != null) {
+                if (isSetSimpleLink(wrsactuate, wrsarcrole, wrshref, wrsrole, wrsshow, wrstitle)) {
                     SimpleLinkType simpleLink = new SimpleLinkType();
                     simpleLink.setActuate(wrsactuate);
                     simpleLink.setArcrole(wrsarcrole);
@@ -75,6 +75,15 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
             }
         }
         return xmlObject;
+    }
+
+    protected boolean isSetSimpleLink(String wrsactuate, String wrsarcrole, String wrshref, String wrsrole, String wrsshow, String wrstitle) {
+        return (wrsactuate != null && !wrsactuate.equals("")) ||
+                (wrsarcrole != null && !wrsarcrole.equals("")) ||
+                (wrshref != null && !wrshref.equals("")) ||
+                (wrsrole != null && wrsrole.equals("")) ||
+                (wrsshow != null && wrsshow.equals("")) ||
+                (wrstitle != null && wrstitle.equals(""));
     }
 
     @Override

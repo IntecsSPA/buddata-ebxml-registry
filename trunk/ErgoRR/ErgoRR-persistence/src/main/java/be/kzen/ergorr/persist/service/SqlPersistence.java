@@ -254,6 +254,19 @@ public class SqlPersistence {
         return ids;
     }
 
+    public String getMimeType(String id) throws SQLException {
+        String mimeType = null;
+        String queryStr = "select mimetype from t_extrinsicobject where id ='" + id + "' limit 1";
+
+        ResultSet result = query(queryStr);
+
+        if (result.next()) {
+            mimeType = result.getString(1);
+        }
+
+        return mimeType;
+    }
+
     /**
      * Check if an Identifiable exists with <code>id</code>.
      *

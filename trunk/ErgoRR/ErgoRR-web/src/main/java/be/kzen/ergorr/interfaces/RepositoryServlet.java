@@ -26,6 +26,7 @@ import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.service.RepositoryManager;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -76,11 +77,31 @@ public class RepositoryServlet extends HttpServlet {
             }
 
             if (file.exists()) {
-                int b = 0;
-                FileInputStream fis = new FileInputStream(file);
+                SqlPersistence persistence = new SqlPersistence();
 
-                while ((b = fis.read()) != -1) {
-                    out.write(b);
+                try {
+                    String mimeType = persistence.getMimeType(id);
+
+                    if (mimeType != null) {
+                        response.setContentType(mimeType);
+
+                        int b = 0;
+                        FileInputStream fis = new FileInputStream(file);
+
+                        while ((b = fis.read()) != -1) {
+                            out.write(b);
+                        }
+                    } else {
+                        String err = "Could not find ExtrinsicObject with ID: " + id;
+
+                        if (logger.isLoggable(Level.INFO)) {
+                            logger.info(err);
+                        }
+                        out.print(createException(err, "NotFound"));
+                    }
+                } catch (SQLException ex) {
+                    logger.log(Level.WARNING, "Could not get mimeType for " + id, ex);
+                    out.print(createException("Could not get mimeType: " + ex.getMessage(), "Error"));
                 }
             } else {
                 out.print(createException("Repository does not exist", "NotFound"));
@@ -111,7 +132,7 @@ public class RepositoryServlet extends HttpServlet {
             return JAXBUtil.getInstance().marshallToStr(exRep);
         } catch (JAXBException ex1) {
             logger.log(Level.SEVERE, "Error marshalling exception report", ex1);
-            return "<error>Oops. Could not Marshall the error message XML. Error message:" + error +"</error>";
+            return "<error>Oops. Could not Marshall the error message XML. Error message:" + error + "</error>";
         }
     }
 }
