@@ -78,7 +78,7 @@ public class HarvestService {
                 regObjList = (RegistryObjectListType) remoteXml;
             } else {
                 TranslationFactory transFac = new TranslationFactory();
-                regObjList = transFac.translate(remoteXml);
+                regObjList = transFac.translate(remoteXmlEl);
             }
 
             // submit data

@@ -33,12 +33,15 @@ import javax.activation.FileDataSource;
  */
 public class RepositoryManager {
 
-    private static final String REPO_DIR = CommonProperties.getInstance().get("repository.root") +
-            CommonProperties.getInstance().get("deployName");
+    private static final String REPO_ROOT = CommonProperties.getInstance().get("repository.root");
     private File repoDir;
 
     public RepositoryManager() {
-        repoDir = new File(REPO_DIR);
+        this(CommonProperties.getInstance().get("deployName"));
+    }
+
+    public RepositoryManager(String deployName) {
+        repoDir = new File(REPO_ROOT, deployName);
     }
 
     /**

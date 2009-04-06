@@ -18,38 +18,66 @@
  */
 package be.kzen.ergorr.service.translator;
 
+import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.exceptions.TranslationException;
-import be.kzen.ergorr.service.translator.eo.SARTranslator;
-import be.kzen.ergorr.service.translator.eo.OPTTranslator;
-import be.kzen.ergorr.service.translator.eo.ATMTranslator;
-import be.kzen.ergorr.service.translator.eo.HMATranslator;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * Initializes and invokes translators for registered XML elements.
+ * 
  * @author Yaman Ustuntas
  */
 public class TranslationFactory {
 
     private static Logger logger = Logger.getLogger(TranslationFactory.class.getName());
+    private static Properties transProps;
 
-    public RegistryObjectListType translate(Object obj) throws TranslationException {
-        Translator translator = null;
-
-        if (obj instanceof be.kzen.ergorr.model.eo.atm.EarthObservationType) {
-            translator = new ATMTranslator((be.kzen.ergorr.model.eo.atm.EarthObservationType) obj);
-        } else if (obj instanceof be.kzen.ergorr.model.eo.opt.EarthObservationType) {
-            translator = new OPTTranslator((be.kzen.ergorr.model.eo.opt.EarthObservationType) obj);
-        } else if (obj instanceof be.kzen.ergorr.model.eo.sar.EarthObservationType) {
-            translator = new SARTranslator((be.kzen.ergorr.model.eo.sar.EarthObservationType) obj);
-        } else if (obj instanceof be.kzen.ergorr.model.eo.hma.EarthObservationType) {
-            translator = new HMATranslator((be.kzen.ergorr.model.eo.hma.EarthObservationType) obj);
-        } else {
-            logger.warning("Objects translation is not supported");
-            throw new TranslationException("Translation of this object is not supported");
+    public TranslationFactory() {
+        if (transProps == null) {
+            transProps = new Properties();
+            try {
+                transProps.load(this.getClass().getResourceAsStream("translator.properties"));
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, "Could not load translator properties", ex);
+            }
         }
+    }
 
-        return translator.translate();
+    /**
+     * Translates the <code>jaxbEl</code> to a RegistryObjectListType.
+     * First checks if the namespace of the <code>jaxbEl</code> has a
+     * registered translator and continues processing if tranlator exists.
+     * Throw an exception if translator for namespace doesn't exist or
+     * if a translation error occurs.
+     *
+     * @param jaxbEl Element to translate.
+     * @return Translated registry object list.
+     * @throws be.kzen.ergorr.exceptions.TranslationException
+     */
+    public RegistryObjectListType translate(JAXBElement jaxbEl) throws TranslationException {
+        String nsWithoutHttpPrefix = CommonFunctions.removeHttpPrefix(jaxbEl.getName().getNamespaceURI());
+
+        String className = transProps.getProperty(nsWithoutHttpPrefix);
+
+        if (className != null) {
+            try {
+                Class clazz = Class.forName(className);
+                Constructor constructor = clazz.getConstructor(jaxbEl.getValue().getClass());
+                Translator translator = (Translator) constructor.newInstance(jaxbEl.getValue());
+                return translator.translate();
+            } catch (Exception ex) {
+                String err = "Could not invoke translator for namespace: " + jaxbEl.getName().getNamespaceURI();
+                logger.log(Level.SEVERE, err, ex);
+                throw new TranslationException(err, ex);
+            }
+        } else {
+            throw new TranslationException("Could not find translator for namespace: " + jaxbEl.getName().getNamespaceURI());
+        }
     }
 }

@@ -60,15 +60,15 @@ public class TransactionService {
     private static Logger logger = Logger.getLogger(TransactionService.class.getName());
     private RequestContext requestContext;
     private InsertResultType insertResult;
-    private int inserts;
-    private int updates;
-    private int deletes;
+    private int insertsCount;
+    private int updatesCount;
+    private int deletesCount;
 
     public TransactionService() {
         insertResult = new InsertResultType();
-        inserts = 0;
-        updates = 0;
-        deletes = 0;
+        insertsCount = 0;
+        updatesCount = 0;
+        deletesCount = 0;
     }
 
     public TransactionService(RequestContext requestContext) {
@@ -83,15 +83,15 @@ public class TransactionService {
      * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
      */
     public TransactionResponseType process() throws ServiceExceptionReport {
-        List<Object> iuds = ((TransactionType) requestContext.getRequest()).getInsertOrUpdateOrDelete();
+        List<Object> actions = ((TransactionType) requestContext.getRequest()).getInsertOrUpdateOrDelete();
 
-        for (Object iud : iuds) {
-            if (iud instanceof InsertType) {
-                doInsert((InsertType) iud);
-            } else if (iud instanceof UpdateType) {
-                doUpdate((UpdateType) iud);
-            } else if (iud instanceof DeleteType) {
-                doDelete((DeleteType) iud);
+        for (Object action : actions) {
+            if (action instanceof InsertType) {
+                doInsert((InsertType) action);
+            } else if (action instanceof UpdateType) {
+                doUpdate((UpdateType) action);
+            } else if (action instanceof DeleteType) {
+                doDelete((DeleteType) action);
             } else {
                 logger.severe("Transaction request not an Insert, Update or Delete");
             }
@@ -112,14 +112,14 @@ public class TransactionService {
         if (!insertResult.getBriefRecord().isEmpty()) {
             response.getInsertResult().add(insertResult);
         }
-        if (inserts > 0) {
-            summary.setTotalInserted(BigInteger.valueOf(inserts));
+        if (insertsCount > 0) {
+            summary.setTotalInserted(BigInteger.valueOf(insertsCount));
         }
-        if (updates > 0) {
-            summary.setTotalUpdated(BigInteger.valueOf(updates));
+        if (updatesCount > 0) {
+            summary.setTotalUpdated(BigInteger.valueOf(updatesCount));
         }
-        if (deletes > 0) {
-            summary.setTotalDeleted(BigInteger.valueOf(deletes));
+        if (deletesCount > 0) {
+            summary.setTotalDeleted(BigInteger.valueOf(deletesCount));
         }
 
         response.setTransactionSummary(summary);
@@ -139,7 +139,13 @@ public class TransactionService {
 
         try {
             for (Object o : insert.getAny()) {
-                Object obj = ((JAXBElement) o).getValue();
+
+                if (!(o instanceof JAXBElement)) {
+                    throw new ServiceExceptionReport("Content not recognized as a JAXBElement :" + o.getClass().getName());
+                }
+
+                JAXBElement jaxbEl = (JAXBElement) o;
+                Object obj = jaxbEl.getValue();
 
                 if (logger.isLoggable(Level.FINE)) {
                     logger.fine("Translation root object: " + obj.getClass().toString());
@@ -150,7 +156,7 @@ public class TransactionService {
                     RegistryObjectListType reqList = (RegistryObjectListType) obj;
                     regObjList.getIdentifiable().addAll(reqList.getIdentifiable());
                 } else {
-                    regObjList.getIdentifiable().addAll(transFac.translate(obj).getIdentifiable());
+                    regObjList.getIdentifiable().addAll(transFac.translate(jaxbEl).getIdentifiable());
                 }
             }
 
@@ -160,7 +166,7 @@ public class TransactionService {
             LCManager lcm = new LCManager(requestContext);
             lcm.submit(regObjList);
 
-            inserts += regObjList.getIdentifiable().size();
+            insertsCount += regObjList.getIdentifiable().size();
             appendBriefRecords(regObjList);
         } catch (TranslationException ex) {
             logger.log(Level.SEVERE, "Transaction error", ex);
@@ -202,8 +208,8 @@ public class TransactionService {
                 }
             }
 
-            inserts += insertCount;
-            updates += updateCount;
+            insertsCount += insertCount;
+            updatesCount += updateCount;
         } else {
             throw new ServiceExceptionReport("No rim:RegistryObject or rim:RegistryObjectList specified for updating");
         }
@@ -243,7 +249,7 @@ public class TransactionService {
         LCManager lcm = new LCManager(requestContext);
         lcm.delete(regObjList);
 
-        deletes = regObjList.getIdentifiable().size();
+        deletesCount = regObjList.getIdentifiable().size();
     }
 
     private void appendBriefRecord(IdentifiableType ident) {
