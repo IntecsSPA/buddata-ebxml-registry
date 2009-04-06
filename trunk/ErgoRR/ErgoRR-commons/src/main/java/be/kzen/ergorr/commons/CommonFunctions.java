@@ -72,4 +72,12 @@ public class CommonFunctions {
     public static boolean stringHasData(String value) {
         return (value != null && value.trim().length() > 0);
     }
+
+    public static String removeHttpPrefix(String url) {
+        if (url.startsWith("http://")) {
+            return url.substring(7);
+        } else {
+            return url;
+        }
+    }
 }
