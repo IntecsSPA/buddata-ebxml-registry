@@ -98,6 +98,7 @@ public class CswBackendClient implements CswClient {
     public HarvestResponseType harvest(HarvestType body) throws ServiceExceptionReport {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        requestContext.putParam(InternalConstants.DEPLOY_NAME, dbConnParams.getDbName());
         requestContext.setRequest(body);
         return new HarvestService(requestContext).process();
     }
@@ -108,6 +109,7 @@ public class CswBackendClient implements CswClient {
     public TransactionResponseType transact(TransactionType transactionReq) throws ServiceExceptionReport {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        requestContext.putParam(InternalConstants.DEPLOY_NAME, dbConnParams.getDbName());
         requestContext.setRequest(transactionReq);
 
         return new TransactionService(requestContext).process();
