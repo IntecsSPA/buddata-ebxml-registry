@@ -20,6 +20,7 @@ package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.IDGenerator;
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
@@ -186,7 +187,14 @@ public class LCManager {
         List<IdentifiableType> eoList = identMap.get(WrsExtrinsicObjectType.class.getName());
 
         if (eoList != null) {
-            RepositoryManager repoManager = new RepositoryManager();
+            RepositoryManager repoManager = null;
+            String deployName = (String) requestContext.getParam(InternalConstants.DEPLOY_NAME);
+
+            if (deployName == null) {
+                repoManager = new RepositoryManager();
+            } else {
+                repoManager = new RepositoryManager(deployName);
+            }
 
             for (IdentifiableType ident : eoList) {
                 WrsExtrinsicObjectType eo = (WrsExtrinsicObjectType) ident;
