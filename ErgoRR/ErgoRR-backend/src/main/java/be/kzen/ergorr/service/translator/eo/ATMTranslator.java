@@ -103,12 +103,12 @@ public class ATMTranslator extends HMATranslator implements Translator {
                             }
 
                             if (layer.isSetHighestLocation()) {
-                                SlotType slotHighLoc = RIMUtil.createWrsSlot(EOPConstants.S_HIGHEST_LOCATION, EOPConstants.T_DOUBLE, layer.getHighestLocation().getValue());
+                                SlotType slotHighLoc = RIMUtil.createWrsSlot(EOPConstants.S_HIGHEST_LOCATION, EOPConstants.T_DOUBLE, String.valueOf(layer.getHighestLocation().getValue()));
                                 e.getSlot().add(slotHighLoc);
                             }
 
                             if (layer.isSetLowestLocation()) {
-                                SlotType slotLowLoc = RIMUtil.createWrsSlot(EOPConstants.S_LOWEST_LOCATION, EOPConstants.T_DOUBLE, layer.getLowestLocation().getValue());
+                                SlotType slotLowLoc = RIMUtil.createWrsSlot(EOPConstants.S_LOWEST_LOCATION, EOPConstants.T_DOUBLE, String.valueOf(layer.getLowestLocation().getValue()));
                                 e.getSlot().add(slotLowLoc);
                             }
 

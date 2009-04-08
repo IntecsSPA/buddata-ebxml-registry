@@ -81,7 +81,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link EarthObservationType }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://earth.esa.int/sar", name = "EarthObservation", substitutionHeadNamespace = "http://earth.esa.int/hma", substitutionHeadName = "EarthObservation")
+    @XmlElementDecl(namespace = "http://earth.esa.int/sar", name = "EarthObservation", substitutionHeadNamespace = "http://earth.esa.int/eop", substitutionHeadName = "EarthObservation")
     public JAXBElement<EarthObservationType> createEarthObservation(EarthObservationType value) {
         return new JAXBElement<EarthObservationType>(_EarthObservation_QNAME, EarthObservationType.class, null, value);
     }
@@ -117,7 +117,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link AcquisitionType }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://earth.esa.int/sar", name = "Acquisition", substitutionHeadNamespace = "http://earth.esa.int/hma", substitutionHeadName = "Acquisition")
+    @XmlElementDecl(namespace = "http://earth.esa.int/sar", name = "Acquisition", substitutionHeadNamespace = "http://earth.esa.int/eop", substitutionHeadName = "Acquisition")
     public JAXBElement<AcquisitionType> createAcquisition(AcquisitionType value) {
         return new JAXBElement<AcquisitionType>(_Acquisition_QNAME, AcquisitionType.class, null, value);
     }

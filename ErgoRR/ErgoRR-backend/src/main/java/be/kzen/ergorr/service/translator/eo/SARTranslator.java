@@ -19,7 +19,7 @@
 package be.kzen.ergorr.service.translator.eo;
 
 import be.kzen.ergorr.service.translator.*;
-import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationEquipmentType;
 import be.kzen.ergorr.model.eo.sar.AcquisitionType;
 import be.kzen.ergorr.model.eo.sar.EarthObservationType;
 import be.kzen.ergorr.model.rim.SlotType;
@@ -74,22 +74,22 @@ public class SARTranslator extends HMATranslator implements Translator {
                     }
                     
                     if (acq.isSetMinimumIncidenceAngle()) {
-                        SlotType slotMinIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MINIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, acq.getMinimumIncidenceAngle().getValue());
+                        SlotType slotMinIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MINIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getMinimumIncidenceAngle().getValue()));
                         e.getSlot().add(slotMinIncAngle);
                     }
                     
                     if (acq.isSetMaximumIncidenceAngle()) {
-                        SlotType slotMaxIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MAXIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, acq.getMaximumIncidenceAngle().getValue());
+                        SlotType slotMaxIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MAXIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getMaximumIncidenceAngle().getValue()));
                         e.getSlot().add(slotMaxIncAngle);
                     }
                     
                     if (acq.isSetDopplerFrequency()) {
-                        SlotType slotDopperFreq = RIMUtil.createWrsSlot(EOPConstants.S_DOPPER_FREQUENCY, EOPConstants.T_DOUBLE, acq.getDopplerFrequency().getValue());
+                        SlotType slotDopperFreq = RIMUtil.createWrsSlot(EOPConstants.S_DOPPER_FREQUENCY, EOPConstants.T_DOUBLE, String.valueOf(acq.getDopplerFrequency().getValue()));
                         e.getSlot().add(slotDopperFreq);
                     }
                     
                     if (acq.isSetIncidenceAngleVariation()) {
-                        SlotType slotIncAngleVar = RIMUtil.createWrsSlot(EOPConstants.S_INCIDENCE_ANGLE_VARIATION, EOPConstants.T_DOUBLE, acq.getIncidenceAngleVariation().getValue());
+                        SlotType slotIncAngleVar = RIMUtil.createWrsSlot(EOPConstants.S_INCIDENCE_ANGLE_VARIATION, EOPConstants.T_DOUBLE, String.valueOf(acq.getIncidenceAngleVariation().getValue()));
                         e.getSlot().add(slotIncAngleVar);
                     }
                 }

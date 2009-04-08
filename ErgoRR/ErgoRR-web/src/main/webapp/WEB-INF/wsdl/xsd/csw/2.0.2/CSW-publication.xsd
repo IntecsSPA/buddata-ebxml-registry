@@ -5,9 +5,9 @@
    xmlns:ogc="http://www.opengis.net/ogc"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
    version="2.0.2">
-   <xsd:import namespace="http://earth.esa.int/hma" schemaLocation="../../eo/hma.xsd"/>
+   <xsd:import namespace="http://earth.esa.int/eop" schemaLocation="../../eo/eop.xsd"/>
    <xsd:import namespace="http://earth.esa.int/atm" schemaLocation="../../eo/atm.xsd"/>
-   <xsd:import namespace="http://earth.esa.int/ohr" schemaLocation="../../eo/ohr.xsd"/>
+   <xsd:import namespace="http://earth.esa.int/opt" schemaLocation="../../eo/opt.xsd"/>
    <xsd:import namespace="http://earth.esa.int/sar" schemaLocation="../../eo/sar.xsd"/>
    <xsd:annotation>
       <xsd:appinfo>

@@ -84,7 +84,9 @@ public class EOPConstants {
     public static final String S_PROCESSOR_NAME = "urn:ogc:def:ebRIM-Slot:OGC-06-131:processorName";
     public static final String S_PROCESSOR_VERSION = "urn:ogc:def:ebRIM-Slot:OGC-06-131:processorVersion";
     public static final String S_PROCESSING_LEVEL = "urn:ogc:def:ebRIM-Slot:OGC-06-131:processingLevel";
-    public static final String S_NATIVE_PRODUCT_FORMAT = "urn:ogc:def:ebRIM-Slot:OGC-06-131:nativeProductFormat";    
+    public static final String S_NATIVE_PRODUCT_FORMAT = "urn:ogc:def:ebRIM-Slot:OGC-06-131:nativeProductFormat";
+    public static final String S_WRS_LATITUDE_GRID = "urn:ogc:def:ebRIM-Slot:OGC-06-131:wrsLatitudeGrid";
+    public static final String S_WRS_LONGITUDE_GRID = "urn:ogc:def:ebRIM-Slot:OGC-06-131:wrsLongitudeGrid";
     // Acquisition platform slots
     public static final String S_SERIAL_IDENTIFIER = "urn:ogc:def:ebRIM-Slot:OGC-06-131:platformSerialIdentifier";
     public static final String S_ORBIT_TYPE = "urn:ogc:def:ebRIM-Slot:OGC-06-131:platformOrbitType";

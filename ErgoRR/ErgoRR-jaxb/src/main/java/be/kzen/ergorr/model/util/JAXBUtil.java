@@ -29,7 +29,7 @@ public class JAXBUtil {
     private JAXBUtil() {
         try {
             String pkgs = "be.kzen.ergorr.model.csw:" +
-                    "be.kzen.ergorr.model.eo.hma:" +
+                    "be.kzen.ergorr.model.eo.eop:" +
                     "be.kzen.ergorr.model.eo.atm:" +
                     "be.kzen.ergorr.model.eo.opt:" +
                     "be.kzen.ergorr.model.eo.sar:" +

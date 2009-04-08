@@ -16,7 +16,7 @@ import be.kzen.ergorr.model.gml.MeasureType;
  * <pre>
  * &lt;complexType name="AcquisitionType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://earth.esa.int/hma}AcquisitionType">
+ *     &lt;extension base="{http://earth.esa.int/eop}AcquisitionType">
  *       &lt;sequence>
  *         &lt;element ref="{http://earth.esa.int/sar}polarisationMode" minOccurs="0"/>
  *         &lt;element ref="{http://earth.esa.int/sar}polarisationChannels" minOccurs="0"/>
@@ -44,7 +44,7 @@ import be.kzen.ergorr.model.gml.MeasureType;
     "dopplerFrequency"
 })
 public class AcquisitionType
-    extends be.kzen.ergorr.model.eo.hma.AcquisitionType
+    extends be.kzen.ergorr.model.eo.eop.AcquisitionType
 {
 
     protected PolarisationModePropertyType polarisationMode;

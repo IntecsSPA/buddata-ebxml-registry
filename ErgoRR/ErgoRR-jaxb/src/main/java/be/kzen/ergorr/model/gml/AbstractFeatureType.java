@@ -5,11 +5,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationResultType;
-import be.kzen.ergorr.model.eo.hma.FootprintType;
-import be.kzen.ergorr.model.eo.hma.MaskFeatureType;
-import be.kzen.ergorr.model.eo.hma.MaskType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationEquipmentType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationResultType;
+import be.kzen.ergorr.model.eo.eop.FootprintType;
+import be.kzen.ergorr.model.eo.eop.MaskFeatureType;
+import be.kzen.ergorr.model.eo.eop.MaskType;
 
 
 /**

@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationMetaDataType;
 
 
 /**

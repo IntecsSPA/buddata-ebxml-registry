@@ -26,7 +26,9 @@ import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.ValueListType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.AnyValueType;
+import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
@@ -74,14 +76,9 @@ public class RIMUtil {
      * @return Slot with one value.
      */
     public static SlotType createSlot(String slotName, String slotType, String value) {
-        SlotType slot = new SlotType();
-        slot.setName(slotName);
-        slot.setSlotType(slotType);
-
-        ValueListType valList = new ValueListType();
-        valList.getValue().add(value);
-        slot.setValueList(OFactory.rim.createValueList(valList));
-        return slot;
+        List<String> values = new ArrayList<String>();
+        values.add(value);
+        return createSlot(slotName, slotType, values);
     }
 
     /**
@@ -114,14 +111,14 @@ public class RIMUtil {
      * @param values Values of slot.
      * @return Slot with one value.
      */
-    public static SlotType createDateSlots(String slotName, String slotType, List<XMLGregorianCalendar> values) {
+    public static SlotType createDateSlots(String slotName, String slotType, List<String> values) {
         SlotType slot = new SlotType();
         slot.setName(slotName);
         slot.setSlotType(slotType);
 
         be.kzen.ergorr.model.wrs.WrsValueListType valList = new be.kzen.ergorr.model.wrs.WrsValueListType();
 
-        for (XMLGregorianCalendar value : values) {
+        for (String value : values) {
             AnyValueType anyVal = new AnyValueType();
             anyVal.getContent().add(value);
             valList.getAnyValue().add(anyVal);
@@ -129,8 +126,16 @@ public class RIMUtil {
         slot.setValueList(OFactory.wrs.createValueList(valList));
         return slot;
     }
+
+    public static SlotType createWrsSlot(String slotName, String slotType, String value) {
+        return createWrsSlotObj(slotName, slotType, value);
+    }
+
+    public static SlotType createGeomWrsSlot(String slotName, String slotType, JAXBElement jaxbEl) {
+        return createWrsSlotObj(slotName, slotType, jaxbEl);
+    }
     
-    public static SlotType createWrsSlot(String slotName, String slotType, Object o) {
+    private static SlotType createWrsSlotObj(String slotName, String slotType, Object o) {
         SlotType slot = new SlotType();
         slot.setName(slotName);
         slot.setSlotType(slotType);
