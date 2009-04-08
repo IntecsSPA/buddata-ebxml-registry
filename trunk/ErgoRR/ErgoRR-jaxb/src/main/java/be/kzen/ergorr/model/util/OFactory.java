@@ -7,7 +7,7 @@ package be.kzen.ergorr.model.util;
 public class OFactory {
     public static be.kzen.ergorr.model.csw.ObjectFactory csw = new be.kzen.ergorr.model.csw.ObjectFactory();
     public static be.kzen.ergorr.model.eo.atm.ObjectFactory eo_atm = new be.kzen.ergorr.model.eo.atm.ObjectFactory();
-    public static be.kzen.ergorr.model.eo.hma.ObjectFactory eo_hma = new be.kzen.ergorr.model.eo.hma.ObjectFactory();
+    public static be.kzen.ergorr.model.eo.eop.ObjectFactory eo_eop = new be.kzen.ergorr.model.eo.eop.ObjectFactory();
     public static be.kzen.ergorr.model.eo.opt.ObjectFactory eo_opt = new be.kzen.ergorr.model.eo.opt.ObjectFactory();
     public static be.kzen.ergorr.model.eo.sar.ObjectFactory eo_sar = new be.kzen.ergorr.model.eo.sar.ObjectFactory();
     public static be.kzen.ergorr.model.gml.ObjectFactory gml = new be.kzen.ergorr.model.gml.ObjectFactory();

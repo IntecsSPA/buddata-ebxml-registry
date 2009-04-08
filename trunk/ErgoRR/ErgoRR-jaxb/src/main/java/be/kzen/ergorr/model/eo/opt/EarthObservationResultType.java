@@ -15,7 +15,7 @@ import be.kzen.ergorr.model.gml.MeasureType;
  * <pre>
  * &lt;complexType name="EarthObservationResultType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://earth.esa.int/hma}EarthObservationResultType">
+ *     &lt;extension base="{http://earth.esa.int/eop}EarthObservationResultType">
  *       &lt;sequence>
  *         &lt;element name="cloudCoverPercentage" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
  *         &lt;element name="cloudCoverPercentageAssessmentConfidence" type="{http://www.opengis.net/gml}MeasureType" minOccurs="0"/>
@@ -55,7 +55,7 @@ import be.kzen.ergorr.model.gml.MeasureType;
     "snowCoverPercentageQuotationMode"
 })
 public class EarthObservationResultType
-    extends be.kzen.ergorr.model.eo.hma.EarthObservationResultType
+    extends be.kzen.ergorr.model.eo.eop.EarthObservationResultType
 {
 
     protected MeasureType cloudCoverPercentage;

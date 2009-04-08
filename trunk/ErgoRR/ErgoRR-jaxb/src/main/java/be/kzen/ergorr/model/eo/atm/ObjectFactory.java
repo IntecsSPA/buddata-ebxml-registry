@@ -37,6 +37,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link EarthObservationResultType }
+     * 
+     */
+    public EarthObservationResultType createEarthObservationResultType() {
+        return new EarthObservationResultType();
+    }
+
+    /**
      * Create an instance of {@link DataLayerPropertyType }
      * 
      */
@@ -61,18 +69,10 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EarthObservationResultType }
-     * 
-     */
-    public EarthObservationResultType createEarthObservationResultType() {
-        return new EarthObservationResultType();
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link EarthObservationType }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "EarthObservation", substitutionHeadNamespace = "http://earth.esa.int/hma", substitutionHeadName = "EarthObservation")
+    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "EarthObservation", substitutionHeadNamespace = "http://earth.esa.int/eop", substitutionHeadName = "EarthObservation")
     public JAXBElement<EarthObservationType> createEarthObservation(EarthObservationType value) {
         return new JAXBElement<EarthObservationType>(_EarthObservation_QNAME, EarthObservationType.class, null, value);
     }
@@ -90,7 +90,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link EarthObservationResultType }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "EarthObservationResult", substitutionHeadNamespace = "http://earth.esa.int/hma", substitutionHeadName = "EarthObservationResult")
+    @XmlElementDecl(namespace = "http://earth.esa.int/atm", name = "EarthObservationResult", substitutionHeadNamespace = "http://earth.esa.int/eop", substitutionHeadName = "EarthObservationResult")
     public JAXBElement<EarthObservationResultType> createEarthObservationResult(EarthObservationResultType value) {
         return new JAXBElement<EarthObservationResultType>(_EarthObservationResult_QNAME, EarthObservationResultType.class, null, value);
     }

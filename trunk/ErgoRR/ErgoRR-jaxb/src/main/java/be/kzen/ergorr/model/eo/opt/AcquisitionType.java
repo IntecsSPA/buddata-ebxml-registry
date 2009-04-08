@@ -15,7 +15,7 @@ import be.kzen.ergorr.model.gml.AngleType;
  * <pre>
  * &lt;complexType name="AcquisitionType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://earth.esa.int/hma}AcquisitionType">
+ *     &lt;extension base="{http://earth.esa.int/eop}AcquisitionType">
  *       &lt;sequence>
  *         &lt;element name="illuminationAzimuthAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
  *         &lt;element name="illuminationElevationAngle" type="{http://www.opengis.net/gml}AngleType" minOccurs="0"/>
@@ -33,7 +33,7 @@ import be.kzen.ergorr.model.gml.AngleType;
     "illuminationElevationAngle"
 })
 public class AcquisitionType
-    extends be.kzen.ergorr.model.eo.hma.AcquisitionType
+    extends be.kzen.ergorr.model.eo.eop.AcquisitionType
 {
 
     protected AngleType illuminationAzimuthAngle;

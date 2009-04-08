@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationType;
 
 
 /**

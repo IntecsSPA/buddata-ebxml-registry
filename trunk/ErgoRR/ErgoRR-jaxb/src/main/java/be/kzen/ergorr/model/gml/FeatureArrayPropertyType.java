@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
-import be.kzen.ergorr.model.eo.hma.FootprintType;
-import be.kzen.ergorr.model.eo.hma.MaskFeatureType;
-import be.kzen.ergorr.model.eo.hma.MaskType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationEquipmentType;
+import be.kzen.ergorr.model.eo.eop.FootprintType;
+import be.kzen.ergorr.model.eo.eop.MaskFeatureType;
+import be.kzen.ergorr.model.eo.eop.MaskType;
 
 
 /**
@@ -63,7 +63,7 @@ public class FeatureArrayPropertyType {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationResultType }{@code >}
      * {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
      * {@link JAXBElement }{@code <}{@link MaskType }{@code >}
      * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
@@ -74,7 +74,7 @@ public class FeatureArrayPropertyType {
      * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
      * {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
      * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
-     * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationType }{@code >}
      * {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      * 
      * 

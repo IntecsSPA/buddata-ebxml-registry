@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
-import be.kzen.ergorr.model.eo.hma.FootprintType;
-import be.kzen.ergorr.model.eo.hma.MaskFeatureType;
-import be.kzen.ergorr.model.eo.hma.MaskType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationEquipmentType;
+import be.kzen.ergorr.model.eo.eop.FootprintType;
+import be.kzen.ergorr.model.eo.eop.MaskFeatureType;
+import be.kzen.ergorr.model.eo.eop.MaskType;
 
 
 /**
@@ -81,7 +81,7 @@ public class TargetPropertyType {
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
      *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
@@ -92,7 +92,7 @@ public class TargetPropertyType {
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */
@@ -106,7 +106,7 @@ public class TargetPropertyType {
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
      *     {@link JAXBElement }{@code <}{@link MaskType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationResultType }{@code >}
@@ -117,7 +117,7 @@ public class TargetPropertyType {
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.opt.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link EarthObservationEquipmentType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */

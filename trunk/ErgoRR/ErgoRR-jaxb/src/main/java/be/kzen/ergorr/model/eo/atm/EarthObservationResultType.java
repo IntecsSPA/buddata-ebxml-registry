@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="EarthObservationResultType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://earth.esa.int/hma}EarthObservationResultType">
+ *     &lt;extension base="{http://earth.esa.int/eop}EarthObservationResultType">
  *       &lt;sequence>
  *         &lt;element ref="{http://earth.esa.int/atm}dataLayers" minOccurs="0"/>
  *       &lt;/sequence>
@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
     "dataLayers"
 })
 public class EarthObservationResultType
-    extends be.kzen.ergorr.model.eo.hma.EarthObservationResultType
+    extends be.kzen.ergorr.model.eo.eop.EarthObservationResultType
 {
 
     protected DataLayerPropertyType dataLayers;

@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationEquipmentType;
-import be.kzen.ergorr.model.eo.hma.EarthObservationMetaDataType;
-import be.kzen.ergorr.model.eo.hma.FootprintType;
-import be.kzen.ergorr.model.eo.hma.HistogramType;
-import be.kzen.ergorr.model.eo.hma.MaskFeatureType;
-import be.kzen.ergorr.model.eo.hma.MaskType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationEquipmentType;
+import be.kzen.ergorr.model.eo.eop.EarthObservationMetaDataType;
+import be.kzen.ergorr.model.eo.eop.FootprintType;
+import be.kzen.ergorr.model.eo.eop.HistogramType;
+import be.kzen.ergorr.model.eo.eop.MaskFeatureType;
+import be.kzen.ergorr.model.eo.eop.MaskType;
 
 
 /**
@@ -106,7 +106,7 @@ public class AssociationType {
      *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractMetaDataType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link EarthObservationMetaDataType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
      *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
@@ -120,7 +120,7 @@ public class AssociationType {
      *     {@link JAXBElement }{@code <}{@link AbstractTimeObjectType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */
@@ -153,7 +153,7 @@ public class AssociationType {
      *     {@link JAXBElement }{@code <}{@link MultiSurfaceType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractMetaDataType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractFeatureType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationResultType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link EarthObservationMetaDataType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractTimeGeometricPrimitiveType }{@code >}
      *     {@link JAXBElement }{@code <}{@link FootprintType }{@code >}
@@ -167,7 +167,7 @@ public class AssociationType {
      *     {@link JAXBElement }{@code <}{@link AbstractTimeObjectType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.atm.EarthObservationResultType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractRingType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.hma.EarthObservationType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.eop.EarthObservationType }{@code >}
      *     {@link JAXBElement }{@code <}{@link be.kzen.ergorr.model.eo.sar.EarthObservationType }{@code >}
      *     
      */

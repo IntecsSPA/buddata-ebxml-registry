@@ -3,8 +3,8 @@ package be.kzen.ergorr.model.eo.atm;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * <pre>
  * &lt;complexType name="EarthObservationType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://earth.esa.int/hma}EarthObservationType">
+ *     &lt;extension base="{http://earth.esa.int/eop}EarthObservationType">
  *       &lt;sequence>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlType(name = "EarthObservationType")
 @XmlRootElement
 public class EarthObservationType
-    extends be.kzen.ergorr.model.eo.hma.EarthObservationType
+    extends be.kzen.ergorr.model.eo.eop.EarthObservationType
 {
 
 
