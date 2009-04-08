@@ -7,7 +7,7 @@ Make sure that you have following variables set:
 
 CATALINA_HOME : Root directory of tomcat
 
-ERGO_HOME : Root directory of ERGO project. (Where all the modules are)
+ERGO_HOME : Root directory of ERGO project. (Where the ErgoRR folder is in)
 
 ==Installation==
 
@@ -15,14 +15,14 @@ ERGO_HOME : Root directory of ERGO project. (Where all the modules are)
 
 *2. Checkout the source from google code and put it all under one directory.*
 
-The netbeans projects are:
-
+The maven projects are:
+  * ErgoRR-backend < Contains all the backend logic used by ErgoRR-web and ErgoRR-backend-client
   * ErgoRR-client < client API through SOAP interface
   * ErgoRR-backend-client < client API connecting directly to backend
   * ErgoRR-commons < common classes
   * ErgoRR-jaxb < JAXB bindings
   * ErgoRR-persistence < persistence layer
-  * ErgoRR-web-war < web application
+  * ErgoRR-web < web application
   * There is another folder: "ErgoRR-shared" which contains shared libraries.
 
 
@@ -48,7 +48,7 @@ psql -d template_postgis -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sq
 
 == Deploy ==
 
-*Configure ErgoRR-commons/conf/common.properties.*
+*Configure ErgoRR-commons/src/main/resources/be/kzen/ergorr/commons/common.properties.*
 
 You can deploy difference instance of Ergo just by changing the 'deployName' property and then running the deployment ant tasks.
 
@@ -74,7 +74,7 @@ ant db-build
 ant deploy
 }}}
 {{{
-ant db-load-data
+ant db-load-model
 }}}
 
 
