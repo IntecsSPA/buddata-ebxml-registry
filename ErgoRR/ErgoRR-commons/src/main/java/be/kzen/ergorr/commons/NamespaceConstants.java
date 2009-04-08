@@ -26,4 +26,10 @@ public class NamespaceConstants {
     public static final String SCHEMA = "http://www.w3c.org/2001/XMLSchema";
     public static final String RIM = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
     public static final String CSW = "http://www.opengis.net/cat/csw/2.0.2";
+    public static final String WRS = "http://www.opengis.net/cat/wrs/1.0";
+    public static final String GML = "http://www.opengis.net/gml";
+    public static final String EOP = "http://earth.esa.int/eop";
+    public static final String SAR = "http://earth.esa.int/sar";
+    public static final String OPT = "http://earth.esa.int/opt";
+    public static final String ATM = "http://earth.esa.int/atm";
 }
