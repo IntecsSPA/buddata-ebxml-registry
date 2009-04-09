@@ -81,9 +81,9 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
         return (wrsactuate != null && !wrsactuate.equals("")) ||
                 (wrsarcrole != null && !wrsarcrole.equals("")) ||
                 (wrshref != null && !wrshref.equals("")) ||
-                (wrsrole != null && wrsrole.equals("")) ||
-                (wrsshow != null && wrsshow.equals("")) ||
-                (wrstitle != null && wrstitle.equals(""));
+                (wrsrole != null && !wrsrole.equals("")) ||
+                (wrsshow != null && !wrsshow.equals("")) ||
+                (wrstitle != null && !wrstitle.equals(""));
     }
 
     @Override
