@@ -1,0 +1,8 @@
+*1. SVN submit for project members*
+
+This can be done in two ways:
+  * Provide a diff patch to be evaluated and approved.
+  * Provide the list of changes in an email to be evaluate and approved. (might be asked for a diff patch depending on the complexity of the changes).
+
+
+More to come ..
