@@ -5,6 +5,7 @@
 
 package be.kzen.ergorr.interfaces.soap;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
 import be.kzen.ergorr.model.csw.DescribeRecordResponseType;
 import be.kzen.ergorr.model.csw.DescribeRecordType;
@@ -49,10 +50,10 @@ public class CswBackendClientTest extends TestCase {
 
     public void testHarvest() throws Exception {
         DbConnectionParams dbConn = new DbConnectionParams();
-        dbConn.setDbName("esa1");
-        dbConn.setDbPassword("test");
-        dbConn.setDbUrl("localhost:5432");
-        dbConn.setDbUser("postgres");
+        dbConn.setDbName(CommonProperties.getInstance().get("deployName"));
+        dbConn.setDbPassword(CommonProperties.getInstance().get("db.password"));
+        dbConn.setDbUrl(CommonProperties.getInstance().get("db.url"));
+        dbConn.setDbUser(CommonProperties.getInstance().get("db.user"));
         CswBackendClient client = new CswBackendClient(dbConn);
 
         HarvestType req = new HarvestType();
