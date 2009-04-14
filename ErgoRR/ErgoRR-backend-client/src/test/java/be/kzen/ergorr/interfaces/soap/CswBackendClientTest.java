@@ -24,18 +24,15 @@ import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.persist.service.DbConnectionParams;
 import be.kzen.ergorr.model.util.OFactory;
 import javax.xml.bind.JAXBElement;
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author yamanustuntas
  */
-public class CswBackendClientTest extends TestCase {
+public class CswBackendClientTest {
     
-    public CswBackendClientTest(String testName) {
-        super(testName);
-    }
-
     public void testGetCapabilities() throws Exception {
     }
 
@@ -48,6 +45,7 @@ public class CswBackendClientTest extends TestCase {
     public void testGetDomain() throws Exception {
     }
 
+    @Test
     public void testHarvest() throws Exception {
         DbConnectionParams dbConn = new DbConnectionParams();
         dbConn.setDbName(CommonProperties.getInstance().get("deployName"));
