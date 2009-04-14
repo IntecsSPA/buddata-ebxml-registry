@@ -42,7 +42,8 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.query.QueryManager;
-import be.kzen.ergorr.service.translator.TranslationFactory;
+import be.kzen.ergorr.service.translator.TranslatorFactory;
+import be.kzen.ergorr.service.translator.Translator;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +135,6 @@ public class TransactionService {
      */
     private void doInsert(InsertType insert) throws ServiceExceptionReport {
         logger.fine("Transtaction.doInsert");
-        TranslationFactory transFac = new TranslationFactory();
         RegistryObjectListType regObjList = new RegistryObjectListType();
 
         try {
@@ -156,7 +156,8 @@ public class TransactionService {
                     RegistryObjectListType reqList = (RegistryObjectListType) obj;
                     regObjList.getIdentifiable().addAll(reqList.getIdentifiable());
                 } else {
-                    regObjList.getIdentifiable().addAll(transFac.translate(jaxbEl).getIdentifiable());
+                    Translator translator = TranslatorFactory.getInstance(jaxbEl);
+                    regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
                 }
             }
 

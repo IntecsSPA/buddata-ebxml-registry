@@ -29,55 +29,59 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
- * Initializes and invokes translators for registered XML elements.
+ * Translator factory for XML elements.
+ * Looks up namespace to translator implementation binding from translator.properties file.
  * 
  * @author Yaman Ustuntas
  */
-public class TranslationFactory {
+public class TranslatorFactory {
 
-    private static Logger logger = Logger.getLogger(TranslationFactory.class.getName());
+    private static Logger logger = Logger.getLogger(TranslatorFactory.class.getName());
     private static Properties transProps;
 
-    public TranslationFactory() {
-        if (transProps == null) {
-            transProps = new Properties();
-            try {
-                transProps.load(this.getClass().getResourceAsStream("translator.properties"));
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, "Could not load translator properties", ex);
-            }
+
+    static {
+        transProps = new Properties();
+        try {
+            transProps.load(TranslatorFactory.class.getResourceAsStream("translator.properties"));
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "Could not load translator properties", ex);
         }
     }
 
     /**
-     * Translates the <code>jaxbEl</code> to a RegistryObjectListType.
-     * First checks if the namespace of the <code>jaxbEl</code> has a
-     * registered translator and continues processing if tranlator exists.
-     * Throw an exception if translator for namespace doesn't exist or
-     * if a translation error occurs.
+     * Get a translator for <code>jaxbEl</code>.
+     * Looks at the namespace of <code>jaxbEl</code> to find the
+     * appropriate translator.
      *
-     * @param jaxbEl Element to translate.
-     * @return Translated registry object list.
+     * @param jaxbEl XML element to translate.
+     * @return Translator for element.
      * @throws be.kzen.ergorr.exceptions.TranslationException
      */
-    public RegistryObjectListType translate(JAXBElement jaxbEl) throws TranslationException {
+    public static Translator getInstance(JAXBElement jaxbEl) throws TranslationException {
         String nsWithoutHttpPrefix = CommonFunctions.removeHttpPrefix(jaxbEl.getName().getNamespaceURI());
 
         String className = transProps.getProperty(nsWithoutHttpPrefix);
 
         if (className != null) {
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.info("Found translator class: " + className + " for ns: " + jaxbEl.getName().getNamespaceURI());
+            }
+
             try {
                 Class clazz = Class.forName(className);
                 Constructor constructor = clazz.getConstructor(jaxbEl.getValue().getClass());
-                Translator translator = (Translator) constructor.newInstance(jaxbEl.getValue());
-                return translator.translate();
+                return (Translator) constructor.newInstance(jaxbEl.getValue());
             } catch (Exception ex) {
                 String err = "Could not invoke translator for namespace: " + jaxbEl.getName().getNamespaceURI();
                 logger.log(Level.SEVERE, err, ex);
                 throw new TranslationException(err, ex);
             }
         } else {
-            throw new TranslationException("Could not find translator for namespace: " + jaxbEl.getName().getNamespaceURI());
+            String err = "Could not find translator for namespace: " + jaxbEl.getName().getNamespaceURI();
+            logger.log(Level.SEVERE, err);
+            throw new TranslationException(err);
         }
     }
 }
