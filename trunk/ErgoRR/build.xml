@@ -116,6 +116,9 @@
     </target>
 
     <target name="build-backend" depends="compile-backend">
+        <copy todir="${rr-backend-build-dir}">
+            <fileset dir="${rr-backend-dir}/src/main/resources"/>
+        </copy>
         <jar destfile="${dist-dir}/ErgoRR-backend.jar" basedir="${rr-backend-build-dir}">
             <manifest>
                 <attribute name="Built-By" value="the_computer"/>

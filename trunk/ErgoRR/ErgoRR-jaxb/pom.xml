@@ -1,13 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>be.kzen</groupId>
-	<artifactId>ErgoRR-jaxb</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
 	<name>ErgoRR-jaxb</name>
-	<url>http://maven.apache.org</url>
 	<description>This package contains jax bindings of xml types.</description>
+	<url>http://code.google.com/p/buddata-ebxml-registry</url>
+
+	<groupId>be.kzen.ergorr</groupId>
+	<artifactId>ErgoRR-jaxb</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+
+    <parent>
+        <groupId>be.kzen</groupId>
+        <artifactId>ErgoRR</artifactId>
+        <version>1.0</version>
+    </parent>
 
 	<licenses>
 		<license>
@@ -18,42 +25,13 @@
 		</license>
 	</licenses>
 
-	<developers>
-		<developer>
-			<id>fanciulli</id>
-			<name>Massimiliano Fanciulli</name>
-			<email>massimiliano.fanciulli@intecs.it</email>
-			<organization>Intecs Informatica e Tecnologia del Software</organization>
-			<organizationUrl>http://www.intecs.it</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-			<properties>
-			</properties>
-		</developer>
-		<developer>
-			<id>ustuntas</id>
-			<name>Yaman Ustuntas</name>
-			<email>cryptosense@gmail.com</email>
-			<organization>Cryptosense</organization>
-			<organizationUrl>http://</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-			<properties>
-			</properties>
-		</developer>
-	</developers>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.3.1</version>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>webservices-rt</artifactId>
@@ -64,7 +42,6 @@
 			<artifactId>webservices-tools</artifactId>
 			<version>1.4</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -81,26 +58,4 @@
 
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>maven-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven 1</name>
-			<url>http://download.java.net/maven/1/</url>
-			<layout>legacy</layout>
-		</repository>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven 2</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-			<layout>default</layout>
-		</pluginRepository>
-	</pluginRepositories>
 </project>

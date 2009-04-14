@@ -1,12 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>be.kzen</groupId>
-	<artifactId>ErgoRR-backend</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
 	<name>ErgoRR-backend</name>
-	<url>http://maven.apache.org</url>
+    <description>Backend logic.</description>
+	<url>http://code.google.com/p/buddata-ebxml-registry</url>
+
+	<groupId>be.kzen.ergorr</groupId>
+	<artifactId>ErgoRR-backend</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+
+    <parent>
+        <groupId>be.kzen</groupId>
+        <artifactId>ErgoRR</artifactId>
+        <version>1.0</version>
+    </parent>
 
 	<licenses>
 		<license>
@@ -17,55 +25,11 @@
 		</license>
 	</licenses>
 
-	<developers>
-		<developer>
-			<id>fanciulli</id>
-			<name>Massimiliano Fanciulli</name>
-			<email>massimiliano.fanciulli@intecs.it</email>
-			<organization>Intecs Informatica e Tecnologia del Software</organization>
-			<organizationUrl>http://www.intecs.it</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-			<properties>
-			</properties>
-		</developer>
-		<developer>
-			<id>ustuntas</id>
-			<name>Yaman Ustuntas</name>
-			<email>cryptosense@gmail.com</email>
-			<organization>Cryptosense</organization>
-			<organizationUrl>http://</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-			<properties>
-			</properties>
-		</developer>
-	</developers>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-		</plugins>
-	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.3.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -99,4 +63,18 @@
 			<version>2.5</version>
 		</dependency>
 	</dependencies>
+
+    <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
