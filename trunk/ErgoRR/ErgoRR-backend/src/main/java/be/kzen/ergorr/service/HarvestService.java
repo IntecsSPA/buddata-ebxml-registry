@@ -35,7 +35,8 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
-import be.kzen.ergorr.service.translator.TranslationFactory;
+import be.kzen.ergorr.service.translator.TranslatorFactory;
+import be.kzen.ergorr.service.translator.Translator;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,8 +78,8 @@ public class HarvestService {
             } else if (remoteXml instanceof RegistryObjectListType) {
                 regObjList = (RegistryObjectListType) remoteXml;
             } else {
-                TranslationFactory transFac = new TranslationFactory();
-                regObjList = transFac.translate(remoteXmlEl);
+                Translator translator = TranslatorFactory.getInstance(remoteXmlEl);
+                regObjList = translator.translate();
             }
 
             // submit data

@@ -28,11 +28,11 @@ public class TranslationFactoryTest {
     public void testTranslate() throws Exception {
         URL sarUrl = this.getClass().getResource("sar-full1.xml");
         JAXBElement jaxbEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(sarUrl);
-        TranslationFactory instance = new TranslationFactory();
-        RegistryObjectListType regObjList = instance.translate(jaxbEl);
+        Translator instance = TranslatorFactory.getInstance(jaxbEl);
+        RegistryObjectListType regObjList = instance.translate();
 
         JAXBElement<RegistryObjectListType> regObjsEl = OFactory.rim.createRegistryObjectList(regObjList);
-        System.out.println(JAXBUtil.getInstance().marshallToStr(regObjsEl));
+//        System.out.println(JAXBUtil.getInstance().marshallToStr(regObjsEl));
         
         Node regObjsNode = JAXBUtil.getInstance().marshall(regObjsEl);
         
