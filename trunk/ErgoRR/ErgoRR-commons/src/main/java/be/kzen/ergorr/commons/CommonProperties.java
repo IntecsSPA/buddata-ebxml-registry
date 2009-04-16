@@ -18,6 +18,8 @@
  */
 package be.kzen.ergorr.commons;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -56,9 +58,23 @@ public class CommonProperties {
     private void loadProperties() {
         try {
             props = new Properties();
-            props.load(this.getClass().getResourceAsStream("common.properties"));
+
+            String sysPropPath = System.getProperty("ergorr.common.properties");
+
+            if (sysPropPath == null) {
+                props.load(this.getClass().getResourceAsStream("common.properties"));
+            } else {
+                File propFile = new File(sysPropPath);
+
+                if (propFile.exists()) {
+                    props.load(new FileInputStream(propFile));
+                } else {
+                    logger.log(Level.WARNING, "System property 'ergorr.common.properties' is set but file could not be found: " + sysPropPath);
+                    props.load(this.getClass().getResourceAsStream("common.properties"));
+                }
+            }
         } catch (IOException ex) {
-            logger.log(Level.WARNING, "Could not load common.properties");
+            logger.log(Level.WARNING, "Could not load common.properties", ex);
         }
     }
 
