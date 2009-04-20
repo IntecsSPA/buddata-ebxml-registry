@@ -55,7 +55,7 @@ public class CommonProperties {
     /**
      * Load the common properties
      */
-    private void loadProperties() {
+    public void loadProperties() {
         try {
             props = new Properties();
 
