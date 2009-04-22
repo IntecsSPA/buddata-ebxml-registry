@@ -5,7 +5,10 @@
  xmlns:ows="http://www.opengis.net/ows/1.1"
  xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:gml="http://www.opengis.net/gml"
  version="1.0.0">
+ <!-- xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 /Users/yamanustuntas/workspace/projects/ERGO/buddata-ebxml-registry/ErgoRR/ErgoRR-web/src/main/webapp/WEB-INF/wsdl/xsd/wrs/1.0.0/wrs.xsd"-->
     <ows:ServiceIdentification>
         <ows:Title>EarthObservation ebRIM Catalogue</ows:Title>
         <ows:Abstract>
@@ -56,11 +59,13 @@
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="sections">
-                <ows:Value>ServiceIdentification</ows:Value>
-                <ows:Value>ServiceProvider</ows:Value>
-                <ows:Value>OperationsMetadata</ows:Value>
-                <ows:Value>Filter_Capabilities</ows:Value>
-                <ows:Value>ServiceProperties</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>ServiceIdentification</ows:Value>
+                    <ows:Value>ServiceProvider</ows:Value>
+                    <ows:Value>OperationsMetadata</ows:Value>
+                    <ows:Value>Filter_Capabilities</ows:Value>
+                    <ows:Value>ServiceProperties</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
         </ows:Operation>
         <ows:Operation name="GetRecords">
@@ -71,33 +76,51 @@
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="resultType">
-                <ows:Value>hits</ows:Value>
-                <ows:Value>results</ows:Value>
-                <ows:Value>validate</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>hits</ows:Value>
+                    <ows:Value>results</ows:Value>
+                    <ows:Value>validate</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="outputFormat">
-                <ows:Value>application/xml</ows:Value>
-                <ows:Value>text/xml</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>application/xml</ows:Value>
+                    <ows:Value>text/xml</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="outputSchema">
-                <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
-                <ows:Value>http://www.opengis.net/cat/csw</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
+                    <ows:Value>http://www.opengis.net/cat/csw</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="startPosition">
+                <ows:AllowedValues>
+                    <ows:Range>
+                        <ows:MinimumValue>1</ows:MinimumValue>
+                    </ows:Range>
+                </ows:AllowedValues>
                 <ows:DefaultValue>1</ows:DefaultValue>
             </ows:Parameter>
             <ows:Parameter name="maxRecords">
-                <ows:DefaultValue>10</ows:DefaultValue>
+                <ows:AllowedValues>
+                    <ows:Range>
+                        <ows:MinimumValue>1</ows:MinimumValue>
+                        <ows:MaximumValue>20</ows:MaximumValue>
+                    </ows:Range>
+                </ows:AllowedValues>
+                <ows:DefaultValue>20</ows:DefaultValue>
             </ows:Parameter>
             <ows:Parameter name="TypeNames">
-                <ows:Value>rim:ExtrinsicObject</ows:Value>
-                <ows:Value>rim:Association</ows:Value>
-                <ows:Value>rim:Classification</ows:Value>
-                <ows:Value>rim:ClassificationNode</ows:Value>
-                <ows:Value>rim:ClassificationScheme</ows:Value>
-                <ows:Value>rim:AdhocQuery</ows:Value>
-                <ows:Value>rim:ExternalIdentifier</ows:Value>
-                <ows:Value>rim:RegistryPackage</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>rim:ExtrinsicObject</ows:Value>
+                    <ows:Value>rim:Association</ows:Value>
+                    <ows:Value>rim:Classification</ows:Value>
+                    <ows:Value>rim:ClassificationNode</ows:Value>
+                    <ows:Value>rim:ClassificationScheme</ows:Value>
+                    <ows:Value>rim:AdhocQuery</ows:Value>
+                    <ows:Value>rim:ExternalIdentifier</ows:Value>
+                    <ows:Value>rim:RegistryPackage</ows:Value>
                 <!--ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOAcquisitionPlatform</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProductInformation</ows:Value>
@@ -105,17 +128,22 @@
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOBrowseInformation</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOArchivingInformation</ows:Value>
                 <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer</ows:Value-->
+                </ows:AllowedValues>
             </ows:Parameter>
-            <ows:Parameter name="ElementName"/>
+            <!--ows:Parameter name="ElementName"/-->
             <ows:Parameter name="ElementSetName">
-                <ows:Value>brief</ows:Value>
-                <ows:Value>summary</ows:Value>
-                <ows:Value>full</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>brief</ows:Value>
+                    <ows:Value>summary</ows:Value>
+                    <ows:Value>full</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="CONSTRAINTLANGUAGE">
-                <ows:Value>FILTER</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>FILTER</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
-            <ows:Parameter name="constraint"/>
+            <!--ows:Parameter name="constraint"/-->
             <!--ows:Parameter name="SortBy"/-->
         </ows:Operation>
         <ows:Operation name="GetRecordById">
@@ -126,20 +154,28 @@
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="Id">
-                <ows:Value/>
+                <ows:AllowedValues>
+                    <ows:Value/>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="outputFormat">
-                <ows:Value>application/xml</ows:Value>
-                <ows:Value>text/xml</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>application/xml</ows:Value>
+                    <ows:Value>text/xml</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="outputSchema">
-                <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
-                <ows:Value>http://www.opengis.net/cat/csw</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
+                    <ows:Value>http://www.opengis.net/cat/csw</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
             <ows:Parameter name="ElementSetName">
-                <ows:Value>brief</ows:Value>
-                <ows:Value>summary</ows:Value>
-                <ows:Value>full</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>brief</ows:Value>
+                    <ows:Value>summary</ows:Value>
+                    <ows:Value>full</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
         </ows:Operation>
         <!--ows:Operation name="DescribeRecord">
@@ -189,24 +225,30 @@
                     <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
-            <ows:Parameter name="source"/>
+            <!--ows:Parameter name="source"/-->
             <ows:Parameter name="resourceType">
-                <ows:Value>eop:EarthObservation</ows:Value>
-                <ows:Value>sar:EarthObservation</ows:Value>
-                <ows:Value>atm:EarthObservation</ows:Value>
-                <ows:Value>opt:EarthObservation</ows:Value>
+                <ows:AllowedValues>
+                    <ows:Value>eop:EarthObservation</ows:Value>
+                    <ows:Value>sar:EarthObservation</ows:Value>
+                    <ows:Value>atm:EarthObservation</ows:Value>
+                    <ows:Value>opt:EarthObservation</ows:Value>
+                </ows:AllowedValues>
             </ows:Parameter>
         </ows:Operation>
         <ows:Parameter name="service">
-            <ows:Value>urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM</ows:Value>
+            <ows:AllowedValues>
+                <ows:Value>urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM</ows:Value>
+            </ows:AllowedValues>
         </ows:Parameter>
         <ows:Parameter name="version">
-            <ows:Value>1.0.0</ows:Value>
-            <ows:Value>2.0.0</ows:Value>
-            <ows:Value>2.0.1</ows:Value>
+            <ows:AllowedValues>
+                <ows:Value>1.0.0</ows:Value>
+                <ows:Value>2.0.0</ows:Value>
+                <ows:Value>2.0.1</ows:Value>
+            </ows:AllowedValues>
         </ows:Parameter>
     </ows:OperationsMetadata>
-    <ogc:Filter_Capabilities xmlns:gml="http://www.opengis.net/gml/3.2">
+    <ogc:Filter_Capabilities>
         <ogc:Spatial_Capabilities>
             <ogc:GeometryOperands>
                 <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
@@ -218,7 +260,7 @@
                 <ogc:SpatialOperator name="BBOX"/>
                 <ogc:SpatialOperator name="Equals"/>
                 <ogc:SpatialOperator name="Disjoint"/>
-                <ogc:SpatialOperator name="Intersect"/>
+                <ogc:SpatialOperator name="Intersects"/>
                 <ogc:SpatialOperator name="Touches"/>
                 <ogc:SpatialOperator name="Crosses"/>
                 <ogc:SpatialOperator name="Within"/>
@@ -244,8 +286,11 @@
                 <ogc:SimpleArithmetic />
             </ogc:ArithmeticOperators>
         </ogc:Scalar_Capabilities>
+        <ogc:Id_Capabilities>
+            <ogc:EID/>
+        </ogc:Id_Capabilities>
     </ogc:Filter_Capabilities>
-    <wrs:ServiceProperties>
+    <!--wrs:ServiceProperties>
         <wrs:property name="http://www.opengis.net/cat/wrs/properties/extension-packages">
             <wrs:value>urn:ogc:specification:csw-ebrim:ext-pkg:Basic</wrs:value>
             <wrs:value>urn:x-ogc:specification:csw-ebrim:package:EOProducts</wrs:value>
@@ -271,6 +316,6 @@
     <wrs:WSDL-services xlink:type="simple"
   xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"
   xlink:title="Available service endpoints WSDL"
-  xlink:role="http://www.w3.org/2005/08/wsdl" />
+  xlink:role="http://www.w3.org/2005/08/wsdl" /-->
 </wrs:Capabilities>
 
