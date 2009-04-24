@@ -49,6 +49,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
 /**
+ * Handles the Harvest requests.
  *
  * @author Yaman Ustuntas
  */
@@ -58,11 +59,23 @@ public class HarvestService {
     private RequestContext requestContext;
     private HarvestType request;
 
+    /**
+     * Constructor.
+     *
+     * @param requestContext Request context.
+     */
     public HarvestService(RequestContext requestContext) {
         this.requestContext = requestContext;
         this.request = (HarvestType) requestContext.getRequest();
     }
 
+    /**
+     * Fetches the data from the remote URL provided in the request
+     * and inserts it into the registry.
+     *
+     * @return Harvest response.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     public HarvestResponseType process() throws ServiceExceptionReport {
 
         try {
@@ -89,17 +102,17 @@ public class HarvestService {
             // create response
             response.setTransactionResponse(buildResponse(regObjList));
 
-            AcknowledgementType ack = new AcknowledgementType();
-            EchoedRequestType echo = new EchoedRequestType();
-            echo.setAny(remoteXmlEl);
-            ack.setEchoedRequest(echo);
-            
-            try {
-                ack.setTimeStamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
-            } catch (DatatypeConfigurationException ex) {
-                logger.log(Level.SEVERE, "Could not convert to XML date", ex);
-            }
-            response.setAcknowledgement(ack);
+//            AcknowledgementType ack = new AcknowledgementType();
+//            EchoedRequestType echo = new EchoedRequestType();
+//            echo.setAny(remoteXmlEl);
+//            ack.setEchoedRequest(echo);
+//
+//            try {
+//                ack.setTimeStamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
+//            } catch (DatatypeConfigurationException ex) {
+//                logger.log(Level.SEVERE, "Could not convert to XML date", ex);
+//            }
+//            response.setAcknowledgement(ack);
             
             return response;
 
@@ -118,6 +131,12 @@ public class HarvestService {
         }
     }
 
+    /**
+     * Builds a transaction response from the inserted objects.
+     *
+     * @param regObjList Inserted registry object list.
+     * @return Transaction response.
+     */
     private TransactionResponseType buildResponse(RegistryObjectListType regObjList) {
         TransactionResponseType response = new TransactionResponseType();
         InsertResultType insertResult = new InsertResultType();
