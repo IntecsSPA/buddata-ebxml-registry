@@ -1,7 +1,7 @@
 #labels installation
 ==Requirements==
 
-  * JDK 1.5+  -  Tomcat 5.5.x  -  Postgres 8.2+  -  Postgis 1.3+
+  * JDK 1.5+  -  Tomcat 5.5.x  -  Postgres 8.3+  -  Postgis 1.3+
 
 Make sure that you have following variables set:
 
