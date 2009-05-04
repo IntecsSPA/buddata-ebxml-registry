@@ -2,7 +2,7 @@
 <!-- edited with XMLSpy v2007 sp1 (http://www.altova.com) by jrom (C.N.E.S.) -->
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by jrom (CNES) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:eop="http://earth.esa.int/eop" xmlns:opt="http://earth.esa.int/opt" targetNamespace="http://earth.esa.int/opt" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
-	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gmlSubset.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml/3.1.1/gmlSubset.xsd"/>
 	<xs:import namespace="http://earth.esa.int/eop" schemaLocation="./eop.xsd"/>
 	<!-- ===================================================================== -->
 	<!--   Optical EarthObservation :  -->

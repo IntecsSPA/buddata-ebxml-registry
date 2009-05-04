@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Created with Liquid XML Studio 1.0.8.0 (http://www.liquid-technologies.com) -->
 <xs:schema xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:eop="http://earth.esa.int/eop" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://earth.esa.int/eop" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2.1">
-	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gmlSubset.xsd"/>
-	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../xlink/1.0.0/xlinks.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml/3.1.1/gmlSubset.xsd"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../xlink/1.0.0/xlinks.xsd"/>
 	<xs:element name="EarthObservation" type="eop:EarthObservationType" substitutionGroup="gml:Observation">
 		<xs:annotation>
 			<xs:documentation>eop root element for generic Earth Observation Product description</xs:documentation>

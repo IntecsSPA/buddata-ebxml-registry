@@ -41,17 +41,20 @@ import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.jws.WebService;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 import org.w3c.dom.Document;
 
 /**
@@ -70,9 +73,14 @@ public class CswServiceImpl implements CswPortType {
     @Resource
     private WebServiceContext wsContext;
 
+    /**
+     * {@inheritDoc}
+     */
     public CapabilitiesType cswGetCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
+        long time = System.currentTimeMillis();
         try {
             JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("Capabilities.xml"));
+            logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {
             logger.log(Level.SEVERE, "Could not load Capabilities document", ex);
@@ -80,49 +88,74 @@ public class CswServiceImpl implements CswPortType {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public GetRecordsResponseType cswGetRecords(GetRecordsType getRecordsReq) throws ServiceExceptionReport {
+        long time = System.currentTimeMillis();
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(getRecordsReq);
 
         QueryManager qm = new QueryManager(requestContext);
+
+        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
         return qm.query();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public GetRecordByIdResponseType cswGetRecordById(GetRecordByIdType getRecordByIdReq) throws ServiceExceptionReport {
-
+        long time = System.currentTimeMillis();
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(getRecordByIdReq);
 
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
         List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
         response.getAny().addAll(idents);
-
+        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public GetDomainResponseType cswGetDomain(GetDomainType getDomainReq) throws ServiceExceptionReport {
         throw new ServiceExceptionReport("Not supported");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public HarvestResponseType cswHarvest(HarvestType body) throws ServiceExceptionReport {
+        long time = System.currentTimeMillis();
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(body);
+        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
         return new HarvestService(requestContext).process();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public TransactionResponseType cswTransaction(TransactionType transactionReq) throws ServiceExceptionReport {
+        long time = System.currentTimeMillis();
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(transactionReq);
-
+        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
         return new TransactionService(requestContext).process();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public DescribeRecordResponseType cswDescribeRecord(DescribeRecordType describeRecordReq) throws ServiceExceptionReport {
+        long time = System.currentTimeMillis();
         DescribeRecordResponseType response = new DescribeRecordResponseType();
         SchemaComponentType schemaComp = new SchemaComponentType();
         schemaComp.setTargetNamespace(NamespaceConstants.RIM);
         schemaComp.setSchemaLanguage(NamespaceConstants.SCHEMA);
-        
+
         try {
             DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = docBuilder.parse(this.getClass().getResourceAsStream("rim.xsd"));
@@ -133,6 +166,7 @@ public class CswServiceImpl implements CswPortType {
         }
 
         response.getSchemaComponent().add(schemaComp);
+        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
         return response;
     }
 
