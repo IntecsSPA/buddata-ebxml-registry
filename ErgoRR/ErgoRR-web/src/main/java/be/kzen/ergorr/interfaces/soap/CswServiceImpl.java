@@ -64,7 +64,7 @@ import org.w3c.dom.Document;
 //@SchemaValidation
 @WebService(serviceName = "webservice", portName = "CswPort",
 targetNamespace = "http://www.kzen.be/ergorr/interfaces/soap",
-endpointInterface = "be.kzen.ergorr.interfaces.soap.CswPortType")
+endpointInterface = "be.kzen.ergorr.interfaces.soap.csw.CswPortType")
 public class CswServiceImpl implements CswPortType {
 
     private static Logger logger = Logger.getLogger(CswServiceImpl.class.getName());
