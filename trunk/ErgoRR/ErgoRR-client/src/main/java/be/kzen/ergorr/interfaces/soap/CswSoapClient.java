@@ -18,6 +18,8 @@ import be.kzen.ergorr.model.csw.TransactionType;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.namespace.QName;
+import be.kzen.ergorr.interfaces.soap.csw.CswClient;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 
 /**
  * Client for the ebRIM CSW client Web Service interface.

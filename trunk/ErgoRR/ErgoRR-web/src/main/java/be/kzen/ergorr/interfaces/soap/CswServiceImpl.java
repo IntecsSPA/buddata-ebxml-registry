@@ -20,6 +20,8 @@ package be.kzen.ergorr.interfaces.soap;
 
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.commons.NamespaceConstants;
+import be.kzen.ergorr.interfaces.soap.csw.CswPortType;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
 import be.kzen.ergorr.model.csw.DescribeRecordResponseType;
 import be.kzen.ergorr.model.csw.DescribeRecordType;
@@ -41,20 +43,17 @@ import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.jws.WebService;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
 import org.w3c.dom.Document;
 
 /**

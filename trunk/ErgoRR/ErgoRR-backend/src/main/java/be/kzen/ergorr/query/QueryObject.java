@@ -19,7 +19,7 @@
 package be.kzen.ergorr.query;
 
 import be.kzen.ergorr.exceptions.QueryException;
-import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.persist.dao.GenericObjectDAO;
 import be.kzen.ergorr.persist.dao.IdentifiableTypeDAO;

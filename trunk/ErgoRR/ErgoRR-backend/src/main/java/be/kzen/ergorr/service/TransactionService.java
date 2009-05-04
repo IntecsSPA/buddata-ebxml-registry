@@ -22,7 +22,7 @@ import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.DeleteType;
 import be.kzen.ergorr.model.csw.ElementSetNameType;
@@ -87,7 +87,7 @@ public class TransactionService {
      * Start processing the transaction request.
      *
      * @return Transaction response.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public TransactionResponseType process() throws ServiceExceptionReport {
         List<Object> actions = ((TransactionType) requestContext.getRequest()).getInsertOrUpdateOrDelete();
@@ -137,7 +137,7 @@ public class TransactionService {
      * Handles the Insert transaction.
      *
      * @param insert Insert data.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     private void doInsert(InsertType insert) throws ServiceExceptionReport {
         logger.fine("Transtaction.doInsert");
@@ -185,7 +185,7 @@ public class TransactionService {
      * Handles the Update transaction.
      *
      * @param update Update data.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     private void doUpdate(UpdateType update) throws ServiceExceptionReport {
 
@@ -232,7 +232,7 @@ public class TransactionService {
      * Handles the Delete transactions.
      * 
      * @param delete Delete request.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     private void doDelete(DeleteType delete) throws ServiceExceptionReport {
         GetRecordsType getRecords = new GetRecordsType();

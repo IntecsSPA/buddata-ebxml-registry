@@ -1,5 +1,5 @@
 
-package be.kzen.ergorr.interfaces.soap;
+package be.kzen.ergorr.interfaces.soap.csw;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

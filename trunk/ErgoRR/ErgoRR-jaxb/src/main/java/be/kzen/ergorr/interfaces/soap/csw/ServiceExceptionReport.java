@@ -1,5 +1,5 @@
 
-package be.kzen.ergorr.interfaces.soap;
+package be.kzen.ergorr.interfaces.soap.csw;
 
 import javax.xml.ws.WebFault;
 import be.kzen.ergorr.model.ows.ExceptionReport;

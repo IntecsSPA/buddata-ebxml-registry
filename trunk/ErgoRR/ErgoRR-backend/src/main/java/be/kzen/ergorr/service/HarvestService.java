@@ -20,7 +20,7 @@ package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.AcknowledgementType;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.EchoedRequestType;
@@ -74,7 +74,7 @@ public class HarvestService {
      * and inserts it into the registry.
      *
      * @return Harvest response.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public HarvestResponseType process() throws ServiceExceptionReport {
 
