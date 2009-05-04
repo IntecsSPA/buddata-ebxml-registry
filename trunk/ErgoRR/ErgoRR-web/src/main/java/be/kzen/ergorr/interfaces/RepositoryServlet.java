@@ -38,6 +38,7 @@ import javax.servlet.ServletOutputStream;
 import javax.xml.bind.JAXBException;
 
 /**
+ * CSW GetRepositoryItem HTTP interface.
  *
  * @author yamanustuntas
  */
