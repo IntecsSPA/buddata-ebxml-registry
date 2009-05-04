@@ -233,6 +233,54 @@
         <mkdir dir="${rr-backend-client-build-dir}"/>
     </target>
 
+    <target name="installer-package" depends="all-build">
+        <property name="installer-dir" value="tmp-ergo/installer/"/>
+        <mkdir dir="${installer-dir}"/>
+
+        <copy todir="${installer-dir}">
+            <fileset dir="${rr-web-dir}/src/main/webapp"/>
+        </copy>
+
+        <copy todir="${installer-dir}/WEB-INF/classes">
+            <fileset dir="${rr-web-build-dir}"/>
+            <fileset dir="${rr-commons-build-dir}"/>
+            <fileset dir="${rr-jaxb-build-dir}"/>
+            <fileset dir="${rr-persistence-build-dir}"/>
+            <fileset dir="${rr-backend-build-dir}"/>
+        </copy>
+
+        <copy todir="${installer-dir}/WEB-INF/lib">
+            <fileset file="ErgoRR-shared/postgis/postgis_1.3.3.jar"/>
+            <fileset file="ErgoRR-shared/saxpath/saxpath.jar"/>
+            <fileset dir="ErgoRR-shared/metro1_4">
+                <exclude name="webservices-api.jar"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${installer-dir}/etc/tomcat-commons"/>
+        <mkdir dir="${installer-dir}/etc/tomcat-endorsed"/>
+        <mkdir dir="${installer-dir}/etc/database"/>
+
+        <copy todir="${installer-dir}/etc/tomcat-commons">
+            <fileset file="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar"/>
+        </copy>
+
+        <copy todir="${installer-dir}/etc/database">
+            <fileset file="ErgoRR-persistence/src/main/config/database.sql"/>
+            <fileset file="ErgoRR-persistence/src/main/config/init-data.sql"/>
+            <fileset file="${rr-web-dir}/src/main/config/template-datasource.xml"/>
+        </copy>
+
+        <copy todir="${installer-dir}/etc/tomcat-endorsed">
+            <fileset file="ErgoRR-shared/metro1_4/webservices-api.jar"/>
+        </copy>
+
+        <zip destfile="${dist-dir}/web.zip" basedir="${installer-dir}"/>
+        <!--jar destfile="ErgoRRInstaller.jar" update="true">
+            <fileset file="${dist-dir}/web.zip"/>
+        </jar-->
+    </target>
+
     <target name="tomcat-setup">
         <copy file="ErgoRR-shared/metro1_4/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
         <copy file="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
