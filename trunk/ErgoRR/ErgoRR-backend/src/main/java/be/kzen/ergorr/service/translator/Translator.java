@@ -24,6 +24,18 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
  *
  * @author Yaman Ustuntas
  */
-public interface Translator {
+public interface Translator<T> {
+    /**
+     * Set the object to be translated.
+     *
+     * @param obj Object to translate.
+     */
+    public void setObject(T obj);
+
+    /**
+     * Perform the translation.
+     *
+     * @return Translted registry object list.
+     */
     public RegistryObjectListType translate();
 }

@@ -25,6 +25,8 @@ import be.kzen.ergorr.persist.dao.GenericObjectDAO;
 import be.kzen.ergorr.persist.dao.IdentifiableTypeDAO;
 
 /**
+ * Helper class used by <code>SqlQuery</code> and
+ * <code>QueryBuilder</code> to store information of a queried object.
  *
  * @author Yaman Ustuntas
  */

@@ -50,10 +50,21 @@ public class QueryManager {
 
     private RequestContext requestContext;
 
+    /**
+     * Constructor
+     *
+     * @param requestContext Request context.
+     */
     public QueryManager(RequestContext requestContext) {
         this.requestContext = requestContext;
     }
 
+    /**
+     * Processes the query.
+     *
+     * @return Query response.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     public GetRecordsResponseType query() throws ServiceExceptionReport {
         GetRecordsResponseType response = new GetRecordsResponseType();
 
@@ -107,6 +118,13 @@ public class QueryManager {
         return response;
     }
 
+    /**
+     * Process  GetRecordsById filter
+     * .
+     * @param getRecordsByIdReq Query request.
+     * @return Indetifiables with the matched IDs.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     public List<JAXBElement<? extends IdentifiableType>> getByIds(GetRecordByIdType getRecordsByIdReq) throws ServiceExceptionReport {
         List<String> ids = getRecordsByIdReq.getId();
         ElementSetType elementSet = null;

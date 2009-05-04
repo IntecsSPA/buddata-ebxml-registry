@@ -53,6 +53,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 /**
+ * Manages transaction insert/update/delete actions.
  *
  * @author Yaman Ustuntas
  */
@@ -72,6 +73,11 @@ public class TransactionService {
         deletesCount = 0;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param requestContext Request context.
+     */
     public TransactionService(RequestContext requestContext) {
         this();
         this.requestContext = requestContext;
@@ -175,6 +181,12 @@ public class TransactionService {
         }
     }
 
+    /**
+     * Handles the Update transaction.
+     *
+     * @param update Update data.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     private void doUpdate(UpdateType update) throws ServiceExceptionReport {
 
         if (update.isSetAny() && update.getAny() instanceof JAXBElement) {
@@ -216,6 +228,12 @@ public class TransactionService {
         }
     }
 
+    /**
+     * Handles the Delete transactions.
+     * 
+     * @param delete Delete request.
+     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     */
     private void doDelete(DeleteType delete) throws ServiceExceptionReport {
         GetRecordsType getRecords = new GetRecordsType();
         QueryType query = new QueryType();
@@ -253,6 +271,12 @@ public class TransactionService {
         deletesCount = regObjList.getIdentifiable().size();
     }
 
+    /**
+     * Create an <code>BriefRecordType</code> from the <code> and
+     * and appends it to the response.
+     *
+     * @param ident Identifiable to append.
+     */
     private void appendBriefRecord(IdentifiableType ident) {
         BriefRecordType briefRecord = new BriefRecordType();
 
@@ -269,6 +293,12 @@ public class TransactionService {
 
     }
 
+    /**
+     * Append a list of registry objects as
+     * <code>BriefRecordType</code> to the response.
+     *
+     * @param regObjList Objects to append.
+     */
     private void appendBriefRecords(RegistryObjectListType regObjList) {
         for (JAXBElement<? extends IdentifiableType> identEl : regObjList.getIdentifiable()) {
             appendBriefRecord(identEl.getValue());

@@ -29,7 +29,9 @@ import java.util.logging.Logger;
 import javax.xml.xpath.XPathException;
 
 /**
- *
+ * Constructs and stores pieces of the SQL query
+ * which are put together in the end to form the query.
+ * 
  * @author yamanustuntas
  */
 public class SqlQuery {

@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 /**
+ * Builds stored queries from AdhocQueries.
  *
  * @author Yaman Ustuntas
  */
@@ -22,10 +23,24 @@ public class StoredQueryBuilder {
     private static Logger logger = Logger.getLogger(StoredQueryBuilder.class.getName());
     private AdhocQueryType adhocParams;
 
+    /**
+     * Constructor
+     *
+     * @param adhocParams Adhoc query request.
+     */
     public StoredQueryBuilder(AdhocQueryType adhocParams) {
         this.adhocParams = adhocParams;
     }
 
+    /**
+     * Build and wraps an AdhocQuery in an OGC query.
+     * Replaces attributes from the stored query with the values
+     * from the <code>adhocParams</code> parameters.
+     *
+     * @return OGC Query.
+     * @throws java.sql.SQLException
+     * @throws javax.xml.bind.JAXBException
+     */
     public JAXBElement<QueryType> build() throws SQLException, JAXBException {
         SqlPersistence service = new SqlPersistence();
         String sql = "select * from adhocquery where id ='" + adhocParams.getId() + "'";
@@ -54,9 +69,7 @@ public class StoredQueryBuilder {
                 logger.log(Level.FINE, gmlQueryStr);
             }
             
-            JAXBElement<QueryType> queryType = (JAXBElement<QueryType>) JAXBUtil.getInstance().unmarshall(gmlQueryStr);
-            
-            return queryType;
+            return (JAXBElement<QueryType>) JAXBUtil.getInstance().unmarshall(gmlQueryStr);
         } else {
             throw new SQLException("AdhocQuery with ID '" + adhocParams.getId() + "' not found");
         }
