@@ -24,7 +24,7 @@ import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
-import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
@@ -78,7 +78,7 @@ public class LCManager {
      * Submit object list to the registry.
      * 
      * @param regObjList List to submit.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public void submit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         commit(regObjList);
@@ -88,7 +88,7 @@ public class LCManager {
      * Update object list in the registy.
      *
      * @param regObjList List to update.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         commit(regObjList);
@@ -101,7 +101,7 @@ public class LCManager {
      * it will insert or update it accordingly.
      *
      * @param regObjList List to insert or update.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public void commit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
@@ -162,7 +162,7 @@ public class LCManager {
      * Deletes the list of Identifiables.
      *
      * @param regObjList Identifiables to delete.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public void delete(RegistryObjectListType regObjList) throws ServiceExceptionReport {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());

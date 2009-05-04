@@ -1,5 +1,5 @@
 
-package be.kzen.ergorr.interfaces.soap;
+package be.kzen.ergorr.interfaces.soap.csw;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,13 +28,13 @@ public class CswService
 {
 
     private final static URL CSWSERVICE_WSDL_LOCATION;
-    private final static Logger logger = Logger.getLogger(be.kzen.ergorr.interfaces.soap.CswService.class.getName());
+    private final static Logger logger = Logger.getLogger(be.kzen.ergorr.interfaces.soap.csw.CswService.class.getName());
 
     static {
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = be.kzen.ergorr.interfaces.soap.CswService.class.getResource(".");
+            baseUrl = be.kzen.ergorr.interfaces.soap.csw.CswService.class.getResource(".");
             url = new URL(baseUrl, "file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR-web-war/web/WEB-INF/wsdl/CSW-service.wsdl");
         } catch (MalformedURLException e) {
             logger.warning("Failed to create URL for the wsdl Location: 'file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR-web-war/web/WEB-INF/wsdl/CSW-service.wsdl', retrying as a local file");

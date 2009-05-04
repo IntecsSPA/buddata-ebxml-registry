@@ -18,9 +18,9 @@
  */
 package be.kzen.ergorr.deploy.ant;
 
-import be.kzen.ergorr.interfaces.soap.CswPortType;
-import be.kzen.ergorr.interfaces.soap.CswService;
-import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.interfaces.soap.csw.CswPortType;
+import be.kzen.ergorr.interfaces.soap.csw.CswService;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.InsertType;
 import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionType;

@@ -21,6 +21,7 @@ import be.kzen.ergorr.model.csw.HarvestResponseType;
 import be.kzen.ergorr.model.csw.HarvestType;
 import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionType;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 
 
 /**

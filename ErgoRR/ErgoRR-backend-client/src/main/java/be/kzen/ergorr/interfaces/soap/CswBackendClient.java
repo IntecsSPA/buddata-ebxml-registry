@@ -25,12 +25,14 @@ import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import be.kzen.ergorr.interfaces.soap.csw.CswClient;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
+
 
 /**
  *

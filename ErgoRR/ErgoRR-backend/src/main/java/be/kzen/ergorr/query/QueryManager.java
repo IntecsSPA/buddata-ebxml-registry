@@ -21,7 +21,7 @@ package be.kzen.ergorr.query;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.interfaces.soap.ServiceExceptionReport;
+import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordByIdType;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
@@ -63,7 +63,7 @@ public class QueryManager {
      * Processes the query.
      *
      * @return Query response.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public GetRecordsResponseType query() throws ServiceExceptionReport {
         GetRecordsResponseType response = new GetRecordsResponseType();
@@ -123,7 +123,7 @@ public class QueryManager {
      * .
      * @param getRecordsByIdReq Query request.
      * @return Indetifiables with the matched IDs.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     public List<JAXBElement<? extends IdentifiableType>> getByIds(GetRecordByIdType getRecordsByIdReq) throws ServiceExceptionReport {
         List<String> ids = getRecordsByIdReq.getId();
@@ -157,7 +157,7 @@ public class QueryManager {
      * 
      * @param identEls Identifiables to get association and association objects from.
      * @return List of associations and associated identifiables.
-     * @throws be.kzen.ergorr.interfaces.soap.ServiceExceptionReport
+     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
      */
     private List<JAXBElement<? extends IdentifiableType>> getAssociatedObjects(List<JAXBElement<? extends IdentifiableType>> identEls) throws ServiceExceptionReport {
         List<JAXBElement<? extends IdentifiableType>> relatedIdents = new ArrayList<JAXBElement<? extends IdentifiableType>>();
