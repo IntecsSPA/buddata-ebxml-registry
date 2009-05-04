@@ -80,6 +80,12 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private static final String ESCAPE_CHAR = "!";
     private static final String WILDCARD_CHAR = "%";
 
+    /**
+     * Constructor
+     *
+     * @param request GetRecords filter to process.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
     public QueryBuilderImpl2(GetRecordsType request) throws QueryException {
         this.request = request;
         sqlQuery = new SqlQuery();
@@ -92,10 +98,16 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         return queryParams;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getMaxResults() {
         return sqlQuery.getMaxResults();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getStartPosition() {
         return sqlQuery.getStartPosition();
     }
@@ -108,6 +120,9 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         return sqlQuery.getReturnType();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String createCountQuery() {
         return sqlQuery.buildCountQuery();
     }
@@ -187,6 +202,9 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         return returnType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String build() throws QueryException {
         FilterType filter = filterQuery.getConstraint().getFilter();
         JAXBElement queryOperator = null;

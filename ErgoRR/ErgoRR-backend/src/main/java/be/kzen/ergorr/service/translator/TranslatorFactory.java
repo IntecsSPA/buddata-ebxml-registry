@@ -71,8 +71,9 @@ public class TranslatorFactory {
 
             try {
                 Class clazz = Class.forName(className);
-                Constructor constructor = clazz.getConstructor(jaxbEl.getValue().getClass());
-                return (Translator) constructor.newInstance(jaxbEl.getValue());
+                Translator translator = (Translator) clazz.newInstance();
+                translator.setObject(jaxbEl.getValue());
+                return translator;
             } catch (Exception ex) {
                 String err = "Could not invoke translator for namespace: " + jaxbEl.getName().getNamespaceURI();
                 logger.log(Level.SEVERE, err, ex);

@@ -12,6 +12,7 @@ import javax.xml.xpath.XPathException;
 import org.saxpath.SAXPathException;
 
 /**
+ * Processes the XPath provided in an OGC filter.
  *
  * @author yaman
  */
@@ -21,11 +22,23 @@ public class XPathToSqlConverter {
     private SqlQuery sqlQuery;
     private String xpath;
 
+    /**
+     * Constructor
+     *
+     * @param sqlQuery SQL query constructor.
+     * @param xpath XPath string.
+     */
     public XPathToSqlConverter(SqlQuery sqlQuery, String xpath) {
         this.sqlQuery = sqlQuery;
         this.xpath = xpath;
     }
 
+    /**
+     * Processes the <code>xpath</code> and appends the query information to the SqlQuery.
+     *
+     * @return Root XPath node.
+     * @throws javax.xml.xpath.XPathException
+     */
     public XPathNode process() throws XPathException {
 
         if (logger.isLoggable(Level.FINE)) {
@@ -74,6 +87,12 @@ public class XPathToSqlConverter {
         }
     }
 
+    /**
+     * Parses the <code>xpath</code> string to <code>XPathNode</code> chain.
+     *
+     * @return Root XPath node.
+     * @throws javax.xml.xpath.XPathException
+     */
     private XPathNode parseXPath() throws XPathException {
         // XPath doesn't like $ character which are used in GML filter XPaths, so remove them before processing.
         xpath = xpath.replaceAll("\\$", "");

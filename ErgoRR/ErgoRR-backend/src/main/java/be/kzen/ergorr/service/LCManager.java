@@ -64,6 +64,11 @@ public class LCManager {
     private RequestContext requestContext;
     private Map<String, List<IdentifiableType>> identMap;
 
+    /**
+     * Constructor
+     *
+     * @param requestContext Request context.
+     */
     public LCManager(RequestContext requestContext) {
         this.requestContext = requestContext;
         identMap = new HashMap<String, List<IdentifiableType>>();
@@ -359,6 +364,11 @@ public class LCManager {
         }
     }
 
+    /**
+     * Updates the slot cache if needed.
+     *
+     * @param idents List of processed identifiables.
+     */
     private void updateSlotCache(List<IdentifiableType> idents) {
         if (idents != null) {
             for (IdentifiableType ident : idents) {

@@ -28,6 +28,7 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
 /**
+ * Manages reading and writing to the repository.
  *
  * @author yamanustuntas
  */
@@ -36,10 +37,19 @@ public class RepositoryManager {
     private static final String REPO_ROOT = CommonProperties.getInstance().get("repository.root");
     private File repoDir;
 
+    /**
+     * Constructor.
+     * Uses default deployName from common.properties.
+     */
     public RepositoryManager() {
         this(CommonProperties.getInstance().get("deployName"));
     }
 
+    /**
+     * Constructor.
+     *
+     * @param deployName Deployment name which defines the repository directory.
+     */
     public RepositoryManager(String deployName) {
         repoDir = new File(REPO_ROOT, deployName);
     }
@@ -120,6 +130,13 @@ public class RepositoryManager {
         }
     }
 
+    /**
+     * Get the repository item <code>File</code>
+     * from the objects ID.
+     *
+     * @param id ID of repository item.
+     * @return File.
+     */
     private File getRepositoryItemFile(String id) {
         String t = id.replaceAll(":", "_");
         return new File(repoDir, t);

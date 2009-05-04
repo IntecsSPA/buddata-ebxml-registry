@@ -21,11 +21,39 @@ package be.kzen.ergorr.query;
 import be.kzen.ergorr.exceptions.QueryException;
 
 /**
+ * Interface for a OGC filter to SQL builder.
  *
  * @author Yaman Ustuntas
  */
 public interface QueryBuilder {
+
+    /**
+     * Process the OGC filter.
+     *
+     * @return Generqted SQL query string.
+     * @throws be.kzen.ergorr.exceptions.QueryException
+     */
     public String build() throws QueryException;
+
+    /**
+     * Create the query which will return the
+     * total number of objects matched.
+     *
+     * @return SQL query.
+     */
+    public String createCountQuery();
+
+    /**
+     * Start position of the objects to fetch.
+     *
+     * @return Number of objects.
+     */
     public int getStartPosition();
+
+    /**
+     * Maximum amount of objects to fetch.
+     *
+     * @return Number of objects.
+     */
     public int getMaxResults();
 }
