@@ -1,6 +1,7 @@
 package be.kzen.ergorr.persist.service;
 
 /**
+ * Class which wraps database connection parameters.
  *
  * @author Yaman Ustuntas
  */
@@ -13,6 +14,14 @@ public class DbConnectionParams {
     public DbConnectionParams() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param dbUrl Database URL. Just address and port. E.g localhost:5432
+     * @param dbName Database name.
+     * @param dbUser Database connection user.
+     * @param dbPassword Database connection password.
+     */
     public DbConnectionParams(String dbUrl, String dbName, String dbUser, String dbPassword) {
         this.dbUrl = dbUrl;
         this.dbName = dbName;
@@ -51,7 +60,13 @@ public class DbConnectionParams {
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
     }
-    
+
+    /**
+     * Creates the full database conneciton string.
+     * E.g jdbc:postgresql://localhost:5432/myDB
+     *
+     * @return Database connection string.
+     */
     public String createConnectionString() {
         return "jdbc:postgresql://" + dbUrl + "/" + dbName;
     }

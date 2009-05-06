@@ -29,9 +29,9 @@ import be.kzen.ergorr.model.wrs.AnyValueType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
+ * Utility class to help building RIM objects.
  *
  * @author Yaman Ustuntas
  */
@@ -127,10 +127,26 @@ public class RIMUtil {
         return slot;
     }
 
+    /**
+     * Creates a WRS slot.
+     *
+     * @param slotName Slot name.
+     * @param slotType Slot type.
+     * @param value Slot value.
+     * @return RIM Slot.
+     */
     public static SlotType createWrsSlot(String slotName, String slotType, String value) {
         return createWrsSlotObj(slotName, slotType, value);
     }
 
+    /**
+     * Creates a WRS slot with a geometry value.
+     *
+     * @param slotName Slot name.
+     * @param slotType Slot type.
+     * @param jaxbEl Geometry JAXB element.
+     * @return RIM Slot.
+     */
     public static SlotType createGeomWrsSlot(String slotName, String slotType, JAXBElement jaxbEl) {
         return createWrsSlotObj(slotName, slotType, jaxbEl);
     }
@@ -149,8 +165,15 @@ public class RIMUtil {
         return slot;
     }
     
-//    public static SlotType1 createWrsDoubleListSlot(String slotName, List<)
-
+    /**
+     * Create a RIM ExternalIdentifier.
+     *
+     * @param id ExternalIdentifier ID.
+     * @param regObjId RegistryObject ID of ExternalIdentifier.
+     * @param value Identifier value.
+     * @param scheme Identification scheme.
+     * @return RIM ExternalIdentifier.
+     */
     public static ExternalIdentifierType createExternalIdentifier(String id, String regObjId, String value, String scheme) {
         ExternalIdentifierType e = new ExternalIdentifierType();
         e.setId(id);
@@ -160,7 +183,16 @@ public class RIMUtil {
 
         return e;
     }
-    
+
+    /**
+     * Create a RIM Association.
+     *
+     * @param id Association ID.
+     * @param type Association type.
+     * @param source Source object ID.
+     * @param target Target object ID.
+     * @return RIM Association.
+     */
     public static AssociationType createAssociation(String id, String type, String source, String target) {
         AssociationType asso = new AssociationType();
         asso.setId(id);

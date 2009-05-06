@@ -19,6 +19,7 @@
 package be.kzen.ergorr.commons;
 
 /**
+ * Namespaces constants used by the registry/repository.
  *
  * @author yaman
  */

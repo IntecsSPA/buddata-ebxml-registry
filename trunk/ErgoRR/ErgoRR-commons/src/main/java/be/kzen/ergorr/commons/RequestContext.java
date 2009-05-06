@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Holds data for a registry request.
  *
  * @author Yaman Ustuntas
  */

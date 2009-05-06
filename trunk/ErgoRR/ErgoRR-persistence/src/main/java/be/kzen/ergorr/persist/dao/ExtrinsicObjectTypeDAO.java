@@ -16,24 +16,23 @@ import javax.xml.bind.JAXBElement;
  *
  * @author Yaman Ustuntas
  */
-public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjectType> {
+public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends RegistryObjectTypeDAO<T> {
 
     public ExtrinsicObjectTypeDAO() {
     }
 
-    public ExtrinsicObjectTypeDAO(ExtrinsicObjectType eoXml) {
+    public ExtrinsicObjectTypeDAO(T eoXml) {
         super(eoXml);
     }
 
     @Override
-    public ExtrinsicObjectType newXmlObject(ResultSet result) throws SQLException {
-        String specType = result.getString("spectype");
-        xmlObject = specType.equals(InternalConstants.SPEC_TYPE_RIM) ? new ExtrinsicObjectType() : new WrsExtrinsicObjectType();
+    public T newXmlObject(ResultSet result) throws SQLException {
+        xmlObject = (T) new ExtrinsicObjectType();
         return loadCompleteXmlObject(result);
     }
 
     @Override
-    protected ExtrinsicObjectType loadXmlObject(ResultSet result) throws SQLException {
+    protected T loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
 
         if (!isBrief()) {
@@ -164,7 +163,7 @@ public class ExtrinsicObjectTypeDAO extends RegistryObjectTypeDAO<ExtrinsicObjec
     }
 
     @Override
-    public JAXBElement<ExtrinsicObjectType> createJAXBElement() {
-        return OFactory.rim.createExtrinsicObject(xmlObject);
+    public JAXBElement<T> createJAXBElement() {
+        return (JAXBElement<T>) OFactory.rim.createExtrinsicObject(xmlObject);
     }
 }

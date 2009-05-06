@@ -98,7 +98,14 @@ public class CommonProperties {
     public String get(String key, String defaultValue) {
         return props.getProperty(key, defaultValue);
     }
-    
+
+    /**
+     * Gets a int property.
+     * Returns 0  if property value cannot be parsed to an int.
+     *
+     * @param key Property key.
+     * @return int value.
+     */
     public int getInt(String key) {
         int i = 0;
         try {
@@ -109,7 +116,14 @@ public class CommonProperties {
         
         return i;
     }
-    
+
+    /**
+     * Gets a long property.
+     * Returns 0 if property value cannot be parsed to a long.
+     *
+     * @param key Property key.
+     * @return long value.
+     */
     public long getLong(String key) {
         long l = 0;
         try {
@@ -120,7 +134,14 @@ public class CommonProperties {
         
         return l;
     }
-    
+
+    /**
+     * Gets a boolean property.
+     * Returns <code>false</code> if property value cannot be parsed to a boolean.
+     *
+     * @param key Property key.
+     * @return Boolean value.
+     */
     public boolean getBoolean(String key) {
         boolean b = false;
         
@@ -132,13 +153,29 @@ public class CommonProperties {
         
         return b;
     }
-    
+
+    /**
+     * Gets a string array from one property.
+     * Values should be split by |. E.g
+     * one|two|three
+     *
+     * @param key Property key.
+     * @return Value strings.
+     */
     public String[] getStringArray(String key) {
         String val = props.getProperty(key);
         
         return val.split("\\|");
     }
-    
+
+    /**
+     * Get an integer array from one property.
+     * Values should be split by |. E.g
+     * 5|6|7
+     *
+     * @param key Property key.
+     * @return Value integers.
+     */
     public Integer[] getIntArray(String key) {
         String val = props.getProperty(key);
         

@@ -142,6 +142,17 @@ public interface RIMConstants {
     public static final String CN_STATUS_TYPE_CODE_Deprecated = "Deprecated";
     public static final String CN_STATUS_TYPE_CODE_Submitted = "Submitted";
     public static final String CN_STATUS_TYPE_CODE_Withdrawn = "Withdrawn";
+
+    // ============================
+    // ResponseStatusType
+    // ============================
+    public static final String RESPONSE_STATUS_ID_Failure = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
+    public static final String RESPONSE_STATUS_ID_Success = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success";
+    public static final String RESPONSE_STATUS_ID_Unavailable = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Unavailable";
+
+    public static final String RESPONSE_STATUS_CODE_Failure = "Failure";
+    public static final String RESPONSE_STATUS_CODE_Success = "Success";
+    public static final String RESPONSE_STATUS_CODE_Unavailable = "Unavailable";
     
     // ============================
     // QueryLanguage ClassificationScheme

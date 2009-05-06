@@ -40,6 +40,7 @@ import javax.sql.DataSource;
 import javax.xml.bind.JAXBElement;
 
 /**
+ * SQL persistence class which interacts with the database.
  *
  * @author Yaman Ustuntas
  */
@@ -48,10 +49,18 @@ public class SqlPersistence {
     private static Logger logger = Logger.getLogger(SqlPersistence.class.getName());
     private RequestContext requestContext;
 
+    /**
+     * Constructor.
+     */
     public SqlPersistence() {
         requestContext = new RequestContext();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param requestContext Request context.
+     */
     public SqlPersistence(RequestContext requestContext) {
         this.requestContext = requestContext;
     }
@@ -235,6 +244,14 @@ public class SqlPersistence {
         return result;
     }
 
+    /**
+     * Get IDs of Identifiables. <code>sql</code> should
+     * provide the ID return column.
+     * 
+     * @param sql SQL query string.
+     * @return List of IDs matched from query.
+     * @throws java.sql.SQLException
+     */
     public List<String> getIds(String sql) throws SQLException {
         List<String> ids = new ArrayList<String>();
 
@@ -254,6 +271,13 @@ public class SqlPersistence {
         return ids;
     }
 
+    /**
+     * Get the mimeType of an ExtrinsicObject.
+     *
+     * @param id ID of ExtrinsicObject.
+     * @return ExtrinsicObject mimeType.
+     * @throws java.sql.SQLException
+     */
     public String getMimeType(String id) throws SQLException {
         String mimeType = null;
         String queryStr = "select mimetype from t_extrinsicobject where id ='" + id + "' limit 1";
