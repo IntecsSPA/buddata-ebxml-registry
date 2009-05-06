@@ -31,14 +31,8 @@ import be.kzen.ergorr.commons.RIMUtil;
  *
  * @author Yaman Ustuntas
  */
-public class SARTranslator extends HMATranslator implements Translator {
-    private EarthObservationType eo;
-    private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:SAR"; 
-
-    public SARTranslator(EarthObservationType eo) {
-        super(eo);
-        this.eo = eo;
-    }
+public class SARTranslator extends HMATranslator<EarthObservationType> {
+    private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:SAR";
     
     @Override
     public String getClassification() {

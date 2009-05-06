@@ -25,11 +25,15 @@ import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 
 /**
+ * Validates ServiceBindings.
  *
  * @author yamanustuntas
  */
 public class ServiceBindingTypeV extends RegistryObjectTypeV<ServiceBindingType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();

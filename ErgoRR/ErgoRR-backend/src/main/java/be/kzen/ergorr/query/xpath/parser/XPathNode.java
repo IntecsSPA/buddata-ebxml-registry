@@ -3,7 +3,8 @@ package be.kzen.ergorr.query.xpath.parser;
 import be.kzen.ergorr.query.QueryObject;
 
 /**
- *
+ * Represents an XPath node.
+ * 
  * @author yaman
  */
 public class XPathNode {

@@ -21,7 +21,8 @@ package be.kzen.ergorr.service.validator;
 import be.kzen.ergorr.model.rim.ServiceType;
 
 /**
- *
+ * Validates Services.
+ * 
  * @author yamanustuntas
  */
 public class ServiceTypeV extends RegistryObjectTypeV<ServiceType> {

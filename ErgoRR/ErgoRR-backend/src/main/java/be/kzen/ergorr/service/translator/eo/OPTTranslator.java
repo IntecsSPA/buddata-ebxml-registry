@@ -1,4 +1,4 @@
-/*
+  /*
  * Project: Buddata ebXML RegRep
  * Class: OPTTranslator.java
  * Copyright (C) 2008 Yaman Ustuntas
@@ -33,16 +33,10 @@ import javax.xml.bind.JAXBElement;
  *
  * @author Yaman Ustuntas
  */
-public class OPTTranslator extends HMATranslator implements Translator {
+public class OPTTranslator<T extends EarthObservationType> extends HMATranslator<EarthObservationType> {
 
-    private EarthObservationType eo;
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:OPT"; 
 
-    public OPTTranslator(EarthObservationType eo) {
-        super(eo);
-        this.eo = eo;
-    }
-    
     @Override
     public String getClassification() {
         return CLASSIFICATION;

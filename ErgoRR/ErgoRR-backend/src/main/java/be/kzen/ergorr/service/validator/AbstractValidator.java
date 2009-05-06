@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Abstract validator to be extended by RIM object validators.
+ * 
  * @author yamanustuntas
  */
 public abstract class AbstractValidator<T extends IdentifiableType> {
@@ -38,23 +39,52 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
     protected RequestContext requestContext;
     protected SqlPersistence persistence;
 
+    /**
+     * Set the identifiables which are processed together
+     * with the corrent <code>rimObject</code>.
+     * 
+     * @param identMap
+     */
     public void setIdentMap(Map<String, List<IdentifiableType>> identMap) {
         this.identMap = identMap;
     }
 
+    /**
+     * Set the request context.
+     *
+     * @param requestContext Request context.
+     */
     public void setRequestContext(RequestContext requestContext) {
         this.requestContext = requestContext;
         persistence = new SqlPersistence(requestContext);
     }
 
+    /**
+     * Get the RIM object.
+     *
+     * @return RIM object.
+     */
     public T getRimObject() {
         return rimObject;
     }
 
+    /**
+     * Set RIM object.
+     *
+     * @param rimObject RIM object.
+     */
     public void setRimObject(T rimObject) {
         this.rimObject = rimObject;
     }
 
+    /**
+     * Checks if an object with a certain type <code>clazz</code> and
+     * a certain <code>id</code> exists in <code>identMap</code>.
+     *
+     * @param id ID of RIM object.
+     * @param clazz Type of RIM object.
+     * @return True if object exists.
+     */
     protected boolean idExistsInRequest(String id, Class<? extends IdentifiableType> clazz) {
         boolean exists = false;
 
@@ -72,6 +102,12 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
         return exists;
     }
 
+    /**
+     * Check if a RIM object with <code>id</code> exists in <code>identMap</code>.
+     * 
+     * @param id ID to find.
+     * @return True if RIM object with ID exits.
+     */
     protected boolean idExistsInRequest(String id) {
         boolean exists = false;
         Iterator<String> it = identMap.keySet().iterator();
@@ -92,6 +128,21 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
         return exists;
     }
 
+    /**
+     * Validates an inserted or updated RIM object.
+     * Makes sure that all the references to other objects are correct.
+     * 
+     * @throws be.kzen.ergorr.exceptions.InvalidReferenceException
+     * @throws java.sql.SQLException
+     */
     public abstract void validate() throws InvalidReferenceException, SQLException;
+
+    /**
+     * Validates a delted RIM objects.
+     * Makes sure that the deleted object is not refered in the registry.
+     *
+     * @throws be.kzen.ergorr.exceptions.ReferenceExistsException
+     * @throws java.sql.SQLException
+     */
     public abstract void validateToDelete() throws ReferenceExistsException, SQLException;
 }

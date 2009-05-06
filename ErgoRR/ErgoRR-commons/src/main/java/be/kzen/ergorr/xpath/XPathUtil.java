@@ -13,8 +13,7 @@ import org.w3c.dom.NodeList;
 /**
  * XPath utility class
  *
- * @author <a href="mailto:yaman@cryptosense.com">Yaman Ustuntas</a>
- * Created on 12 November 2006
+ * @author Yaman Ustuntas
  */
 public class XPathUtil {
     private XPathFactory xpathFactory;

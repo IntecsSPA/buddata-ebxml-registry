@@ -44,28 +44,53 @@ import org.postgis.Polygon;
 import org.postgis.binary.BinaryWriter;
 
 /**
- *
+ * Translates between GML geometry and Postgis geometry instances.
+ * 
  * @author Yaman Ustuntas
  */
 public class GeometryTranslator {
 
     private static Logger logger = Logger.getLogger(GeometryTranslator.class.getName());
 
+    /**
+     * Constructor.
+     */
     public GeometryTranslator() {
     }
 
+    /**
+     * Creates a WKB formatted Postgis <code>Geometry</code> from a GML <code>AbstractGeometryType</code>.
+     *
+     * @param gmlGeometry GML geometry.
+     * @return WKB formatted Postgis geometry.
+     * @throws be.kzen.ergorr.exceptions.TransformException
+     */
     public static byte[] wkbFromGmlGeometry(AbstractGeometryType gmlGeometry) throws TransformException {
         Geometry g = geometryFromGmlGeometry(gmlGeometry);
         BinaryWriter bw = new BinaryWriter();
         return bw.writeBinary(g);
     }
 
+    /**
+     * Creates a WKB formatted Postgis <code>Polygon</code> from a GML <code>EnvelopeType</code>.
+     *
+     * @param env GML envelope.
+     * @return WKB formatted Postgis polygon.
+     * @throws be.kzen.ergorr.exceptions.TransformException
+     */
     public static byte[] wkbFromGmlEnvelope(EnvelopeType env) throws TransformException {
         Geometry g = polygonFromEnvelope(env);
         BinaryWriter bw = new BinaryWriter();
         return bw.writeBinary(g);
     }
 
+    /**
+     * Create a Postgis <code>Geometry</code> from a GML <code>AbstractGeometryType</code>.
+     * 
+     * @param gmlGeometry GML geometry.
+     * @return Postgis geometry.
+     * @throws be.kzen.ergorr.exceptions.TransformException
+     */
     public static Geometry geometryFromGmlGeometry(AbstractGeometryType gmlGeometry) throws TransformException {
 
         if (gmlGeometry instanceof PolygonType) {
@@ -80,9 +105,9 @@ public class GeometryTranslator {
     }
 
     /**
-     * Creates a <code>Polygon</code> object from a GML <code>PolygonType</code>.
+     * Creates a Postgis <code>Polygon</code> from a GML <code>PolygonType</code>.
      * 
-     * @param gmlPolygon GML PolygonType to convert.
+     * @param gmlPolygon GML PolygonType to translate.
      * @return New <code>Polygon</code> with <code>PolygonType</code> values.
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
@@ -110,6 +135,13 @@ public class GeometryTranslator {
         return polygon;
     }
 
+    /**
+     * Creates a Postgis <code>LinearRing</code> from a GML <code>LinearRingType</code>.
+     *
+     * @param gmlRing GML LinearRingType to translate.
+     * @return <code>LinearRing</code> with <code>LinearRingType</code> values.
+     * @throws be.kzen.ergorr.exceptions.TransformException
+     */
     public static LinearRing linearRingFromGmlLinearRing(LinearRingType gmlRing) throws TransformException {
         List<Double> exPointsXY = getLinearRingPoints(gmlRing);
         int exCoordSize = (exPointsXY.size() > 1) ? (exPointsXY.size() / 2) : 1;
@@ -135,7 +167,7 @@ public class GeometryTranslator {
     }
 
     /**
-     * Get the list of points from a LinearRing.
+     * Get the list of points from a GML <code>LinearRingType</code>.
      * 
      * @param gmlPolygon Polygon.
      * @return List of points.
@@ -169,7 +201,7 @@ public class GeometryTranslator {
     }
 
     /**
-     * Creates a <code>Point</code> object from a GML <code>PointType</code>.
+     * Creates a Postgis <code>Point</code> from a GML <code>PointType</code>.
      * 
      * @param gmlPoint GML PointType to convert.
      * @return New <code>Point</code> with <code>PointType</code> values.
@@ -192,7 +224,7 @@ public class GeometryTranslator {
     }
 
     /**
-     * Creates a <code>Polygon</code> object from a GML <code>EnvelopeType</code>.
+     * Creates a Postgis <code>Polygon</code> form a GML <code>EnvelopeType</code>.
      * 
      * @param env GML EnvelopeType to convert.
      * @return New <code>Polygon</code> with <code>EnvelopeType</code> values.
@@ -228,8 +260,7 @@ public class GeometryTranslator {
     }
 
     /**
-     * Creates a <code>com.vividsolutions.jts.geom.LineString</code> from
-     * a <code>be.kzen.ergorr.model.gml.LineStringType</code>.
+     * Creates a <code>Postgis</code> LineString from a GML <code>LineStringType</code>.
      * 
      * @param gmlLineString LineString JAXB object.
      * @return Transformed LineString.
@@ -259,6 +290,12 @@ public class GeometryTranslator {
         }
     }
 
+    /**
+     * Create a GML <code>LinearRingType</code> from a Postgis <code>LinearRing</code>.
+     *
+     * @param ring Postgis LinearRing value.
+     * @return GML LinearRingType as JAXB element.
+     */
     public static JAXBElement<LinearRingType> gmlLinearRingFromLinearRing(LinearRing ring) {
         LinearRingType gmlRing = new LinearRingType();
         DirectPositionListType gmlPosList = new DirectPositionListType();
@@ -275,6 +312,12 @@ public class GeometryTranslator {
         return OFactory.gml.createLinearRing(gmlRing);
     }
 
+    /**
+     * Create a GML geometry from a Postgis <code>Geometry</code>.
+     * 
+     * @param geometryValue Postgis geometry value.
+     * @return GML geometry as JAXB element.
+     */
     public static JAXBElement<? extends AbstractGeometryType> gmlGeometryFromGeometry(Geometry geometryValue) {
         if (geometryValue != null) {
             if (geometryValue instanceof Polygon) {

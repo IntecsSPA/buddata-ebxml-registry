@@ -24,21 +24,11 @@ import be.kzen.ergorr.exceptions.TransformException;
 import java.util.logging.Logger;
 
 /**
- *
+ * SRS helper to read/parse SRS names/IDs.
+ * 
  * @author Yaman Ustuntas
  */
 public class SrsTools {
-
-    private static Logger log = Logger.getLogger(SrsTools.class.getName());
-    private static SrsTools instance;
-
-    public static synchronized SrsTools getInstance() {
-        if (instance == null) {
-            instance = new SrsTools();
-        }
-
-        return instance;
-    }
 
     /**
      * Get the SRS ID from a given <code>srsName</code>.

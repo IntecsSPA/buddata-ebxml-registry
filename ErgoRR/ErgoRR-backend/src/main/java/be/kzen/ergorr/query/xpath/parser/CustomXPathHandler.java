@@ -10,6 +10,7 @@ import org.saxpath.SAXPathException;
 import org.saxpath.XPathHandler;
 
 /**
+ * XPath parser implementation.
  *
  * @author yamanustuntas
  */
