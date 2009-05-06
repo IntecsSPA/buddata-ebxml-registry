@@ -57,6 +57,12 @@ public class CommonFunctions {
         }
     }
 
+    /**
+     * Returns a space seperated string from a string collection.
+     *
+     * @param col String collection.
+     * @return Space seperated <code>col</code> values.
+     */
     public static String listToString(Collection<String> col) {
         Iterator<String> items = col.iterator();
         StringBuilder sb = new StringBuilder();
@@ -69,10 +75,23 @@ public class CommonFunctions {
         return sb.toString();
     }
 
+    /**
+     * Checks if string is not <code>null</code>
+     * and is not empty.
+     *
+     * @param value String value.
+     * @return True if string has content.
+     */
     public static boolean stringHasData(String value) {
         return (value != null && value.trim().length() > 0);
     }
 
+    /**
+     * Removed http:// prefix from a string if it exists.
+     *
+     * @param url URL.
+     * @return URL without http:// prefix.
+     */
     public static String removeHttpPrefix(String url) {
         if (url.startsWith("http://")) {
             return url.substring(7);

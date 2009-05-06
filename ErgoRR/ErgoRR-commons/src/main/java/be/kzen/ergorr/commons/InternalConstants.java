@@ -19,6 +19,7 @@
 package be.kzen.ergorr.commons;
 
 /**
+ * Internal constants used in this registry/repository implementation.
  *
  * @author Yaman Ustuntas
  */

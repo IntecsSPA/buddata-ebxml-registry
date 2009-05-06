@@ -43,7 +43,7 @@ public class StoredQueryBuilder {
      */
     public JAXBElement<QueryType> build() throws SQLException, JAXBException {
         SqlPersistence service = new SqlPersistence();
-        String sql = "select * from adhocquery where id ='" + adhocParams.getId() + "'";
+        String sql = "select * from t_adhocquery where id ='" + adhocParams.getId() + "'";
         List<JAXBElement<? extends IdentifiableType>> adhocQueryEls = service.query(sql, null, AdhocQueryType.class);
 
         if (adhocQueryEls.size() > 0) {

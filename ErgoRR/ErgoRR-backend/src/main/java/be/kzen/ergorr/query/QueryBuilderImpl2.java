@@ -752,7 +752,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 throw new QueryException("Could not transform geometry", ex);
             }
         } else {
-            throw new QueryException("Disjoint does not have an Envelope element");
+            throw new QueryException("Does not have a geometry constraint");
         }
     }
 
