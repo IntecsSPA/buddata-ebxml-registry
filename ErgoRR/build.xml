@@ -286,6 +286,36 @@
         </jar>
     </target>
 
+    <target name="zip-javadocs">
+        <mkdir dir="${dist-dir}"/>
+        <zip destfile="${dist-dir}/ErgoRR-javadoc.zip">
+            <fileset dir="${rr-commons-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-commons-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-web-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-jaxb-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-backend-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-persistence-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-soap-client-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-backend-client-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+        </zip>
+    </target>
+
     <target name="tomcat-setup">
         <copy file="ErgoRR-shared/metro1_4/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
         <copy file="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
