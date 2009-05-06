@@ -274,11 +274,16 @@
         <copy todir="${installer-dir}/etc/tomcat-endorsed">
             <fileset file="ErgoRR-shared/metro1_4/webservices-api.jar"/>
         </copy>
+        <property name="installer-zip-dir" value="${dist-dir}/installer/be/kzen/ergorr/installer/tasks/"/>
+        <mkdir dir="${installer-zip-dir}"/>
+        <zip destfile="${installer-zip-dir}/web.zip" basedir="${installer-dir}"/>
+    </target>
 
-        <zip destfile="${dist-dir}/web.zip" basedir="${installer-dir}"/>
-        <!--jar destfile="ErgoRRInstaller.jar" update="true">
-            <fileset file="${dist-dir}/web.zip"/>
-        </jar-->
+    <property name="installerJar" value="ChangeMe.jar"/>
+    <target name="add-package-to-installer" depends="installer-package" description="installerJar should be passed by through command line with the -D option">
+        <jar destfile="${installerJar}" update="true">
+            <fileset dir="${dist-dir}/installer/"/>
+        </jar>
     </target>
 
     <target name="tomcat-setup">
