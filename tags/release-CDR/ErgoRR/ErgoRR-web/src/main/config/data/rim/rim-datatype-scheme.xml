@@ -1,0 +1,24 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+    <rim:ClassificationScheme lid="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" id="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+        <rim:Name>
+            <rim:LocalizedString charset="UTF-8" value="DataType"/>
+        </rim:Name>
+        <rim:Description>
+            <rim:LocalizedString charset="UTF-8" value="This is the canonical ClassificationScheme for pre-defined data types"/>
+        </rim:Description>
+      
+        <rim:ClassificationNode code="Boolean" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Boolean" id="urn:oasis:names:tc:ebxml-regrep:DataType:Boolean" />
+        <rim:ClassificationNode code="Date" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Date" id="urn:oasis:names:tc:ebxml-regrep:DataType:Date" />
+        <rim:ClassificationNode code="DateTime" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:DateTime" id="urn:oasis:names:tc:ebxml-regrep:DataType:DateTime" />
+        <rim:ClassificationNode code="Double" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Double" id="urn:oasis:names:tc:ebxml-regrep:DataType:Double" />
+        <rim:ClassificationNode code="Duration" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Duration" id="urn:oasis:names:tc:ebxml-regrep:DataType:Duration" />
+        <rim:ClassificationNode code="Float" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Float" id="urn:oasis:names:tc:ebxml-regrep:DataType:Float" />
+        <rim:ClassificationNode code="Integer" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Integer" id="urn:oasis:names:tc:ebxml-regrep:DataType:Integer" />
+        <rim:ClassificationNode code="ObjectRef" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:ObjectRef" id="urn:oasis:names:tc:ebxml-regrep:DataType:ObjectRef" />
+        <rim:ClassificationNode code="String" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:String" id="urn:oasis:names:tc:ebxml-regrep:DataType:String" />
+        <rim:ClassificationNode code="Time" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:Time" id="urn:oasis:names:tc:ebxml-regrep:DataType:Time" />
+        <rim:ClassificationNode code="URI" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" lid="urn:oasis:names:tc:ebxml-regrep:DataType:URI" id="urn:oasis:names:tc:ebxml-regrep:DataType:URI" />
+    </rim:ClassificationScheme>
+        
+</rim:RegistryObjectList>
