@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ergorr-deploy" basedir=".">
+    <property name="rr-commons-dir" value="ErgoRR-commons"/>
+    <property name="rr-commons-build-dir" value="tmp-ergo/build/common"/>
+    <property name="rr-jaxb-dir" value="ErgoRR-jaxb"/>
+    <property name="rr-jaxb-build-dir" value="tmp-ergo/build/jaxb"/>
+    <property name="rr-backend-dir" value="ErgoRR-backend"/>
+    <property name="rr-backend-build-dir" value="tmp-ergo/build/backend"/>
+    <property name="rr-persistence-dir" value="ErgoRR-persistence"/>
+    <property name="rr-persistence-build-dir" value="tmp-ergo/build/persistence"/>
+    <property name="rr-web-dir" value="ErgoRR-web"/>
+    <property name="rr-web-build-dir" value="tmp-ergo/build/web"/>
+    <property name="rr-soap-client-dir" value="ErgoRR-client"/>
+    <property name="rr-soap-client-build-dir" value="tmp-ergo/build/soapclient"/>
+    <property name="rr-backend-client-dir" value="ErgoRR-backend-client"/>
+    <property name="rr-backend-client-build-dir" value="tmp-ergo/build/soapclient"/>
+    <property name="build-dir" value="tmp-ergo/build"/>
+    <property name="dist-dir" value="tmp-ergo/dist"/>
+    <property environment="env"/>
+
+    <property file="${rr-commons-dir}/src/main/resources/be/kzen/ergorr/commons/common.properties"/>
+
+    <target name="compile-jaxb">
+        <javac srcdir="${rr-jaxb-dir}/src/main/java"
+            destdir="${rr-jaxb-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="compile-commons">
+        <javac srcdir="${rr-commons-dir}/src/main/java"
+            destdir="${rr-commons-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="compile-persistence">
+        <javac srcdir="${rr-persistence-dir}/src/main/java"
+            destdir="${rr-persistence-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+    
+    <target name="compile-web">
+        <javac srcdir="${rr-web-dir}/src/main/java"
+            destdir="${rr-web-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="compile-soap-client" depends="compile-jaxb, compile-commons">
+        <javac srcdir="${rr-soap-client-dir}/src/main/java"
+            destdir="${rr-soap-client-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="compile-backend" depends="compile-jaxb, compile-commons">
+        <javac srcdir="${rr-backend-dir}/src/main/java"
+            destdir="${rr-backend-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="compile-backend-client" depends="compile-jaxb, compile-commons, compile-web">
+        <javac srcdir="${rr-backend-client-dir}/src/main/java"
+            destdir="${rr-backend-client-build-dir}" source="1.5"
+            classpathref="libs.ref" debug="true" debuglevel="lines,vars,source"/>
+    </target>
+
+    <target name="build-jaxb" depends="compile-jaxb">
+        <jar destfile="${dist-dir}/ErgoRR-jaxb.jar" basedir="${rr-jaxb-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="build-commons" depends="compile-commons">
+        <copy todir="${rr-commons-build-dir}">
+            <fileset dir="${rr-commons-dir}/src/main/resources"/>
+        </copy>
+        <jar destfile="${dist-dir}/ErgoRR-commons.jar" basedir="${rr-commons-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="build-persistence" depends="compile-persistence">
+        <jar destfile="${dist-dir}/ErgoRR-persistence.jar" basedir="${rr-persistence-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="build-war" depends="compile-web">
+        <copy todir="${rr-web-build-dir}">
+            <fileset dir="${rr-web-dir}/src/main/resources"/>
+        </copy>
+        <!--copy file="${rr-web-dir}/conf/rebel.xml" todir="${rr-web-build-dir}"/-->
+        <war destfile="${dist-dir}/${deployName}.war" webxml="${rr-web-dir}/src/main/webapp/WEB-INF/web.xml">
+            <fileset dir="${rr-web-dir}/src/main/webapp"/>
+            <lib dir="ErgoRR-shared/metro1_4">
+                <exclude name="webservices-api.jar"/>
+            </lib>
+            <lib dir="ErgoRR-shared/postgis">
+                <include name="postgis_1.3.3.jar"/>
+            </lib>
+            <lib dir="ErgoRR-shared/postgreSQL">
+                <include name="postgresql-8.3-603.jdbc3.jar"/>
+            </lib>
+            <lib dir="ErgoRR-shared/saxpath">
+                <include name="saxpath.jar"/>
+            </lib>
+            <lib dir="${dist-dir}">
+                <include name="*.jar"/>
+            </lib>
+            <classes dir="${rr-web-build-dir}"/>
+        </war>
+    </target>
+
+    <target name="build-backend" depends="compile-backend">
+        <copy todir="${rr-backend-build-dir}">
+            <fileset dir="${rr-backend-dir}/src/main/resources"/>
+        </copy>
+        <jar destfile="${dist-dir}/ErgoRR-backend.jar" basedir="${rr-backend-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="build-soap-client" depends="compile-soap-client">
+        <jar destfile="${dist-dir}/ErgoRR-soap-client.jar" basedir="${rr-soap-client-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="build-backend-client" depends="compile-backend-client">
+        <jar destfile="${dist-dir}/ErgoRR-backend-client.jar" basedir="${rr-backend-client-build-dir}">
+            <manifest>
+                <attribute name="Built-By" value="the_computer"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="db-create">
+        <taskdef name="createdb" classname="be.kzen.ergorr.deploy.ant.CreateDbTask" classpathref="libs.ref" onerror="ignore"/>
+        <createdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}" template="${db.templatePostgis}"/>
+    </target>
+
+    <target name="db-create-tables">
+        <sql driver="org.postgresql.Driver" classpath="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar"
+        url="jdbc:postgresql://${db.url}/${deployName}"
+        userid="${db.user}"
+        password="${db.password}" src="${rr-persistence-dir}/src/main/config/database.sql"/>
+    </target>
+
+    <target name="db-load-model">
+        <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
+        <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-objecttype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-datatype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-associationtype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-rim-model.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-slot-init.xml"/>
+    </target>
+
+    <target name="db-load-test">
+        <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
+        <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/test/data"/>
+        <!--rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/../2008-final"/-->
+    </target>
+
+    <!--target name="deploy">
+        <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="libs.ref"/>
+        <copy file="${rr-web-dir}/conf/template-datasource.xml" tofile="${build-dir}/${deployName}.xml"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!name!!" value="${deployName}"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!db.url!!" value="${db.url}"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!db.user!!" value="${db.user}"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!db.password!!" value="${db.password}"/>
+        <copy file="${build-dir}/${deployName}.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/>
+
+        <deploy url="http://${appserver.url}"
+         username="${appserver.user}"
+         password="${appserver.password}"
+         path="${build-dir}/${deployName}.xml"
+         war="file:${env.ERGO_HOME}/${dist-dir}/${deployName}.war" />
+    </target-->
+
+    <target name="deploy">
+        <delete file="${env.CATALINA_HOME}/webapps/${deployName}.war"/>
+        <delete dir="${env.CATALINA_HOME}/webapps/${deployName}"/>
+        <echo message="Waiting 10 seconds for tomcat to undeploy properly ..."/>
+        <!--sleep seconds="10"/-->
+        <copy file="${rr-web-dir}/src/main/config/template-datasource.xml" tofile="${build-dir}/${deployName}.xml"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!name!!" value="${deployName}"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!db.url!!" value="${db.url}"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!db.user!!" value="${db.user}"/>
+        <replace file="${build-dir}/${deployName}.xml" token="!!db.password!!" value="${db.password}"/>
+        <copy file="${build-dir}/${deployName}.xml" todir="${env.CATALINA_HOME}/conf/Catalina/localhost"/>
+        <unwar src="${dist-dir}/${deployName}.war" dest="${env.CATALINA_HOME}/webapps/${deployName}"/>
+        <sleep seconds="3"/>
+    </target>
+
+    <path id="libs.ref" description="project libraries">
+        <pathelement location="${rr-commons-build-dir}"/>
+        <pathelement location="${rr-jaxb-build-dir}"/>
+        <pathelement location="${rr-persistence-build-dir}"/>
+        <pathelement location="${rr-web-build-dir}"/>
+        <pathelement location="${rr-backend-build-dir}"/>
+        <pathelement path="${env.CATALINA_HOME}/common/lib/servlet-api.jar"/>
+        <!--extdirs location="/Users/yamanustuntas/tmp"/-->
+        <fileset dir="ErgoRR-shared">
+            <include name="**/*.jar"/>
+            <exclude name="ErgoRR-shared/metro1_4/api/webservice-api.jar"/>
+        </fileset>
+    </path>
+
+    <target name="db-build" depends="db-create, db-create-tables"/>
+    <target name="all-build" depends="init, build-jaxb, build-commons, build-persistence, build-backend, build-war"/>
+    <target name="all-build-client" depends="build-soap-client, build-backend-client, build-backend"/>
+
+    <target name="init">
+        <delete dir="tmp-ergo"/>
+        <mkdir dir="${dist-dir}"/>
+        <mkdir dir="${build-dir}"/>
+        <mkdir dir="${rr-commons-build-dir}"/>
+        <mkdir dir="${rr-jaxb-build-dir}"/>
+        <mkdir dir="${rr-persistence-build-dir}"/>
+        <mkdir dir="${rr-web-build-dir}"/>
+        <mkdir dir="${rr-backend-build-dir}"/>
+        <mkdir dir="${rr-soap-client-build-dir}"/>
+        <mkdir dir="${rr-backend-client-build-dir}"/>
+    </target>
+
+    <target name="installer-package" depends="all-build">
+        <property name="installer-dir" value="tmp-ergo/installer/"/>
+        <mkdir dir="${installer-dir}"/>
+
+        <copy todir="${installer-dir}">
+            <fileset dir="${rr-web-dir}/src/main/webapp"/>
+        </copy>
+
+        <copy todir="${installer-dir}/WEB-INF/classes">
+            <fileset dir="${rr-web-build-dir}"/>
+            <fileset dir="${rr-commons-build-dir}"/>
+            <fileset dir="${rr-jaxb-build-dir}"/>
+            <fileset dir="${rr-persistence-build-dir}"/>
+            <fileset dir="${rr-backend-build-dir}"/>
+        </copy>
+
+        <copy todir="${installer-dir}/WEB-INF/lib">
+            <fileset file="ErgoRR-shared/postgis/postgis_1.3.3.jar"/>
+            <fileset file="ErgoRR-shared/saxpath/saxpath.jar"/>
+            <fileset dir="ErgoRR-shared/metro1_4">
+                <exclude name="webservices-api.jar"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${installer-dir}/etc/tomcat-commons"/>
+        <mkdir dir="${installer-dir}/etc/tomcat-endorsed"/>
+        <mkdir dir="${installer-dir}/etc/database"/>
+
+        <copy todir="${installer-dir}/etc/tomcat-commons">
+            <fileset file="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar"/>
+        </copy>
+
+        <copy todir="${installer-dir}/etc/database">
+            <fileset file="ErgoRR-persistence/src/main/config/database.sql"/>
+            <fileset file="ErgoRR-persistence/src/main/config/init-data.sql"/>
+            <fileset file="${rr-web-dir}/src/main/config/template-datasource.xml"/>
+        </copy>
+
+        <copy todir="${installer-dir}/etc/tomcat-endorsed">
+            <fileset file="ErgoRR-shared/metro1_4/webservices-api.jar"/>
+        </copy>
+        <property name="installer-zip-dir" value="${dist-dir}/installer/be/kzen/ergorr/installer/tasks/"/>
+        <mkdir dir="${installer-zip-dir}"/>
+        <zip destfile="${installer-zip-dir}/web.zip" basedir="${installer-dir}"/>
+    </target>
+
+    <property name="installerJar" value="ChangeMe.jar"/>
+    <target name="add-package-to-installer" depends="installer-package" description="installerJar should be passed by through command line with the -D option">
+        <jar destfile="${installerJar}" update="true">
+            <fileset dir="${dist-dir}/installer/"/>
+        </jar>
+    </target>
+
+    <target name="zip-javadocs">
+        <mkdir dir="${dist-dir}"/>
+        <zip destfile="${dist-dir}/ErgoRR-javadoc.zip">
+            <fileset dir="${rr-commons-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-commons-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-web-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-jaxb-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-backend-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-persistence-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-soap-client-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+            <fileset dir="${rr-backend-client-dir}/target">
+                <include name="*javadoc.jar"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="tomcat-setup">
+        <copy file="ErgoRR-shared/metro1_4/webservices-api.jar" todir="${env.CATALINA_HOME}/common/endorsed"/>
+        <copy file="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar" todir="${env.CATALINA_HOME}/common/lib"/>
+        <echo>***********************************</echo>
+        <echo>*         Restart Tomcat</echo>
+        <echo>***********************************</echo>
+    </target>
+</project>
