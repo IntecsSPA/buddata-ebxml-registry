@@ -24,11 +24,15 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
+ * Validates ClassificationSchemes.
+ * 
  * @author yamanustuntas
  */
 public class ClassificationSchemeTypeV extends RegistryObjectTypeV<ClassificationSchemeType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         super.validateToDelete();

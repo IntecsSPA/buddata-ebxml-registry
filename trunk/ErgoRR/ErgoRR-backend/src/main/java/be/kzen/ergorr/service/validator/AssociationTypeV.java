@@ -26,11 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * AssociationValidator.
  *
  * @author yamanustuntas
  */
 public class AssociationTypeV extends RegistryObjectTypeV<AssociationType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();

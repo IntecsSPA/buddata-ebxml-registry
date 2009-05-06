@@ -39,7 +39,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Validates RegistryObjects.
+ * 
  * @author yamanustuntas
  */
 public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractValidator<T> {
@@ -48,6 +49,9 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
     // Objects which only can have a certain objectType
     private static final String URN_REGEX = "^urn:[\\w-.]*:[\\w-.:]*";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         // TODO: make sure that ClassificationNode is from ObjectType ClassificationScheme
@@ -77,6 +81,9 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         String sql = "select id from t_association where sourceobject ='" + rimObject.getId() + "' or targetobject = '" + rimObject.getId() + "'";

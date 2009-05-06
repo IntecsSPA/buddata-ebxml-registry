@@ -25,11 +25,15 @@ import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 
 /**
+ * Validates Classifications.
  *
  * @author yamanustuntas
  */
 public class ClassificationTypeV extends RegistryObjectTypeV<ClassificationType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();

@@ -21,9 +21,11 @@ package be.kzen.ergorr.service.validator;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 
 /**
- *
+ * Validate RegistryPackages.
+ * 
  * @author yamanustuntas
  */
 public class RegistryPackageTypeV extends RegistryObjectTypeV<RegistryPackageType> {
 
+    // TODO: delete HasMember associations
 }

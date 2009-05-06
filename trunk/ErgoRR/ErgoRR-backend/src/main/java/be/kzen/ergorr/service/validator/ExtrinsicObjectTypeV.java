@@ -26,11 +26,15 @@ import be.kzen.ergorr.persist.InternalSlotTypes;
 import java.sql.SQLException;
 
 /**
- *
+ * Validates ExtrinsicObjects.
+ * 
  * @author yamanustuntas
  */
 public class ExtrinsicObjectTypeV extends RegistryObjectTypeV<ExtrinsicObjectType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();

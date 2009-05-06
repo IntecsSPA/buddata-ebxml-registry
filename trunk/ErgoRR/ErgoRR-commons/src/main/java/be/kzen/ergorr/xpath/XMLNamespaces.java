@@ -12,8 +12,7 @@ import javax.xml.namespace.NamespaceContext;
  * Binds namespace URIs with their prefixes in a hash map.
  * This is used by the <code>XPathUtil</code>.
  *
- * @author <a href="mailto:yaman@cryptosense.com">Yaman Ustuntas</a>
- * Created on 13 November 2006
+ * @author Yaman Ustuntas
  */
 public class XMLNamespaces implements NamespaceContext {
     private Map<String, String> namespaces;

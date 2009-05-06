@@ -1,4 +1,4 @@
-/*
+ /*
  * Project: Buddata ebXML RegRep
  * Class: PHRTranslator.java
  * Copyright (C) 2008 Yaman Ustuntas
@@ -26,14 +26,8 @@ import be.kzen.ergorr.service.translator.Translator;
  * 
  * @author Yaman Ustuntas
  */
-public class PHRTranslator extends OPTTranslator implements Translator {
-    private EarthObservationType eo;
+public class PHRTranslator extends OPTTranslator<EarthObservationType> {
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:SAR"; 
-
-    public PHRTranslator(EarthObservationType eo) {
-        super(eo);
-        this.eo = eo;
-    }
     
     @Override
     public String getClassification() {

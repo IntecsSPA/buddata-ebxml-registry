@@ -71,18 +71,21 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *
  * @author Yaman Ustuntas
  */
-public class HMATranslator implements Translator {
+public class HMATranslator<T extends EarthObservationType> implements Translator<T> {
 
     private static Logger logger = Logger.getLogger(HMATranslator.class.getName());
-    private EarthObservationType eo;
+    protected T eo;
     protected RegistryObjectListType regObjList;
     protected WrsExtrinsicObjectType eoProduct;
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:EOP";
     public static final String CLASSIFICATION_SCHEME = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes";
 
-    public HMATranslator(EarthObservationType eo) {
-        this.eo = eo;
+    public HMATranslator() {
         regObjList = new RegistryObjectListType();
+    }
+
+    public void setObject(T obj) {
+        this.eo = obj;
     }
 
     public String getClassification() {

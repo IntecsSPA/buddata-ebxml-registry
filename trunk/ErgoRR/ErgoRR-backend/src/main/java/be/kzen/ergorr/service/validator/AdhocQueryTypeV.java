@@ -21,7 +21,8 @@ package be.kzen.ergorr.service.validator;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 
 /**
- *
+ * AdhocQuery validator.
+ * 
  * @author yamanustuntas
  */
 public class AdhocQueryTypeV extends RegistryObjectTypeV<AdhocQueryType> {

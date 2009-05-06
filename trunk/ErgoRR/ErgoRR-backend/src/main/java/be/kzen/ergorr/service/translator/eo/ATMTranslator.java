@@ -39,16 +39,10 @@ import javax.xml.bind.JAXBElement;
  *
  * @author Yaman Ustuntas
  */
-public class ATMTranslator extends HMATranslator implements Translator {
+public class ATMTranslator extends HMATranslator<EarthObservationType> {
 
-    private EarthObservationType eo;
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:ATM"; 
 
-    public ATMTranslator(EarthObservationType eo) {
-        super(eo);
-        this.eo = eo;
-    }
-    
     @Override
     public String getClassification() {
         return CLASSIFICATION;

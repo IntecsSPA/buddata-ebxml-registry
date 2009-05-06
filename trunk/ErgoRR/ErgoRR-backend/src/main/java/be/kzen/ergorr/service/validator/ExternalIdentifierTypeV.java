@@ -21,7 +21,8 @@ package be.kzen.ergorr.service.validator;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 
 /**
- *
+ * Validates ExternalIdentifiers.
+ * 
  * @author yamanustuntas
  */
 public class ExternalIdentifierTypeV extends RegistryObjectTypeV<ExternalIdentifierType> {

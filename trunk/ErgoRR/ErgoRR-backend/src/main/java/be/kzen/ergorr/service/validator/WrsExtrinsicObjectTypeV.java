@@ -19,7 +19,8 @@
 package be.kzen.ergorr.service.validator;
 
 /**
- *
+ * Validates WrsExtrinsicObjects.
+ * 
  * @author yamanustuntas
  */
 public class WrsExtrinsicObjectTypeV extends ExtrinsicObjectTypeV {

@@ -26,11 +26,15 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
+ * Validates ClassificationNodes.
+ * 
  * @author yamanustuntas
  */
 public class ClassificationNodeTypeV extends RegistryObjectTypeV<ClassificationNodeType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();
@@ -54,6 +58,9 @@ public class ClassificationNodeTypeV extends RegistryObjectTypeV<ClassificationN
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         super.validateToDelete();

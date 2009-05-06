@@ -25,11 +25,15 @@ import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
 
 /**
- *
+ * Validates SpecificationLinks.
+ * 
  * @author yamanustuntas
  */
 public class SpecificationLinkTypeV extends RegistryObjectTypeV<SpecificationLinkType> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();
