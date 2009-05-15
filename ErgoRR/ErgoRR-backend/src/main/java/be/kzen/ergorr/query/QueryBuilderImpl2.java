@@ -137,7 +137,9 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             sqlQuery.setMaxResults(request.getMaxRecords().intValue());
         }
         if (request.isSetStartPosition()) {
-            sqlQuery.setStartPosition(request.getStartPosition().intValue());
+            // start position for OGC Filter is 1, for PostgreSQL is 0
+            int startPos = request.getStartPosition().intValue() - 1;
+            sqlQuery.setStartPosition(startPos);
         }
         if (filterQuery.getElementSetName().isSetValue()) {
             resultSet = filterQuery.getElementSetName().getValue();
