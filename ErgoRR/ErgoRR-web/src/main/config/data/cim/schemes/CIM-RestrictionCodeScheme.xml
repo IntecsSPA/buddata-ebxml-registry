@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme 
+  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
+  id="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode"
+  objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+  isInternal="true"
+  nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+       <rim:Name>
+          <rim:LocalizedString xml:lang="en" value="ISO 19115 Restriction Codes"/>
+       </rim:Name>
+       <rim:Description>
+          <rim:LocalizedString xml:lang="en" value="Defines a classification of use and access constraints"/>
+       </rim:Description>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="copyright"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:copyright">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="copyright"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="exclusive right to the publication, production, or sale of the rights to a literary, dramatic, musical, or artistic work, or to the use of a commercial print or label, granted by law for a specified period of time to an author, composer, artist, distributor"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="patent"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:patent">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="patent"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="government has granted exclusive right to make, sell, use or license an invention or discovery"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="patentPending"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:patentPending">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="patent Pending"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="produced or sold information awaiting a patent"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="trademark"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:trademark">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="trademark"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="a name, symbol, or other device identifying a product, officially registered and legally restricted to the use of the owner or manufacturer"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="license"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:license">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="license"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="formal permission to do something"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="intellectualPropertyRights"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:intellectualPropertyRights">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="intellectual Property Rights"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="rights to financial benefit from and control of distribution of non-tangible property that is a result of creativity"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="restricted"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:restricted">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="restricted"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="withheld from general circulation or disclosure"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         code="otherRestrictions"
+         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:otherRestrictions">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="other Restrictions"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="limitation not listed"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+        
+</rim:ClassificationScheme>

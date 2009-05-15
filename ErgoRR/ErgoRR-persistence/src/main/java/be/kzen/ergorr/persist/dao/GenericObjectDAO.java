@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.persist.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,18 +41,26 @@ public abstract class GenericObjectDAO<T> extends GenericDAO<T> {
     }
 
     public void insert() throws SQLException {
-        batchStmt.addBatch(createInsertStatement());
-        insertRelatedObjects(batchStmt);
+        PreparedStatement stmt = connection.prepareStatement(createInsertStatement());
+        setParameters(stmt);
+        stmt.addBatch();
+        stmt.executeBatch();
+        insertRelatedObjects();
     }
 
     public void update() throws SQLException {
-        batchStmt.addBatch(createUpdateStatement());
-        updateRelatedObjects(batchStmt);
+        PreparedStatement stmt = connection.prepareStatement(createUpdateStatement());
+        setParameters(stmt);
+        stmt.addBatch();
+        stmt.executeBatch();
+        updateRelatedObjects();
     }
 
     public void delete() throws SQLException {
-        batchStmt.addBatch(createDeleteStatement());
-        deleteRelatedObjects(batchStmt);
+        Statement stmt = connection.createStatement();
+        stmt.addBatch(createDeleteStatement());
+        stmt.executeBatch();
+        deleteRelatedObjects();
     }
 
     public T loadCompleteXmlObject(ResultSet result) throws SQLException {
@@ -66,11 +75,11 @@ public abstract class GenericObjectDAO<T> extends GenericDAO<T> {
 
     protected abstract T loadXmlObject(ResultSet result) throws SQLException;
 
-    protected abstract void insertRelatedObjects(Statement batchStmt) throws SQLException;
+    protected abstract void insertRelatedObjects() throws SQLException;
 
-    protected abstract void updateRelatedObjects(Statement batchStmt) throws SQLException;
+    protected abstract void updateRelatedObjects() throws SQLException;
 
-    protected abstract void deleteRelatedObjects(Statement batchStmt) throws SQLException;
+    protected abstract void deleteRelatedObjects() throws SQLException;
 
     protected abstract void loadRelatedObjects() throws SQLException;
 

@@ -6509,8 +6509,8 @@ application schema.</documentation>
    <soapenv:Header/>
    <soapenv:Body>
       <ns:GetRecordById service="CSW" version="2.0.2" outputFormat="application/xml" outputSchema="?">
-         <ns:Id>urn:uuid:93b17245-a837-4567-b209-c9af26e7a4d1</ns:Id>
-         <ns:ElementSetName>full</ns:ElementSetName>
+         <ns:Id>urn:uuid:dd0a1386-04a9-420c-b266-4d05cb61408c</ns:Id>
+         <ns:ElementSetName>brief</ns:ElementSetName>
       </ns:GetRecordById>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordByIdRequest"/></con:call><con:call name="Multiple IDs"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">

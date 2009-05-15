@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,13 +51,13 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     }
 
     @Override
-    protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
-        super.insertRelatedObjects(batchStmt);
+    protected void insertRelatedObjects() throws SQLException {
+        super.insertRelatedObjects();
         UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
-        paramDAO.setBatchStmt(batchStmt);
+        paramDAO.setConnection(connection);
         paramDAO.insert();
         UsageDescriptionDAO descDAO = new UsageDescriptionDAO(xmlObject);
-        descDAO.setBatchStmt(batchStmt);
+        descDAO.setConnection(connection);
         descDAO.insert();
     }
 
@@ -73,16 +74,10 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-
-        vals.append(xmlObject.isNewObject() ? "," : ",servicebinding=");
-        appendStringValue(xmlObject.getServiceBinding(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",specificationlink=");
-        appendStringValue(xmlObject.getSpecificationObject(), vals);
-
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(8, xmlObject.getServiceBinding());
+        stmt.setString(9, xmlObject.getSpecificationObject());
     }
 
     @Override
@@ -102,6 +97,11 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
         } else {
             return getParamList();
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",servicebinding=?,specificationlink=?");
     }
 
     @Override

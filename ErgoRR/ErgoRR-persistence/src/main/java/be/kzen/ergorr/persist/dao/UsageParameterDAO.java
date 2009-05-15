@@ -1,6 +1,7 @@
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,10 +34,12 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
 
     @Override
     public void insert() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(createInsertStatement());
 
         for (String param : parent.getUsageParameter()) {
-            currentValues = param;
-            batchStmt.addBatch(createInsertStatement());
+            stmt.setString(1, parent.getId());
+            stmt.setString(2, param);
+            stmt.addBatch();
         }
     }
 
@@ -53,5 +56,15 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
     @Override
     protected String getQueryParamList() {
         return "value_";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return "?,?";
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

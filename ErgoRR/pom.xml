@@ -1,4 +1,3 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <name>ErgoRR module bundle</name>
@@ -16,7 +15,7 @@
             <name>GPL v3</name>
             <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
             <distribution>repo</distribution>
-            <comments></comments>
+            <comments>Third party libraries used in this project have their own licenses.</comments>
         </license>
     </licenses>
 

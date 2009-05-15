@@ -1,15 +1,14 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.CommonFunctions;
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.SimpleLinkType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Types;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -27,7 +26,7 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
 
     @Override
     public T newXmlObject(ResultSet result) throws SQLException {
-        xmlObject = (T) new ExtrinsicObjectType();
+        xmlObject = (T) (result.getString("spectype").equals("rim") ? new ExtrinsicObjectType() : new WrsExtrinsicObjectType());
         return loadCompleteXmlObject(result);
     }
 
@@ -39,18 +38,10 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
             xmlObject.setIsOpaque(result.getBoolean("isopaque"));
             xmlObject.setMimeType(result.getString("mimetype"));
 
-            String contentVersionName = result.getString("contentversionname");
-            String contentVersionComment = result.getString("contentversioncomment");
-
-            if (contentVersionName != null && contentVersionName.trim().length() > 0) {
-                VersionInfoType versionInfo = new VersionInfoType();
-                versionInfo.setVersionName(contentVersionName);
-
-                if (contentVersionComment != null) {
-                    versionInfo.setComment(contentVersionComment);
-                }
-                xmlObject.setContentVersionInfo(versionInfo);
-            }
+            VersionInfoType versionInfo = new VersionInfoType();
+            versionInfo.setVersionName(result.getString("contentversionname"));
+            versionInfo.setComment(result.getString("contentversioncomment"));
+            xmlObject.setContentVersionInfo(versionInfo);
 
             if (xmlObject instanceof WrsExtrinsicObjectType) {
                 WrsExtrinsicObjectType wrsEo = (WrsExtrinsicObjectType) xmlObject;
@@ -86,61 +77,47 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-
-        vals.append(xmlObject.isNewObject() ? "," : ",isopaque=");
-        appendBooleanValue(xmlObject.isIsOpaque(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",mimetype=");
-        appendStringValue(xmlObject.getMimeType(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",contentversionname=");
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setBoolean(8, xmlObject.isIsOpaque());
+        stmt.setString(9, xmlObject.getMimeType());
 
         if (xmlObject.isSetContentVersionInfo()) {
-            appendStringValue(xmlObject.getContentVersionInfo().getVersionName(), vals);
-            vals.append(xmlObject.isNewObject() ? "," : ",contentversioncomment=");
-            appendStringValue(xmlObject.getContentVersionInfo().getComment(), vals);
+            stmt.setString(10, xmlObject.getContentVersionInfo().getVersionName());
+            stmt.setString(11, xmlObject.getContentVersionInfo().getComment());
         } else {
-            vals.append("''");
-            vals.append(xmlObject.isNewObject() ? ",''" : ",contentversioncomment=''");
+            stmt.setNull(10, Types.VARCHAR);
+            stmt.setNull(11, Types.VARCHAR);
         }
-
-        vals.append(xmlObject.isNewObject() ? "," : ",spectype=");
 
         if (xmlObject instanceof WrsExtrinsicObjectType) {
             WrsExtrinsicObjectType wrsEo = (WrsExtrinsicObjectType) xmlObject;
-            vals.append("'wrs'");
-            vals.append(xmlObject.isNewObject() ? "," : ",wrsactuate=");
+            stmt.setString(12, "wrs");
 
             if (wrsEo.isSetRepositoryItemRef()) {
-                appendStringValue(wrsEo.getRepositoryItemRef().getActuate(), vals);
-                vals.append(xmlObject.isNewObject() ? "," : ",wrsarcrole=");
-                appendStringValue(wrsEo.getRepositoryItemRef().getArcrole(), vals);
-                vals.append(xmlObject.isNewObject() ? "," : ",wrshref=");
-                appendStringValue(wrsEo.getRepositoryItemRef().getHref(), vals);
-                vals.append(xmlObject.isNewObject() ? "," : ",wrsrole=");
-                appendStringValue(wrsEo.getRepositoryItemRef().getRole(), vals);
-                vals.append(xmlObject.isNewObject() ? "," : ",wrsshow=");
-                appendStringValue(wrsEo.getRepositoryItemRef().getShow(), vals);
-                vals.append(xmlObject.isNewObject() ? "," : ",wrstitle=");
-                appendStringValue(wrsEo.getRepositoryItemRef().getTitle(), vals);
+                stmt.setString(13, wrsEo.getRepositoryItemRef().getActuate());
+                stmt.setString(14, wrsEo.getRepositoryItemRef().getArcrole());
+                stmt.setString(15, wrsEo.getRepositoryItemRef().getHref());
+                stmt.setString(16, wrsEo.getRepositoryItemRef().getRole());
+                stmt.setString(17, wrsEo.getRepositoryItemRef().getShow());
+                stmt.setString(18, wrsEo.getRepositoryItemRef().getTitle());
             } else {
-                if (xmlObject.isNewObject()) {
-                    vals.append("'','','','','',''");
-                } else {
-                    vals.append("'',wrsarcrole='',wrshref='',wrsrole='',wrsshow='',wrstitle=''");
-                }
+                stmt.setNull(13, Types.VARCHAR);
+                stmt.setNull(14, Types.VARCHAR);
+                stmt.setNull(15, Types.VARCHAR);
+                stmt.setNull(16, Types.VARCHAR);
+                stmt.setNull(17, Types.VARCHAR);
+                stmt.setNull(18, Types.VARCHAR);
             }
-
         } else {
-            if (xmlObject.isNewObject()) {
-                vals.append("'rim','','','','','',''");
-            } else {
-                vals.append("'rim',wrsactuate='',wrsarcrole='',wrshref='',wrsrole='',wrsshow='',wrstitle=''");
-            }
+            stmt.setString(12, "rim");
+            stmt.setNull(13, Types.VARCHAR);
+            stmt.setNull(14, Types.VARCHAR);
+            stmt.setNull(15, Types.VARCHAR);
+            stmt.setNull(16, Types.VARCHAR);
+            stmt.setNull(17, Types.VARCHAR);
+            stmt.setNull(18, Types.VARCHAR);
         }
-
-        return vals.toString();
     }
 
     @Override
@@ -163,7 +140,16 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
     }
 
     @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?,?,?,?,?,?,?,?,?" : ",isopaque=?,mimetype=?,contentversionname=?,contentversioncomment=?,spectype=?,wrsactuate=?,wrsarcrole=?,wrshref=?,wrsrole=?,wrsshow=?,wrstitle=?");
+    }
+
+    @Override
     public JAXBElement<T> createJAXBElement() {
-        return (JAXBElement<T>) OFactory.rim.createExtrinsicObject(xmlObject);
+        if (xmlObject instanceof WrsExtrinsicObjectType) {
+            return (JAXBElement<T>) OFactory.wrs.createExtrinsicObject((WrsExtrinsicObjectType) xmlObject);
+        } else {
+            return (JAXBElement<T>) OFactory.rim.createExtrinsicObject(xmlObject);
+        }
     }
 }

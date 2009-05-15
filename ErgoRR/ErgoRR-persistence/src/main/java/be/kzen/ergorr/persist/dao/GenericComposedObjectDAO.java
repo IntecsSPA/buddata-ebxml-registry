@@ -11,24 +11,20 @@ import java.util.List;
  * @author Yaman Ustuntas
  */
 public abstract class GenericComposedObjectDAO<T, P extends IdentifiableType> extends GenericDAO<T> {
-    protected String currentValues;
     protected P parent;
 
     public GenericComposedObjectDAO(P parent) {
         this.parent = parent;
     }
     
-    public String createValues() {
-        return currentValues;
-    }
-
     public void update() throws SQLException {
         delete();
         insert();
     }
 
     public void delete() throws SQLException {
-        batchStmt.addBatch(createDeleteStatement());
+        Statement stmt = connection.createStatement();
+        stmt.execute(createDeleteStatement());
     }
 
     /**

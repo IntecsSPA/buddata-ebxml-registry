@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -41,14 +42,10 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-        vals.append(xmlObject.isNewObject() ? "," : ",isinternal=");
-        appendBooleanValue(xmlObject.isIsInternal(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",nodetype=");
-        appendStringValue(xmlObject.getNodeType(), vals);
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setBoolean(8, xmlObject.isIsInternal());
+        stmt.setString(9, xmlObject.getNodeType());
     }
 
     @Override
@@ -63,6 +60,11 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
         } else {
             return getParamList();
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",isinternal=?,nodetype=?");
     }
 
     @Override

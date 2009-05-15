@@ -22,6 +22,8 @@ import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -31,16 +33,11 @@ import java.sql.Statement;
 public abstract class GenericDAO<T> {
 
     protected Connection connection;
-    protected Statement batchStmt;
     protected RequestContext context;
     protected ElementSetType elementSet;
 
     public void setConnection(Connection connection) {
         this.connection = connection;
-    }
-
-    public void setBatchStmt(Statement batchStmt) {
-        this.batchStmt = batchStmt;
     }
 
     public void setContext(RequestContext context) {
@@ -51,13 +48,13 @@ public abstract class GenericDAO<T> {
     protected String createInsertStatement() {
         StringBuilder sql = new StringBuilder("insert into ");
         sql.append(getTableName()).append(" (").append(getParamList()).append(") values (");
-        sql.append(createValues()).append(");");
+        sql.append(getPlaceHolders()).append(");");
         return sql.toString();
     }
 
     protected String createUpdateStatement() {
         StringBuilder sql = new StringBuilder("update ");
-        sql.append(getTableName()).append(" set ").append(createValues());
+        sql.append(getTableName()).append(" set ").append(getPlaceHolders());
         sql.append(" where ").append(getFetchCondition()).append(";");
         return sql.toString();
     }
@@ -99,6 +96,7 @@ public abstract class GenericDAO<T> {
     public abstract String getTableName();
     protected abstract String getParamList();
     protected abstract String getQueryParamList();
-    protected abstract String createValues();
     protected abstract String getFetchCondition();
+    protected abstract String getPlaceHolders();
+    protected abstract void setParameters(PreparedStatement stmt) throws SQLException;
 }

@@ -157,18 +157,42 @@
     <target name="db-load-model">
         <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
         <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
+        <!-- RIM -->
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-objecttype-scheme.xml"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-datatype-scheme.xml"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-associationtype-scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-querylanguage-scheme.xml"/>
+        <!-- EOP -->
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-rim-model.xml"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-slot-init.xml"/>
+        <!-- Basic package -->
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/basic-package/schemes/ISO19119-Services-Scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/basic-package/schemes/UNSD-Regions-Scheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/basic-package/Basic-Package.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/basic-package/basic-package-slot-init.xml"/>
+        <!-- CIM -->
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-CharacterSetScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-CitedResponsiblePartyScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-ClassificationCodeScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-CouplingTypeScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-DCPListScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-FormatNameAndVersionScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-KeywordScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-KeywordTypeScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-MetadataStandardNameAndVersionScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-RestrictionCodeScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-RestrictionTypeScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-SpatialRepresentationScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/schemes/CIM-TopicCategoryScheme.xml"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/cim/CIM-Package.xml"/>
     </target>
 
     <target name="db-load-test">
         <taskdef name="rr-invoker" classname="be.kzen.ergorr.deploy.ant.WsInvokerTask" classpathref="libs.ref"/>
         <property name="serviceurl" value="http://${appserver.url}/${deployName}/webservice?wsdl"/>
-        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/test/data"/>
-        <!--rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/../2008-final"/-->
+        <!--rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/test/data"/-->
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/../2007-final"/>
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/../2008-final"/>
     </target>
 
     <!--target name="deploy">

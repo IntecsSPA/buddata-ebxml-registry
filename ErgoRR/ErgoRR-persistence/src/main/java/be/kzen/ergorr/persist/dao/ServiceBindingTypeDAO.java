@@ -4,6 +4,7 @@ import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.ServiceType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -60,18 +61,11 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-
-        vals.append(xmlObject.isNewObject() ? "," : ",service=");
-        appendStringValue(xmlObject.getService(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",accessuri=");
-        appendStringValue(xmlObject.getAccessURI(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",targetbinding=");
-        appendStringValue(xmlObject.getTargetBinding(), vals);
-
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(9, xmlObject.getService());
+        stmt.setString(10, xmlObject.getAccessURI());
+        stmt.setString(11, xmlObject.getTargetBinding());
     }
 
     @Override
@@ -91,6 +85,11 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         } else {
             return getParamList();
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",service=?,accessuri=?,targetbinging=?");
     }
 
     @Override

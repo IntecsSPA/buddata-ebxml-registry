@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,10 +33,11 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         }
     }
 
-    public void deleteExternalIdentifiers(RegistryObjectType parent, Statement batchStmt) throws SQLException {
+    public void deleteExternalIdentifiers(RegistryObjectType parent) throws SQLException {
+        Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
         sql.append("delete from ").append(getTableName()).append(" where registryobject='").append(parent.getId()).append("';");
-        batchStmt.addBatch(sql.toString());
+        stmt.execute(sql.toString());
     }
 
     @Override
@@ -56,18 +58,11 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-
-        vals.append(xmlObject.isNewObject() ? "," : ",registryobject=");
-        appendStringValue(xmlObject.getRegistryObject(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",identificationscheme=");
-        appendStringValue(xmlObject.getIdentificationScheme(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",value_=");
-        appendStringValue(xmlObject.getValue(), vals);
-
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(8, xmlObject.getRegistryObject());
+        stmt.setString(9, xmlObject.getIdentificationScheme());
+        stmt.setString(10, xmlObject.getValue());
     }
 
     @Override
@@ -82,6 +77,11 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         } else {
             return getParamList();
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",registryobject=?,identificationscheme=?,value_=?");
     }
 
     @Override

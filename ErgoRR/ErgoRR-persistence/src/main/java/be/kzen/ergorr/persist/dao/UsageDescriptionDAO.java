@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,19 +48,14 @@ public class UsageDescriptionDAO extends GenericComposedObjectDAO<InternationalS
             InternationalStringType intString = parent.getDescription();
 
             if (!intString.getLocalizedString().isEmpty()) {
+                    PreparedStatement stmt = connection.prepareCall(createInsertStatement());
 
                 for (LocalizedStringType localString : intString.getLocalizedString()) {
-                    StringBuilder values = new StringBuilder();
-                    appendStringValue(parent.getId(), values);
-                    values.append(",");
-                    appendStringValue(localString.getCharset(), values);
-                    values.append(",");
-                    appendStringValue(localString.getLang(), values);
-                    values.append(",");
-                    appendStringValue(localString.getValue(), values);
-
-                    currentValues = values.toString();
-                    batchStmt.addBatch(createInsertStatement());
+                    stmt.setString(1, parent.getId());
+                    stmt.setString(2, localString.getCharset());
+                    stmt.setString(3, localString.getLang());
+                    stmt.setString(4, localString.getValue());
+                    stmt.addBatch();
                 }
             }
         }
@@ -78,5 +74,15 @@ public class UsageDescriptionDAO extends GenericComposedObjectDAO<InternationalS
     @Override
     protected String getQueryParamList() {
         return "charset,lang,value_";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return "?,?,?,?";
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -14,15 +14,23 @@ import be.kzen.ergorr.model.rim.ValueListType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.AnyValueType;
 import be.kzen.ergorr.model.wrs.WrsValueListType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import org.postgis.Geometry;
 import org.postgis.binary.BinaryParser;
 import org.postgis.binary.BinaryWriter;
@@ -47,7 +55,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
      * @param slotType Slot type.
      * @throws be.kzen.ergorr.exceptions.MappingException
      */
-    private SlotValues getAnyValueByType(String value, String slotName, String slotType, String internalSlotType, String seq) throws SQLException {
+    private SlotValues getAnyValueByType(String value, String slotName, String slotType, String internalSlotType, int seq) throws SQLException {
         SlotValues slotValues = new SlotValues(parent.getId(), slotName, slotType);
         slotValues.seq = seq;
 
@@ -59,13 +67,37 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         } else {
             slotValues.specType = InternalConstants.SPEC_TYPE_WRS;
             if (internalSlotType.equals(InternalConstants.TYPE_INTEGER)) {
-                slotValues.intValue = value;
+                try {
+                    // first to double in case int value passed as 1.0
+                    // Integer.valueOf can't handle that.
+                    double d = Double.valueOf(value);
+                    slotValues.intValue = (int) d;
+                } catch (NumberFormatException ex) {
+                    throw new SQLException("Could not cast Slot " + slotName + " integer value: " + value);
+                }
             } else if (internalSlotType.equals(InternalConstants.TYPE_DATETIME)) {
-                slotValues.dateTimeValue = value;
+                try {
+                    Calendar c = DatatypeFactory.newInstance().newXMLGregorianCalendar(value).toGregorianCalendar();
+                    Calendar utc = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+                    utc.setTimeInMillis(c.getTimeInMillis());
+                    slotValues.dateTimeValue = new Timestamp(utc.getTimeInMillis());
+                } catch (DatatypeConfigurationException ex) {
+                    throw new SQLException("Could not cast Slot " + slotName + " value to XML date: " + value);
+                }
             } else if (internalSlotType.equals(InternalConstants.TYPE_DOUBLE)) {
-                slotValues.doubleValue = value;
+                try {
+                    slotValues.doubleValue = Double.valueOf(value);
+                } catch (NumberFormatException ex) {
+                    throw new SQLException("Could not cast Slot " + slotName + " double value: " + value);
+                }
             } else if (internalSlotType.equals(InternalConstants.TYPE_BOOLEAN)) {
-                slotValues.boolValue = value;
+                String boolVal = value.toLowerCase();
+
+                if (boolVal.equals("true") || boolVal.equals("false")) {
+                    slotValues.boolValue = Boolean.valueOf(value);
+                } else {
+                    throw new SQLException("Could not cast Slot " + slotName + " bool value: " + value);
+                }
             }
         }
 
@@ -102,6 +134,11 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
     public String getQueryParamList() {
         return "name_,slottype,spectype,stringvalue";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return "?,?,?,?,?,?,?,?,?,?,transform(?," + CommonProperties.getInstance().get("db.defaultSrsId") + ")";
     }
 
     @Override
@@ -157,6 +194,8 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
     @Override
     public void insert() throws SQLException {
+        PreparedStatement stmt = connection.prepareCall(createInsertStatement());
+
         List<SlotType> slots = parent.getSlot();
 
         for (SlotType slot : slots) {
@@ -170,48 +209,50 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                     if (eo.getObjectType() == null || !eo.getObjectType().equals(RIMConstants.CN_OBJ_DEF) || !InternalSlotTypes.isInternalSlotType(slot.getSlotType())) {
                         insertSlot = false;
                         logger.log(Level.WARNING, "Skipping slot " + slot.getName() + " of object " + eo.getId() + " because slot is not registered");
-//                        throw new SQLException(slot.getName() + " is not registered with an internal slotType");
                     }
                 }
+                internalSlotType = InternalConstants.TYPE_STRING;
             }
 
             if (insertSlot) {
                 if (slot.isSetValueList()) {
                     if (slot.getValueList().getValue() instanceof WrsValueListType) {
-                        insertWrsValues((WrsValueListType) slot.getValueList().getValue(), internalSlotType, slot);
+                        insertWrsValues((WrsValueListType) slot.getValueList().getValue(), internalSlotType, slot, stmt);
                     } else {
                         ValueListType valueList = slot.getValueList().getValue();
                         List<String> stringValues = valueList.getValue();
 
                         if (valueList.isSetValue() && stringValues.size() > 0) {
                             for (int j = 0; j < valueList.getValue().size(); j++) {
-                                SlotValues slotValues = getAnyValueByType(stringValues.get(j), slot.getName(), slot.getSlotType(), internalSlotType, String.valueOf(j));
-                                currentValues = slotValues.getValues();
-                                batchStmt.addBatch(createInsertStatement());
+                                SlotValues slotValues = getAnyValueByType(stringValues.get(j), slot.getName(), slot.getSlotType(), internalSlotType, j);
+                                slotValues.loadValues(stmt);
+                                stmt.addBatch();
                             }
                         } else {
                             // handle case when ValueList doesn't have Values
-                            addSlotWithoutValues(slot);
+                            addSlotWithoutValues(slot, stmt);
                         }
                     }
                 } else {
                     // handle case when slot doesn't have ValueList
-                    addSlotWithoutValues(slot);
+                    addSlotWithoutValues(slot, stmt);
                 }
             }
         }
+        
+        stmt.executeBatch();
     }
 
-    private void addSlotWithoutValues(SlotType slot) throws SQLException {
+    private void addSlotWithoutValues(SlotType slot, PreparedStatement stmt) throws SQLException {
         SlotValues slotValues = new SlotValues(parent.getId(), slot.getName(), slot.getSlotType());
         slotValues.specType = InternalConstants.SPEC_TYPE_RIM;
         slotValues.stringValue = "";
-        slotValues.seq = "0";
-        currentValues = slotValues.getValues();
-        batchStmt.addBatch(createInsertStatement());
+        slotValues.seq = 0;
+        slotValues.loadValues(stmt);
+        stmt.addBatch();
     }
 
-    private void insertWrsValues(WrsValueListType wrsValueList, String internalSlotType, SlotType slot) throws SQLException {
+    private void insertWrsValues(WrsValueListType wrsValueList, String internalSlotType, SlotType slot, PreparedStatement stmt) throws SQLException {
         for (int i = 0; i < wrsValueList.getAnyValue().size(); i++) {
             AnyValueType anyVal = wrsValueList.getAnyValue().get(i);
             if (!anyVal.getContent().isEmpty()) {
@@ -221,7 +262,6 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
                         if (anyValEl.getValue() instanceof AbstractGeometryType) {
                             AbstractGeometryType gmlGeometry = (AbstractGeometryType) anyValEl.getValue();
-                            int defaultSrsId = CommonProperties.getInstance().getInt("db.defaultSrsId");
                             Geometry geometry = null;
 
                             try {
@@ -232,19 +272,15 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
                             BinaryWriter binaryWriter = new BinaryWriter();
                             SlotValues slotValues = new SlotValues(parent.getId(), slot.getName(), slot.getSlotType());
-                            slotValues.seq = String.valueOf(i);
+                            slotValues.seq = i;
                             slotValues.specType = InternalConstants.SPEC_TYPE_WRS;
                             String geomHex = binaryWriter.writeHexed(geometry);
 
                             slotValues.stringValue = geomHex;
-                            if (geometry.getSrid() == defaultSrsId) {
-                                slotValues.geometryValue = "'" + slotValues.stringValue + "'";
-                            } else {
-                                slotValues.geometryValue = "transform('" + slotValues.stringValue + "'," + defaultSrsId + ")";
-                            }
+                            slotValues.geometryValue = geometry;
 
-                            currentValues = slotValues.getValues();
-                            batchStmt.addBatch(createInsertStatement());
+                            slotValues.loadValues(stmt);
+                            stmt.addBatch();
                         } else {
                             throw new SQLException("Slot " + slot.getName() + " does not have a geometry value");
                         }
@@ -253,12 +289,17 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                     }
                 } else {
                     String val = anyVal.getContent().get(0).toString().trim();
-                    SlotValues slotValues = getAnyValueByType(val, slot.getName(), slot.getSlotType(), internalSlotType, String.valueOf(i));
-                    currentValues = slotValues.getValues();
-                    batchStmt.addBatch(createInsertStatement());
+                    SlotValues slotValues = getAnyValueByType(val, slot.getName(), slot.getSlotType(), internalSlotType, i);
+                    slotValues.loadValues(stmt);
+                    stmt.addBatch();
                 }
             }
         }
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -266,17 +307,17 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
      */
     private class SlotValues {
 
-        public String seq = "";
+        public int seq = 0;
         public String parent = "";
         public String slotName = "";
         public String slotType = null;
         public String specType = InternalConstants.SPEC_TYPE_RIM;
         public String stringValue = null;
-        public String boolValue = "null";
-        public String dateTimeValue = "null";
-        public String doubleValue = "null";
-        public String intValue = "null";
-        public String geometryValue = "null";
+        public boolean boolValue = false;
+        public Timestamp dateTimeValue = null;
+        public Double doubleValue = null;
+        public Integer intValue = null;
+        public Geometry geometryValue = null;
 
         public SlotValues(String parent, String slotName, String slotType) {
             this.parent = parent;
@@ -284,27 +325,38 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
             this.slotType = (slotType != null) ? slotType : null;
         }
 
-        public String getValues() {
-            StringBuilder sql = new StringBuilder();
-            sql.append(seq).append(",");
-            appendStringValue(parent, sql);
-            sql.append(",");
-            appendStringValue(slotName, sql);
-            sql.append(",");
-            appendStringValue(slotType, sql);
-            sql.append(",");
-            appendStringValue(specType, sql);
-            sql.append(",");
-            appendStringValue(stringValue, sql);
-            sql.append(",");
-            // TODO: check if boolean is handled correctly
-            sql.append(boolValue).append(",");
-            sql.append((dateTimeValue.equals("null") ? dateTimeValue : "'" + dateTimeValue + "'")).append(",");
-//            sql.append(dateTimeValue).append(",");
-            sql.append(doubleValue).append(",");
-            sql.append(intValue).append(",");
-            sql.append(geometryValue);
-            return sql.toString();
+        public void loadValues(PreparedStatement stmt) throws SQLException {
+            stmt.setInt(1, seq);
+            stmt.setString(2, parent);
+            stmt.setString(3, slotName);
+            stmt.setString(4, slotType);
+            stmt.setString(5, specType);
+            stmt.setString(6, stringValue);
+            stmt.setBoolean(7, boolValue);
+
+            if (dateTimeValue != null) {
+                stmt.setTimestamp(8, dateTimeValue);
+            } else {
+                stmt.setNull(8, Types.TIMESTAMP);
+            }
+
+            if (doubleValue != null) {
+                stmt.setDouble(9, doubleValue);
+            } else {
+                stmt.setNull(9, Types.DOUBLE);
+            }
+
+            if (intValue != null) {
+                stmt.setInt(10, intValue);
+            } else {
+                stmt.setNull(10, Types.INTEGER);
+            }
+
+            if (geometryValue != null) {
+                stmt.setBytes(11, new BinaryWriter().writeBinary(geometryValue));
+            } else {
+                stmt.setBytes(11, null);
+            }
         }
     }
 }

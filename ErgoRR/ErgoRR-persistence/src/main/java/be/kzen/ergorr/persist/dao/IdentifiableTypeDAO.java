@@ -1,6 +1,7 @@
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.IdentifiableType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -67,35 +68,25 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        if (!xmlObject.isNewObject()) {vals.append("id=");}
-        appendStringValue(xmlObject.getId(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",home=");
-        appendStringValue(xmlObject.getHome(), vals);
-        return vals.toString();
-    }
-
-    @Override
-    protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
+    protected void insertRelatedObjects() throws SQLException {
         if (xmlObject.isSetSlot()) {
             SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-            slotDAO.setBatchStmt(batchStmt);
+            slotDAO.setConnection(connection);
             slotDAO.insert();
         }
     }
 
     @Override
-    protected void updateRelatedObjects(Statement batchStmt) throws SQLException {
+    protected void updateRelatedObjects() throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-        slotDAO.setBatchStmt(batchStmt);
+        slotDAO.setConnection(connection);
         slotDAO.update();
     }
 
     @Override
-    protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
+    protected void deleteRelatedObjects() throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-        slotDAO.setBatchStmt(batchStmt);
+        slotDAO.setConnection(connection);
         slotDAO.delete();
     }
 
@@ -132,5 +123,16 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     public String getFetchCondition() {
         return "id='" + xmlObject.getId() + "'";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return (xmlObject.isNewObject() ? "?,?" : "id=?,home=?");
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        stmt.setString(1, xmlObject.getId());
+        stmt.setString(2, xmlObject.getHome());
     }
 }
