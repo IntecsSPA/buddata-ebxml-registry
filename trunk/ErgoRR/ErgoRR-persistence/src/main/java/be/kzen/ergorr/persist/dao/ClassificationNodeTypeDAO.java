@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,15 +47,11 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder(super.createValues());
-        vals.append(xmlObject.isNewObject() ? "," : ",code=");
-        appendStringValue(xmlObject.getCode(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",parent=");
-        appendStringValue(xmlObject.getParent(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",path_=");
-        appendStringValue(xmlObject.getPath(), vals);
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(8, xmlObject.getCode());
+        stmt.setString(9, xmlObject.getParent());
+        stmt.setString(10, xmlObject.getPath());
     }
 
     @Override
@@ -69,6 +66,11 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         } else {
             return getParamList();
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",code=?,parent=?,path_=?");
     }
 
     @Override

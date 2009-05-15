@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,23 +34,26 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
     }
 
     @Override
+    protected String getPlaceHolders() {
+        return "?,?,?,?";
+    }
+
+    @Override
     public void insert() throws SQLException {
 
         if (parent.isSetDescription()) {
+            PreparedStatement stmt = connection.prepareStatement(createInsertStatement());
             InternationalStringType desc = parent.getDescription();
-            StringBuilder values = new StringBuilder();
 
             for (LocalizedStringType localString : desc.getLocalizedString()) {
-                appendStringValue(localString.getCharset(), values);
-                values.append(",");
-                appendStringValue(localString.getLang(), values);
-                values.append(",");
-                appendStringValue(localString.getValue(), values);
-                values.append(",");
-                appendStringValue(parent.getId(), values);
-                currentValues = values.toString();
-                batchStmt.addBatch(createInsertStatement());
+                stmt.setString(1, localString.getCharset());
+                stmt.setString(2, localString.getLang());
+                stmt.setString(3, localString.getValue());
+                stmt.setString(4, parent.getId());
+                stmt.addBatch();
             }
+
+            stmt.executeBatch();
         }
     }
 
@@ -76,5 +80,10 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
         if (desc != null) {
             parent.setDescription(desc);
         }
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

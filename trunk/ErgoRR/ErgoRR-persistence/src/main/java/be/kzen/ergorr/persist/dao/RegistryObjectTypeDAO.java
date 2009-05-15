@@ -1,9 +1,12 @@
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.RegistryObjectType;
+import be.kzen.ergorr.model.rim.VersionInfoType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -28,45 +31,23 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.loadXmlObject(result);
         xmlObject.setLid(result.getString("lid"));
         xmlObject.setObjectType(result.getString("objecttype"));
+        xmlObject.setVersionInfo(new VersionInfoType());
         return xmlObject;
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder(super.createValues());
-        vals.append(xmlObject.isNewObject() ? "," : ",lid=");
-        appendStringValue(xmlObject.getLid(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",objecttype=");
-        appendStringValue(xmlObject.getObjectType(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",status=");
-        appendStringValue(xmlObject.getStatus(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",versionname=");
-
-        if (xmlObject.isSetVersionInfo()) {
-            appendStringValue(xmlObject.getVersionInfo().getVersionName(), vals);
-            vals.append(xmlObject.isNewObject() ? "," : ",versioncomment=");
-            appendStringValue(xmlObject.getVersionInfo().getComment(), vals);
-        } else {
-            vals.append("''");
-            vals.append(xmlObject.isNewObject() ? ",''" : ",versioncomment=''");
-        }
-
-        return vals.toString();
-    }
-
-    @Override
-    protected void insertRelatedObjects(Statement batchStmt) throws SQLException {
-        super.insertRelatedObjects(batchStmt);
+    protected void insertRelatedObjects() throws SQLException {
+        super.insertRelatedObjects();
 
         if (xmlObject.isSetName()) {
             NameDAO nameDAO = new NameDAO(xmlObject);
-            nameDAO.setBatchStmt(batchStmt);
+            nameDAO.setConnection(connection);
             nameDAO.insert();
         }
 
         if (xmlObject.isSetDescription()) {
             DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
-            descDAO.setBatchStmt(batchStmt);
+            descDAO.setConnection(connection);
             descDAO.insert();
         }
     }
@@ -97,35 +78,42 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     }
 
     @Override
-    protected void updateRelatedObjects(Statement batchStmt) throws SQLException {
-        super.updateRelatedObjects(batchStmt);
+    protected void updateRelatedObjects() throws SQLException {
+        super.updateRelatedObjects();
 
         NameDAO nameDAO = new NameDAO(xmlObject);
-        nameDAO.setBatchStmt(batchStmt);
+        nameDAO.setConnection(connection);
         nameDAO.update();
         DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
-        descDAO.setBatchStmt(batchStmt);
+        descDAO.setConnection(connection);
         descDAO.update();
     }
 
     @Override
-    protected void deleteRelatedObjects(Statement batchStmt) throws SQLException {
-        super.deleteRelatedObjects(batchStmt);
+    protected void deleteRelatedObjects() throws SQLException {
+        super.deleteRelatedObjects();
         NameDAO nameDAO = new NameDAO(xmlObject);
-        nameDAO.setBatchStmt(batchStmt);
+        nameDAO.setConnection(connection);
         nameDAO.delete();
         DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
-        descDAO.setBatchStmt(batchStmt);
+        descDAO.setConnection(connection);
         descDAO.delete();
         ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
-        clDAO.deleteClassifications(xmlObject, batchStmt);
+        clDAO.setConnection(connection);
+        clDAO.deleteClassifications(xmlObject);
         ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
-        eiDAO.deleteExternalIdentifiers(xmlObject, batchStmt);
+        eiDAO.setConnection(connection);
+        eiDAO.deleteExternalIdentifiers(xmlObject);
     }
 
     @Override
     protected String getParamList() {
         return super.getParamList() + ",lid,objecttype,status,versionname,versioncomment";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?,?,?" : ",lid=?,objecttype=?,status=?,versionname=?,versioncomment=?");
     }
 
     @Override
@@ -141,5 +129,21 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     @Override
     public JAXBElement<T> createJAXBElement() {
         throw new UnsupportedOperationException("Should not return Identifiable");
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(3, xmlObject.getLid());
+        stmt.setString(4, xmlObject.getObjectType());
+        stmt.setString(5, xmlObject.getStatus());
+
+        if (xmlObject.isSetVersionInfo()) {
+            stmt.setString(6, xmlObject.getVersionInfo().getVersionName());
+            stmt.setString(7, xmlObject.getVersionInfo().getComment());
+        } else {
+            stmt.setNull(6, Types.VARCHAR);
+            stmt.setNull(7, Types.VARCHAR);
+        }
     }
 }

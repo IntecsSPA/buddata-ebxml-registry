@@ -2,6 +2,7 @@ package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,21 +40,21 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder(super.createValues());
-        vals.append(xmlObject.isNewObject() ? "," : ",associationtype=");
-        appendStringValue(xmlObject.getAssociationType(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",sourceobject=");
-        appendStringValue(xmlObject.getSourceObject(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",targetobject=");
-        appendStringValue(xmlObject.getTargetObject(), vals);
-
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(8, xmlObject.getAssociationType());
+        stmt.setString(9, xmlObject.getSourceObject());
+        stmt.setString(10, xmlObject.getTargetObject());
     }
 
     @Override
     protected String getParamList() {
         return super.getParamList() + ",associationtype,sourceobject,targetobject";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",associationtype=?,sourceobject=?,targetobject=?");
     }
 
     @Override

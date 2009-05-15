@@ -4,6 +4,7 @@ import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,20 +38,18 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
     public void insert() throws SQLException {
 
         if (parent.isSetName()) {
+            PreparedStatement stmt = connection.prepareStatement(createInsertStatement());
             InternationalStringType name = parent.getName();
-            StringBuilder values = new StringBuilder();
 
             for (LocalizedStringType localString : name.getLocalizedString()) {
-                appendStringValue(localString.getCharset(), values);
-                values.append(",");
-                appendStringValue(localString.getLang(), values);
-                values.append(",");
-                appendStringValue(localString.getValue(), values);
-                values.append(",");
-                appendStringValue(parent.getId(), values);
-                currentValues = values.toString();
-                batchStmt.addBatch(createInsertStatement());
+                stmt.setString(1, localString.getCharset());
+                stmt.setString(2, localString.getLang());
+                stmt.setString(3, localString.getValue());
+                stmt.setString(4, parent.getId());
+                stmt.addBatch();
             }
+
+            stmt.executeBatch();
         }
     }
 
@@ -77,5 +76,15 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
         if (name != null) {
             parent.setName(name);
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return "?,?,?,?";
+    }
+
+    @Override
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -3,6 +3,7 @@ package be.kzen.ergorr.persist.dao;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,10 +33,11 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         }
     }
 
-    public void deleteClassifications(RegistryObjectType parent, Statement batchStmt) throws SQLException {
+    public void deleteClassifications(RegistryObjectType parent) throws SQLException {
+        Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
         sql.append("delete from ").append(getTableName()).append(" where classifiedobject='").append(parent.getId()).append("';");
-        batchStmt.addBatch(sql.toString());
+        stmt.execute(sql.toString());
     }
 
     @Override
@@ -57,20 +59,12 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-
-        vals.append(xmlObject.isNewObject() ? "," : ",classificationnode=");
-        appendStringValue(xmlObject.getClassificationNode(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",classificationscheme=");
-        appendStringValue(xmlObject.getClassificationScheme(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",classifiedobject=");
-        appendStringValue(xmlObject.getClassifiedObject(), vals);
-        vals.append(xmlObject.isNewObject() ? "," : ",noderepresentation=");
-        appendStringValue(xmlObject.getNodeRepresentation(), vals);
-
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(8, xmlObject.getClassificationNode());
+        stmt.setString(9, xmlObject.getClassificationScheme());
+        stmt.setString(10, xmlObject.getClassifiedObject());
+        stmt.setString(11, xmlObject.getNodeRepresentation());
     }
 
     @Override
@@ -85,6 +79,11 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         } else {
             return getParamList();
         }
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?,?" : ",classificationnode=?,classificationscheme=?,classifiedobject=?,noderepresentation=?");
     }
 
     @Override

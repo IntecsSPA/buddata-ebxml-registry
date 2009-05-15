@@ -43,9 +43,10 @@ public class SqlQuery {
     private Map<String, QueryObject> selectObjs;
     private QueryObject returnObj;
     private int aliasIdx;
-    private static final String OBJECT_ALIAS = "o";
     private int startPosition;
     private int maxResults;
+    private static final String OBJECT_ALIAS = "o";
+    private static final String LINE_SEPARATOR = System. getProperty("line.separator");
 
     public SqlQuery() {
         whereClause = new StringBuilder();
@@ -117,7 +118,7 @@ public class SqlQuery {
             }
         }
 
-        return fromClause.substring(0, fromClause.length() - 2) + System. getProperty("line.separator");
+        return fromClause.substring(0, fromClause.length() - 2) + LINE_SEPARATOR;
     }
 
     private String buildJoinCriteria() {
@@ -136,7 +137,7 @@ public class SqlQuery {
 
 //            joinCriteria.delete(joinCriteria.length() - 5, joinCriteria.length());
 
-            return joinCriteria.toString() + System. getProperty("line.separator");
+            return joinCriteria.toString() + LINE_SEPARATOR;
         } else {
             return "";
         }

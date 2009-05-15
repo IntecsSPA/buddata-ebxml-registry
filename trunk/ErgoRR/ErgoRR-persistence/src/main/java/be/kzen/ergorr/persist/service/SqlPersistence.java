@@ -123,7 +123,9 @@ public class SqlPersistence {
 
 
             startTime = System.currentTimeMillis();
+            int responseCount = 0;
             while (result.next()) {
+                responseCount++;
                 try {
                     Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + clazz.getSimpleName() + "DAO");
                     IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance();
@@ -138,6 +140,7 @@ public class SqlPersistence {
             }
 
             if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.INFO, "Loaded " + responseCount + " objects");
                 logger.log(Level.INFO, "Load XML types time: " + (System.currentTimeMillis() - startTime));
             }
 
@@ -201,18 +204,16 @@ public class SqlPersistence {
 
         try {
             conn.setAutoCommit(false);
-            Statement batchStmt = conn.createStatement();
 
             for (IdentifiableType ident : idents) {
                 Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + ident.getClass().getSimpleName() + "DAO");
                 IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance();
                 identDAO.setXmlObject(ident);
-                identDAO.setBatchStmt(batchStmt);
+                identDAO.setConnection(conn);
                 identDAO.setContext(requestContext);
                 identDAO.delete();
             }
 
-            batchStmt.executeBatch();
             conn.commit();
         } catch (Exception ex) {
             throw new SQLException(ex.toString());
@@ -465,14 +466,13 @@ public class SqlPersistence {
 
         try {
             conn.setAutoCommit(false);
-            Statement batchStmt = conn.createStatement();
 
             for (IdentifiableType ident : idents) {
 
                 Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + ident.getClass().getSimpleName() + "DAO");
                 Constructor constructor = daoClass.getConstructor(ident.getClass());
                 GenericObjectDAO dao = (GenericObjectDAO) constructor.newInstance(ident);
-                dao.setBatchStmt(batchStmt);
+                dao.setConnection(conn);
 
                 if (logger.isLoggable(Level.FINE)) {
                     logger.log(Level.FINE, (ident.isNewObject() ? "insert " : "update ") + ident.getClass().getSimpleName() + " " + ident.getId());
@@ -485,7 +485,6 @@ public class SqlPersistence {
                 }
             }
 
-            batchStmt.executeBatch();
             conn.commit();
 
         } catch (SQLException ex) {

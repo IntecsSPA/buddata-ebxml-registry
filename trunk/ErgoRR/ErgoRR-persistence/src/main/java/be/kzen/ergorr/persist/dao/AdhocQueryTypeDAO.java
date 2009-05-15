@@ -4,6 +4,7 @@ import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.QueryExpressionType;
 import be.kzen.ergorr.model.util.OFactory;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -55,29 +56,11 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
     }
 
     @Override
-    protected String createValues() {
-        StringBuilder vals = new StringBuilder();
-        vals.append(super.createValues());
-        vals.append(xmlObject.isNewObject() ? "," : ",querylanguage=");
-
-        if (xmlObject.isSetQueryExpression()) {
-            String queryLang = xmlObject.getQueryExpression().getQueryLanguage();
-            Object content = xmlObject.getQueryExpression().getContent().get(0);
-            String queryStr = "";
-
-            appendStringValue(queryLang, vals);
-            vals.append(xmlObject.isNewObject() ? "," : ",query=");
-
-            if (queryLang.equals(RIMConstants.CN_QUERY_LANG_GML_FILTER)) {
-                queryStr = (String) content;
-            }
-            appendStringValue(queryStr.trim(), vals);
-        } else {
-            vals.append("''");
-            vals.append(xmlObject.isNewObject() ? ",''" : ",query=''");
-        }
-
-        return vals.toString();
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
+        super.setParameters(stmt);
+        stmt.setString(8, xmlObject.getQueryExpression().getQueryLanguage());
+        Object content = xmlObject.getQueryExpression().getContent().get(0);
+        stmt.setString(9,(String) content);
     }
 
     @Override
@@ -88,6 +71,11 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
     @Override
     protected String getParamList() {
         return super.getParamList() + ",querylanguage,query";
+    }
+
+    @Override
+    protected String getPlaceHolders() {
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",querylanguage=?,query=?");
     }
 
     @Override

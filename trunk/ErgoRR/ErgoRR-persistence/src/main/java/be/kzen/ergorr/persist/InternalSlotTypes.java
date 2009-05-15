@@ -43,7 +43,7 @@ public class InternalSlotTypes {
     private static Logger logger = Logger.getLogger(InternalSlotTypes.class.getName());
     private static InternalSlotTypes instance;
     private Map<String, String> slotMap;
-    private static String[] slotTypes;
+    private static final String[] slotTypes;
 
 
     static {
