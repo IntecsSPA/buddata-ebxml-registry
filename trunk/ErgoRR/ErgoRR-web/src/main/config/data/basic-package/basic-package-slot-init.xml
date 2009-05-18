@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
     <rim:ClassificationNode code="ObjectDefinition" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition" id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
         <rim:Name>
