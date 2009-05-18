@@ -167,7 +167,7 @@ public class QueryManager {
                 IdentifiableType ident = identEl.getValue();
                 String sql = "select * from t_association where targetobject='" + ident.getId() + "' or sourceobject='" + ident.getId() + "'";
 
-                SqlPersistence service = new SqlPersistence();
+                SqlPersistence service = new SqlPersistence(requestContext);
 
                 List<JAXBElement<AssociationType>> assos =
                         service.query(sql, new ArrayList<Object>(), OFactory.getXmlClassByElementName("Association"));
