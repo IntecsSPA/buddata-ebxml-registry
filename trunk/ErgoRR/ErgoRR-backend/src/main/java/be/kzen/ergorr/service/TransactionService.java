@@ -284,13 +284,16 @@ public class TransactionService {
         identifier.getContent().add(ident.getId());
         briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
 
+        SimpleLiteral title = new SimpleLiteral();
+        title.getContent().add("-");
+        briefRecord.getTitle().add(OFactory.purl_elements.createTitle(title));
+
         if (ident instanceof RegistryObjectType) {
             SimpleLiteral type = new SimpleLiteral();
             type.getContent().add(((RegistryObjectType) ident).getObjectType());
             briefRecord.setType(type);
-            insertResult.getBriefRecord().add(briefRecord);
         }
-
+        insertResult.getBriefRecord().add(briefRecord);
     }
 
     /**

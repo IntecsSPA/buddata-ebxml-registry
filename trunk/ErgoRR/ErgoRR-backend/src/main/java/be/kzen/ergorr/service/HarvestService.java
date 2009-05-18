@@ -113,7 +113,7 @@ public class HarvestService {
 //                logger.log(Level.SEVERE, "Could not convert to XML date", ex);
 //            }
 //            response.setAcknowledgement(ack);
-            
+
             return response;
 
         } catch (MalformedURLException ex) {
@@ -147,6 +147,10 @@ public class HarvestService {
             SimpleLiteral identifier = new SimpleLiteral();
             identifier.getContent().add(identEl.getValue().getId());
             briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
+
+            SimpleLiteral title = new SimpleLiteral();
+                title.getContent().add("-");
+                briefRecord.getTitle().add(OFactory.purl_elements.createTitle(title));
 
             if (identEl.getValue() instanceof RegistryObjectType) {
                 SimpleLiteral type = new SimpleLiteral();
