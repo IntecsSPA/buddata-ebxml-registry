@@ -226,26 +226,6 @@ public class SqlPersistence {
     }
 
     /**
-     * Sends plain SQL query to the database.
-     *
-     * @param sql Query.
-     * @return Result of query.
-     * @throws java.sql.SQLException
-     */
-    public ResultSet query(String sql) throws SQLException {
-        ResultSet result = null;
-        Connection conn = getConnection();
-
-        try {
-            result = conn.createStatement().executeQuery(sql);
-        } finally {
-            closeConnection(conn);
-        }
-
-        return result;
-    }
-
-    /**
      * Get IDs of Identifiables. <code>sql</code> should
      * provide the ID return column.
      * 
@@ -280,13 +260,19 @@ public class SqlPersistence {
      * @throws java.sql.SQLException
      */
     public String getMimeType(String id) throws SQLException {
-        String mimeType = null;
+        String mimeType = "";
         String queryStr = "select mimetype from t_extrinsicobject where id ='" + id + "' limit 1";
+        Connection conn = null;
 
-        ResultSet result = query(queryStr);
+        try {
+            conn = getConnection();
+            ResultSet result = conn.createStatement().executeQuery(queryStr);
 
-        if (result.next()) {
-            mimeType = result.getString(1);
+            if (result.next()) {
+                mimeType = result.getString(1);
+            }
+        } finally {
+            closeConnection(conn);
         }
 
         return mimeType;
