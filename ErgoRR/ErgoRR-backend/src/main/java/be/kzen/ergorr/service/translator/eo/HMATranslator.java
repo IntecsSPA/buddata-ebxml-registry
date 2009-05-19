@@ -92,6 +92,10 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return CLASSIFICATION;
     }
 
+    protected JAXBElement<T> getExtrinsicObjectJaxbEl() {
+        return (JAXBElement<T>) OFactory.eo_eop.createEarthObservation(eo);
+    }
+
     public RegistryObjectListType translate() {
         String id = "";
         AssociationType asso;
@@ -105,7 +109,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         eoProduct.setMimeType("text/xml");
 
         try {
-            byte[] dataBuf = JAXBUtil.getInstance().marshallToByteArr(eo);
+            byte[] dataBuf = JAXBUtil.getInstance().marshallToByteArr(getExtrinsicObjectJaxbEl());
             ByteArrayDataSource dataBufSrc = new ByteArrayDataSource(dataBuf, InternalConstants.CONTENT_TYPE_XML);
             DataHandler dh = new DataHandler(dataBufSrc);
             eoProduct.setRepositoryItem(dh);
