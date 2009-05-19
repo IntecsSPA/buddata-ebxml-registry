@@ -69,6 +69,11 @@ public class ATMTranslator extends HMATranslator<EarthObservationType> {
         return regObjList;
     }
 
+    @Override
+    protected JAXBElement<EarthObservationType> getExtrinsicObjectJaxbEl() {
+        return OFactory.eo_atm.createEarthObservation(eo);
+    }
+
     protected List<WrsExtrinsicObjectType> translateDataLayer() {
         List<WrsExtrinsicObjectType> es = new ArrayList<WrsExtrinsicObjectType>();
 

@@ -27,6 +27,7 @@ import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.commons.EOPConstants;
 import be.kzen.ergorr.commons.RIMUtil;
+import be.kzen.ergorr.model.util.OFactory;
 import javax.xml.bind.JAXBElement;
 
 /**
@@ -88,5 +89,10 @@ public class OPTTranslator<T extends EarthObservationType> extends HMATranslator
             }
         }
         return e;
+    }
+
+    @Override
+    protected JAXBElement<EarthObservationType> getExtrinsicObjectJaxbEl() {
+        return OFactory.eo_opt.createEarthObservation(eo);
     }
 }

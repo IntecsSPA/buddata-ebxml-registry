@@ -18,19 +18,25 @@
  */
 package be.kzen.ergorr.service.translator.eo;
 
-import be.kzen.ergorr.model.eo.opt.EarthObservationType;
-import be.kzen.ergorr.service.translator.Translator;
+import be.kzen.ergorr.model.eo.sar.EarthObservationType;
+import be.kzen.ergorr.model.util.OFactory;
+import javax.xml.bind.JAXBElement;
 
 /**
  * TO BE IMPLEMENTED
  * 
  * @author Yaman Ustuntas
  */
-public class PHRTranslator extends OPTTranslator<EarthObservationType> {
+public class PHRTranslator extends HMATranslator<EarthObservationType> {
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:SAR"; 
     
     @Override
     public String getClassification() {
         return CLASSIFICATION;
+    }
+
+    @Override
+    protected JAXBElement<EarthObservationType> getExtrinsicObjectJaxbEl() {
+        return OFactory.eo_sar.createEarthObservation(eo);
     }
 }
