@@ -16,7 +16,6 @@
         <rim:Slot name="http://purl.org/dc/elements/1.1/rights" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/source" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/subject" slotType="string"/>
-        <rim:Slot name="http://purl.org/dc/elements/1.1/format" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/coverage" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/format" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/type" slotType="string"/>
