@@ -86,7 +86,7 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
             stmt.setString(10, xmlObject.getContentVersionInfo().getVersionName());
             stmt.setString(11, xmlObject.getContentVersionInfo().getComment());
         } else {
-            stmt.setNull(10, Types.VARCHAR);
+            stmt.setString(10, "1.1");
             stmt.setNull(11, Types.VARCHAR);
         }
 

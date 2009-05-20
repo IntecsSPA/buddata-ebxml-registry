@@ -18,12 +18,11 @@
  */
 package be.kzen.ergorr.service;
 
-import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ErrorCodes;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
-import be.kzen.ergorr.model.csw.AcknowledgementType;
 import be.kzen.ergorr.model.csw.BriefRecordType;
-import be.kzen.ergorr.model.csw.EchoedRequestType;
 import be.kzen.ergorr.model.csw.HarvestResponseType;
 import be.kzen.ergorr.model.csw.HarvestType;
 import be.kzen.ergorr.model.csw.InsertResultType;
@@ -35,18 +34,16 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.service.translator.TranslationException;
 import be.kzen.ergorr.service.translator.TranslatorFactory;
 import be.kzen.ergorr.service.translator.Translator;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 
 /**
  * Handles the Harvest requests.
@@ -74,61 +71,56 @@ public class HarvestService {
      * and inserts it into the registry.
      *
      * @return Harvest response.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public HarvestResponseType process() throws ServiceExceptionReport {
+    public HarvestResponseType process() throws ServiceException {
+
+        URL xmlLocaltion = null;
 
         try {
-            HarvestResponseType response = new HarvestResponseType();
-            RegistryObjectListType regObjList = null;
-            URL xmlLocaltion = new URL(request.getSource());
-            JAXBElement remoteXmlEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(xmlLocaltion);
-            Object remoteXml = remoteXmlEl.getValue();
+            xmlLocaltion = new URL(request.getSource());
+        } catch (MalformedURLException ex) {
+            logger.log(Level.WARNING, "Invalid URL", ex);
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Invalid URL", ex);
+        }
 
-            if (remoteXml instanceof IdentifiableType) {
-                regObjList = new RegistryObjectListType();
-                regObjList.getIdentifiable().add(remoteXmlEl);
-            } else if (remoteXml instanceof RegistryObjectListType) {
-                regObjList = (RegistryObjectListType) remoteXml;
-            } else {
+        JAXBElement remoteXmlEl = null;
+
+        try {
+            remoteXmlEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(xmlLocaltion);
+        } catch (JAXBException ex) {
+            logger.log(Level.WARNING, "Could not load remote object", ex);
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Could not load remote object", ex);
+        }
+
+        Object remoteXml = remoteXmlEl.getValue();
+        RegistryObjectListType regObjList = null;
+
+        if (remoteXml instanceof IdentifiableType) {
+            regObjList = new RegistryObjectListType();
+            regObjList.getIdentifiable().add(remoteXmlEl);
+        } else if (remoteXml instanceof RegistryObjectListType) {
+            regObjList = (RegistryObjectListType) remoteXml;
+        } else {
+
+            try {
                 Translator translator = TranslatorFactory.getInstance(remoteXmlEl);
                 regObjList = translator.translate();
+            } catch (TranslationException ex) {
+                logger.log(Level.WARNING, "Translation failed", ex);
+                throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Translation failed", ex);
             }
-
-            // submit data
-            LCManager lcm = new LCManager(requestContext);
-            lcm.submit(regObjList);
-
-            // create response
-            response.setTransactionResponse(buildResponse(regObjList));
-
-//            AcknowledgementType ack = new AcknowledgementType();
-//            EchoedRequestType echo = new EchoedRequestType();
-//            echo.setAny(remoteXmlEl);
-//            ack.setEchoedRequest(echo);
-//
-//            try {
-//                ack.setTimeStamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
-//            } catch (DatatypeConfigurationException ex) {
-//                logger.log(Level.SEVERE, "Could not convert to XML date", ex);
-//            }
-//            response.setAcknowledgement(ack);
-
-            return response;
-
-        } catch (MalformedURLException ex) {
-            String err = "Provided source URL is not valid";
-            logger.log(Level.SEVERE, err, ex);
-            throw new ServiceExceptionReport(err, ex);
-        } catch (JAXBException ex) {
-            String err = "Could not unmarshall the data from the provided source URL";
-            logger.log(Level.SEVERE, err, ex);
-            throw new ServiceExceptionReport(err, ex);
-        } catch (TranslationException ex) {
-            String err = "Could not translate the data from the provided source URL";
-            logger.log(Level.SEVERE, err, ex);
-            throw new ServiceExceptionReport(err, ex);
         }
+
+        // submit data
+        LCManager lcm = new LCManager(requestContext);
+        lcm.submit(regObjList);
+
+        // create response
+        HarvestResponseType response = new HarvestResponseType();
+        response.setTransactionResponse(buildResponse(regObjList));
+
+        return response;
     }
 
     /**
@@ -149,8 +141,8 @@ public class HarvestService {
             briefRecord.getIdentifier().add(OFactory.purl_elements.createIdentifier(identifier));
 
             SimpleLiteral title = new SimpleLiteral();
-                title.getContent().add("-");
-                briefRecord.getTitle().add(OFactory.purl_elements.createTitle(title));
+            title.getContent().add("-");
+            briefRecord.getTitle().add(OFactory.purl_elements.createTitle(title));
 
             if (identEl.getValue() instanceof RegistryObjectType) {
                 SimpleLiteral type = new SimpleLiteral();

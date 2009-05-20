@@ -22,8 +22,10 @@ import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ErrorCodes;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
@@ -78,9 +80,9 @@ public class LCManager {
      * Submit object list to the registry.
      * 
      * @param regObjList List to submit.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public void submit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+    public void submit(RegistryObjectListType regObjList) throws ServiceException {
         commit(regObjList);
     }
 
@@ -88,9 +90,9 @@ public class LCManager {
      * Update object list in the registy.
      *
      * @param regObjList List to update.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public void update(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+    public void update(RegistryObjectListType regObjList) throws ServiceException {
         commit(regObjList);
     }
 
@@ -101,9 +103,9 @@ public class LCManager {
      * it will insert or update it accordingly.
      *
      * @param regObjList List to insert or update.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public void commit(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+    public void commit(RegistryObjectListType regObjList) throws ServiceException {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
@@ -114,10 +116,10 @@ public class LCManager {
             validator.validate();
         } catch (InvalidReferenceException ex) {
             logger.log(Level.WARNING, "Validation failed", ex);
-            throw new ServiceExceptionReport(ex.getMessage(), ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, ex.getMessage(), ex);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "SQL error while validating", ex);
-            throw new ServiceExceptionReport(ex.getMessage(), ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "SQL error while validating", ex);
         }
 
         List<String> ids = new ArrayList<String>();
@@ -141,7 +143,7 @@ public class LCManager {
                         if (!existingIdentEl.getValue().getClass().equals(flatIdent.getClass())) {
                             String err = flatIdent.getClass().getSimpleName() + " with ID " + flatIdent.getId() +
                                     " has a different type then the existing object: " + existingIdentEl.getValue().getClass().getSimpleName();
-                            throw new ServiceExceptionReport(err);
+                            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, err);
                         }
                         break;
                     }
@@ -154,7 +156,7 @@ public class LCManager {
             insertRepositoryItems();
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Error while committing data", ex);
-            throw new ServiceExceptionReport(ex.getMessage(), ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Error while committing data", ex);
         }
     }
 
@@ -162,9 +164,9 @@ public class LCManager {
      * Deletes the list of Identifiables.
      *
      * @param regObjList Identifiables to delete.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public void delete(RegistryObjectListType regObjList) throws ServiceExceptionReport {
+    public void delete(RegistryObjectListType regObjList) throws ServiceException {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
@@ -178,10 +180,10 @@ public class LCManager {
 
         } catch (ReferenceExistsException ex) {
             logger.log(Level.SEVERE, "Cannot delete object because of existing references", ex);
-            throw new ServiceExceptionReport(ex.getMessage(), ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Cannot delete object because of existing references", ex);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "SQL exception while deleting objects", ex);
-            throw new ServiceExceptionReport(ex.getMessage(), ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "SQL exception while deleting objects", ex);
         }
     }
 

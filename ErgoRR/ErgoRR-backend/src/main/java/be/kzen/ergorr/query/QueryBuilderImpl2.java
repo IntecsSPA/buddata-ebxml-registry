@@ -259,7 +259,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             throw new QueryException("Illegal argument invoking " + opName, ex);
         } catch (InvocationTargetException ex) {
             logger.log(Level.SEVERE, "", ex);
-            throw new QueryException("Exception invoking " + opName, ex);
+            throw new QueryException(ex.getCause().getMessage(), ex);
         } catch (NoSuchMethodException ex) {
             logger.log(Level.SEVERE, "", ex);
             throw new QueryException("Method not found: " + opName, ex);

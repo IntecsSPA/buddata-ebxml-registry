@@ -18,8 +18,10 @@
  */
 package be.kzen.ergorr.interfaces.soap;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.commons.NamespaceConstants;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.csw.CswPortType;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
@@ -43,6 +45,8 @@ import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
+import be.kzen.ergorr.model.ows.ExceptionReport;
+import be.kzen.ergorr.model.ows.ExceptionType;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,7 +102,12 @@ public class CswServiceImpl implements CswPortType {
         QueryManager qm = new QueryManager(requestContext);
 
         logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
-        return qm.query();
+
+        try {
+            return qm.query();
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
     }
 
     /**
@@ -110,10 +119,15 @@ public class CswServiceImpl implements CswPortType {
         requestContext.setRequest(getRecordByIdReq);
 
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
-        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
-        response.getAny().addAll(idents);
-        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
-        return response;
+
+        try {
+            List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
+            response.getAny().addAll(idents);
+            logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
+            return response;
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
     }
 
     /**
@@ -128,10 +142,17 @@ public class CswServiceImpl implements CswPortType {
      */
     public HarvestResponseType cswHarvest(HarvestType body) throws ServiceExceptionReport {
         long time = System.currentTimeMillis();
+        HarvestResponseType response;
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(body);
-        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
-        return new HarvestService(requestContext).process();
+
+        try {
+            response = new HarvestService(requestContext).process();
+            logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
+            return response;
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
     }
 
     /**
@@ -139,10 +160,17 @@ public class CswServiceImpl implements CswPortType {
      */
     public TransactionResponseType cswTransaction(TransactionType transactionReq) throws ServiceExceptionReport {
         long time = System.currentTimeMillis();
+        TransactionResponseType response;
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(transactionReq);
-        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
-        return new TransactionService(requestContext).process();
+
+        try {
+            response = new TransactionService(requestContext).process();
+            logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
+            return response;
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
     }
 
     /**
@@ -170,13 +198,30 @@ public class CswServiceImpl implements CswPortType {
     }
 
     /**
+     * Create a SOAP exception report from a service exception.
+     * @param ex Service exception.
+     * @return SOAP exception report.
+     */
+    private static ServiceExceptionReport createExceptionReport(ServiceException ex) {
+        ExceptionReport exRep = new ExceptionReport();
+        exRep.setLang(CommonProperties.getInstance().get("lang"));
+        ExceptionType exType = new ExceptionType();
+        exType.setExceptionCode(ex.getCode());
+        exRep.getException().add(exType);
+        return new ServiceExceptionReport(ex.getMessage(), exRep, ex);
+    }
+
+    /**
      * Put stuff here which should be initialized once.
      */
     @PostConstruct
     protected void init() {
+        if (!CommonProperties.getInstance().getBoolean("showExceptionsInSoap")) {
+            System.setProperty("com.sun.xml.ws.fault.SOAPFaultBuilder.disableCaptureStackTrace","false");
+        }
+        
         logger.info("init slot types");
         slotTypes = InternalSlotTypes.getInstance();
-
         try {
             slotTypes.loadSlots();
         } catch (Exception ex) {

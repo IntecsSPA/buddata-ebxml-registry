@@ -1,6 +1,6 @@
 /*
  * Project: Buddata ebXML RegRep
- * Class: Translator.java
+ * Class: TranslationException.java
  * Copyright (C) 2008 Yaman Ustuntas
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,24 +18,20 @@
  */
 package be.kzen.ergorr.service.translator;
 
-import be.kzen.ergorr.model.rim.RegistryObjectListType;
-
 /**
  *
  * @author Yaman Ustuntas
  */
-public interface Translator<T> {
-    /**
-     * Set the object to be translated.
-     *
-     * @param obj Object to translate.
-     */
-    public void setObject(T obj);
+public class TranslationException extends Exception {
 
-    /**
-     * Perform the translation.
-     *
-     * @return Translted registry object list.
-     */
-    public RegistryObjectListType translate() throws TranslationException;
+    public TranslationException() {
+    }
+
+    public TranslationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public TranslationException(String message) {
+        super(message);
+    }
 }

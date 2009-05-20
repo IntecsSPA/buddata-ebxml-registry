@@ -96,16 +96,29 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return (JAXBElement<T>) OFactory.eo_eop.createEarthObservation(eo);
     }
 
-    public RegistryObjectListType translate() {
-        String id = "";
+    private String getEopId() throws TranslationException {
+        if (eo.isSetMetaDataProperty() && !eo.getMetaDataProperty().isEmpty()) {
+            MetaDataPropertyType mdp = eo.getMetaDataProperty().get(0);
+            JAXBElement el = (JAXBElement) mdp.getAny();
+            EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) el.getValue();
+            return eoMetadata.getIdentifier();
+        } else {
+            throw new TranslationException("EOP does not have an identifier, dus cannot be unique in the registry.");
+        }
+    }
+
+    public RegistryObjectListType translate() throws TranslationException {
         AssociationType asso;
 
-        JAXBElement<WrsExtrinsicObjectType> eProduct = OFactory.wrs.createExtrinsicObject(translateProduct());
-        regObjList.getIdentifiable().add(eProduct);
-        id = IDGenerator.generateUuid();
-        eProduct.getValue().setId(id);
-        eProduct.getValue().setLid(id);
-        eoProduct = eProduct.getValue();
+        JAXBElement<WrsExtrinsicObjectType> eop = OFactory.wrs.createExtrinsicObject(translateProduct());
+        regObjList.getIdentifiable().add(eop);
+
+        String eoId = getEopId();
+        eoId = "urn:" + eoId.replaceAll("_", ":");
+
+        eop.getValue().setId(eoId);
+        eop.getValue().setLid(eoId);
+        eoProduct = eop.getValue();
         eoProduct.setMimeType("text/xml");
 
         try {
@@ -117,9 +130,9 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
             logger.log(Level.SEVERE, "Could not marshall EarthObservation to byte[]", ex);
         }
         ClassificationType classification = new ClassificationType();
-        id = IDGenerator.generateUuid();
-        classification.setId(id);
-        classification.setLid(id);
+        String classificationId = eoId + ":Classification";
+        classification.setId(classificationId);
+        classification.setLid(classificationId);
         classification.setClassificationNode(getClassification());
         classification.setClassificationScheme(CLASSIFICATION_SCHEME);
         classification.setClassifiedObject(eoProduct.getId());
@@ -127,53 +140,51 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
 
         JAXBElement<WrsExtrinsicObjectType> eAcquisitionPlatform = OFactory.wrs.createExtrinsicObject(translateAcquisitionPlatform());
         regObjList.getIdentifiable().add(eAcquisitionPlatform);
-        id = IDGenerator.generateUuid();
-        eAcquisitionPlatform.getValue().setId(id);
-        eAcquisitionPlatform.getValue().setLid(id);
+        String acqPlatId = eoId + ":AcqPlatform";
+        eAcquisitionPlatform.getValue().setId(acqPlatId);
+        eAcquisitionPlatform.getValue().setLid(acqPlatId);
 
-        asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_ACQUIRED_BY, eProduct.getValue().getId(), eAcquisitionPlatform.getValue().getId());
+        asso = RIMUtil.createAssociation(acqPlatId + ":asso", EOPConstants.A_ACQUIRED_BY, eoId, acqPlatId);
         regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
 
         JAXBElement<WrsExtrinsicObjectType> eProductInfo = OFactory.wrs.createExtrinsicObject(translateProductInformation());
         regObjList.getIdentifiable().add(eProductInfo);
-        id = IDGenerator.generateUuid();
-        eProductInfo.getValue().setId(id);
-        eProductInfo.getValue().setLid(id);
+        String eProductInfoId = eoId + ":ProductInfo";
+        eProductInfo.getValue().setId(eProductInfoId);
+        eProductInfo.getValue().setLid(eProductInfoId);
 
-        asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eProduct.getValue().getId(), eProductInfo.getValue().getId());
+        asso = RIMUtil.createAssociation(eProductInfoId + ":asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eoId, eProductInfoId);
         regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
 
 
         List<WrsExtrinsicObjectType> browseInfoExtObjs = translateBrowseInformation();
 
-        for (WrsExtrinsicObjectType browseInfoExtObj : browseInfoExtObjs) {
-            JAXBElement<WrsExtrinsicObjectType> browseInfoExtObjEl = OFactory.wrs.createExtrinsicObject(browseInfoExtObj);
-            id = IDGenerator.generateUuid();
-            browseInfoExtObjEl.getValue().setId(id);
-            browseInfoExtObjEl.getValue().setLid(id);
-            asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_HAS_BROWSE_INFORMATION, eProduct.getValue().getId(), browseInfoExtObjEl.getValue().getId());
+        for (int i = 0; i < browseInfoExtObjs.size(); i++) {
+            JAXBElement<WrsExtrinsicObjectType> browseInfoExtObjEl = OFactory.wrs.createExtrinsicObject(browseInfoExtObjs.get(i));
+            String browseInfoId = eoId + ":BrowseInfo:" + i;
+            browseInfoExtObjEl.getValue().setId(browseInfoId);
+            browseInfoExtObjEl.getValue().setLid(browseInfoId);
+            asso = RIMUtil.createAssociation(browseInfoId + ":asso", EOPConstants.A_HAS_BROWSE_INFORMATION, eoId, browseInfoId);
             regObjList.getIdentifiable().add(browseInfoExtObjEl);
             regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
         }
 
-
-
         JAXBElement<WrsExtrinsicObjectType> eMaskInfo = OFactory.wrs.createExtrinsicObject(translateMaskInformation());
         regObjList.getIdentifiable().add(eMaskInfo);
-        id = IDGenerator.generateUuid();
-        eMaskInfo.getValue().setId(id);
-        eMaskInfo.getValue().setLid(id);
+        String maskInfoId = eoId + ":MaskInfo";
+        eMaskInfo.getValue().setId(maskInfoId);
+        eMaskInfo.getValue().setLid(maskInfoId);
 
-        asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_HAS_MASK_INFORMATION, eProduct.getValue().getId(), eMaskInfo.getValue().getId());
+        asso = RIMUtil.createAssociation(maskInfoId + ":asso", EOPConstants.A_HAS_MASK_INFORMATION, eoId, maskInfoId);
         regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
 
         JAXBElement<WrsExtrinsicObjectType> eArchInfo = OFactory.wrs.createExtrinsicObject(translateArchivingInformation());
         regObjList.getIdentifiable().add(eArchInfo);
-        id = IDGenerator.generateUuid();
-        eArchInfo.getValue().setId(id);
-        eArchInfo.getValue().setLid(id);
+        String archInfoId = eoId + ":ArchInfo";
+        eArchInfo.getValue().setId(archInfoId);
+        eArchInfo.getValue().setLid(archInfoId);
 
-        asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_ARCHIVED_IN, eProduct.getValue().getId(), eArchInfo.getValue().getId());
+        asso = RIMUtil.createAssociation(archInfoId + ":asso", EOPConstants.A_ARCHIVED_IN, eoId, archInfoId);
         regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
 
         return regObjList;

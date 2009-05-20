@@ -31,7 +31,9 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.loadXmlObject(result);
         xmlObject.setLid(result.getString("lid"));
         xmlObject.setObjectType(result.getString("objecttype"));
-        xmlObject.setVersionInfo(new VersionInfoType());
+        VersionInfoType versionInfo = new VersionInfoType();
+        versionInfo.setVersionName(versionInfo.getVersionName()); // set the default
+        xmlObject.setVersionInfo(versionInfo);
         return xmlObject;
     }
 

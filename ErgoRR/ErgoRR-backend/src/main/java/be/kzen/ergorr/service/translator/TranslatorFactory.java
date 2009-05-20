@@ -19,10 +19,7 @@
 package be.kzen.ergorr.service.translator;
 
 import be.kzen.ergorr.commons.CommonFunctions;
-import be.kzen.ergorr.exceptions.TranslationException;
-import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
