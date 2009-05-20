@@ -21,6 +21,8 @@ package be.kzen.ergorr.query;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ErrorCodes;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordByIdType;
@@ -38,6 +40,8 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
@@ -47,7 +51,7 @@ import javax.xml.bind.JAXBException;
  * @author Yaman Ustuntas
  */
 public class QueryManager {
-
+    private static Logger logger = Logger.getLogger(QueryManager.class.getName());
     private RequestContext requestContext;
 
     /**
@@ -63,12 +67,11 @@ public class QueryManager {
      * Processes the query.
      *
      * @return Query response.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public GetRecordsResponseType query() throws ServiceExceptionReport {
+    public GetRecordsResponseType query() throws ServiceException {
         GetRecordsResponseType response = new GetRecordsResponseType();
 
-        try {
             GetRecordsType request = (GetRecordsType) requestContext.getRequest();
             
             // if stored query request, process the AdhocQuery
@@ -76,20 +79,41 @@ public class QueryManager {
                 JAXBElement queryEl = (JAXBElement) request.getAny();
                 AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
                 StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams);
-                request.setAbstractQuery(storeQueryBuilder.build());
+
+                try {
+                    request.setAbstractQuery(storeQueryBuilder.build());
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Error while building stored query", ex);
+                    throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while building stored query", ex);
+                }
             }
-            
-            QueryBuilderImpl2 queryBuilder = new QueryBuilderImpl2(request);
-            String sql = queryBuilder.build();
+
+            QueryBuilderImpl2 queryBuilder = null;
+            String sql = null;
+
+            try {
+                queryBuilder = new QueryBuilderImpl2(request);
+                sql = queryBuilder.build();
+            } catch (QueryException ex) {
+                throw new ServiceException(ErrorCodes.INVALID_REQUEST, ex.getMessage(), ex);
+            }
+
             requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
             requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
             requestContext.putParam(InternalConstants.ELEMENT_SET, queryBuilder.getResultSet());
 
             SqlPersistence service = new SqlPersistence(requestContext);
-            long recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
-            List<JAXBElement<? extends IdentifiableType>> idents =
-                    service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
+            long recordsMatched = 0;
+            List<JAXBElement<? extends IdentifiableType>> idents = null;
 
+            try {
+                recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
+                idents = service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
+            } catch (Exception ex) {
+                logger.log(Level.WARNING, "Could load load objects from database", ex);
+                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could load load objects from database", ex);
+            }
+            
             int size = idents.size();
             if (queryBuilder.getResultSet() != null && queryBuilder.getResultSet() == ElementSetType.FULL) {
                 List<JAXBElement<? extends IdentifiableType>> relatedIdents =
@@ -107,13 +131,6 @@ public class QueryManager {
             RequestStatusType reqStatus = new RequestStatusType();
             response.setSearchStatus(reqStatus);
 
-        } catch (QueryException ex) {
-            throw new ServiceExceptionReport("Error while translating OGC query to SQL", null, ex);
-        } catch (SQLException ex) {
-            throw new ServiceExceptionReport("Error while constructing SQL query", null, ex);
-        } catch (JAXBException ex) {
-            throw new ServiceExceptionReport("Error while constructing SQL query", null, ex);
-        }
 
         return response;
     }
@@ -123,9 +140,9 @@ public class QueryManager {
      * .
      * @param getRecordsByIdReq Query request.
      * @return Indetifiables with the matched IDs.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public List<JAXBElement<? extends IdentifiableType>> getByIds(GetRecordByIdType getRecordsByIdReq) throws ServiceExceptionReport {
+    public List<JAXBElement<? extends IdentifiableType>> getByIds(GetRecordByIdType getRecordsByIdReq) throws ServiceException {
         List<String> ids = getRecordsByIdReq.getId();
         ElementSetType elementSet = null;
 
@@ -148,7 +165,7 @@ public class QueryManager {
 
             return idents;
         } catch (SQLException ex) {
-            throw new ServiceExceptionReport("Error while constructing SQL query", null, ex);
+            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while constructing SQL query", ex);
         }
     }
 
@@ -157,9 +174,9 @@ public class QueryManager {
      * 
      * @param identEls Identifiables to get association and association objects from.
      * @return List of associations and associated identifiables.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    private List<JAXBElement<? extends IdentifiableType>> getAssociatedObjects(List<JAXBElement<? extends IdentifiableType>> identEls) throws ServiceExceptionReport {
+    private List<JAXBElement<? extends IdentifiableType>> getAssociatedObjects(List<JAXBElement<? extends IdentifiableType>> identEls) throws ServiceException {
         List<JAXBElement<? extends IdentifiableType>> relatedIdents = new ArrayList<JAXBElement<? extends IdentifiableType>>();
 
         try {
@@ -189,7 +206,7 @@ public class QueryManager {
                 relatedIdents.addAll(relatedObjs);
             }
         } catch (Exception ex) {
-            throw new ServiceExceptionReport("Could not load associated objects", ex);
+            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could not load associated objects", ex);
         }
 
         return relatedIdents;

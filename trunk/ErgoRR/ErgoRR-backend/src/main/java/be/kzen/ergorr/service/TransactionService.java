@@ -20,8 +20,9 @@ package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.NamespaceConstants;
-import be.kzen.ergorr.exceptions.TranslationException;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ErrorCodes;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.DeleteType;
@@ -42,6 +43,7 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.query.QueryManager;
+import be.kzen.ergorr.service.translator.TranslationException;
 import be.kzen.ergorr.service.translator.TranslatorFactory;
 import be.kzen.ergorr.service.translator.Translator;
 import java.math.BigInteger;
@@ -87,9 +89,9 @@ public class TransactionService {
      * Start processing the transaction request.
      *
      * @return Transaction response.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public TransactionResponseType process() throws ServiceExceptionReport {
+    public TransactionResponseType process() throws ServiceException {
         List<Object> actions = ((TransactionType) requestContext.getRequest()).getInsertOrUpdateOrDelete();
 
         for (Object action : actions) {
@@ -137,57 +139,57 @@ public class TransactionService {
      * Handles the Insert transaction.
      *
      * @param insert Insert data.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    private void doInsert(InsertType insert) throws ServiceExceptionReport {
+    private void doInsert(InsertType insert) throws ServiceException {
         logger.fine("Transtaction.doInsert");
         RegistryObjectListType regObjList = new RegistryObjectListType();
 
-        try {
-            for (Object o : insert.getAny()) {
+        for (Object o : insert.getAny()) {
 
-                if (!(o instanceof JAXBElement)) {
-                    throw new ServiceExceptionReport("Content not recognized as a JAXBElement :" + o.getClass().getName());
-                }
-
-                JAXBElement jaxbEl = (JAXBElement) o;
-                Object obj = jaxbEl.getValue();
-
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine("Translation root object: " + obj.getClass().toString());
-                }
-                if (obj instanceof IdentifiableType) {
-                    regObjList.getIdentifiable().add((JAXBElement<? extends IdentifiableType>) o);
-                } else if (obj instanceof RegistryObjectListType) {
-                    RegistryObjectListType reqList = (RegistryObjectListType) obj;
-                    regObjList.getIdentifiable().addAll(reqList.getIdentifiable());
-                } else {
-                    Translator translator = TranslatorFactory.getInstance(jaxbEl);
-                    regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
-                }
+            if (!(o instanceof JAXBElement)) {
+                throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Content not recognized as a JAXBElement :" + o.getClass().getName());
             }
+
+            JAXBElement jaxbEl = (JAXBElement) o;
+            Object obj = jaxbEl.getValue();
 
             if (logger.isLoggable(Level.FINE)) {
-                logger.fine("Got " + regObjList.getIdentifiable().size() + " translated objects");
+                logger.fine("Translation root object: " + obj.getClass().toString());
             }
-            LCManager lcm = new LCManager(requestContext);
-            lcm.submit(regObjList);
-
-            insertsCount += regObjList.getIdentifiable().size();
-            appendBriefRecords(regObjList);
-        } catch (TranslationException ex) {
-            logger.log(Level.SEVERE, "Transaction error", ex);
-            throw new ServiceExceptionReport("Transaction error", null, ex);
+            if (obj instanceof IdentifiableType) {
+                regObjList.getIdentifiable().add((JAXBElement<? extends IdentifiableType>) o);
+            } else if (obj instanceof RegistryObjectListType) {
+                RegistryObjectListType reqList = (RegistryObjectListType) obj;
+                regObjList.getIdentifiable().addAll(reqList.getIdentifiable());
+            } else {
+                try {
+                    Translator translator = TranslatorFactory.getInstance(jaxbEl);
+                    regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
+                } catch (TranslationException ex) {
+                    logger.log(Level.SEVERE, "Transaction error", ex);
+                    throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Transaction error", ex);
+                }
+            }
         }
+
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Got " + regObjList.getIdentifiable().size() + " translated objects");
+        }
+        LCManager lcm = new LCManager(requestContext);
+        lcm.submit(regObjList);
+
+        insertsCount += regObjList.getIdentifiable().size();
+        appendBriefRecords(regObjList);
     }
 
     /**
      * Handles the Update transaction.
      *
      * @param update Update data.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    private void doUpdate(UpdateType update) throws ServiceExceptionReport {
+    private void doUpdate(UpdateType update) throws ServiceException {
 
         if (update.isSetAny() && update.getAny() instanceof JAXBElement) {
             Object updateObj = ((JAXBElement) update.getAny()).getValue();
@@ -201,7 +203,7 @@ public class TransactionService {
                 JAXBElement<RegistryObjectType> regObjEl = OFactory.rim.createRegistryObject((RegistryObjectType) updateObj);
                 regObjList.getIdentifiable().add(regObjEl);
             } else {
-                throw new ServiceExceptionReport("Expected RegistryObjectList or any RegistryObject sub type");
+                throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Expected RegistryObjectList or any RegistryObject sub type");
             }
 
             LCManager lcm = new LCManager(requestContext);
@@ -224,7 +226,7 @@ public class TransactionService {
             insertsCount += insertCount;
             updatesCount += updateCount;
         } else {
-            throw new ServiceExceptionReport("No rim:RegistryObject or rim:RegistryObjectList specified for updating");
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, "No rim:RegistryObject or rim:RegistryObjectList specified for updating");
         }
     }
 
@@ -232,9 +234,9 @@ public class TransactionService {
      * Handles the Delete transactions.
      * 
      * @param delete Delete request.
-     * @throws be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport
+     * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    private void doDelete(DeleteType delete) throws ServiceExceptionReport {
+    private void doDelete(DeleteType delete) throws ServiceException {
         GetRecordsType getRecords = new GetRecordsType();
         QueryType query = new QueryType();
         String typeName = CommonFunctions.removePrefix(delete.getTypeName());

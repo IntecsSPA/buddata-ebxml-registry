@@ -18,7 +18,6 @@
  */
 package be.kzen.ergorr.service.translator.eo;
 
-import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.model.eo.atm.DataLayerType;
 import be.kzen.ergorr.model.eo.atm.EarthObservationResultType;
 import be.kzen.ergorr.model.eo.atm.EarthObservationType;
@@ -28,9 +27,9 @@ import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
-import be.kzen.ergorr.service.translator.Translator;
 import be.kzen.ergorr.commons.EOPConstants;
 import be.kzen.ergorr.commons.RIMUtil;
+import be.kzen.ergorr.service.translator.TranslationException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
@@ -49,20 +48,21 @@ public class ATMTranslator extends HMATranslator<EarthObservationType> {
     }
 
     @Override
-    public RegistryObjectListType translate() {
+    public RegistryObjectListType translate() throws TranslationException {
         super.translate();
 
-        List<WrsExtrinsicObjectType> es = translateDataLayer();
+        List<WrsExtrinsicObjectType> eDataLayers = translateDataLayer();
 
-        for (WrsExtrinsicObjectType e : es) {
-            String id = IDGenerator.generateUuid();
+        for (int i = 0; i < eDataLayers.size(); i++) {
+            WrsExtrinsicObjectType e = eDataLayers.get(i);
+            String id = eoProduct.getId() + ":DataLayer:" + i;
             e.setId(id);
             e.setLid(id);
 
             JAXBElement<WrsExtrinsicObjectType> dataLayer = OFactory.wrs.createExtrinsicObject(e);
             regObjList.getIdentifiable().add(dataLayer);
-            
-            AssociationType asso = RIMUtil.createAssociation(id + "asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eoProduct.getId(), e.getId());
+
+            AssociationType asso = RIMUtil.createAssociation(id + ":asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eoProduct.getId(), id);
             regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
         }
 

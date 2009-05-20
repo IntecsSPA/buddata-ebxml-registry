@@ -1,8 +1,10 @@
 
 package be.kzen.ergorr.interfaces.soap;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
 import be.kzen.ergorr.model.csw.DescribeRecordResponseType;
 import be.kzen.ergorr.model.csw.DescribeRecordType;
@@ -32,6 +34,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import be.kzen.ergorr.interfaces.soap.csw.CswClient;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
+import be.kzen.ergorr.model.ows.ExceptionReport;
+import be.kzen.ergorr.model.ows.ExceptionType;
 
 
 /**
@@ -69,7 +73,12 @@ public class CswBackendClient implements CswClient {
         requestContext.setRequest(getRecordsReq);
 
         QueryManager qm = new QueryManager(requestContext);
-        return qm.query();
+
+        try {
+            return qm.query();
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
     }
 
     /**
@@ -79,10 +88,14 @@ public class CswBackendClient implements CswClient {
         RequestContext requestContext = new RequestContext();
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
         requestContext.setRequest(getRecordByIdReq);
-
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
-        List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
-        response.getAny().addAll(idents);
+
+        try {
+            List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
+            response.getAny().addAll(idents);
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
 
         return response;
     }
@@ -102,7 +115,12 @@ public class CswBackendClient implements CswClient {
         requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
         requestContext.putParam(InternalConstants.DEPLOY_NAME, dbConnParams.getDbName());
         requestContext.setRequest(body);
-        return new HarvestService(requestContext).process();
+
+        try {
+            return new HarvestService(requestContext).process();
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
     }
 
     /**
@@ -114,7 +132,25 @@ public class CswBackendClient implements CswClient {
         requestContext.putParam(InternalConstants.DEPLOY_NAME, dbConnParams.getDbName());
         requestContext.setRequest(transactionReq);
 
-        return new TransactionService(requestContext).process();
+        try {
+            return new TransactionService(requestContext).process();
+        } catch (ServiceException ex) {
+            throw createExceptionReport(ex);
+        }
+    }
+
+    /**
+     * Create a SOAP exception report from a service exception.
+     * @param ex Service exception.
+     * @return SOAP exception report.
+     */
+    private static ServiceExceptionReport createExceptionReport(ServiceException ex) {
+        ExceptionReport exRep = new ExceptionReport();
+        exRep.setLang(CommonProperties.getInstance().get("lang"));
+        ExceptionType exType = new ExceptionType();
+        exType.setExceptionCode(ex.getCode());
+        exRep.getException().add(exType);
+        return new ServiceExceptionReport(ex.getCode(), exRep, ex);
     }
 
     /**

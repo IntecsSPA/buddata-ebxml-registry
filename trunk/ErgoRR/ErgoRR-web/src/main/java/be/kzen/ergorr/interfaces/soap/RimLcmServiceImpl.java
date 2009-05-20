@@ -20,10 +20,8 @@ package be.kzen.ergorr.interfaces.soap;
 
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.exceptions.QueryException;
-import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.rim.LifeCycleManagerPortType;
-import be.kzen.ergorr.interfaces.soap.rim.QueryManagerPortType;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.QueryType;
@@ -33,8 +31,6 @@ import be.kzen.ergorr.model.lcm.RemoveObjectsRequest;
 import be.kzen.ergorr.model.lcm.SubmitObjectsRequest;
 import be.kzen.ergorr.model.lcm.UndeprecateObjectsRequest;
 import be.kzen.ergorr.model.lcm.UpdateObjectsRequest;
-import be.kzen.ergorr.model.query.AdhocQueryRequest;
-import be.kzen.ergorr.model.query.AdhocQueryResponse;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.QueryExpressionType;
@@ -45,7 +41,6 @@ import be.kzen.ergorr.model.rs.RegistryResponseType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.LCManager;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,7 +76,7 @@ public class RimLcmServiceImpl implements LifeCycleManagerPortType {
         try {
             lcm.submit(submitObjReq.getRegistryObjectList());
             response.setStatus(RIMConstants.RESPONSE_STATUS_CODE_Success);
-        } catch (ServiceExceptionReport ex) {
+        } catch (ServiceException ex) {
             logger.log(Level.WARNING, "Could not submit objects", ex);
             response.setStatus(RIMConstants.RESPONSE_STATUS_CODE_Failure);
             response.setRegistryErrorList(createRegistryErrorList(ex.toString()));
@@ -103,7 +98,7 @@ public class RimLcmServiceImpl implements LifeCycleManagerPortType {
 
         try {
             lcm.update(req.getRegistryObjectList());
-        } catch (ServiceExceptionReport ex) {
+        } catch (ServiceException ex) {
             logger.log(Level.WARNING, "Could not update objects", ex);
             req.setRegistryObjectList(new RegistryObjectListType());
         }
@@ -151,7 +146,7 @@ public class RimLcmServiceImpl implements LifeCycleManagerPortType {
                         lcm.delete(regObjList);
                         
                         response.setStatus(RIMConstants.RESPONSE_STATUS_CODE_Success);
-                    } catch (ServiceExceptionReport ex) {
+                    } catch (ServiceException ex) {
                         response.setStatus(RIMConstants.RESPONSE_STATUS_CODE_Failure);
                         response.setRegistryErrorList(createRegistryErrorList(ex.getMessage()));
                     }

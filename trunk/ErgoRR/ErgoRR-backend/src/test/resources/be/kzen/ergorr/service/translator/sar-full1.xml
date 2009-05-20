@@ -1,13 +1,9 @@
-<?xml version='1.0' encoding='utf-8' ?>
-<sar:EarthObservation xmlns:date="http://exslt.org/dates-and-times" 
-                      xmlns:gml="http://www.opengis.net/gml" 
+<?xml version="1.0" encoding="utf-8" ?>
+<sar:EarthObservation gml:id="ESA.EECF.ENVISAT_ASA_GMI_1S:EN1-07010101263568-14914.XG0" xmlns:gml="http://www.opengis.net/gml"
                       xmlns:fn="http://www.w3.org/2005/xpath-functions" 
                       xmlns:sar="http://earth.esa.int/sar" 
                       xmlns:eop="http://earth.esa.int/eop" 
-                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-                      xmlns:xlink="http://www.w3.org/1999/xlink" 
-                      xmlns:mmmc="http://earth.esa.int/XML/mmmc" 
-                      version="1.2.1" >
+                      version="1.2.1">
     <gml:metaDataProperty>
         <eop:EarthObservationMetaData>
             <eop:identifier>ESA.EECF.ENVISAT_ASA_GMI_1S:EN1-07010101263568-14914.XG0</eop:identifier>
