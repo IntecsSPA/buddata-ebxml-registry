@@ -222,6 +222,17 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
             e.getSlot().add(slotStatus);
         }
 
+        if (eoMetadata.isSetAcquisitionType()) {
+            SlotType slotAcqType = RIMUtil.createSlot(EOPConstants.S_ACQUISITION_TYPE, EOPConstants.T_STRING, eoMetadata.getAcquisitionType());
+            e.getSlot().add(slotAcqType);
+        }
+
+        if (eoMetadata.isSetAcquisitionSubType() && eoMetadata.getAcquisitionSubType().getValue().size() > 0) {
+            String val = eoMetadata.getAcquisitionSubType().getValue().get(0);
+            SlotType slotAcqSubType = RIMUtil.createSlot(EOPConstants.S_ACQUISITION_SUB_TYPE, EOPConstants.T_STRING, val);
+            e.getSlot().add(slotAcqSubType);
+        }
+
         if (eoMetadata.isSetVendorSpecific()) {
             List<SpecificInformationType> specificInfos = eoMetadata.getVendorSpecific().getSpecificInformation();
 
