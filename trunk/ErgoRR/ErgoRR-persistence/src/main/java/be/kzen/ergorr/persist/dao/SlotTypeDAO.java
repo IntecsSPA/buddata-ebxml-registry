@@ -55,17 +55,15 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
      * @param slotType Slot type.
      * @throws be.kzen.ergorr.exceptions.MappingException
      */
-    private SlotValues getAnyValueByType(String value, String slotName, String slotType, String internalSlotType, int seq) throws SQLException {
+    private SlotValues getAnyValueByType(String value, String slotName, String slotType, String internalSlotType, String specType, int seq) throws SQLException {
         SlotValues slotValues = new SlotValues(parent.getId(), slotName, slotType);
         slotValues.seq = seq;
-
+        slotValues.specType = specType;
         value = value.trim();
         slotValues.stringValue = value; // set the string value is any case
 
         if (internalSlotType.equals(InternalConstants.TYPE_STRING)) {
-            slotValues.specType = InternalConstants.SPEC_TYPE_RIM;
         } else {
-            slotValues.specType = InternalConstants.SPEC_TYPE_WRS;
             if (internalSlotType.equals(InternalConstants.TYPE_INTEGER)) {
                 try {
                     // first to double in case int value passed as 1.0
@@ -224,7 +222,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
                         if (valueList.isSetValue() && stringValues.size() > 0) {
                             for (int j = 0; j < valueList.getValue().size(); j++) {
-                                SlotValues slotValues = getAnyValueByType(stringValues.get(j), slot.getName(), slot.getSlotType(), internalSlotType, j);
+                                SlotValues slotValues = getAnyValueByType(stringValues.get(j), slot.getName(), slot.getSlotType(), internalSlotType, InternalConstants.SPEC_TYPE_RIM, j);
                                 slotValues.loadValues(stmt);
                                 stmt.addBatch();
                             }
@@ -289,7 +287,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                     }
                 } else {
                     String val = anyVal.getContent().get(0).toString().trim();
-                    SlotValues slotValues = getAnyValueByType(val, slot.getName(), slot.getSlotType(), internalSlotType, i);
+                    SlotValues slotValues = getAnyValueByType(val, slot.getName(), slot.getSlotType(), internalSlotType, InternalConstants.SPEC_TYPE_WRS, i);
                     slotValues.loadValues(stmt);
                     stmt.addBatch();
                 }

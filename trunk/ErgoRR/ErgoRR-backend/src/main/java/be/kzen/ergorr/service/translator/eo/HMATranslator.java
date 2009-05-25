@@ -306,7 +306,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                 if (!timeBeginPositionVals.isEmpty()) {
                     try {
                         XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(timeBeginPositionVals.get(0));
-                        SlotType slotBeginPos = RIMUtil.createWrsSlot(EOPConstants.S_BEGIN_POSITION, EOPConstants.T_DATETIME, timeBeginPositionVals.get(0));
+                        SlotType slotBeginPos = RIMUtil.createSlot(EOPConstants.S_BEGIN_POSITION, EOPConstants.T_DATETIME, timeBeginPositionVals.get(0));
                         e.getSlot().add(slotBeginPos);
                     } catch (DatatypeConfigurationException ex) {
                         logger.log(Level.WARNING, "Invalid date at element beginPosition", ex);
@@ -318,7 +318,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                 if (!timeEndPositionVals.isEmpty()) {
                     try {
                         XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(timeEndPositionVals.get(0));
-                        SlotType slotEndPos = RIMUtil.createWrsSlot(EOPConstants.S_END_POSITION, EOPConstants.T_DATETIME, timeEndPositionVals.get(0));
+                        SlotType slotEndPos = RIMUtil.createSlot(EOPConstants.S_END_POSITION, EOPConstants.T_DATETIME, timeEndPositionVals.get(0));
                         e.getSlot().add(slotEndPos);
                     } catch (DatatypeConfigurationException ex) {
                         logger.log(Level.WARNING, "Invalid date at element endPosition", ex);
@@ -353,7 +353,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
             e.getSlot().add(slotDownInfoStations);
 
             if (!downInfoDateList.isEmpty()) {
-                SlotType slotDownInfoDate = RIMUtil.createDateSlots(EOPConstants.S_ACQUISITION_DATE, EOPConstants.T_DATETIME, downInfoDateList);
+                SlotType slotDownInfoDate = RIMUtil.createSlot(EOPConstants.S_ACQUISITION_DATE, EOPConstants.T_DATETIME, downInfoDateList);
                 e.getSlot().add(slotDownInfoDate);
             }
         }
@@ -367,11 +367,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                     if (eoEquip.getAcquisitionParameters().isSetAcquisition()) {
                         AcquisitionType acq = eoEquip.getAcquisitionParameters().getAcquisition().getValue();
                         if (acq.isSetOrbitNumber()) {
-                            SlotType slotOrbitNum = RIMUtil.createWrsSlot(EOPConstants.S_ORBIT_NUMBER, EOPConstants.T_INT, String.valueOf(acq.getOrbitNumber()));
+                            SlotType slotOrbitNum = RIMUtil.createSlot(EOPConstants.S_ORBIT_NUMBER, EOPConstants.T_INT, String.valueOf(acq.getOrbitNumber()));
                             e.getSlot().add(slotOrbitNum);
                         }
                         if (acq.isSetLastOrbitNumber()) {
-                            SlotType slotLastOrbitNum = RIMUtil.createWrsSlot(EOPConstants.S_LAST_ORBIT_NUMBER, EOPConstants.T_INT, String.valueOf(acq.getLastOrbitNumber()));
+                            SlotType slotLastOrbitNum = RIMUtil.createSlot(EOPConstants.S_LAST_ORBIT_NUMBER, EOPConstants.T_INT, String.valueOf(acq.getLastOrbitNumber()));
                             e.getSlot().add(slotLastOrbitNum);
                         }
                         if (acq.isSetOrbitDirection()) {
@@ -379,47 +379,47 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                             e.getSlot().add(slotOrbitDirection);
                         }
                         if (acq.isSetAcrossTrackIncidenceAngle()) {
-                            SlotType slotAcrossPointingAngle = RIMUtil.createWrsSlot(EOPConstants.S_ACROSS_TRACK_POINTING_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getAcrossTrackIncidenceAngle().getValue()));
+                            SlotType slotAcrossPointingAngle = RIMUtil.createSlot(EOPConstants.S_ACROSS_TRACK_POINTING_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getAcrossTrackIncidenceAngle().getValue()));
                             e.getSlot().add(slotAcrossPointingAngle);
                         }
                         if (acq.isSetAlongTrackIncidenceAngle()) {
-                            SlotType slotAlongPointingAngle = RIMUtil.createWrsSlot(EOPConstants.S_ALONG_TRACK_POINTING_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getAlongTrackIncidenceAngle().getValue()));
+                            SlotType slotAlongPointingAngle = RIMUtil.createSlot(EOPConstants.S_ALONG_TRACK_POINTING_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getAlongTrackIncidenceAngle().getValue()));
                             e.getSlot().add(slotAlongPointingAngle);
                         }
                         if (acq.isSetPitch()) {
-                            SlotType slotPitch = RIMUtil.createWrsSlot(EOPConstants.S_PITCH, EOPConstants.T_DOUBLE, String.valueOf(acq.getPitch().getValue()));
+                            SlotType slotPitch = RIMUtil.createSlot(EOPConstants.S_PITCH, EOPConstants.T_DOUBLE, String.valueOf(acq.getPitch().getValue()));
                             e.getSlot().add(slotPitch);
                         }
                         if (acq.isSetYaw()) {
-                            SlotType slotYaw = RIMUtil.createWrsSlot(EOPConstants.S_YAW, EOPConstants.T_DOUBLE, String.valueOf((acq.getYaw().getValue())));
+                            SlotType slotYaw = RIMUtil.createSlot(EOPConstants.S_YAW, EOPConstants.T_DOUBLE, String.valueOf((acq.getYaw().getValue())));
                             e.getSlot().add(slotYaw);
                         }
                         if (acq.isSetRoll()) {
-                            SlotType slotRoll = RIMUtil.createWrsSlot(EOPConstants.S_ROLL, EOPConstants.T_DOUBLE, String.valueOf(acq.getRoll().getValue()));
+                            SlotType slotRoll = RIMUtil.createSlot(EOPConstants.S_ROLL, EOPConstants.T_DOUBLE, String.valueOf(acq.getRoll().getValue()));
                             e.getSlot().add(slotRoll);
                         }
                         if (acq.isSetAscendingNodeDate()) {
-                            SlotType slotAscNodeDate = RIMUtil.createWrsSlot(EOPConstants.S_ASCEDING_NODE_DATE, EOPConstants.T_DATETIME, acq.getAscendingNodeDate().toXMLFormat());
+                            SlotType slotAscNodeDate = RIMUtil.createSlot(EOPConstants.S_ASCEDING_NODE_DATE, EOPConstants.T_DATETIME, acq.getAscendingNodeDate().toXMLFormat());
                             e.getSlot().add(slotAscNodeDate);
                         }
                         if (acq.isSetStartTimeFromAscendingNode()) {
-                            SlotType slotStartTimeAscNodeDate = RIMUtil.createWrsSlot(EOPConstants.S_START_TIME_FROM_ASCEDING_NODE, EOPConstants.T_DOUBLE, String.valueOf(acq.getStartTimeFromAscendingNode().getValue()));
+                            SlotType slotStartTimeAscNodeDate = RIMUtil.createSlot(EOPConstants.S_START_TIME_FROM_ASCEDING_NODE, EOPConstants.T_DOUBLE, String.valueOf(acq.getStartTimeFromAscendingNode().getValue()));
                             e.getSlot().add(slotStartTimeAscNodeDate);
                         }
                         if (acq.isSetCompletionTimeFromAscendingNode()) {
-                            SlotType slotCompTimeAscNode = RIMUtil.createWrsSlot(EOPConstants.S_COMPLETION_TIME_FROM_ASCEDING_NODE, EOPConstants.T_DOUBLE, String.valueOf(acq.getCompletionTimeFromAscendingNode().getValue()));
+                            SlotType slotCompTimeAscNode = RIMUtil.createSlot(EOPConstants.S_COMPLETION_TIME_FROM_ASCEDING_NODE, EOPConstants.T_DOUBLE, String.valueOf(acq.getCompletionTimeFromAscendingNode().getValue()));
                             e.getSlot().add(slotCompTimeAscNode);
                         }
                         if (acq.isSetAscendingNodeLongitude()) {
-                            SlotType slotAscNodeLongitude = RIMUtil.createWrsSlot(EOPConstants.S_ASCEDING_NODE_LONGITUDE, EOPConstants.T_DOUBLE, String.valueOf(acq.getAscendingNodeLongitude().getValue()));
+                            SlotType slotAscNodeLongitude = RIMUtil.createSlot(EOPConstants.S_ASCEDING_NODE_LONGITUDE, EOPConstants.T_DOUBLE, String.valueOf(acq.getAscendingNodeLongitude().getValue()));
                             e.getSlot().add(slotAscNodeLongitude);
                         }
                         if (acq.isSetOrbitDuration()) {
-                            SlotType slotOrbitDuration = RIMUtil.createWrsSlot(EOPConstants.S_ORBIT_DURATION, EOPConstants.T_DOUBLE, String.valueOf(acq.getOrbitDuration().getValue()));
+                            SlotType slotOrbitDuration = RIMUtil.createSlot(EOPConstants.S_ORBIT_DURATION, EOPConstants.T_DOUBLE, String.valueOf(acq.getOrbitDuration().getValue()));
                             e.getSlot().add(slotOrbitDuration);
                         }
                         if (acq.isSetIncidenceAngle()) {
-                            SlotType slotIncidenceAngle = RIMUtil.createWrsSlot(EOPConstants.S_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getIncidenceAngle().getValue()));
+                            SlotType slotIncidenceAngle = RIMUtil.createSlot(EOPConstants.S_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getIncidenceAngle().getValue()));
                             e.getSlot().add(slotIncidenceAngle);
                         }
                         if (acq.isSetWrsLatitudeGrid()) {
@@ -438,11 +438,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         }
 
         if (eoMetadata.isSetImageQualityDegradation()) {
-            SlotType slotImgQualityDeg = RIMUtil.createWrsSlot(EOPConstants.S_IMAGE_QUALITY_DEGRADATION, EOPConstants.T_DOUBLE, String.valueOf(eoMetadata.getImageQualityDegradation().getValue()));
+            SlotType slotImgQualityDeg = RIMUtil.createSlot(EOPConstants.S_IMAGE_QUALITY_DEGRADATION, EOPConstants.T_DOUBLE, String.valueOf(eoMetadata.getImageQualityDegradation().getValue()));
             e.getSlot().add(slotImgQualityDeg);
         }
         if (eoMetadata.isSetImageQualityDegradationQuotationMode()) {
-            SlotType slotImgQualityDegQMode = RIMUtil.createWrsSlot(EOPConstants.S_IMAGE_QUALITY_DEGRADATION_QUOTATION_MODE, EOPConstants.T_STRING, eoMetadata.getImageQualityDegradationQuotationMode());
+            SlotType slotImgQualityDegQMode = RIMUtil.createSlot(EOPConstants.S_IMAGE_QUALITY_DEGRADATION_QUOTATION_MODE, EOPConstants.T_STRING, eoMetadata.getImageQualityDegradationQuotationMode());
             e.getSlot().add(slotImgQualityDegQMode);
         }
 
@@ -530,7 +530,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                 }
 
                 if (sensor.isSetResolution()) {
-                    SlotType slotResolution = RIMUtil.createWrsSlot(EOPConstants.S_RESOLUTION, EOPConstants.T_DOUBLE, String.valueOf(sensor.getResolution().getValue()));
+                    SlotType slotResolution = RIMUtil.createSlot(EOPConstants.S_RESOLUTION, EOPConstants.T_DOUBLE, String.valueOf(sensor.getResolution().getValue()));
                     e.getSlot().add(slotResolution);
                 }
 
@@ -569,7 +569,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                             if (info.isSetSize() && info.getSize().isSetValue() && info.getSize().getValue().size() > 0) {
 
                                 // TODO: how to map MeasureType to int?
-                                SlotType slotSize = RIMUtil.createWrsSlot(EOPConstants.S_SIZE, EOPConstants.T_INT, String.valueOf(info.getSize().getValue().get(0)));
+                                SlotType slotSize = RIMUtil.createSlot(EOPConstants.S_SIZE, EOPConstants.T_INT, String.valueOf(info.getSize().getValue().get(0)));
                                 e.getSlot().add(slotSize);
                             }
 
@@ -720,7 +720,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                         }
 
                         if (archInfo.isSetArchivingDate()) {
-                            SlotType slotDate = RIMUtil.createWrsSlot(EOPConstants.S_ARCHIVING_DATE, EOPConstants.T_DATETIME, archInfo.getArchivingDate().toXMLFormat());
+                            SlotType slotDate = RIMUtil.createSlot(EOPConstants.S_ARCHIVING_DATE, EOPConstants.T_DATETIME, archInfo.getArchivingDate().toXMLFormat());
                             e.getSlot().add(slotDate);
                         }
                     }
