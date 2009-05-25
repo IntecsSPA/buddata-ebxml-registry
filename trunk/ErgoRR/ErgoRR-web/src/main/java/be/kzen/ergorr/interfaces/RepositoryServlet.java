@@ -93,6 +93,7 @@ public class RepositoryServlet extends HttpServlet {
                             out.write(b);
                         }
                     } else {
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         String err = "Could not find ExtrinsicObject with ID: " + id;
 
                         if (logger.isLoggable(Level.INFO)) {
@@ -101,14 +102,17 @@ public class RepositoryServlet extends HttpServlet {
                         out.print(createException(err, "NotFound"));
                     }
                 } catch (SQLException ex) {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     logger.log(Level.WARNING, "Could not get mimeType for " + id, ex);
                     out.print(createException("Could not get mimeType: " + ex.getMessage(), "Error"));
                 }
             } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print(createException("Repository does not exist", "NotFound"));
             }
 
         } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             out.print(createException("ID not provided", "InvalidRequest"));
         }
     }
