@@ -12,8 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * Human-readable descriptive information for the object it is included within.
- * This type shall be extended if needed for specific OWS use to include additional metadata for each type of information. This type shall not be restricted for a specific OWS to change the multiplicity (or optionality) of some elements.
- * 			If the xml:lang attribute is not included in a Title, Abstract or Keyword element, then no language is specified for that element unless specified by another means.  All Title, Abstract and Keyword elements in the same Description that share the same xml:lang attribute value represent the description of the parent object in that language. Multiple Title or Abstract elements shall not exist in the same Description with the same xml:lang attribute value unless otherwise specified. 
+ * This type shall be extended if needed for specific OWS use to include additional metadata for each type of information. This type shall not be restricted for a specific OWS to change the multiplicity (or optionality) of some elements. 
  * 
  * <p>Java class for DescriptionType complex type.
  * 
@@ -24,9 +23,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}Title" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}Abstract" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}Keywords" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}Title" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}Abstract" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}Keywords" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -42,91 +41,72 @@ import javax.xml.bind.annotation.XmlType;
     "keywords"
 })
 @XmlSeeAlso({
-    DatasetDescriptionSummaryBaseType.class,
-    BasicIdentificationType.class,
+    IdentificationType.class,
     ServiceIdentification.class
 })
 public class DescriptionType {
 
     @XmlElement(name = "Title")
-    protected List<LanguageStringType> title;
+    protected String title;
     @XmlElement(name = "Abstract")
-    protected List<LanguageStringType> _abstract;
+    protected String _abstract;
     @XmlElement(name = "Keywords")
     protected List<KeywordsType> keywords;
 
     /**
      * Gets the value of the title property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the title property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getTitle().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link LanguageStringType }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<LanguageStringType> getTitle() {
-        if (title == null) {
-            title = new ArrayList<LanguageStringType>();
-        }
-        return this.title;
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Sets the value of the title property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTitle(String value) {
+        this.title = value;
     }
 
     public boolean isSetTitle() {
-        return ((this.title!= null)&&(!this.title.isEmpty()));
-    }
-
-    public void unsetTitle() {
-        this.title = null;
+        return (this.title!= null);
     }
 
     /**
      * Gets the value of the abstract property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the abstract property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getAbstract().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link LanguageStringType }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<LanguageStringType> getAbstract() {
-        if (_abstract == null) {
-            _abstract = new ArrayList<LanguageStringType>();
-        }
-        return this._abstract;
+    public String getAbstract() {
+        return _abstract;
+    }
+
+    /**
+     * Sets the value of the abstract property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAbstract(String value) {
+        this._abstract = value;
     }
 
     public boolean isSetAbstract() {
-        return ((this._abstract!= null)&&(!this._abstract.isEmpty()));
-    }
-
-    public void unsetAbstract() {
-        this._abstract = null;
+        return (this._abstract!= null);
     }
 
     /**

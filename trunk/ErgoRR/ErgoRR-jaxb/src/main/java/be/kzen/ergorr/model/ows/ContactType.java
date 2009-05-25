@@ -19,9 +19,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="Phone" type="{http://www.opengis.net/ows/1.1}TelephoneType" minOccurs="0"/>
- *         &lt;element name="Address" type="{http://www.opengis.net/ows/1.1}AddressType" minOccurs="0"/>
- *         &lt;element name="OnlineResource" type="{http://www.opengis.net/ows/1.1}OnlineResourceType" minOccurs="0"/>
+ *         &lt;element name="Phone" type="{http://www.opengis.net/ows}TelephoneType" minOccurs="0"/>
+ *         &lt;element name="Address" type="{http://www.opengis.net/ows}AddressType" minOccurs="0"/>
+ *         &lt;element name="OnlineResource" type="{http://www.opengis.net/ows}OnlineResourceType" minOccurs="0"/>
  *         &lt;element name="HoursOfService" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="ContactInstructions" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>

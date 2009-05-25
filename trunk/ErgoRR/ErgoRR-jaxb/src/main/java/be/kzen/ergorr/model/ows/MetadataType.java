@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}AbstractMetaData" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}AbstractMetaData" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attGroup ref="{http://www.w3.org/1999/xlink}simpleLink"/>
  *       &lt;attribute name="about" type="{http://www.w3.org/2001/XMLSchema}anyURI" />

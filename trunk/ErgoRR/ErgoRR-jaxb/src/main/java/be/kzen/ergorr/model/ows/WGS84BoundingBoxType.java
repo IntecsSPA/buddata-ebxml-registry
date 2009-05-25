@@ -16,10 +16,10 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="WGS84BoundingBoxType">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.opengis.net/ows/1.1}BoundingBoxType">
+ *     &lt;restriction base="{http://www.opengis.net/ows}BoundingBoxType">
  *       &lt;sequence>
- *         &lt;element name="LowerCorner" type="{http://www.opengis.net/ows/1.1}PositionType2D"/>
- *         &lt;element name="UpperCorner" type="{http://www.opengis.net/ows/1.1}PositionType2D"/>
+ *         &lt;element name="LowerCorner" type="{http://www.opengis.net/ows}PositionType2D"/>
+ *         &lt;element name="UpperCorner" type="{http://www.opengis.net/ows}PositionType2D"/>
  *       &lt;/sequence>
  *       &lt;attribute name="crs" type="{http://www.w3.org/2001/XMLSchema}anyURI" fixed="urn:ogc:def:crs:OGC:2:84" />
  *       &lt;attribute name="dimensions" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" fixed="2" />

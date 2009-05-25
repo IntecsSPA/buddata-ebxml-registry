@@ -22,12 +22,12 @@ import be.kzen.ergorr.model.csw.CapabilitiesType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}ServiceIdentification" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}ServiceProvider" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}OperationsMetadata" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}ServiceIdentification" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}ServiceProvider" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}OperationsMetadata" minOccurs="0"/>
  *       &lt;/sequence>
- *       &lt;attribute name="version" use="required" type="{http://www.opengis.net/ows/1.1}VersionType" />
- *       &lt;attribute name="updateSequence" type="{http://www.opengis.net/ows/1.1}UpdateSequenceType" />
+ *       &lt;attribute name="version" use="required" type="{http://www.opengis.net/ows}VersionType" />
+ *       &lt;attribute name="updateSequence" type="{http://www.opengis.net/ows}UpdateSequenceType" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>

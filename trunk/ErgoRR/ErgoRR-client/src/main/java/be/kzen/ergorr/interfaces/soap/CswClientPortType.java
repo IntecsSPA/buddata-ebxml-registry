@@ -53,7 +53,7 @@ public interface CswClientPortType {
      * @throws ServiceExceptionReport
      */
     @WebMethod(operationName = "csw.getCapabilities", action = "http://www.opengis.net/cat/csw/2.0.2/requests#GetCapabilities")
-    @WebResult(name = "Capabilities", targetNamespace = "http://www.opengis.net/cat/csw/2.0.2", partName = "Body")
+    @WebResult(name = "Capabilities", targetNamespace = "http://www.opengis.net/cat/wrs/1.0", partName = "Body")
     public CapabilitiesType cswGetCapabilities(
         @WebParam(name = "GetCapabilities", targetNamespace = "http://www.opengis.net/cat/csw/2.0.2", partName = "Body")
         GetCapabilitiesType body)

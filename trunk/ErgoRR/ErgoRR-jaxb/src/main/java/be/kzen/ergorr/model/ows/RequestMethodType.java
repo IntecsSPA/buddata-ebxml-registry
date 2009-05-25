@@ -19,9 +19,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="RequestMethodType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/ows/1.1}OnlineResourceType">
+ *     &lt;extension base="{http://www.opengis.net/ows}OnlineResourceType">
  *       &lt;sequence>
- *         &lt;element name="Constraint" type="{http://www.opengis.net/ows/1.1}DomainType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="Constraint" type="{http://www.opengis.net/ows}DomainType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

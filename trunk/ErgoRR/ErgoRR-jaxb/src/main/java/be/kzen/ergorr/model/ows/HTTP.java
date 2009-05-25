@@ -22,8 +22,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice maxOccurs="unbounded">
- *         &lt;element name="Get" type="{http://www.opengis.net/ows/1.1}RequestMethodType"/>
- *         &lt;element name="Post" type="{http://www.opengis.net/ows/1.1}RequestMethodType"/>
+ *         &lt;element name="Get" type="{http://www.opengis.net/ows}RequestMethodType"/>
+ *         &lt;element name="Post" type="{http://www.opengis.net/ows}RequestMethodType"/>
  *       &lt;/choice>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -40,8 +40,8 @@ import javax.xml.bind.annotation.XmlType;
 public class HTTP {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "Post", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class),
-        @XmlElementRef(name = "Get", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class)
+        @XmlElementRef(name = "Post", namespace = "http://www.opengis.net/ows", type = JAXBElement.class),
+        @XmlElementRef(name = "Get", namespace = "http://www.opengis.net/ows", type = JAXBElement.class)
     })
     protected List<JAXBElement<RequestMethodType>> getOrPost;
 

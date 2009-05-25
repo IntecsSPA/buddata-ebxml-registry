@@ -33,7 +33,7 @@ import be.kzen.ergorr.model.purl.elements.SimpleLiteral;
  *         &lt;element ref="{http://purl.org/dc/elements/1.1/}identifier" maxOccurs="unbounded"/>
  *         &lt;element ref="{http://purl.org/dc/elements/1.1/}title" maxOccurs="unbounded"/>
  *         &lt;element ref="{http://purl.org/dc/elements/1.1/}type" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}BoundingBox" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}BoundingBox" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -59,7 +59,7 @@ public class BriefRecordType
     protected List<JAXBElement<SimpleLiteral>> title;
     @XmlElement(namespace = "http://purl.org/dc/elements/1.1/")
     protected SimpleLiteral type;
-    @XmlElementRef(name = "BoundingBox", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class)
+    @XmlElementRef(name = "BoundingBox", namespace = "http://www.opengis.net/ows", type = JAXBElement.class)
     protected List<JAXBElement<? extends BoundingBoxType>> boundingBox;
 
     /**
