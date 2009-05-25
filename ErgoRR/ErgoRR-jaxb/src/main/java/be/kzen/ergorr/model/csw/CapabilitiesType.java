@@ -21,7 +21,7 @@ import be.kzen.ergorr.model.ows.CapabilitiesBaseType;
  * <pre>
  * &lt;complexType name="CapabilitiesType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/ows/1.1}CapabilitiesBaseType">
+ *     &lt;extension base="{http://www.opengis.net/ows}CapabilitiesBaseType">
  *       &lt;sequence>
  *         &lt;element ref="{http://www.opengis.net/ogc}Filter_Capabilities"/>
  *       &lt;/sequence>

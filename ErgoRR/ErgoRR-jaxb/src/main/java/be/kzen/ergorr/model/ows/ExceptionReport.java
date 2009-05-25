@@ -8,7 +8,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -21,16 +24,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}Exception" maxOccurs="unbounded"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}Exception" maxOccurs="unbounded"/>
  *       &lt;/sequence>
- *       &lt;attribute name="version" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;pattern value="\d+\.\d?\d\.\d?\d"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute ref="{http://www.w3.org/XML/1998/namespace}lang"/>
+ *       &lt;attribute name="version" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="language" type="{http://www.w3.org/2001/XMLSchema}language" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -49,8 +46,10 @@ public class ExceptionReport {
     protected List<ExceptionType> exception;
     @XmlAttribute(required = true)
     protected String version;
-    @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
-    protected String lang;
+    @XmlAttribute
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "language")
+    protected String language;
 
     /**
      * Unordered list of one or more Exception elements that each describes an error. These Exception elements shall be interpreted by clients as being independent of one another (not hierarchical). Gets the value of the exception property.
@@ -118,31 +117,31 @@ public class ExceptionReport {
     }
 
     /**
-     * Identifier of the language used by all included exception text values. These language identifiers shall be as specified in IETF RFC 4646. When this attribute is omitted, the language used is not identified. 
+     * Gets the value of the language property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getLang() {
-        return lang;
+    public String getLanguage() {
+        return language;
     }
 
     /**
-     * Sets the value of the lang property.
+     * Sets the value of the language property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setLang(String value) {
-        this.lang = value;
+    public void setLanguage(String value) {
+        this.language = value;
     }
 
-    public boolean isSetLang() {
-        return (this.lang!= null);
+    public boolean isSetLanguage() {
+        return (this.language!= null);
     }
 
 }

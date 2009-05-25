@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}HTTP"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}HTTP"/>
  *       &lt;/choice>
  *     &lt;/restriction>
  *   &lt;/complexContent>

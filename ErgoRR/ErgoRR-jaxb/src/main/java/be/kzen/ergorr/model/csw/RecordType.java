@@ -30,7 +30,7 @@ import be.kzen.ergorr.model.ows.WGS84BoundingBoxType;
  *     &lt;extension base="{http://www.opengis.net/cat/csw/2.0.2}DCMIRecordType">
  *       &lt;sequence>
  *         &lt;element name="AnyText" type="{http://www.opengis.net/cat/csw/2.0.2}EmptyType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}BoundingBox" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}BoundingBox" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -50,7 +50,7 @@ public class RecordType
 
     @XmlElement(name = "AnyText")
     protected List<EmptyType> anyText;
-    @XmlElementRef(name = "BoundingBox", namespace = "http://www.opengis.net/ows/1.1", type = JAXBElement.class)
+    @XmlElementRef(name = "BoundingBox", namespace = "http://www.opengis.net/ows", type = JAXBElement.class)
     protected List<JAXBElement<? extends BoundingBoxType>> boundingBox;
 
     /**

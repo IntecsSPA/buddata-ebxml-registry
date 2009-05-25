@@ -20,8 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="GetCapabilitiesType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/ows/1.1}GetCapabilitiesType">
- *       &lt;attribute name="service" type="{http://www.opengis.net/ows/1.1}ServiceType" default="http://www.opengis.net/cat/csw" />
+ *     &lt;extension base="{http://www.opengis.net/ows}GetCapabilitiesType">
+ *       &lt;attribute name="service" type="{http://www.opengis.net/ows}ServiceType" default="http://www.opengis.net/cat/csw" />
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>

@@ -19,8 +19,8 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="ProviderName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="ProviderSite" type="{http://www.opengis.net/ows/1.1}OnlineResourceType" minOccurs="0"/>
- *         &lt;element name="ServiceContact" type="{http://www.opengis.net/ows/1.1}ResponsiblePartySubsetType"/>
+ *         &lt;element name="ProviderSite" type="{http://www.opengis.net/ows}OnlineResourceType" minOccurs="0"/>
+ *         &lt;element name="ServiceContact" type="{http://www.opengis.net/ows}ResponsiblePartySubsetType"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>

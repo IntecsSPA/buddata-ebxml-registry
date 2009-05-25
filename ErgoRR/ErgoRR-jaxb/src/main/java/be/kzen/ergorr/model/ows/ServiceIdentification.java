@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -19,13 +18,12 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.opengis.net/ows/1.1}DescriptionType">
+ *     &lt;extension base="{http://www.opengis.net/ows}DescriptionType">
  *       &lt;sequence>
- *         &lt;element name="ServiceType" type="{http://www.opengis.net/ows/1.1}CodeType"/>
- *         &lt;element name="ServiceTypeVersion" type="{http://www.opengis.net/ows/1.1}VersionType" maxOccurs="unbounded"/>
- *         &lt;element name="Profile" type="{http://www.w3.org/2001/XMLSchema}anyURI" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}Fees" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}AccessConstraints" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="ServiceType" type="{http://www.opengis.net/ows}CodeType"/>
+ *         &lt;element name="ServiceTypeVersion" type="{http://www.opengis.net/ows}VersionType" maxOccurs="unbounded"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}Fees" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}AccessConstraints" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -38,7 +36,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "serviceType",
     "serviceTypeVersion",
-    "profile",
     "fees",
     "accessConstraints"
 })
@@ -51,9 +48,6 @@ public class ServiceIdentification
     protected CodeType serviceType;
     @XmlElement(name = "ServiceTypeVersion", required = true)
     protected List<String> serviceTypeVersion;
-    @XmlElement(name = "Profile")
-    @XmlSchemaType(name = "anyURI")
-    protected List<String> profile;
     @XmlElement(name = "Fees")
     protected String fees;
     @XmlElement(name = "AccessConstraints")
@@ -125,43 +119,6 @@ public class ServiceIdentification
     }
 
     /**
-     * Gets the value of the profile property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the profile property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getProfile().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
-     */
-    public List<String> getProfile() {
-        if (profile == null) {
-            profile = new ArrayList<String>();
-        }
-        return this.profile;
-    }
-
-    public boolean isSetProfile() {
-        return ((this.profile!= null)&&(!this.profile.isEmpty()));
-    }
-
-    public void unsetProfile() {
-        this.profile = null;
-    }
-
-    /**
      * If this element is omitted, no meaning is implied. 
      * 
      * @return
@@ -190,7 +147,7 @@ public class ServiceIdentification
     }
 
     /**
-     * Unordered list of access constraints applied to assure the protection of privacy or intellectual property, and any other restrictions on retrieving or using data from or otherwise using this server. The reserved value NONE (case insensitive) shall be used to mean no access constraints are imposed. When this element is omitted, no meaning is implied. Gets the value of the accessConstraints property.
+     * Unordered list of access constraints applied to assure the protection of privacy or intellectual property, and any other restrictions on retrieving or using data from or otherwise using this server. The reserved value NONE (case insensitive) shall be used to mean no access constraints are imposed. If this element is omitted, no meaning is implied. Gets the value of the accessConstraints property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,

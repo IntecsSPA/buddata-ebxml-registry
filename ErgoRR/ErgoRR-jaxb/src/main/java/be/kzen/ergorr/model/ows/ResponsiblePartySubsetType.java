@@ -19,10 +19,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}IndividualName" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}PositionName" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}ContactInfo" minOccurs="0"/>
- *         &lt;element ref="{http://www.opengis.net/ows/1.1}Role" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}IndividualName" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}PositionName" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}ContactInfo" minOccurs="0"/>
+ *         &lt;element ref="{http://www.opengis.net/ows}Role" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>

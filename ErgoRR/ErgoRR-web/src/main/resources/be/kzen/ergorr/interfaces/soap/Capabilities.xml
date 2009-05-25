@@ -2,11 +2,12 @@
 <wrs:Capabilities
  xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
  xmlns:csw="http://www.opengis.net/cat/csw"
- xmlns:ows="http://www.opengis.net/ows/1.1"
+ xmlns:ows="http://www.opengis.net/ows"
  xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xmlns:gml="http://www.opengis.net/gml"
+ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
  version="1.0.0">
  <!-- xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 /Users/yamanustuntas/workspace/projects/ERGO/buddata-ebxml-registry/ErgoRR/ErgoRR-web/src/main/webapp/WEB-INF/wsdl/xsd/wrs/1.0.0/wrs.xsd"-->
     <ows:ServiceIdentification>
@@ -121,13 +122,6 @@
                     <ows:Value>rim:AdhocQuery</ows:Value>
                     <ows:Value>rim:ExternalIdentifier</ows:Value>
                     <ows:Value>rim:RegistryPackage</ows:Value>
-                <!--ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOAcquisitionPlatform</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProductInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOMaskInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOBrowseInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOArchivingInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer</ows:Value-->
                 </ows:AllowedValues>
             </ows:Parameter>
             <!--ows:Parameter name="ElementName"/-->
@@ -247,6 +241,14 @@
                 <ows:Value>2.0.1</ows:Value>
             </ows:AllowedValues>
         </ows:Parameter>
+        <ows:ExtendedCapabilities>
+            <rim:Slot name="http://earth.esa.int/eop/parentIdentifier" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+                <rim:ValueList>
+                    <rim:Value>urn:ogc:def:EOP:ESA:EECF.ENVISAT_ASA_APx_xS</rim:Value>
+                    <rim:Value>urn:ogc:def:EOP:ESA.EECF.ENVISAT_RA2_MWx_2C</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+        </ows:ExtendedCapabilities>
     </ows:OperationsMetadata>
     <ogc:Filter_Capabilities>
         <ogc:Spatial_Capabilities>

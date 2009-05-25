@@ -5,19 +5,21 @@ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
-xmlns:ows="http://www.opengis.net/ows/1.1">
+xmlns:ows="http://www.opengis.net/ows"
+xmlns:wrs="http://www.opengis.net/cat/wrs/1.0">
     <wsdl:types>
         <xsd:schema>
             <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2" schemaLocation="xsd/csw/2.0.2/CSW-discovery.xsd"/>
             <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2" schemaLocation="xsd/csw/2.0.2/CSW-publication.xsd"/>
-            <xsd:import namespace="http://www.opengis.net/ows/1.1" schemaLocation="xsd/ows/1.1.0/owsExceptionReport.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/ows" schemaLocation="xsd/ows/1.0.0/owsExceptionReport.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/cat/wrs/1.0" schemaLocation="xsd/wrs/1.0.0/wrs.xsd"/>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="GetCapabilitiesRequest">
         <wsdl:part name="Body" element="csw:GetCapabilities"/>
     </wsdl:message>
     <wsdl:message name="GetCapabilitiesResponse">
-        <wsdl:part element="csw:Capabilities" name="Body"/>
+        <wsdl:part element="wrs:Capabilities" name="Body"/>
     </wsdl:message>
     <wsdl:message name="DescribeRecordRequest">
         <wsdl:part name="Body" element="csw:DescribeRecord"/>

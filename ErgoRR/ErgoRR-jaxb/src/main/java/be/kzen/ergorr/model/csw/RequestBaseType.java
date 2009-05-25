@@ -22,8 +22,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="RequestBaseType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="service" use="required" type="{http://www.opengis.net/ows/1.1}ServiceType" fixed="CSW" />
- *       &lt;attribute name="version" use="required" type="{http://www.opengis.net/ows/1.1}VersionType" fixed="2.0.2" />
+ *       &lt;attribute name="service" use="required" type="{http://www.opengis.net/ows}ServiceType" fixed="CSW" />
+ *       &lt;attribute name="version" use="required" type="{http://www.opengis.net/ows}VersionType" fixed="2.0.2" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>

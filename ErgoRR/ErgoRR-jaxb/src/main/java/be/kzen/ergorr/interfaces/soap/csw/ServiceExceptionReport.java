@@ -11,7 +11,7 @@ import be.kzen.ergorr.model.ows.ExceptionReport;
  * Generated source version: 2.1
  * 
  */
-@WebFault(name = "ExceptionReport", targetNamespace = "http://www.opengis.net/ows/1.1")
+@WebFault(name = "ExceptionReport", targetNamespace = "http://www.opengis.net/ows")
 public class ServiceExceptionReport
     extends Exception
 {

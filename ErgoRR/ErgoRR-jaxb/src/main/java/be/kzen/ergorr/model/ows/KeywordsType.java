@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="Keyword" type="{http://www.opengis.net/ows/1.1}LanguageStringType" maxOccurs="unbounded"/>
- *         &lt;element name="Type" type="{http://www.opengis.net/ows/1.1}CodeType" minOccurs="0"/>
+ *         &lt;element name="Keyword" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+ *         &lt;element name="Type" type="{http://www.opengis.net/ows}CodeType" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 public class KeywordsType {
 
     @XmlElement(name = "Keyword", required = true)
-    protected List<LanguageStringType> keyword;
+    protected List<String> keyword;
     @XmlElement(name = "Type")
     protected CodeType type;
 
@@ -61,13 +61,13 @@ public class KeywordsType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link LanguageStringType }
+     * {@link String }
      * 
      * 
      */
-    public List<LanguageStringType> getKeyword() {
+    public List<String> getKeyword() {
         if (keyword == null) {
-            keyword = new ArrayList<LanguageStringType>();
+            keyword = new ArrayList<String>();
         }
         return this.keyword;
     }

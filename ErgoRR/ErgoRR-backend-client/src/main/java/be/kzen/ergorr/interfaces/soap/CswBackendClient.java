@@ -146,7 +146,7 @@ public class CswBackendClient implements CswClient {
      */
     private static ServiceExceptionReport createExceptionReport(ServiceException ex) {
         ExceptionReport exRep = new ExceptionReport();
-        exRep.setLang(CommonProperties.getInstance().get("lang"));
+        exRep.setLanguage(CommonProperties.getInstance().get("lang"));
         ExceptionType exType = new ExceptionType();
         exType.setExceptionCode(ex.getCode());
         exRep.getException().add(exType);

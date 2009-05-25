@@ -126,7 +126,7 @@ public class RepositoryServlet extends HttpServlet {
      */
     private String createException(String error, String code) {
         ExceptionReport exRep = new ExceptionReport();
-        exRep.setLang(CommonProperties.getInstance().get("lang"));
+        exRep.setLanguage(CommonProperties.getInstance().get("lang"));
         exRep.setVersion("1.0");
         ExceptionType ex = new ExceptionType();
         ex.setExceptionCode(code);

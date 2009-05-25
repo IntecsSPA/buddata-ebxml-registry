@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="LowerCorner" type="{http://www.opengis.net/ows/1.1}PositionType"/>
- *         &lt;element name="UpperCorner" type="{http://www.opengis.net/ows/1.1}PositionType"/>
+ *         &lt;element name="LowerCorner" type="{http://www.opengis.net/ows}PositionType"/>
+ *         &lt;element name="UpperCorner" type="{http://www.opengis.net/ows}PositionType"/>
  *       &lt;/sequence>
  *       &lt;attribute name="crs" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="dimensions" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />

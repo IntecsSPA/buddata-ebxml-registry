@@ -21,11 +21,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="AcceptVersions" type="{http://www.opengis.net/ows/1.1}AcceptVersionsType" minOccurs="0"/>
- *         &lt;element name="Sections" type="{http://www.opengis.net/ows/1.1}SectionsType" minOccurs="0"/>
- *         &lt;element name="AcceptFormats" type="{http://www.opengis.net/ows/1.1}AcceptFormatsType" minOccurs="0"/>
+ *         &lt;element name="AcceptVersions" type="{http://www.opengis.net/ows}AcceptVersionsType" minOccurs="0"/>
+ *         &lt;element name="Sections" type="{http://www.opengis.net/ows}SectionsType" minOccurs="0"/>
+ *         &lt;element name="AcceptFormats" type="{http://www.opengis.net/ows}AcceptFormatsType" minOccurs="0"/>
  *       &lt;/sequence>
- *       &lt;attribute name="updateSequence" type="{http://www.opengis.net/ows/1.1}UpdateSequenceType" />
+ *       &lt;attribute name="updateSequence" type="{http://www.opengis.net/ows}UpdateSequenceType" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
