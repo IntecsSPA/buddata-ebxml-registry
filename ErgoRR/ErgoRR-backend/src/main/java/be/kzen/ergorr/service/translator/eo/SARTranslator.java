@@ -70,22 +70,22 @@ public class SARTranslator extends HMATranslator<EarthObservationType> {
                     }
                     
                     if (acq.isSetMinimumIncidenceAngle()) {
-                        SlotType slotMinIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MINIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getMinimumIncidenceAngle().getValue()));
+                        SlotType slotMinIncAngle = RIMUtil.createSlot(EOPConstants.S_MINIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getMinimumIncidenceAngle().getValue()));
                         e.getSlot().add(slotMinIncAngle);
                     }
                     
                     if (acq.isSetMaximumIncidenceAngle()) {
-                        SlotType slotMaxIncAngle = RIMUtil.createWrsSlot(EOPConstants.S_MAXIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getMaximumIncidenceAngle().getValue()));
+                        SlotType slotMaxIncAngle = RIMUtil.createSlot(EOPConstants.S_MAXIMUM_INCIDENCE_ANGLE, EOPConstants.T_DOUBLE, String.valueOf(acq.getMaximumIncidenceAngle().getValue()));
                         e.getSlot().add(slotMaxIncAngle);
                     }
                     
                     if (acq.isSetDopplerFrequency()) {
-                        SlotType slotDopperFreq = RIMUtil.createWrsSlot(EOPConstants.S_DOPPER_FREQUENCY, EOPConstants.T_DOUBLE, String.valueOf(acq.getDopplerFrequency().getValue()));
+                        SlotType slotDopperFreq = RIMUtil.createSlot(EOPConstants.S_DOPPER_FREQUENCY, EOPConstants.T_DOUBLE, String.valueOf(acq.getDopplerFrequency().getValue()));
                         e.getSlot().add(slotDopperFreq);
                     }
                     
                     if (acq.isSetIncidenceAngleVariation()) {
-                        SlotType slotIncAngleVar = RIMUtil.createWrsSlot(EOPConstants.S_INCIDENCE_ANGLE_VARIATION, EOPConstants.T_DOUBLE, String.valueOf(acq.getIncidenceAngleVariation().getValue()));
+                        SlotType slotIncAngleVar = RIMUtil.createSlot(EOPConstants.S_INCIDENCE_ANGLE_VARIATION, EOPConstants.T_DOUBLE, String.valueOf(acq.getIncidenceAngleVariation().getValue()));
                         e.getSlot().add(slotIncAngleVar);
                     }
                 }
