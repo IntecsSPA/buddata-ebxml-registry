@@ -162,6 +162,8 @@
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-datatype-scheme.xml"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-associationtype-scheme.xml"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/rim/rim-querylanguage-scheme.xml"/>
+        <!-- OGC -->
+        <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/ogc/OGC-root-package.xml"/>
         <!-- EOP -->
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-rim-model.xml"/>
         <rr-invoker url="${serviceurl}" dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-slot-init.xml"/>

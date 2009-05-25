@@ -9,6 +9,12 @@
                          value="Provides Earth Observation Products extensions to the Basic package of the CSW-ebRIM catalogue profile."/>
     </rim:Description>
     <rim:RegistryObjectList>
+
+        <rim:Association id="urn:ogc:eop:asso"
+      sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root"
+      associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
+      targetObject="urn:x-ogc:specification:csw-ebrim:package:EOProducts"/>
+
    <!-- extensions to canonical ObjectType scheme -->
         <rim:ClassificationNode code="EOProduct"
      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"

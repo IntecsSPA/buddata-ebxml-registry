@@ -40,10 +40,10 @@
 	<xi:include href="schemes/CIM-MetadataStandardNameAndVersionScheme.xml" /--> 
     
     <!-- member of root package -->
-    <!-- CHANGED rim:Association id="Association-root"
+    <rim:Association id="urn:ogc:cim:asso"
     sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root"
     associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
-    targetObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:CIM" /-->      
+    targetObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:CIM" />      
       
     <!-- Extrinsic object types : Application, DatasetCollection, ElementaryDataset, ResourceMetadata, ServiceMetadata, ResponsibleParty, MetadataInformation, LegalConstraints, SecurityConstraints, Format, IdentifiedItem, ServiceOperation, CitedItem -->
     
