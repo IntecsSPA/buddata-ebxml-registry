@@ -3,6 +3,7 @@ package be.kzen.ergorr.interfaces.soap;
 
 import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.InternalConstants;
+import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
@@ -34,8 +35,12 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import be.kzen.ergorr.interfaces.soap.csw.CswClient;
 import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
+import be.kzen.ergorr.model.csw.SchemaComponentType;
 import be.kzen.ergorr.model.ows.ExceptionReport;
 import be.kzen.ergorr.model.ows.ExceptionType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
 
 
 /**
@@ -57,7 +62,7 @@ public class CswBackendClient implements CswClient {
      */
     public CapabilitiesType getCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         try {
-            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("Capabilities.xml"));
+            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("/resources/Capabilities.xml"));
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {
             throw new ServiceExceptionReport("Could not load capabilities document from file.", ex);
@@ -157,7 +162,24 @@ public class CswBackendClient implements CswClient {
      * {@inheritDoc}
      */
     public DescribeRecordResponseType getRecordDescription(DescribeRecordType describeRecordReq) throws ServiceExceptionReport {
-        throw new ServiceExceptionReport("Not supported");
+        long time = System.currentTimeMillis();
+        DescribeRecordResponseType response = new DescribeRecordResponseType();
+        SchemaComponentType schemaComp = new SchemaComponentType();
+        schemaComp.setTargetNamespace(NamespaceConstants.RIM);
+        schemaComp.setSchemaLanguage(NamespaceConstants.SCHEMA);
+
+        try {
+            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docBuilder.parse(this.getClass().getResourceAsStream("/resources/rim.xsd"));
+            schemaComp.getContent().add(doc.getDocumentElement());
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Could not load RIM schema", ex);
+            throw new ServiceExceptionReport("Could not load RIM schema", ex);
+        }
+
+        response.getSchemaComponent().add(schemaComp);
+        logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
+        return response;
     }
 
     private void init() {
