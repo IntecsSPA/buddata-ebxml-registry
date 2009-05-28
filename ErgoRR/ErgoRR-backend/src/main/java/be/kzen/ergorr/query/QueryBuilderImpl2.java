@@ -38,16 +38,12 @@ import be.kzen.ergorr.model.ogc.PropertyIsBetweenType;
 import be.kzen.ergorr.model.ogc.PropertyIsLikeType;
 import be.kzen.ergorr.model.ogc.PropertyIsNullType;
 import be.kzen.ergorr.model.ogc.PropertyNameType;
-import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.query.xpath.XPathToSqlConverter;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
@@ -767,21 +763,22 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      */
     private void appendLiteralContent(LiteralType lit, String queriedSlotType) throws QueryException {
         if (!lit.getContent().isEmpty()) {
+            String value = lit.getContent().get(0).toString().trim();
 
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.FINE, "adding literal content: " + lit.getContent().get(0).toString());
+                logger.log(Level.FINE, "adding literal content: " + value);
             }
             if (queriedSlotType.equals(InternalConstants.TYPE_STRING)) {
-                sqlQuery.append("'").append(lit.getContent().get(0)).append("'");
+                sqlQuery.append("'").append(value).append("'");
             } else if (queriedSlotType.equals(InternalConstants.TYPE_DATETIME)) {
                 try {
-                    XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar((String) lit.getContent().get(0));
-                    sqlQuery.append("'").append(lit.getContent().get(0)).append("'");
+                    XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(value);
+                    sqlQuery.append("'").append(value).append("'");
                 } catch (DatatypeConfigurationException ex) {
-                    throw new QueryException("Invalid date: " + lit.getContent().get(0), ex);
+                    throw new QueryException("Invalid date: " + value, ex);
                 }
             } else {
-                sqlQuery.append(lit.getContent().get(0));
+                sqlQuery.append(value);
             }
         } else {
             throw new QueryException("Literal element does not have a value");
