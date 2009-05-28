@@ -169,14 +169,21 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
             regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
         }
 
-        JAXBElement<WrsExtrinsicObjectType> eMaskInfo = OFactory.wrs.createExtrinsicObject(translateMaskInformation());
-        regObjList.getIdentifiable().add(eMaskInfo);
-        String maskInfoId = eoId + ":MaskInfo";
-        eMaskInfo.getValue().setId(maskInfoId);
-        eMaskInfo.getValue().setLid(maskInfoId);
+        List<WrsExtrinsicObjectType> maskInfos = translateMaskInformation();
 
-        asso = RIMUtil.createAssociation(maskInfoId + ":asso", EOPConstants.A_HAS_MASK_INFORMATION, eoId, maskInfoId);
-        regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
+        for (int i = 0; i < maskInfos.size(); i++) {
+            WrsExtrinsicObjectType maskInfo = maskInfos.get(i);
+
+            String maskInfoId = eoId + ":MaskInfo:" + i;
+            maskInfo.setId(maskInfoId);
+            maskInfo.setLid(maskInfoId);
+
+            JAXBElement<WrsExtrinsicObjectType> eMaskInfo = OFactory.wrs.createExtrinsicObject(maskInfo);
+            regObjList.getIdentifiable().add(eMaskInfo);
+
+            asso = RIMUtil.createAssociation(maskInfoId + ":asso", EOPConstants.A_HAS_MASK_INFORMATION, eoId, maskInfoId);
+            regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
+        }
 
         JAXBElement<WrsExtrinsicObjectType> eArchInfo = OFactory.wrs.createExtrinsicObject(translateArchivingInformation());
         regObjList.getIdentifiable().add(eArchInfo);
@@ -643,9 +650,8 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return browseInfoExtObjs;
     }
 
-    protected WrsExtrinsicObjectType translateMaskInformation() {
-        WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
-        e.setObjectType(EOPConstants.E_MASK_INFORMATION);
+    protected List<WrsExtrinsicObjectType> translateMaskInformation() {
+        List<WrsExtrinsicObjectType> eObjs = new ArrayList<WrsExtrinsicObjectType>();
 
         if (eo.isSetResultOf()) {
             if (eo.getResultOf().isSetObject()) {
@@ -657,8 +663,9 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                     if (result.isSetMask() && result.getMask().isSetMaskInformation()) {
                         List<MaskInformationType> infos = result.getMask().getMaskInformation();
 
-                        if (!infos.isEmpty()) {
-                            MaskInformationType info = infos.get(0);
+                        for (MaskInformationType info : infos) {
+                            WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
+                            e.setObjectType(EOPConstants.E_MASK_INFORMATION);
 
                             if (info.isSetType()) {
                                 InternationalStringType name = RIMUtil.createString(info.getType());
@@ -679,13 +686,15 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                                 SlotType slotFileName = RIMUtil.createSlot(EOPConstants.S_FILE_NAME, EOPConstants.T_STRING, info.getFileName());
                                 e.getSlot().add(slotFileName);
                             }
+
+                            eObjs.add(e);
                         }
                     }
                 }
             }
         }
 
-        return e;
+        return eObjs;
     }
 
     protected WrsExtrinsicObjectType translateArchivingInformation() {
