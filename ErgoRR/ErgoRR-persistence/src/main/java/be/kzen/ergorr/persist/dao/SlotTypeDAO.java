@@ -6,7 +6,10 @@ import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.exceptions.TransformException;
+import be.kzen.ergorr.geometry.GmlWktParser;
+import be.kzen.ergorr.geometry.GmlWktWriter;
 import be.kzen.ergorr.model.gml.AbstractGeometryType;
+import be.kzen.ergorr.model.gml.EnvelopeType;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.SlotType;
@@ -32,7 +35,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import org.postgis.Geometry;
-import org.postgis.binary.BinaryParser;
 import org.postgis.binary.BinaryWriter;
 
 /**
@@ -109,9 +111,11 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         if (internalSlotType.equals(InternalConstants.TYPE_GEOMETRY)) {
 
             if (val != null && !val.equals("")) {
-                BinaryParser parser = new BinaryParser();
-                Geometry geometry = parser.parse(val);
-                return GeometryTranslator.gmlGeometryFromGeometry(geometry);
+                GmlWktParser parser = new GmlWktParser(val);
+                return parser.parse();
+//                BinaryParser parser = new BinaryParser();
+//                Geometry geometry = parser.parse(val);
+//                return GeometryTranslator.gmlGeometryFromGeometry(geometry);
             } else {
                 return null;
             }
@@ -253,13 +257,14 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
     private void insertWrsValues(WrsValueListType wrsValueList, String internalSlotType, SlotType slot, PreparedStatement stmt) throws SQLException {
         for (int i = 0; i < wrsValueList.getAnyValue().size(); i++) {
             AnyValueType anyVal = wrsValueList.getAnyValue().get(i);
+
             if (!anyVal.getContent().isEmpty()) {
                 if (internalSlotType.equals(InternalConstants.TYPE_GEOMETRY)) {
                     if (anyVal.getContent().get(0) instanceof JAXBElement) {
                         JAXBElement anyValEl = (JAXBElement) anyVal.getContent().get(0);
+                        Object gmlGeometry = anyValEl.getValue();
 
-                        if (anyValEl.getValue() instanceof AbstractGeometryType) {
-                            AbstractGeometryType gmlGeometry = (AbstractGeometryType) anyValEl.getValue();
+                        if (gmlGeometry instanceof AbstractGeometryType || gmlGeometry instanceof EnvelopeType) {
                             Geometry geometry = null;
 
                             try {
@@ -268,13 +273,17 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                                 throw new SQLException(ex.toString());
                             }
 
-                            BinaryWriter binaryWriter = new BinaryWriter();
                             SlotValues slotValues = new SlotValues(parent.getId(), slot.getName(), slot.getSlotType());
                             slotValues.seq = i;
                             slotValues.specType = InternalConstants.SPEC_TYPE_WRS;
-                            String geomHex = binaryWriter.writeHexed(geometry);
 
-                            slotValues.stringValue = geomHex;
+                            GmlWktWriter writer = new GmlWktWriter(gmlGeometry);
+
+                            try {
+                                slotValues.stringValue = writer.write();
+                            } catch (TransformException ex) {
+                                throw new SQLException("Could not format geometry: " + ex.getMessage());
+                            }
                             slotValues.geometryValue = geometry;
 
                             slotValues.loadValues(stmt);

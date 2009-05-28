@@ -26,7 +26,6 @@ import be.kzen.ergorr.exceptions.ErrorCodes;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.exceptions.ServiceException;
-import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
@@ -170,8 +169,9 @@ public class LCManager {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
+        loadMap(flatIdents);
 
-        RimValidator validator = new RimValidator(flatIdents, requestContext);
+        RimValidator validator = new RimValidator(flatIdents, identMap, requestContext);
 
         try {
             validator.validateToDelete();

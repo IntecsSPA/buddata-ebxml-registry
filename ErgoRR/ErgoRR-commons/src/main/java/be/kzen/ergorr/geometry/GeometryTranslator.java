@@ -91,7 +91,7 @@ public class GeometryTranslator {
      * @return Postgis geometry.
      * @throws be.kzen.ergorr.exceptions.TransformException
      */
-    public static Geometry geometryFromGmlGeometry(AbstractGeometryType gmlGeometry) throws TransformException {
+    public static Geometry geometryFromGmlGeometry(Object gmlGeometry) throws TransformException {
 
         if (gmlGeometry instanceof PolygonType) {
             return polygonFromGmlPolygonType((PolygonType) gmlGeometry);
@@ -99,6 +99,8 @@ public class GeometryTranslator {
             return pointFromGmlPointType((PointType) gmlGeometry);
         } else if (gmlGeometry instanceof LineStringType) {
             return lineStringFromGmlLineString((LineStringType) gmlGeometry);
+        } else if (gmlGeometry instanceof EnvelopeType) {
+            return polygonFromEnvelope((EnvelopeType) gmlGeometry);
         } else {
             throw new TransformException("Unsupporeted geometry type: " + gmlGeometry.getClass().toString());
         }
