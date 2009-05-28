@@ -82,7 +82,7 @@ public class CswServiceImpl implements CswPortType {
     public CapabilitiesType cswGetCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         long time = System.currentTimeMillis();
         try {
-            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("Capabilities.xml"));
+            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("/resources/Capabilities.xml"));
             logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {
@@ -185,7 +185,7 @@ public class CswServiceImpl implements CswPortType {
 
         try {
             DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = docBuilder.parse(this.getClass().getResourceAsStream("rim.xsd"));
+            Document doc = docBuilder.parse(this.getClass().getResourceAsStream("/resources/rim.xsd"));
             schemaComp.getContent().add(doc.getDocumentElement());
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Could not load RIM schema", ex);

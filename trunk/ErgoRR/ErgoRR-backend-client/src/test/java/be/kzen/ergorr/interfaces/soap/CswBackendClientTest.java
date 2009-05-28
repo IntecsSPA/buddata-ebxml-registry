@@ -67,7 +67,16 @@ public class CswBackendClientTest {
     public void testTransact() throws Exception {
     }
 
+    @Test
     public void testGetRecordDescription() throws Exception {
+        DbConnectionParams dbConn = new DbConnectionParams();
+        dbConn.setDbName(CommonProperties.getInstance().get("deployName"));
+        dbConn.setDbPassword(CommonProperties.getInstance().get("db.password"));
+        dbConn.setDbUrl(CommonProperties.getInstance().get("db.url"));
+        dbConn.setDbUser(CommonProperties.getInstance().get("db.user"));
+        CswBackendClient client = new CswBackendClient(dbConn);
+
+        DescribeRecordResponseType response = client.getRecordDescription(null);
     }
 
 }
