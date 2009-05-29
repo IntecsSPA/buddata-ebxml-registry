@@ -78,7 +78,7 @@ public class QueryManager {
             if (!request.isSetAbstractQuery() && request.isSetAny()) {
                 JAXBElement queryEl = (JAXBElement) request.getAny();
                 AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
-                StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams);
+                StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams, requestContext);
 
                 try {
                     request.setAbstractQuery(storeQueryBuilder.build());
