@@ -1,5 +1,6 @@
 package be.kzen.ergorr.query;
 
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.model.csw.QueryType;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
@@ -22,14 +23,16 @@ import javax.xml.bind.JAXBException;
 public class StoredQueryBuilder {
     private static Logger logger = Logger.getLogger(StoredQueryBuilder.class.getName());
     private AdhocQueryType adhocParams;
+    private RequestContext context;
 
     /**
      * Constructor
      *
      * @param adhocParams Adhoc query request.
      */
-    public StoredQueryBuilder(AdhocQueryType adhocParams) {
+    public StoredQueryBuilder(AdhocQueryType adhocParams, RequestContext context) {
         this.adhocParams = adhocParams;
+        this.context = context;
     }
 
     /**
@@ -42,7 +45,7 @@ public class StoredQueryBuilder {
      * @throws javax.xml.bind.JAXBException
      */
     public JAXBElement<QueryType> build() throws SQLException, JAXBException {
-        SqlPersistence service = new SqlPersistence();
+        SqlPersistence service = new SqlPersistence(context);
         String sql = "select * from t_adhocquery where id ='" + adhocParams.getId() + "'";
         List<JAXBElement<? extends IdentifiableType>> adhocQueryEls = service.query(sql, null, AdhocQueryType.class);
 
