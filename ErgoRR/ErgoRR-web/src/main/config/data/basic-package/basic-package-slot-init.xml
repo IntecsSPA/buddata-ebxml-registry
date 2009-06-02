@@ -7,7 +7,7 @@
     </rim:ClassificationNode>
     <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:BasicPackage:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
         <rim:Slot name="http://purl.org/dc/elements/1.1/contributor" slotType="string"/>
-        <rim:Slot name="http://purl.org/dc/terms/spatial" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/spatial" slotType="geometry"/>
         <rim:Slot name="http://purl.org/dc/terms/temporal" slotType="datetime"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/creator" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/date" slotType="datetime"/>
