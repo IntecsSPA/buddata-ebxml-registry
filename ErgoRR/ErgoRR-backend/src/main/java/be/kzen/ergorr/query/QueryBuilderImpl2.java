@@ -559,7 +559,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 XPathNode xpNode = xpathConv.process();
 
                 if (xpNode.getQueryObject().getTableName().equals("t_slot")) {
-                    sqlQuery.append("st_within(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),");
+                    sqlQuery.append("st_intersects(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),");
                     sqlQuery.append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
                 } else {
                     throw new QueryException("XPath not pointing to a geometry value: " + xpath);
