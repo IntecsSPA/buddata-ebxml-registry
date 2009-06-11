@@ -18,7 +18,7 @@ This will create a library in _ErgoRR-backend-client/dist_ called _ErgoRR-backen
 SOAP interface
 {{{
 URL serviceURL = new URL("http://urltoservice");
-CswClient client = new CswClient(serviceURL);
+CswClient client = new CswSoapClient(serviceURL);
 }}}
 Backend Interface
 {{{
@@ -27,7 +27,7 @@ cp.setDbUrl("localhost:5432");
 cp.setDbName("ergorr");
 cp.setDbUser("theUser");
 cp.setDbPassword("thePassword");
-CswBackendClient client = new CswBackendClient(cp);
+CswClient client = new CswBackendClient(cp);
 }}}
 
 For the rest the interface of the SOAP and backend client are the same. The example below assume that you are using the SOAP client.
@@ -38,7 +38,7 @@ Example demostrates querying 30 ExtrinsicObjects with objectType "urn:x-ogc:spec
 
 {{{
 URL serviceURL = new URL("http://urltoservice");
-CswClient client = new CswClient(serviceURL);
+CswClient client = new CswSoapClient(serviceURL);
 GetRecordsType request = new GetRecordsType();
 request.setMaxRecords(BigInteger.valueOf(30));
 
@@ -80,7 +80,7 @@ GetRecordsResponseType response = client.getRecords(request);
 *Transaction*
 {{{
 URL serviceURL = new URL("http://urltoservice");
-CswClient client = new CswClient(serviceURL);
+CswClient client = new CswSoapClient(serviceURL);
 TransactionType t = new TransactionType();
 InsertType insert = new InsertType();
 
@@ -97,7 +97,7 @@ client.transact(t);
 *GetRecordById*
 {{{
 URL serviceURL = new URL("http://urltoservice");
-CswClient client = new CswClient(serviceURL);
+CswClient client = new CswSoapClient(serviceURL);
 GetRecordByIdType request = new GetRecordByIdType();
 request.getId().add("urn:uuid:2eb09d2f-38ea-4fd6-84a6-b78730e40f74");
 ElementSetNameType setName = new ElementSetNameType();
