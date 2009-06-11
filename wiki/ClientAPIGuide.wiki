@@ -1,18 +1,3 @@
-*Dependencies*
-
-The client API ErgoRR-client depends on ErgoRR-commons and ErgoRR-jaxb modules.
-
-The backend API ErgoRR-backend-client uses code from the ErgoRR-web-war. To create the a library from ErgoRR-web-war:
-
-  # Build the ErgoRR-web-war project
-  # Run the following ant command from _(ergo-source-dir)/ErgoRR-backend-client_ directory.
-{{{
-ant build-backend 
-}}}
-
-This will create a library in _ErgoRR-backend-client/dist_ called _ErgoRR-backend.jar_ which you will also have to include in your class path together with, ErgoRR-backend-client lib, ErgoRR-commons lib, ErgoRR-jaxb lib and ErgoRR-persistence lib.
-
-
 *Client initialize*
 
 SOAP interface
