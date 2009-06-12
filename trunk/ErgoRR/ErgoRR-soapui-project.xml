@@ -6968,18 +6968,51 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Get Slot Descriptions"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" 
+xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+         <csw:Query typeNames="rim:ExtrinsicObject">
+            <csw:ElementSetName typeNames="rim:ExtrinsicObject">summary</csw:ElementSetName>
+            <csw:Constraint version="1.1.0">
+               <ogc:Filter>
+                  <ogc:And>
+                     <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:ExtrinsicObject/@objectType</ogc:PropertyName>
+                        <ogc:Literal>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition</ogc:Literal>
+                     </ogc:PropertyIsEqualTo>
+                  </ogc:And>
+               </ogc:Filter>
+            </csw:Constraint>
+         </csw:Query>
+      </csw:GetRecords>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Get Objecttypes ClassificationScheme"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" 
+xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+         <csw:Query typeNames="rim:ClassificationScheme">
+            <csw:ElementSetName typeNames="rim:ClassificationScheme">full</csw:ElementSetName>
+            <csw:Constraint version="1.1.0">
+               <ogc:Filter>
+                  <ogc:And>
+                     <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:ClassificationScheme/@id</ogc:PropertyName>
+                        <ogc:Literal>urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType</ogc:Literal>
+                     </ogc:PropertyIsEqualTo>
+                  </ogc:And>
+               </ogc:Filter>
+            </csw:Constraint>
+         </csw:Query>
+      </csw:GetRecords>
+   </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#Harvest" name="csw.harvest" bindingOperationName="csw.harvest" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:Harvest service="CSW" version="2.0.2">
-         <ns:Source>?</ns:Source>
-         <ns:ResourceType>?</ns:ResourceType>
-         <!--Optional:-->
-         <ns:ResourceFormat>application/xml</ns:ResourceFormat>
-         <!--Optional:-->
-         <ns:HarvestInterval>?</ns:HarvestInterval>
-         <!--Zero or more repetitions:-->
-         <ns:ResponseHandler>?</ns:ResponseHandler>
+         <ns:Source>http://hrt-11.pisa.intecs.it/CMPL_TEST/CMPL_TEST_ASAR/urn_ogc_def_EOP_ESA.TEST.ENVISAT_ASA_GMI_1S-EN1-07010101263568-14914-XG0.xml</ns:Source>
       </ns:Harvest>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.harvestRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#Transaction" name="csw.transaction" bindingOperationName="csw.transaction" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Insert HMA_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc/3.2" xmlns:gml="http://www.opengis.net/gml">
@@ -7152,7 +7185,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
       <ns:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="?">
          <ns:Update>
             <rim:RegistryObjectList>
-               <rim:ExtrinsicObject id="urn:lala:30" home="lala">
+               <rim:ExtrinsicObject id="urn:lala:308" home="lala">
                   <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:multiExtentOf" slotType="geometry">
                      <wrs:ValueList>
                         <wrs:AnyValue>
@@ -7169,6 +7202,34 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
                </rim:ExtrinsicObject>
             </rim:RegistryObjectList>
          </ns:Update>
+      </ns:Transaction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Insert RIM"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="1">
+         <ns:Insert typeName="" handle="">
+            <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+               <rim:ExtrinsicObject id="urn:ergorr:123" objectType="urn:ogc:def:ebRIM-ObjectType:OGC:Dataset">
+                  <rim:Slot name="http://purl.org/dc/elements/1.1/date">
+                     <rim:ValueList>
+                        <rim:Value>2009-06-09T10:40:00.000+02:00</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="http://purl.org/dc/terms/created">
+                     <rim:ValueList>
+                        <rim:Value>2009-06-09T10:40:00.000+02:00</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString charset="UTF-8" value="NAME_VALUE"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString charset="UTF-8" value="DESCRIPTION_VALUE"/>
+                  </rim:Description>
+               </rim:ExtrinsicObject>
+            </rim:RegistryObjectList>
+         </ns:Insert>
       </ns:Transaction>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="QueryManagerSOAPBinding" type="wsdl" bindingName="{http://www.kzen.be/ergorr/interfaces/soap/rim}QueryManagerSOAPBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/esa1/rimlcm?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://localhost:8080/esa1/rimquery</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:oasis:names:tc:ebxml-regrep:wsdl:registry:bindings:3.0:QueryManagerPortType#submitAdhocQuery" name="submitAdhocQuery" bindingOperationName="submitAdhocQuery" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/rimquery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:urn2="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
