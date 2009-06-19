@@ -268,9 +268,9 @@ public class TransactionService {
         }
 
         LCManager lcm = new LCManager(requestContext);
-        lcm.delete(regObjList);
+        List<IdentifiableType> deletedIdents = lcm.delete(regObjList);
 
-        deletesCount = regObjList.getIdentifiable().size();
+        deletesCount = deletedIdents.size();
     }
 
     /**

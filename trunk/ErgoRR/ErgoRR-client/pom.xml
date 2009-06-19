@@ -26,16 +26,16 @@
             <artifactId>ErgoRR-jaxb</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>be.kzen.ergorr</groupId>
             <artifactId>ErgoRR-persistence</artifactId>
             <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
+        </dependency-->
+        <!--dependency>
             <groupId>be.kzen.ergorr</groupId>
             <artifactId>ErgoRR-backend</artifactId>
             <version>${project.parent.version}</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

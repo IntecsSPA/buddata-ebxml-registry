@@ -348,7 +348,7 @@ CREATE TABLE t_slot (
   spectype                 VARCHAR(3),
   stringvalue              VARCHAR(4096),
   boolvalue                BOOLEAN,
-  datetimevalue            TIMESTAMP WITHOUT TIME ZONE,
+  datetimevalue            TIMESTAMP WITH TIME ZONE,
   doublevalue              DOUBLE PRECISION,
   intvalue                 INTEGER,
   geometryvalue            geometry,

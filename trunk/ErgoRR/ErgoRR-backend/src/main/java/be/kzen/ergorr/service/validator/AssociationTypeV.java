@@ -34,6 +34,7 @@ public class AssociationTypeV extends RegistryObjectTypeV<AssociationType> {
 
     /**
      * {@inheritDoc}
+     * TODO - check associationType
      */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {

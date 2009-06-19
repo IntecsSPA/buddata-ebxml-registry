@@ -51,6 +51,7 @@ import javax.xml.bind.JAXBException;
  * @author Yaman Ustuntas
  */
 public class QueryManager {
+
     private static Logger logger = Logger.getLogger(QueryManager.class.getName());
     private RequestContext requestContext;
 
@@ -72,64 +73,62 @@ public class QueryManager {
     public GetRecordsResponseType query() throws ServiceException {
         GetRecordsResponseType response = new GetRecordsResponseType();
 
-            GetRecordsType request = (GetRecordsType) requestContext.getRequest();
-            
-            // if stored query request, process the AdhocQuery
-            if (!request.isSetAbstractQuery() && request.isSetAny()) {
-                JAXBElement queryEl = (JAXBElement) request.getAny();
-                AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
-                StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams, requestContext);
+        GetRecordsType request = (GetRecordsType) requestContext.getRequest();
 
-                try {
-                    request.setAbstractQuery(storeQueryBuilder.build());
-                } catch (Exception ex) {
-                    logger.log(Level.WARNING, "Error while building stored query", ex);
-                    throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while building stored query", ex);
-                }
-            }
-
-            QueryBuilderImpl2 queryBuilder = null;
-            String sql = null;
+        // if stored query request, process the AdhocQuery
+        if (!request.isSetAbstractQuery() && request.isSetAny()) {
+            JAXBElement queryEl = (JAXBElement) request.getAny();
+            AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
+            StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams, requestContext);
 
             try {
-                queryBuilder = new QueryBuilderImpl2(request);
-                sql = queryBuilder.build();
-            } catch (QueryException ex) {
-                throw new ServiceException(ErrorCodes.INVALID_REQUEST, ex.getMessage(), ex);
-            }
-
-            requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
-            requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
-            requestContext.putParam(InternalConstants.ELEMENT_SET, queryBuilder.getResultSet());
-
-            SqlPersistence service = new SqlPersistence(requestContext);
-            long recordsMatched = 0;
-            List<JAXBElement<? extends IdentifiableType>> idents = null;
-
-            try {
-                recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
-                idents = service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
+                request.setAbstractQuery(storeQueryBuilder.build());
             } catch (Exception ex) {
-                logger.log(Level.WARNING, "Could load load objects from database", ex);
-                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could load load objects from database", ex);
+                logger.log(Level.WARNING, "Error while building stored query", ex);
+                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while building stored query", ex);
             }
-            
-            int size = idents.size();
-            if (queryBuilder.getResultSet() != null && queryBuilder.getResultSet() == ElementSetType.FULL) {
-                List<JAXBElement<? extends IdentifiableType>> relatedIdents =
-                        getAssociatedObjects(idents);
+        }
 
-                idents.addAll(relatedIdents);
-            }
+        QueryBuilderImpl2 queryBuilder = null;
+        String sql = null;
 
-            SearchResultsType searchResult = new SearchResultsType();
-            searchResult.setNumberOfRecordsReturned(BigInteger.valueOf(size));
-            searchResult.setNumberOfRecordsMatched(BigInteger.valueOf(recordsMatched));
-            searchResult.getAny().addAll(idents);
-            response.setSearchResults(searchResult);
+        try {
+            queryBuilder = new QueryBuilderImpl2(request);
+            sql = queryBuilder.build();
+        } catch (QueryException ex) {
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, ex.getMessage(), ex);
+        }
 
-            RequestStatusType reqStatus = new RequestStatusType();
-            response.setSearchStatus(reqStatus);
+        requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
+        requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
+        requestContext.putParam(InternalConstants.ELEMENT_SET, queryBuilder.getResultSet());
+
+        SqlPersistence service = new SqlPersistence(requestContext);
+        long recordsMatched = 0;
+        List<JAXBElement<? extends IdentifiableType>> idents = null;
+
+        try {
+            recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
+            idents = service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Could load load objects from database", ex);
+            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could load load objects from database", ex);
+        }
+
+        int size = idents.size();
+        if (queryBuilder.getResultSet() != null && queryBuilder.getResultSet() == ElementSetType.FULL) {
+            List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
+            idents.addAll(assoEls);
+        }
+
+        SearchResultsType searchResult = new SearchResultsType();
+        searchResult.setNumberOfRecordsReturned(BigInteger.valueOf(size));
+        searchResult.setNumberOfRecordsMatched(BigInteger.valueOf(recordsMatched));
+        searchResult.getAny().addAll(idents);
+        response.setSearchResults(searchResult);
+
+        RequestStatusType reqStatus = new RequestStatusType();
+        response.setSearchStatus(reqStatus);
 
 
         return response;
@@ -152,21 +151,48 @@ public class QueryManager {
         }
 
         SqlPersistence service = new SqlPersistence(requestContext);
-        
+
         try {
             List<JAXBElement<? extends IdentifiableType>> idents = service.getByIds(ids);
-            
+
             if (elementSet != null && elementSet == ElementSetType.FULL) {
-                List<JAXBElement<? extends IdentifiableType>> relatedIdents =
-                        getAssociatedObjects(idents);
-                
-                idents.addAll(relatedIdents);
+                List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
+                idents.addAll(assoEls);
             }
 
             return idents;
         } catch (SQLException ex) {
             throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while constructing SQL query", ex);
         }
+    }
+
+    /**
+     * Get the associations of the objects in <code>identEls</code>.
+     *
+     * @param identEls Identifiables to get associations of.
+     * @return List of associations.
+     * @throws be.kzen.ergorr.exceptions.ServiceException
+     */
+    private List<JAXBElement<AssociationType>> getAssociations(List<JAXBElement<? extends IdentifiableType>> identEls) throws ServiceException {
+        List<JAXBElement<AssociationType>> assoEls = new ArrayList<JAXBElement<AssociationType>>();
+        // TODO: improve query, load all associations at once by first collecting ident IDs and then using SQL 'in' in one query.
+        for (JAXBElement<? extends IdentifiableType> identEl : identEls) {
+            IdentifiableType ident = identEl.getValue();
+            String sql = "select * from t_association where targetobject='" + ident.getId() + "' or sourceobject='" + ident.getId() + "'";
+
+            SqlPersistence service = new SqlPersistence(requestContext);
+
+            try {
+                List<JAXBElement<AssociationType>> assos =
+                        service.query(sql, new ArrayList<Object>(), (Class) AssociationType.class);
+                
+                assoEls.addAll(assos);
+            } catch (SQLException ex) {
+                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could not load associations of object with ID: " + ident.getId(), ex);
+            }
+        }
+
+        return assoEls;
     }
 
     /**

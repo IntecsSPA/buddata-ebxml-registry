@@ -4,13 +4,17 @@ import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RIMConstants;
+import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
@@ -21,6 +25,7 @@ import javax.xml.namespace.QName;
  * @author Yaman Ustuntas
  */
 public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackageType> {
+
     private static Logger logger = Logger.getLogger(RegistryPackageTypeDAO.class.getName());
 
     public RegistryPackageTypeDAO() {
@@ -46,32 +51,30 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        if (!isBrief()) {
-            if (CommonProperties.getInstance().getBoolean("db.loadPackageMembers")) {
-                RegistryObjectListType regObjList = new RegistryObjectListType();
-                StringBuilder sql = new StringBuilder();
+        if (CommonProperties.getInstance().getBoolean("db.loadPackageMembers")) {
+            RegistryObjectListType regObjList = new RegistryObjectListType();
+            StringBuilder sql = new StringBuilder();
 
-                sql.append("select * from t_identifiable where id in (select targetobject from t_association where sourceobject='").append(xmlObject.getId());
-                sql.append("' and associationtype='").append(RIMConstants.CN_ASSOCIATION_TYPE_ID_HasMember).append("')");
+            sql.append("select ident.* from t_identifiable ident inner join t_association asso on ident.id = asso.targetobject where asso.sourceobject = '");
+            sql.append(xmlObject.getId()).append("' and asso.associationtype='").append(RIMConstants.CN_ASSOCIATION_TYPE_ID_HasMember).append("';");
 
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine("RegistryPackage members query: " + sql.toString());
-                }
-
-                Statement stmt = connection.createStatement();
-                ResultSet result = stmt.executeQuery(sql.toString());
-
-                while (result.next()) {
-                    IdentifiableTypeDAO identDAO = new IdentifiableTypeDAO();
-                    identDAO.setContext(context);
-                    identDAO.setConnection(connection);
-                    IdentifiableType ident = identDAO.newXmlObject(result);
-                    QName qName = new QName(NamespaceConstants.RIM, CommonFunctions.getElementName(ident.getClass().getSimpleName()));
-                    regObjList.getIdentifiable().add(new JAXBElement(qName, ident.getClass(), ident));
-                }
-
-                xmlObject.setRegistryObjectList(regObjList);
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("RegistryPackage members query: " + sql.toString());
             }
+
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(sql.toString());
+
+            while (result.next()) {
+                IdentifiableTypeDAO identDAO = new IdentifiableTypeDAO();
+                identDAO.setContext(context);
+                identDAO.setConnection(connection);
+                identDAO.newXmlObject(result);
+
+                regObjList.getIdentifiable().add(identDAO.createJAXBElement());
+            }
+
+            xmlObject.setRegistryObjectList(regObjList);
         }
     }
 

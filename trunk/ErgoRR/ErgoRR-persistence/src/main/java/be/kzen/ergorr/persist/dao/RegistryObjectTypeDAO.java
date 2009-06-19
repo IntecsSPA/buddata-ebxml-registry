@@ -1,5 +1,6 @@
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
 import java.sql.PreparedStatement;
@@ -106,6 +107,23 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
         eiDAO.setConnection(connection);
         eiDAO.deleteExternalIdentifiers(xmlObject);
+
+//        String sqlAsso = "select * from t_association asso where asso.targetobject ='" +
+//                xmlObject.getId() + "' or asso.sourceobject = '" + xmlObject.getId() +"';";
+//
+//        Statement assoStmt = connection.createStatement();
+//        ResultSet assoResults = assoStmt.executeQuery(sqlAsso);
+//
+//        // TODO - validate, deleted association shouldn't be in a package.
+//        while (assoResults.next()) {
+//            AssociationTypeDAO assoDAO = new AssociationTypeDAO();
+//            assoDAO.setConnection(connection);
+//            assoDAO.setContext(context);
+//            assoDAO.newXmlObject(assoResults);
+//            assoDAO.delete();
+//        }
+//
+//        assoStmt.close();
     }
 
     @Override

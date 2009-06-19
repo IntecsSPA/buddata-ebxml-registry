@@ -56,7 +56,6 @@
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                     <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
@@ -71,7 +70,6 @@
         <ows:Operation name="GetRecords">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                     <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
@@ -81,7 +79,6 @@
             </ows:Parameter>
             <ows:Parameter name="outputSchema">
                 <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
-                    <!--ows:Value>http://www.opengis.net/cat/csw</ows:Value-->
             </ows:Parameter>
             <ows:Parameter name="startPosition">
                 <ows:Value/>
@@ -114,7 +111,6 @@
         <ows:Operation name="GetRecordById">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                     <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
@@ -135,26 +131,14 @@
                 <ows:Value>full</ows:Value>
             </ows:Parameter>
         </ows:Operation>
-        <!--ows:Operation name="DescribeRecord">
+        <ows:Operation name="DescribeRecord">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                     <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="TypeNames">
                 <ows:Value>rim:RegistryObject</ows:Value>
-                <ows:Value>rim:Association</ows:Value>
-                <ows:Value>rim:Classification</ows:Value>
-                <ows:Value>rim:ClassificationNode</ows:Value>
-                <ows:Value>rim:ClassificationScheme</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOAcquisitionPlatform</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProductInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOMaskInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOBrowseInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOArchivingInformation</ows:Value>
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer</ows:Value>
             </ows:Parameter>
             <ows:Parameter name="outputFormat">
                 <ows:Value>application/xml</ows:Value>
@@ -167,22 +151,20 @@
         <ows:Operation name="GetRepositoryItem">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
+                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/repo"/>
+                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/repo"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="id">
                 <ows:Value/>
             </ows:Parameter>
-        </ows:Operation-->
+        </ows:Operation>
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                     <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
-            <!--ows:Parameter name="source"/-->
             <ows:Parameter name="resourceType">
                 <ows:Value>eop:EarthObservation</ows:Value>
                 <ows:Value>sar:EarthObservation</ows:Value>

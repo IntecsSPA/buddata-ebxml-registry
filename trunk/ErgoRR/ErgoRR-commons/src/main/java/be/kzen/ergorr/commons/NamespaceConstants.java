@@ -33,4 +33,6 @@ public class NamespaceConstants {
     public static final String SAR = "http://earth.esa.int/sar";
     public static final String OPT = "http://earth.esa.int/opt";
     public static final String ATM = "http://earth.esa.int/atm";
+    public static final String OWS = "http://www.opengis.net/ows";
+    public static final String OGC = "http://www.opengis.net/ogc";
 }
