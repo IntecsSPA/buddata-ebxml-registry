@@ -19,6 +19,7 @@
 package be.kzen.ergorr.query;
 
 import be.kzen.ergorr.commons.CommonProperties;
+import be.kzen.ergorr.commons.DateUtil;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.exceptions.TransformException;
@@ -771,12 +772,8 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             if (queriedSlotType.equals(InternalConstants.TYPE_STRING)) {
                 sqlQuery.append("'").append(value).append("'");
             } else if (queriedSlotType.equals(InternalConstants.TYPE_DATETIME)) {
-                try {
-                    XMLGregorianCalendar cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(value);
-                    sqlQuery.append("'").append(value).append("'");
-                } catch (DatatypeConfigurationException ex) {
-                    throw new QueryException("Invalid date: " + value, ex);
-                }
+                DateUtil.getXMLCalendar(value); // validate that it is XSD datetime
+                sqlQuery.append("'").append(value).append("'");
             } else {
                 sqlQuery.append(value);
             }

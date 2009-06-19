@@ -51,26 +51,27 @@ public class ATMTranslator extends HMATranslator<EarthObservationType> {
     public RegistryObjectListType translate() throws TranslationException {
         super.translate();
 
-        List<WrsExtrinsicObjectType> eDataLayers = translateDataLayer();
+        List<WrsExtrinsicObjectType> eoDataLayers = translateDataLayer();
 
-        for (int i = 0; i < eDataLayers.size(); i++) {
-            WrsExtrinsicObjectType e = eDataLayers.get(i);
+        for (int i = 0; i < eoDataLayers.size(); i++) {
+            JAXBElement<WrsExtrinsicObjectType> eoDateLayerEl = OFactory.wrs.createExtrinsicObject(eoDataLayers.get(i));
             String id = eoProduct.getId() + ":DataLayer:" + i;
-            e.setId(id);
-            e.setLid(id);
-
-            JAXBElement<WrsExtrinsicObjectType> dataLayer = OFactory.wrs.createExtrinsicObject(e);
-            regObjList.getIdentifiable().add(dataLayer);
+            eoDateLayerEl.getValue().setId(id);
+            eoDateLayerEl.getValue().setLid(id);
+            regObjList.getIdentifiable().add(eoDateLayerEl);
+            associateToPackage(eoDateLayerEl.getValue());
 
             AssociationType asso = RIMUtil.createAssociation(id + ":asso", EOPConstants.A_HAS_PRODUCT_INFORMATION, eoProduct.getId(), id);
-            regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
+            JAXBElement<AssociationType> assoEl = OFactory.rim.createAssociation(asso);
+            regObjList.getIdentifiable().add(assoEl);
+            associateToPackage(asso);
         }
 
         return regObjList;
     }
 
     @Override
-    protected JAXBElement<EarthObservationType> getExtrinsicObjectJaxbEl() {
+    protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_atm.createEarthObservation(eo);
     }
 

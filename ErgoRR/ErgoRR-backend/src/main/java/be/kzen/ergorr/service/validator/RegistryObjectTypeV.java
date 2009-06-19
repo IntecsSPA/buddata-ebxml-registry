@@ -25,7 +25,9 @@ import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
+import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
+import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.rim.ServiceBindingType;
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBElement;
 
 /**
  * Validates RegistryObjects.
@@ -46,7 +49,6 @@ import java.util.logging.Logger;
 public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractValidator<T> {
     private static Logger logger = Logger.getLogger(RegistryObjectTypeV.class.getName());
     
-    // Objects which only can have a certain objectType
     private static final String URN_REGEX = "^urn:[\\w-.]*:[\\w-.:]*";
 
     /**
@@ -86,17 +88,103 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
      */
     @Override
     public void validateToDelete() throws ReferenceExistsException, SQLException {
-        String sql = "select id from t_association where sourceobject ='" + rimObject.getId() + "' or targetobject = '" + rimObject.getId() + "'";
+        valToDelPkgAsso();
+        addReletedObjectToDel();
+        valToDelClassification();
+        valToDelExtIdent();
+    }
+
+    /**
+     * Validates if the <code>rimObject</code> is associated to a
+     * RegistryPackage. The HasMember association type is the only association
+     * which will prevent a RegistryObject from being deleted.
+     *
+     * @throws java.sql.SQLException
+     * @throws be.kzen.ergorr.exceptions.ReferenceExistsException If <code>rimObject</code> is associated to a RegistryPackage.
+     */
+    protected void valToDelPkgAsso() throws SQLException, ReferenceExistsException {
+        String sql = "select sourceobject from t_association where associationtype ='" + RIMConstants.CN_ASSOCIATION_TYPE_ID_HasMember + "' and " +
+                "targetobject ='" + rimObject.getId() + "';";
 
         List<String> ids = persistence.getIds(sql);
 
-        if (!ids.isEmpty()) {
-            String idStr = "";
-            for (String id : ids) {
-                idStr += id + " | ";
+        for (String id : ids) {
+            // Ignore if package is also in the delete request.
+            if (!idExistsInRequest(id, RegistryPackageType.class)) {
+                String err = "Cannot delete object " + rimObject.getId() + " because it has a HasMember association to RegistryPackage with ID: " + id;
+                throw new ReferenceExistsException(err);
             }
-            String err = "Object " + rimObject.getId() + " to be deleted is used in associations with IDs " + idStr;
-            throw new ReferenceExistsException(err);
+        }
+    }
+
+    protected void addReletedObjectToDel() throws SQLException, ReferenceExistsException {
+        String sql = "select * from t_association where sourceobject='" + rimObject.getId() +
+                "' or targetobject='" + rimObject.getId() + "';";
+
+        List<JAXBElement<AssociationType>> assoEls = persistence.query(sql, null, (Class) AssociationType.class);
+
+
+        for (JAXBElement<AssociationType> assoEl : assoEls) {
+            AssociationType asso = assoEl.getValue();
+
+            if (!idExistsInRequest(asso.getId())) {
+                AssociationTypeV assoV = new AssociationTypeV();
+                assoV.setRimObject(asso);
+                assoV.setFlatIdents(flatIdents);
+                assoV.setRequestContext(requestContext);
+                assoV.validateToDelete();
+                addedIdents.add(asso);
+            }
+        }
+    }
+
+    /**
+     * Validates the classifications of <code>rimObject</code>.
+     * 
+     * @throws java.sql.SQLException
+     * @throws be.kzen.ergorr.exceptions.ReferenceExistsException
+     */
+    protected void valToDelClassification() throws SQLException, ReferenceExistsException {
+        String sql = "select * from t_classification where classifiedobject ='" + rimObject.getId() + "'";
+
+        List<JAXBElement<ClassificationType>> clsEls = persistence.query(sql, null, (Class) ClassificationType.class);
+
+        for (JAXBElement<ClassificationType> clsEl : clsEls) {
+            ClassificationType cls = clsEl.getValue();
+
+            // if classification is already to be deleted then don't bother with re-validating it.
+            if (!idExistsInRequest(cls.getId())) {
+                ClassificationTypeV clsV = new ClassificationTypeV();
+                clsV.setFlatIdents(flatIdents);
+                clsV.setRequestContext(requestContext);
+                clsV.setRimObject(cls);
+                clsV.validateToDelete();
+            }
+        }
+    }
+
+    /**
+     * Validats the external identifiers of <code>rimObject</code>.
+     * 
+     * @throws java.sql.SQLException
+     * @throws be.kzen.ergorr.exceptions.ReferenceExistsException
+     */
+    protected void valToDelExtIdent() throws SQLException, ReferenceExistsException {
+        String sql = "select * from t_externalidentifier where registryobject ='" + rimObject.getId() + "'";
+
+        List<JAXBElement<ExternalIdentifierType>> exIdentEls = persistence.query(sql, null, (Class) ExternalIdentifierType.class);
+
+        for (JAXBElement<ExternalIdentifierType> exIdentEl : exIdentEls) {
+            ExternalIdentifierType exIdent = exIdentEl.getValue();
+
+            // if external identifier is already to be deleted then don't bother with re-validating it.
+            if (!idExistsInRequest(exIdent.getId())) {
+                ExternalIdentifierTypeV exIdentV = new ExternalIdentifierTypeV();
+                exIdentV.setFlatIdents(flatIdents);
+                exIdentV.setRequestContext(requestContext);
+                exIdentV.setRimObject(exIdent);
+                exIdentV.validateToDelete();
+            }
         }
     }
 }

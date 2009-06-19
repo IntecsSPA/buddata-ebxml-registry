@@ -82,7 +82,7 @@ public class SqlPersistence {
         Integer allowedMaxResults = CommonProperties.getInstance().getInt("db.maxResponse");
 
         if (maxResults != null && maxResults != -1) {
-            if (maxResults == null || maxResults == 0 || maxResults > allowedMaxResults) {
+            if (maxResults == 0 || maxResults > allowedMaxResults) {
                 maxResults = allowedMaxResults;
             }
 
@@ -206,6 +206,11 @@ public class SqlPersistence {
             conn.setAutoCommit(false);
 
             for (IdentifiableType ident : idents) {
+
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, "Deleting " + ident.getClass().getSimpleName() + " with ID: " + ident.getId());
+                }
+
                 Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + ident.getClass().getSimpleName() + "DAO");
                 IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance();
                 identDAO.setXmlObject(ident);
@@ -243,7 +248,7 @@ public class SqlPersistence {
             result = conn.createStatement().executeQuery(sql);
 
             while (result.next()) {
-                ids.add(result.getString("id"));
+                ids.add(result.getString(1));
             }
         } finally {
             closeConnection(conn);

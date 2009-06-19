@@ -42,11 +42,15 @@ import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
+import be.kzen.ergorr.persist.dao.RegistryPackageTypeDAO;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.service.validator.RimValidator;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +67,6 @@ public class LCManager {
 
     private static Logger logger = Logger.getLogger(LCManager.class.getName());
     private RequestContext requestContext;
-    private Map<String, List<IdentifiableType>> identMap;
 
     /**
      * Constructor
@@ -72,7 +75,6 @@ public class LCManager {
      */
     public LCManager(RequestContext requestContext) {
         this.requestContext = requestContext;
-        identMap = new HashMap<String, List<IdentifiableType>>();
     }
 
     /**
@@ -108,9 +110,8 @@ public class LCManager {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
-        loadMap(flatIdents);
 
-        RimValidator validator = new RimValidator(flatIdents, identMap, requestContext);
+        RimValidator validator = new RimValidator(flatIdents, requestContext);
         try {
             validator.validate();
         } catch (InvalidReferenceException ex) {
@@ -151,8 +152,8 @@ public class LCManager {
             }
 
             persistence.persist(flatIdents);
-            updateSlotCache(identMap.get(ExtrinsicObjectType.class.getName()));
-            insertRepositoryItems();
+            updateSlotCache(flatIdents);
+            insertRepositoryItems(flatIdents);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Error while committing data", ex);
             throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Error while committing data", ex);
@@ -165,13 +166,12 @@ public class LCManager {
      * @param regObjList Identifiables to delete.
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public void delete(RegistryObjectListType regObjList) throws ServiceException {
+    public List<IdentifiableType> delete(RegistryObjectListType regObjList) throws ServiceException {
         List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
-        loadMap(flatIdents);
 
-        RimValidator validator = new RimValidator(flatIdents, identMap, requestContext);
+        RimValidator validator = new RimValidator(flatIdents, requestContext);
 
         try {
             validator.validateToDelete();
@@ -180,30 +180,31 @@ public class LCManager {
 
         } catch (ReferenceExistsException ex) {
             logger.log(Level.SEVERE, "Cannot delete object because of existing references", ex);
-            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Cannot delete object because of existing references", ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, ex.getMessage(), ex);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "SQL exception while deleting objects", ex);
             throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "SQL exception while deleting objects", ex);
         }
+
+        return flatIdents;
     }
 
     /**
      * Puts the RepositoryItems of WrsExtrinsicObjects to the repository.
      */
-    private void insertRepositoryItems() {
-        List<IdentifiableType> eoList = identMap.get(WrsExtrinsicObjectType.class.getName());
+    private void insertRepositoryItems(List<IdentifiableType> idents) {
+        RepositoryManager repoManager = null;
+        String deployName = (String) requestContext.getParam(InternalConstants.DEPLOY_NAME);
 
-        if (eoList != null) {
-            RepositoryManager repoManager = null;
-            String deployName = (String) requestContext.getParam(InternalConstants.DEPLOY_NAME);
+        if (deployName == null) {
+            repoManager = new RepositoryManager();
+        } else {
+            repoManager = new RepositoryManager(deployName);
+        }
 
-            if (deployName == null) {
-                repoManager = new RepositoryManager();
-            } else {
-                repoManager = new RepositoryManager(deployName);
-            }
+        for (IdentifiableType ident : idents) {
 
-            for (IdentifiableType ident : eoList) {
+            if (ident instanceof WrsExtrinsicObjectType) {
                 WrsExtrinsicObjectType eo = (WrsExtrinsicObjectType) ident;
 
                 if (eo.getRepositoryItem() != null) {
@@ -224,7 +225,7 @@ public class LCManager {
      * @param idents IdentifiableType tree.
      * @param flatIdents Flat list of IdentifiableType.
      */
-    private void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents) {
+    private void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents) throws ServiceException {
         for (IdentifiableType ident : idents) {
 
             if (ident instanceof RegistryObjectType) {
@@ -351,21 +352,20 @@ public class LCManager {
      * Load <code>indetMap</code> with <code>idents</code>
      * sorting them by RIM type.
      */
-    private void loadMap(List<IdentifiableType> idents) {
-        for (IdentifiableType ident : idents) {
-            String key = ident.getClass().getName();
-
-            List<IdentifiableType> list = identMap.get(key);
-
-            if (list == null) {
-                list = new ArrayList<IdentifiableType>();
-                identMap.put(key, list);
-            }
-
-            list.add(ident);
-        }
-    }
-
+//    private void loadMap(List<IdentifiableType> idents, Map<String, List<IdentifiableType>> identMap) {
+//        for (IdentifiableType ident : idents) {
+//            String key = ident.getClass().getName();
+//
+//            List<IdentifiableType> list = identMap.get(key);
+//
+//            if (list == null) {
+//                list = new ArrayList<IdentifiableType>();
+//                identMap.put(key, list);
+//            }
+//
+//            list.add(ident);
+//        }
+//    }
     /**
      * Updates the slot cache if needed.
      *
@@ -374,14 +374,16 @@ public class LCManager {
     private void updateSlotCache(List<IdentifiableType> idents) {
         if (idents != null) {
             for (IdentifiableType ident : idents) {
-                ExtrinsicObjectType eo = (ExtrinsicObjectType) ident;
+                if (ident instanceof ExtrinsicObjectType) {
+                    ExtrinsicObjectType eo = (ExtrinsicObjectType) ident;
 
-                if (eo.getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
-                    for (SlotType slot : eo.getSlot()) {
-                        try {
-                            InternalSlotTypes.getInstance().putSlot(slot.getName(), slot.getSlotType());
-                        } catch (Exception ex) {
-                            logger.log(Level.WARNING, "Error while updating slot type cache", ex);
+                    if (eo.getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
+                        for (SlotType slot : eo.getSlot()) {
+                            try {
+                                InternalSlotTypes.getInstance().putSlot(slot.getName(), slot.getSlotType());
+                            } catch (Exception ex) {
+                                logger.log(Level.WARNING, "Error while updating slot type cache", ex);
+                            }
                         }
                     }
                 }

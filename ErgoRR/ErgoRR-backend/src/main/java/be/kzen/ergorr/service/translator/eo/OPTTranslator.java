@@ -44,7 +44,7 @@ public class OPTTranslator<T extends EarthObservationType> extends HMATranslator
     }
 
     @Override
-    protected WrsExtrinsicObjectType translateProduct() {
+    protected WrsExtrinsicObjectType translateProduct() throws TranslationException {
         WrsExtrinsicObjectType e = super.translateProduct();
 
         if (eo.isSetUsing()) {
@@ -92,7 +92,7 @@ public class OPTTranslator<T extends EarthObservationType> extends HMATranslator
     }
 
     @Override
-    protected JAXBElement<EarthObservationType> getExtrinsicObjectJaxbEl() {
+    protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_opt.createEarthObservation(eo);
     }
 }

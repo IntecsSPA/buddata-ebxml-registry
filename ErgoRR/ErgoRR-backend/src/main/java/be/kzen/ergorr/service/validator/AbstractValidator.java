@@ -24,29 +24,31 @@ import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Abstract validator to be extended by RIM object validators.
+ * A Validator may add Identifiables to the <code>addedIdents</code>
+ * depending on the validate or validateToDelete being performed.
+ * E.g a RegistryObjects Associations will be also added to the
+ * <code>addedIdents</code> list to be deleted if the Associations are
+ * not already in the list.
  * 
  * @author yamanustuntas
  */
 public abstract class AbstractValidator<T extends IdentifiableType> {
-    protected Map<String, List<IdentifiableType>> identMap;
+
+    protected List<IdentifiableType> flatIdents;
+    protected List<IdentifiableType> addedIdents;
     protected T rimObject;
     protected RequestContext requestContext;
     protected SqlPersistence persistence;
 
-    /**
-     * Set the identifiables which are processed together
-     * with the corrent <code>rimObject</code>.
-     * 
-     * @param identMap
-     */
-    public void setIdentMap(Map<String, List<IdentifiableType>> identMap) {
-        this.identMap = identMap;
+    public AbstractValidator() {
+        addedIdents = new ArrayList<IdentifiableType>();
     }
 
     /**
@@ -57,6 +59,22 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
     public void setRequestContext(RequestContext requestContext) {
         this.requestContext = requestContext;
         persistence = new SqlPersistence(requestContext);
+    }
+
+    public List<IdentifiableType> getFlatIdents() {
+        return flatIdents;
+    }
+
+    public void setFlatIdents(List<IdentifiableType> flatIdents) {
+        this.flatIdents = flatIdents;
+    }
+
+    public List<IdentifiableType> getAddedIdents() {
+        return addedIdents;
+    }
+
+    public void setAddedIdents(List<IdentifiableType> addedIdents) {
+        this.addedIdents = addedIdents;
     }
 
     /**
@@ -78,20 +96,24 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
     }
 
     /**
-     * Checks if an object with a certain type <code>clazz</code> and
-     * a certain <code>id</code> exists in <code>identMap</code>.
+     * Check if a RIM object with <code>id</code> exists in <code>flatIdents</code>.
      *
      * @param id ID of RIM object.
      * @param clazz Type of RIM object.
      * @return True if object exists.
      */
-    protected boolean idExistsInRequest(String id, Class<? extends IdentifiableType> clazz) {
+    protected boolean idExistsInRequest(String id) {
         boolean exists = false;
 
-        List<IdentifiableType> idents = identMap.get(clazz.getName());
+        for (IdentifiableType ident : flatIdents) {
+            if (ident.getId().equals(id)) {
+                exists = true;
+                break;
+            }
+        }
 
-        if (idents != null) {
-            for (IdentifiableType ident : idents) {
+        if (!exists) {
+            for (IdentifiableType ident : addedIdents) {
                 if (ident.getId().equals(id)) {
                     exists = true;
                     break;
@@ -104,23 +126,25 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
 
     /**
      * Check if a RIM object with <code>id</code> exists in <code>identMap</code>.
-     * 
+     *
      * @param id ID to find.
      * @return True if RIM object with ID exits.
      */
-    protected boolean idExistsInRequest(String id) {
+    protected boolean idExistsInRequest(String id, Class<? extends IdentifiableType> identClass) {
         boolean exists = false;
-        Iterator<String> it = identMap.keySet().iterator();
 
-        outer:
-        while (it.hasNext()) {
-            List<IdentifiableType> idents = identMap.get(it.next());
+        for (IdentifiableType ident : flatIdents) {
+            if (ident.getId().equals(id) && ident.getClass().getName().equals(identClass.getName())) {
+                exists = true;
+                break;
+            }
+        }
 
-            inner:
-            for (IdentifiableType ident : idents) {
-                if (ident.getId().equals(id)) {
+        if (!exists) {
+            for (IdentifiableType ident : addedIdents) {
+                if (ident.getId().equals(id) && ident.getClass().getName().equals(identClass.getName())) {
                     exists = true;
-                    break outer;
+                    break;
                 }
             }
         }

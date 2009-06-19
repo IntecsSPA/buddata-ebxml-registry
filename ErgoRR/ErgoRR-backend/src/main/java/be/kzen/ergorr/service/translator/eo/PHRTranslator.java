@@ -36,7 +36,7 @@ public class PHRTranslator extends HMATranslator<EarthObservationType> {
     }
 
     @Override
-    protected JAXBElement<EarthObservationType> getExtrinsicObjectJaxbEl() {
+    protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_sar.createEarthObservation(eo);
     }
 }

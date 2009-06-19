@@ -1,6 +1,7 @@
 package be.kzen.ergorr.persist.dao;
 
 import be.kzen.ergorr.commons.CommonProperties;
+import be.kzen.ergorr.commons.DateUtil;
 import be.kzen.ergorr.geometry.GeometryTranslator;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RIMConstants;
@@ -34,6 +35,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.postgis.Geometry;
 import org.postgis.binary.BinaryWriter;
 
@@ -64,39 +66,33 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         value = value.trim();
         slotValues.stringValue = value; // set the string value is any case
 
-        if (internalSlotType.equals(InternalConstants.TYPE_STRING)) {
-        } else {
-            if (internalSlotType.equals(InternalConstants.TYPE_INTEGER)) {
-                try {
-                    // first to double in case int value passed as 1.0
-                    // Integer.valueOf can't handle that.
-                    double d = Double.valueOf(value);
-                    slotValues.intValue = (int) d;
-                } catch (NumberFormatException ex) {
-                    throw new SQLException("Could not cast Slot " + slotName + " integer value: " + value);
-                }
-            } else if (internalSlotType.equals(InternalConstants.TYPE_DATETIME)) {
-                try {
-                    Calendar c = DatatypeFactory.newInstance().newXMLGregorianCalendar(value).toGregorianCalendar();
-                    Calendar utc = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-                    utc.setTimeInMillis(c.getTimeInMillis());
-                    slotValues.dateTimeValue = new Timestamp(utc.getTimeInMillis());
-                } catch (DatatypeConfigurationException ex) {
-                    throw new SQLException("Could not cast Slot " + slotName + " value to XML date: " + value);
-                }
-            } else if (internalSlotType.equals(InternalConstants.TYPE_DOUBLE)) {
-                try {
-                    slotValues.doubleValue = Double.valueOf(value);
-                } catch (NumberFormatException ex) {
-                    throw new SQLException("Could not cast Slot " + slotName + " double value: " + value);
-                }
-            } else if (internalSlotType.equals(InternalConstants.TYPE_BOOLEAN)) {
-                String boolVal = value.toLowerCase();
+        if (!internalSlotType.equals(InternalConstants.TYPE_STRING)) {
+            if (!value.equals("")) {
+                if (internalSlotType.equals(InternalConstants.TYPE_INTEGER)) {
+                    try {
+                        // first to double in case int value passed as 1.0
+                        // Integer.valueOf can't handle that.
+                        double d = Double.valueOf(value);
+                        slotValues.intValue = (int) d;
+                    } catch (NumberFormatException ex) {
+                        throw new SQLException("Could not cast Slot " + slotName + " integer value: " + value);
+                    }
+                } else if (internalSlotType.equals(InternalConstants.TYPE_DATETIME)) {
+                    slotValues.dateTimeValue = DateUtil.getCalendar(value);
+                } else if (internalSlotType.equals(InternalConstants.TYPE_DOUBLE)) {
+                    try {
+                        slotValues.doubleValue = Double.valueOf(value);
+                    } catch (NumberFormatException ex) {
+                        throw new SQLException("Could not cast Slot " + slotName + " double value: " + value);
+                    }
+                } else if (internalSlotType.equals(InternalConstants.TYPE_BOOLEAN)) {
+                    String boolVal = value.toLowerCase();
 
-                if (boolVal.equals("true") || boolVal.equals("false")) {
-                    slotValues.boolValue = Boolean.valueOf(value);
-                } else {
-                    throw new SQLException("Could not cast Slot " + slotName + " bool value: " + value);
+                    if (boolVal.equals("true") || boolVal.equals("false")) {
+                        slotValues.boolValue = Boolean.valueOf(value);
+                    } else {
+                        throw new SQLException("Could not cast Slot " + slotName + " bool value: " + value);
+                    }
                 }
             }
         }
@@ -113,9 +109,6 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
             if (val != null && !val.equals("")) {
                 GmlWktParser parser = new GmlWktParser(val);
                 return parser.parse();
-//                BinaryParser parser = new BinaryParser();
-//                Geometry geometry = parser.parse(val);
-//                return GeometryTranslator.gmlGeometryFromGeometry(geometry);
             } else {
                 return null;
             }
@@ -295,7 +288,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                         throw new SQLException("Slot " + slot.getName() + " does not have a valid XML value");
                     }
                 } else {
-                    String val = anyVal.getContent().get(0).toString().trim();
+                    String val = anyVal.getContent().get(0).toString();
                     SlotValues slotValues = getAnyValueByType(val, slot.getName(), slot.getSlotType(), internalSlotType, InternalConstants.SPEC_TYPE_WRS, i);
                     slotValues.loadValues(stmt);
                     stmt.addBatch();
@@ -321,7 +314,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         public String specType = InternalConstants.SPEC_TYPE_RIM;
         public String stringValue = null;
         public boolean boolValue = false;
-        public Timestamp dateTimeValue = null;
+        public Calendar dateTimeValue = null;
         public Double doubleValue = null;
         public Integer intValue = null;
         public Geometry geometryValue = null;
@@ -342,7 +335,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
             stmt.setBoolean(7, boolValue);
 
             if (dateTimeValue != null) {
-                stmt.setTimestamp(8, dateTimeValue);
+                stmt.setTimestamp(8, new Timestamp(dateTimeValue.getTimeInMillis()), dateTimeValue);
             } else {
                 stmt.setNull(8, Types.TIMESTAMP);
             }

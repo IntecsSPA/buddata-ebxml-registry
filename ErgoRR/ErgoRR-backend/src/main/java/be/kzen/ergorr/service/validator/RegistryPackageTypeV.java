@@ -18,7 +18,15 @@
  */
 package be.kzen.ergorr.service.validator;
 
+import be.kzen.ergorr.exceptions.InvalidReferenceException;
+import be.kzen.ergorr.exceptions.ReferenceExistsException;
+import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBElement;
 
 /**
  * Validate RegistryPackages.
@@ -27,5 +35,45 @@ import be.kzen.ergorr.model.rim.RegistryPackageType;
  */
 public class RegistryPackageTypeV extends RegistryObjectTypeV<RegistryPackageType> {
 
-    // TODO: delete HasMember associations
+    private static Logger logger = Logger.getLogger(RegistryPackageTypeV.class.getName());
+
+    @Override
+    public void validate() throws InvalidReferenceException, SQLException {
+        super.validate();
+    }
+
+    @Override
+    public void validateToDelete() throws ReferenceExistsException, SQLException {
+        super.validateToDelete();
+
+        String sql = "select * from t_identifiable t_i inner join t_association t_a on t_i.id = t_a.targetobject where " +
+                "t_a.sourceobject = '" + rimObject.getId() + "'" +
+                "and t_a.associationtype = 'urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember';";
+
+        List<JAXBElement<? extends IdentifiableType>> identEls = persistence.query(sql, null, (Class) IdentifiableType.class);
+
+        for (JAXBElement<? extends IdentifiableType> identEl : identEls) {
+            IdentifiableType ident = identEl.getValue();
+
+            if (!idExistsInRequest(ident.getId())) {
+                String validatorClassName = "be.kzen.ergorr.service.validator." + ident.getClass().getSimpleName() + "V";
+
+                try {
+                    Class validatorClass = Class.forName(validatorClassName);
+                    RegistryObjectTypeV validator = (RegistryObjectTypeV) validatorClass.newInstance();
+                    validator.setFlatIdents(flatIdents);
+                    validator.setRimObject(ident);
+                    validator.setRequestContext(requestContext);
+                    validator.validateToDelete();
+                    addedIdents.add(ident);
+                } catch (InstantiationException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

@@ -33,6 +33,12 @@ import java.util.logging.Logger;
 /**
  * Checks that all the ID references specified in RIM are valid.
  * ID's such as id, sourceObject, targetObject, objectType, ...
+ *
+ * A Validator may add or remove Identifiables from the <code>idents</code>
+ * depending on the validate or validateToDelete being performed.
+ * E.g a RegistryObjects Associations will be also added to the
+ * <code>idents</code> list to be deleted if the Associations are
+ * not already in the list.
  * 
  * Also handles cache updates while doing validations.
  *
@@ -40,15 +46,9 @@ import java.util.logging.Logger;
  */
 public class RimValidator {
     private static Logger logger = Logger.getLogger(RimValidator.class.getName());
-    private Map<String, List<IdentifiableType>> identMap;
     private List<IdentifiableType> idents;
     private RequestContext requestContext;
 
-    public RimValidator(List<IdentifiableType> idents, Map<String, List<IdentifiableType>> identMap, RequestContext requestContext) {
-        this.identMap = identMap;
-        this.idents = idents;
-        this.requestContext = requestContext;
-    }
 
     public RimValidator(List<IdentifiableType> idents, RequestContext requestContext) {
         this.idents = idents;
@@ -67,8 +67,8 @@ public class RimValidator {
             try {
                 Class validatorClass = Class.forName(validatorClassName);
                 AbstractValidator validator = (AbstractValidator) validatorClass.newInstance();
-                validator.setIdentMap(identMap);
                 validator.setRimObject(ident);
+                validator.setFlatIdents(idents);
                 validator.setRequestContext(requestContext);
                 validator.validate();
                 
@@ -83,16 +83,19 @@ public class RimValidator {
     }
 
     public void validateToDelete() throws ReferenceExistsException, SQLException {
+        List<IdentifiableType> addedIdents = new ArrayList<IdentifiableType>();
+
         for (IdentifiableType ident : idents) {
             String validatorClassName = "be.kzen.ergorr.service.validator." + ident.getClass().getSimpleName() + "V";
             
             try {
                 Class validatorClass = Class.forName(validatorClassName);
                 AbstractValidator validator = (AbstractValidator) validatorClass.newInstance();
-                validator.setIdentMap(identMap);
                 validator.setRimObject(ident);
+                validator.setFlatIdents(idents);
                 validator.setRequestContext(requestContext);
                 validator.validateToDelete();
+                addedIdents.addAll(validator.getAddedIdents());
 
             } catch (InstantiationException ex) {
                 logger.log(Level.SEVERE, null, ex);
@@ -102,5 +105,7 @@ public class RimValidator {
                 logger.log(Level.SEVERE, null, ex);
             }
         }
+
+        idents.addAll(addedIdents);
     }
 }
