@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
-    <rim:ClassificationNode code="ObjectDefinition" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:kzen:ObjectType:SlotDescription" id="urn:kzen:ObjectType:SlotDescription" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
-        <rim:Name>
-            <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="ObjectDefinition"/>
-        </rim:Name>
-    </rim:ClassificationNode>
     <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionType" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionStation" slotType="string"/>
