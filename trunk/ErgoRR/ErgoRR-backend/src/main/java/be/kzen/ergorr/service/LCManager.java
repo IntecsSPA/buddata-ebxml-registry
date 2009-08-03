@@ -151,8 +151,10 @@ public class LCManager {
                 flatIdent.setNewObject(isNewObject);
             }
 
+            List<ExtrinsicObjectType> slotDescEos = getSlotDescExtrinsicObjects(flatIdents);
+            validToCache(slotDescEos);
             persistence.persist(flatIdents);
-            updateSlotCache(flatIdents);
+            updateSlotCache(slotDescEos);
             insertRepositoryItems(flatIdents);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Error while committing data", ex);
@@ -349,6 +351,27 @@ public class LCManager {
     }
 
     /**
+     * Get the ExtrinsicObject from the {@code flatIdents} which
+     * have the object type to define slots.
+     *
+     * @param flatIdents List of objects to search.
+     * @return ExtrinsicObject which describe slots of an object.
+     */
+    private List<ExtrinsicObjectType> getSlotDescExtrinsicObjects(List<IdentifiableType> flatIdents) {
+        List<ExtrinsicObjectType> eos = new ArrayList<ExtrinsicObjectType>();
+
+        for (IdentifiableType ident : flatIdents) {
+            if (ident instanceof ExtrinsicObjectType) {
+                if (((ExtrinsicObjectType) ident).getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
+                    eos.add((ExtrinsicObjectType) ident);
+                }
+            }
+        }
+
+        return eos;
+    }
+
+    /**
      * Load <code>indetMap</code> with <code>idents</code>
      * sorting them by RIM type.
      */
@@ -366,26 +389,43 @@ public class LCManager {
 //            list.add(ident);
 //        }
 //    }
+    
     /**
      * Updates the slot cache if needed.
      *
      * @param idents List of processed identifiables.
      */
-    private void updateSlotCache(List<IdentifiableType> idents) {
-        if (idents != null) {
-            for (IdentifiableType ident : idents) {
-                if (ident instanceof ExtrinsicObjectType) {
-                    ExtrinsicObjectType eo = (ExtrinsicObjectType) ident;
+    private void updateSlotCache(List<ExtrinsicObjectType> eos) {
+        for (ExtrinsicObjectType eo : eos) {
+            for (SlotType slot : eo.getSlot()) {
+                try {
+                    InternalSlotTypes.getInstance().putSlot(slot.getName(), slot.getSlotType());
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Error while updating slot type cache", ex);
+                }
+            }
+        }
+    }
 
-                    if (eo.getObjectType().equals(RIMConstants.CN_OBJ_DEF)) {
-                        for (SlotType slot : eo.getSlot()) {
-                            try {
-                                InternalSlotTypes.getInstance().putSlot(slot.getName(), slot.getSlotType());
-                            } catch (Exception ex) {
-                                logger.log(Level.WARNING, "Error while updating slot type cache", ex);
-                            }
-                        }
-                    }
+    /**
+     * Checks if slots of {@code eos} are valid to cache.
+     * {@code eos} list should be ExtrinsicObjects with objectType {@code RIMConstants.CN_OBJ_DEF}.
+     * The content is valid if:
+     * - slot definition does not exist in the registry yet
+     * - slot definition exists
+     *
+     * @param eos
+     * @throws ServiceException
+     */
+    private void validToCache(List<ExtrinsicObjectType> eos) throws ServiceException {
+
+        for (ExtrinsicObjectType eo : eos) {
+            for (SlotType slot : eo.getSlot()) {
+                String slotType = InternalSlotTypes.getInstance().getSlotType(slot.getName());
+
+                if (slotType != null && !slotType.equals(slot.getSlotType())) {
+                    throw new ServiceException("Slot description with name '" + slot.getName() +
+                            "' has existing type '" + slotType + "' but was inserted as '" + slot.getSlotType() + "'");
                 }
             }
         }

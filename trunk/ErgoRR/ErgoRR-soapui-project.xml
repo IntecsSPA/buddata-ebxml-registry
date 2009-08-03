@@ -13670,10 +13670,22 @@ This type shall be extended if needed for specific OWS use to include additional
       <xs:group ref="dc:DC-element-set"/>
     </xs:choice>
   </xs:complexType>
-</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/esa1/rimquery</con:endpoint><con:endpoint>http://yvonne.ws.kzen.be/omar/registry/soap</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:oasis:names:tc:ebxml-regrep:wsdl:registry:bindings:3.0:QueryManagerPortType#submitAdhocQuery" name="submitAdhocQuery" bindingOperationName="submitAdhocQuery" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/rimquery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:urn2="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/esa1/rimquery</con:endpoint><con:endpoint>http://yvonne.ws.kzen.be/ehip-registry3-0/registry?wsdl</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:oasis:names:tc:ebxml-regrep:wsdl:registry:bindings:3.0:QueryManagerPortType#submitAdhocQuery" name="submitAdhocQuery" bindingOperationName="submitAdhocQuery" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/rimquery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:urn2="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
    <soapenv:Header/>
    <soapenv:Body>
       <!-- TODO -->
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/rim/QueryManagerPortType/submitAdhocQueryRequest"/></con:call><con:call name="Request 2"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://yvonne.ws.kzen.be/ehip-registry3-0/registry?wsdl</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:urn2="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+
+   <soapenv:Body>
+      <urn:AdhocQueryRequest startIndex="0" maxResults="10">
+         <urn:ResponseOption returnType="RegistryObject" returnComposedObjects="false"/>
+         <urn2:AdhocQuery>
+            <urn2:QueryExpression queryLanguage="urn:oasis:names:tc:ebxml-regrep:QueryLanguage:SQL-92">
+              select * from extrinsicobject;
+            </urn2:QueryExpression>
+         </urn2:AdhocQuery>
+      </urn:AdhocQueryRequest>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/rim/QueryManagerPortType/submitAdhocQueryRequest"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="LifeCycleManagerSOAPBinding" type="wsdl" bindingName="{http://www.kzen.be/ergorr/interfaces/soap/rim}LifeCycleManagerSOAPBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/esa1/rimlcm?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/esa1/rimlcm?wsdl"><con:part><con:url>http://localhost:8080/esa1/rimlcm?xsd=2</con:url><con:content><![CDATA[<!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.5-hudson-$BUILD_NUMBER-.-->
 <xsd:schema id="csw-publication" targetNamespace="http://www.opengis.net/cat/csw/2.0.2" elementFormDefault="qualified" version="2.0.2" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsd="http://www.w3.org/2001/XMLSchema">

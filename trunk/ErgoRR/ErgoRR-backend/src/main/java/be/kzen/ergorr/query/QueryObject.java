@@ -36,13 +36,10 @@ public class QueryObject {
     private String sqlAlias;
     // if object is defined in typeNames but not used in the filter.
     private boolean usedInQuery;
-
-    public QueryObject() {
-        usedInQuery = false;
-    }
+    private static final String TABLE_NAME_PREFIX = "t_";
 
     public QueryObject(String objectName, String sqlAlias) {
-        this();
+        usedInQuery = false;
         this.objectName = objectName;
         this.sqlAlias = sqlAlias;
     }
@@ -56,7 +53,7 @@ public class QueryObject {
     }
 
     public String getTableName() {
-        return "t_" + objectName.toLowerCase();
+        return TABLE_NAME_PREFIX + objectName.toLowerCase();
     }
 
     public String getObjectName() {

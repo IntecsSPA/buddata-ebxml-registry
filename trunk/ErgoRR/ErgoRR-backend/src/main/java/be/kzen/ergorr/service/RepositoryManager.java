@@ -28,7 +28,7 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
 /**
- * Manages reading and writing to the repository.
+ * Repository implementation using local file system.
  *
  * @author yamanustuntas
  */

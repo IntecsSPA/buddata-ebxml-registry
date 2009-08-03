@@ -58,16 +58,16 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
     public void validate() throws InvalidReferenceException, SQLException {
         // TODO: make sure that ClassificationNode is from ObjectType ClassificationScheme
 
-        if (!rimObject.getId().matches(URN_REGEX)) {
-            throw new InvalidReferenceException("'" + rimObject.getId() + "' is not a valid URN");
-        }
-
         rimObject.setStatus(RIMConstants.CN_STATUS_TYPE_CODE_Submitted);
         rimObject.setLid(rimObject.getId());
 
         if (rimObject.getObjectType() == null || rimObject.getObjectType().equals("") || rimObject.hasStaticObjectTypeUrn()) {
             rimObject.setObjectType(rimObject.getObjectTypeUrn());
         } else {
+            if (!rimObject.getId().matches(URN_REGEX)) {
+                throw new InvalidReferenceException("'" + rimObject.getId() + "' is not a valid URN");
+            }
+            
             if (!rimObject.getObjectType().equals(rimObject.getObjectTypeUrn())) {
                 boolean valid = idExistsInRequest(rimObject.getObjectType(), ClassificationNodeType.class);
                 

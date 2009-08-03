@@ -18,6 +18,8 @@
  */
 package be.kzen.ergorr.commons;
 
+import javax.xml.namespace.QName;
+
 /**
  * RIM canonical object types, association types, slot names, slot types.
  * 
@@ -25,11 +27,29 @@ package be.kzen.ergorr.commons;
  */
 public interface RIMConstants {
 
+    public final static QName QNAME_EXTRINSIC_OBJECT = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ExtrinsicObject", "rim");
+    public final static QName QNAME_SERVICE_BINDING = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ServiceBinding", "rim");
+    public final static QName QNAME_SERVICE = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Service", "rim");
+    public final static QName QNAME_EXTERNAL_IDENTIFIER = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ExternalIdentifier", "rim");
+    public final static QName QNAME_REGISTRY = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Registry", "rim");
+    public final static QName QNAME_CLASSIFICATION_SCHEME = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ClassificationScheme", "rim");
+    public final static QName QNAME_ORGANIZATION = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Organization", "rim");
+    public final static QName QNAME_REGISTRY_PACKAGE = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "RegistryPackage", "rim");
+    public final static QName QNAME_ASSOCIATION = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Association", "rim");
+    public final static QName QNAME_ADHOC_QUERY = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "AdhocQuery", "rim");
+    public final static QName QNAME_EXTERNAL_LINK = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ExternalLink", "rim");
+    public final static QName QNAME_CLASSIFICATION = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Classification", "rim");
+    public final static QName QNAME_PERSON = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Person", "rim");
+    public final static QName QNAME_SPECIFICATION_LINK = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "SpecificationLink", "rim");
+    public final static QName QNAME_REGISTRY_OBJECT = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "RegistryObject", "rim");
+    public final static QName QNAME_IDENTIFIABLE = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "Identifiable", "rim");
+    public final static QName QNAME_USER = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "User", "rim");
+    public final static QName QNAME_CLASSIFICATION_NODE = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ClassificationNode", "rim");
+
     // ============================
     // ObjectType ClassificationScheme
     // ============================
-    public static final String CS_ID_ObjectType  = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType";
-
+    public static final String CS_ID_ObjectType = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType";
     // ObjectType ClassificationNode IDs
     public static final String CN_OBJECT_TYPE_ID_AdhocQuery = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery";
     public static final String CN_OBJECT_TYPE_ID_Association = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association";
@@ -60,12 +80,10 @@ public interface RIMConstants {
     public static final String CN_OBJECT_TYPE_ID_XML = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XML";
     public static final String CN_OBJECT_TYPE_ID_XMLSchema = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XMLSchema";
     public static final String CN_OBJECT_TYPE_ID_XSLT = "urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject:XSLT";
-    
     // ============================
     // AssociationType ClassificationScheme
     // ============================
-    public static final String CS_ID_AssociationType  = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType";
-
+    public static final String CS_ID_AssociationType = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType";
     // AssociationType ClassificationNode IDs
     public static final String CN_ASSOCIATION_TYPE_ID_AccessControlPolicyFor = "urn:oasis:names:tc:ebxml-regrep:AssociationType:AccessControlPolicyFor";
     public static final String CN_ASSOCIATION_TYPE_ID_AffiliatedWith = "urn:oasis:names:tc:ebxml-regrep:AssociationType:AffiliatedWith";
@@ -94,12 +112,10 @@ public interface RIMConstants {
     public static final String CN_ASSOCIATION_TYPE_ID_Supersedes = "urn:oasis:names:tc:ebxml-regrep:AssociationType:Supersedes";
     public static final String CN_ASSOCIATION_TYPE_ID_Uses = "urn:oasis:names:tc:ebxml-regrep:AssociationType:Uses";
     public static final String CN_ASSOCIATION_TYPE_ID_ValidationControlFileFor = "urn:oasis:names:tc:ebxml-regrep:AssociationType:InvocationControlFileFor:ValidationControlFileFor";
-
     // ============================
     // DataType ClassificationScheme
     // ============================
-    public static final String CS_ID_DataType  = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType";
-
+    public static final String CS_ID_DataType = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType";
     // DataType ClassificationNode IDs
     public static final String CN_DATA_TYPE_ID_Boolean = "urn:oasis:names:tc:ebxml-regrep:DataType:Boolean";
     public static final String CN_DATA_TYPE_ID_Date = "urn:oasis:names:tc:ebxml-regrep:DataType:Date";
@@ -112,7 +128,6 @@ public interface RIMConstants {
     public static final String CN_DATA_TYPE_ID_String = "urn:oasis:names:tc:ebxml-regrep:DataType:String";
     public static final String CN_DATA_TYPE_ID_Time = "urn:oasis:names:tc:ebxml-regrep:DataType:Time";
     public static final String CN_DATA_TYPE_ID_URI = "urn:oasis:names:tc:ebxml-regrep:DataType:URI";
-
     // DataType ClassificationNode Codes
     public static final String CN_DATA_TYPE_CODE_Boolean = "Boolean";
     public static final String CN_DATA_TYPE_CODE_Date = "Date";
@@ -125,41 +140,33 @@ public interface RIMConstants {
     public static final String CN_DATA_TYPE_CODE_String = "String";
     public static final String CN_DATA_TYPE_CODE_Time = "Time";
     public static final String CN_DATA_TYPE_CODE_URI = "URI";
-
     // ============================
     // StatusType ClassificationScheme
     // ============================
-    public static final String CS_ID_StatusType  = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:StatusType";
-
+    public static final String CS_ID_StatusType = "urn:oasis:names:tc:ebxml-regrep:classificationScheme:StatusType";
     // StatusType ClassificationScheme IDs
     public static final String CN_STATUS_TYPE_ID_Approved = "urn:oasis:names:tc:ebxml-regrep:StatusType:Approved";
     public static final String CN_STATUS_TYPE_ID_Deprecated = "urn:oasis:names:tc:ebxml-regrep:StatusType:Deprecated";
     public static final String CN_STATUS_TYPE_ID_Submitted = "urn:oasis:names:tc:ebxml-regrep:StatusType:Submitted";
     public static final String CN_STATUS_TYPE_ID_Withdrawn = "urn:oasis:names:tc:ebxml-regrep:StatusType:Withdrawn";
-
     // StatusType ClassificationNode Codes
     public static final String CN_STATUS_TYPE_CODE_Approved = "Approved";
     public static final String CN_STATUS_TYPE_CODE_Deprecated = "Deprecated";
     public static final String CN_STATUS_TYPE_CODE_Submitted = "Submitted";
     public static final String CN_STATUS_TYPE_CODE_Withdrawn = "Withdrawn";
-
     // ============================
     // ResponseStatusType
     // ============================
     public static final String RESPONSE_STATUS_ID_Failure = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
     public static final String RESPONSE_STATUS_ID_Success = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success";
     public static final String RESPONSE_STATUS_ID_Unavailable = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Unavailable";
-
     public static final String RESPONSE_STATUS_CODE_Failure = "Failure";
     public static final String RESPONSE_STATUS_CODE_Success = "Success";
     public static final String RESPONSE_STATUS_CODE_Unavailable = "Unavailable";
-    
     // ============================
     // QueryLanguage ClassificationScheme
     // ============================
     public static final String CN_QUERY_LANG_SQL = "urn:oasis:names:tc:ebxml-regrep:QueryLanguage:SQL-92";
     public static final String CN_QUERY_LANG_GML_FILTER = "urn:ogc:def:ebRIM-QueryLanguage:OGC:CSW-Filter";
-
-
-    public static final String CN_OBJ_DEF = "urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition";
+    public static final String CN_OBJ_DEF = "urn:kzen:ObjectType:SlotDescription";
 }

@@ -141,7 +141,8 @@ public class QueryManager {
      * @return Indetifiables with the matched IDs.
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public List<JAXBElement<? extends IdentifiableType>> getByIds(GetRecordByIdType getRecordsByIdReq) throws ServiceException {
+    public List<JAXBElement<? extends IdentifiableType>> getByIds() throws ServiceException {
+        GetRecordByIdType getRecordsByIdReq = (GetRecordByIdType) requestContext.getRequest();
         List<String> ids = getRecordsByIdReq.getId();
         ElementSetType elementSet = null;
 

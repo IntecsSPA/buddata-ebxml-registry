@@ -1,6 +1,7 @@
 package be.kzen.ergorr.model.util;
 
 /**
+ * Wrapper class to make it easier to use JAXB generated ObjectFactories.
  *
  * @author Yaman Ustuntas
  */
