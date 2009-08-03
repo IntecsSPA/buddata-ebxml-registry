@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+    <rim:ClassificationNode code="ObjectDefinition" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:kzen:ObjectType:SlotDescription" id="urn:kzen:ObjectType:SlotDescription" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+        <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="ObjectDefinition"/>
+        </rim:Name>
+    </rim:ClassificationNode>
+</rim:RegistryObjectList>
