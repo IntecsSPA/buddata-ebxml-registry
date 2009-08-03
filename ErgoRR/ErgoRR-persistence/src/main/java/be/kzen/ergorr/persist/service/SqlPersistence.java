@@ -46,6 +46,8 @@ import javax.xml.bind.JAXBElement;
  */
 public class SqlPersistence {
 
+    private static final String dataSourceName = CommonProperties.getInstance().get("db.datasource") +
+            CommonProperties.getInstance().get("deployName");
     private static Logger logger = Logger.getLogger(SqlPersistence.class.getName());
     private RequestContext requestContext;
 
@@ -520,39 +522,45 @@ public class SqlPersistence {
      * @throws java.sql.SQLException
      */
     public Connection getConnection() throws SQLException {
-        String dsName = CommonProperties.getInstance().get("db.datasource") + CommonProperties.getInstance().get("deployName");
 
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "attempting to get a connection");
-            logger.log(Level.FINE, "datasource: " + dsName);
         }
 
         DataSource ds = null;
+        
         try {
-            ds = (DataSource) new InitialContext().lookup(dsName);
+            ds = (DataSource) new InitialContext().lookup(dataSourceName);
         } catch (Exception ex) {
-            logger.log(Level.INFO, "Could not get database DateSource, attempting to get DbConnectionParams");
+            if (logger.isLoggable(Level.INFO)) {
+                logger.log(Level.INFO, "Could not get database DateSource, getting DbConnectionParams");
+            }
         }
 
+        Connection conn = null;
+
         if (ds != null) {
-            return ds.getConnection();
+            conn = ds.getConnection();
         } else {
             try {
                 DbConnectionParams connParams = requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS, DbConnectionParams.class);
 
-                if (connParams != null) {
-                    if (logger.isLoggable(Level.FINE)) {
-                        logger.fine("Connection: " + connParams.toString());
-                    }
-
-                    Class.forName("org.postgresql.Driver");
-                    return DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
-                } else {
-                    throw new SQLException("No DataSource found and DbConnectionParams not set");
+                if (connParams == null) {
+                    connParams = DbConnectionParams.getDefaultInstance();
                 }
+
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("Connection: " + connParams.toString());
+                }
+
+                Class.forName("org.postgresql.Driver");
+                conn = DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
+
             } catch (ClassNotFoundException ex) {
                 throw new SQLException(ex.toString());
             }
         }
+
+        return conn;
     }
 }

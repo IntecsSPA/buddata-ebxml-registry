@@ -10,6 +10,10 @@ public class Or
 
     protected final static QName NAME = new QName("http://www.opengis.net/ogc", "Or");
 
+    public Or() {
+        this(new BinaryLogicOpType());
+    }
+
     public Or(BinaryLogicOpType value) {
         super(NAME, ((Class) BinaryLogicOpType.class), null, value);
     }

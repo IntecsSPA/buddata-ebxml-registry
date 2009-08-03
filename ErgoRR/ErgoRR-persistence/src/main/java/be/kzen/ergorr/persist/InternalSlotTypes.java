@@ -62,6 +62,10 @@ public class InternalSlotTypes {
         return instance;
     }
 
+    public static boolean isInitialized() {
+        return (instance != null);
+    }
+
     public String getSlotType(String slotName) {
         return slotMap.get(slotName);
     }

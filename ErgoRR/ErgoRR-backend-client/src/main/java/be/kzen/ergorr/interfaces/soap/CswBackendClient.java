@@ -96,7 +96,7 @@ public class CswBackendClient implements CswClient {
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
 
         try {
-            List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
+            List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds();
             response.getAny().addAll(idents);
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);

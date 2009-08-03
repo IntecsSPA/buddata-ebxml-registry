@@ -1,11 +1,14 @@
 package be.kzen.ergorr.persist.service;
 
+import be.kzen.ergorr.commons.CommonProperties;
+
 /**
  * Class which wraps database connection parameters.
  *
  * @author Yaman Ustuntas
  */
 public class DbConnectionParams {
+    private static DbConnectionParams defaultInstance;
     private String dbUrl;
     private String dbName;
     private String dbUser;
@@ -59,6 +62,20 @@ public class DbConnectionParams {
 
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
+    }
+
+    public synchronized static DbConnectionParams getDefaultInstance() {
+
+        if (defaultInstance == null) {
+            defaultInstance = new DbConnectionParams(
+                    CommonProperties.getInstance().get("db.url"),
+                    CommonProperties.getInstance().get("deployName"),
+                    CommonProperties.getInstance().get("db.user"),
+                    CommonProperties.getInstance().get("db.password"));
+        }
+
+
+        return defaultInstance;
     }
 
     /**

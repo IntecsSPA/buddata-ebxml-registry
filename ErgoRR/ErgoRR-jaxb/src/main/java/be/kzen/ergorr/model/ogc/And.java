@@ -10,6 +10,10 @@ public class And
 
     protected final static QName NAME = new QName("http://www.opengis.net/ogc", "And");
 
+    public And() {
+        this(new BinaryLogicOpType());
+    }
+
     public And(BinaryLogicOpType value) {
         super(NAME, ((Class) BinaryLogicOpType.class), null, value);
     }

@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 import javax.xml.xpath.XPathException;
 
 /**
- * Constructs and stores pieces of the SQL query
- * which are put together in the end to form the query.
+ * Constructs and stores pieces of the SQL query data
+ * which are put together in the end to form the SQL query string.
  * 
  * @author yamanustuntas
  */
@@ -46,7 +46,7 @@ public class SqlQuery {
     private int startPosition;
     private int maxResults;
     private static final String OBJECT_ALIAS = "o";
-    private static final String LINE_SEPARATOR = System. getProperty("line.separator");
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public SqlQuery() {
         whereClause = new StringBuilder();
@@ -83,7 +83,11 @@ public class SqlQuery {
     }
 
     private void buildWhereClause() {
-        whereClause.append(buildQueriedObj()).append(" where ").append(buildJoinCriteria()).append(criteria);
+        whereClause.append(buildFromClause());
+
+        if (!joinNodes.isEmpty() || criteria.length() > 0) {
+            whereClause.append(" where ").append(buildJoinCriteria()).append(criteria);
+        }
     }
 
     public String buildCountQuery() {
@@ -94,7 +98,7 @@ public class SqlQuery {
         return "select count(" + returnObj.getSqlAlias() + ")" + whereClause.toString();
     }
 
-    private String buildQueriedObj() {
+    private String buildFromClause() {
         Iterator<String> it = selectObjs.keySet().iterator();
 
         StringBuilder fromClause = new StringBuilder(" from ");
@@ -103,7 +107,7 @@ public class SqlQuery {
             String key = it.next();
             QueryObject qo = selectObjs.get(key);
 
-            if (qo.isUsedInQuery()) {
+            if (qo.isUsedInQuery() || qo.getSqlAlias().equals(returnObj.getSqlAlias())) {
                 fromClause.append(qo.getTableName()).append(" ").append(qo.getSqlAlias()).append(", ");
             } else {
                 if (logger.isLoggable(Level.WARNING)) {
@@ -117,8 +121,10 @@ public class SqlQuery {
                 fromClause.append(node.getQueryObject().getTableName()).append(" ").append(node.getQueryObject().getSqlAlias()).append(", ");
             }
         }
+        
+        fromClause.delete(fromClause.length() - 2, fromClause.length());
 
-        return fromClause.substring(0, fromClause.length() - 2) + LINE_SEPARATOR;
+        return fromClause.toString() + LINE_SEPARATOR;
     }
 
     private String buildJoinCriteria() {
@@ -144,7 +150,6 @@ public class SqlQuery {
     }
 
     private XPathNode addJoin(XPathNode root) {
-        XPathNode join = root.getChild();
         XPathNode node = null;
 
         for (XPathNode joinNode : joinNodes) {
@@ -155,7 +160,7 @@ public class SqlQuery {
         }
 
         if (node == null) {
-//            join.getParent().setQueryObject(parentQo);
+            XPathNode join = root.getChild();
             QueryObject qo = new QueryObject(join.getName(), getNextObjectAlias());
             join.setQueryObject(qo);
             joinNodes.add(join);
@@ -163,10 +168,6 @@ public class SqlQuery {
         }
 
         return node;
-    }
-
-    public void addQueryObject(String queryAlias, QueryObject qo) {
-        selectObjs.put(queryAlias, qo);
     }
 
     public QueryObject addNewQueryObject(String fullType) {
@@ -242,20 +243,6 @@ public class SqlQuery {
             colName += "_";
         }
         return colName;
-    }
-
-    private String getJoinObjectTableName(String nodeName) {
-        String tableName = "";
-
-        if (nodeName.equals("slot")) {
-            tableName = "slot";
-        } else if (nodeName.equals("name")) {
-            tableName = "localizedname";
-        } else if (nodeName.equals("description")) {
-            tableName = "localizeddesc";
-        }
-
-        return tableName;
     }
 
     private String getNextObjectAlias() {

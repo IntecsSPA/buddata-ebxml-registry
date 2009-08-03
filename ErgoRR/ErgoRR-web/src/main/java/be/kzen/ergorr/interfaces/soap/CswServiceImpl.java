@@ -121,7 +121,7 @@ public class CswServiceImpl implements CswPortType {
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
 
         try {
-            List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds(getRecordByIdReq);
+            List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds();
             response.getAny().addAll(idents);
             logger.log(Level.FINE, "Request processed in " + (System.currentTimeMillis() - time) + " milliseconds");
             return response;

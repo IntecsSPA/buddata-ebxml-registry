@@ -39,6 +39,8 @@ import be.kzen.ergorr.model.ogc.PropertyIsBetweenType;
 import be.kzen.ergorr.model.ogc.PropertyIsLikeType;
 import be.kzen.ergorr.model.ogc.PropertyIsNullType;
 import be.kzen.ergorr.model.ogc.PropertyNameType;
+import be.kzen.ergorr.model.ogc.SortByType;
+import be.kzen.ergorr.model.ogc.SortPropertyType;
 import be.kzen.ergorr.query.xpath.XPathToSqlConverter;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.lang.reflect.InvocationTargetException;
@@ -214,20 +216,16 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             queryOperator = filter.getComparisonOps();
         } else if (filter.isSetSpatialOps()) {
             queryOperator = filter.getSpatialOps();
-        } else {
-            // TODO: handle query all in sqlQuery
-//            if (sqlQuery.getReturnType() != null) {
-//                sqlQuery.append("select ").append(sqlQuery.getReturnType().getSqlAlias()).append(".* from ")
-//                        .append(sqlQuery.getReturnType().getTableName()).append(" ").append(sqlQuery.getReturnType().getSqlAlias());
-//            } else {
-//                throw new QueryException("No return object provided in the query");
-//            }
         }
-        try {
-            recurseQueryOperator(queryOperator);
-        } catch (XPathException ex) {
-            throw new QueryException(ex);
+
+        if (queryOperator != null) {
+            try {
+                recurseQueryOperator(queryOperator);
+            } catch (XPathException ex) {
+                throw new QueryException(ex);
+            }
         }
+        
         return sqlQuery.buildQuery();
     }
 

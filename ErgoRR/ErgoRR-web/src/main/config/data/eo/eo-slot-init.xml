@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
-    <rim:ClassificationNode code="ObjectDefinition" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition" id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+    <rim:ClassificationNode code="ObjectDefinition" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:kzen:ObjectType:SlotDescription" id="urn:kzen:ObjectType:SlotDescription" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
         <rim:Name>
             <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="ObjectDefinition"/>
         </rim:Name>
     </rim:ClassificationNode>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionType" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionStation" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionDate" slotType="datetime"/>
@@ -92,7 +92,7 @@
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:vendorSpecificValues" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:yaw" slotType="int"/-->
     </rim:ExtrinsicObject>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOAcquisitionPlatform:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOAcquisitionPlatform:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:instrumentShortName" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:platformOrbitType" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:platformSerialIdentifier" slotType="string"/>
@@ -101,27 +101,27 @@
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:sensorType" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:swathIdentifier" slotType="string"/>
     </rim:ExtrinsicObject>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProductInformation:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProductInformation:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:fileName" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:referenceSystemIdentifier" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:size" slotType="int"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:version" slotType="string"/>
     </rim:ExtrinsicObject>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOBrowseInformation:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOBrowseInformation:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:fileName" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:referenceSystemIdentifier" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:subType" slotType="string"/>
     </rim:ExtrinsicObject>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOMaskInformation:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOMaskInformation:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:fileName" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:referenceSystemIdentifier" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:format" slotType="string"/>
     </rim:ExtrinsicObject>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOArchivingInformation:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOArchivingInformation:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:archivingDate" slotType="datetime"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:archivingIdentifier" slotType="string"/>
     </rim:ExtrinsicObject>
-    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer:Definition" objectType="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:ObjectDefinition">
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EODataLayer:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:algorithmName" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:algorithmVersion" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:highestLocation" slotType="double"/>
