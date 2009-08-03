@@ -1,6 +1,6 @@
 /*
  * Project: Buddata ebXML RegRep
- * Class: WsInvokerTask.java
+ * Class: BackendInvokeTask.java
  * Copyright (C) 2008 Yaman Ustuntas
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,22 +18,19 @@
  */
 package be.kzen.ergorr.deploy.ant;
 
-import be.kzen.ergorr.interfaces.soap.csw.CswPortType;
-import be.kzen.ergorr.interfaces.soap.csw.CswService;
-import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
+import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.model.csw.InsertType;
 import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionType;
 import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.service.TransactionService;
 import java.io.File;
 import java.io.FileFilter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -41,18 +38,12 @@ import org.apache.tools.ant.Task;
  *
  * @author yamanustuntas
  */
-public class WsInvokerTask extends Task {
+public class BackendInvokerTask extends Task {
 
-    private String url;
     private String dataSrc;
-    private CswPortType service;
 
     public void setDataSrc(String dataSrc) {
         this.dataSrc = dataSrc;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     @Override
@@ -80,7 +71,6 @@ public class WsInvokerTask extends Task {
     }
 
     public void invoke(File[] xmlFiles) throws BuildException {
-        QName serviceQName = new QName("http://www.kzen.be/ergorr/interfaces/soap", "webservice");
         Unmarshaller unmarshaller = null;
 
         try {
@@ -90,38 +80,28 @@ public class WsInvokerTask extends Task {
             throw new BuildException("Could not create unmarshaller", ex);
         }
 
-        service = new CswService(getURL(), serviceQName).getCswPort();
-
         for (File xmlFile : xmlFiles) {
-            TransactionType t = new TransactionType();
+            TransactionType request = new TransactionType();
             InsertType insert = new InsertType();
 
             try {
                 JAXBElement jaxbEl = (JAXBElement) unmarshaller.unmarshal(xmlFile);
                 insert.getAny().add(jaxbEl);
+                request.getInsertOrUpdateOrDelete().add(insert);
 
-                t.getInsertOrUpdateOrDelete().add(insert);
-                TransactionResponseType response = service.cswTransaction(t);
+                RequestContext context = new RequestContext();
+                context.setRequest(request);
+                TransactionService service = new TransactionService(context);
+                TransactionResponseType response = service.process();
 
                 String responseStr = JAXBUtil.getInstance().marshallToStr(OFactory.csw.createTransactionResponse(response));
                 System.out.println(responseStr);
-            } catch (ServiceExceptionReport ex) {
+            } catch (ServiceException ex) {
                 ex.printStackTrace();
             } catch (JAXBException ex) {
                 ex.printStackTrace();
             }
         }
-    }
-
-    private URL getURL() throws BuildException {
-        URL serviceUrl = null;
-        try {
-            serviceUrl = new URL(url);
-        } catch (MalformedURLException ex) {
-            throw new BuildException("invalid URL: " + url);
-        }
-
-        return serviceUrl;
     }
 
     class XmlFileFilter implements FileFilter {
