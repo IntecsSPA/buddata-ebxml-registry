@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.deploy.ant;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.model.csw.InsertType;
@@ -25,9 +26,12 @@ import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionType;
 import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.persist.InternalSlotTypes;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.service.TransactionService;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -41,6 +45,11 @@ import org.apache.tools.ant.Task;
 public class BackendInvokerTask extends Task {
 
     private String dataSrc;
+    private InternalSlotTypes slotTypes;
+
+    public BackendInvokerTask() {
+        initSlots();
+    }
 
     public void setDataSrc(String dataSrc) {
         this.dataSrc = dataSrc;
@@ -104,6 +113,21 @@ public class BackendInvokerTask extends Task {
         }
     }
 
+    private void initSlots() {
+        slotTypes = InternalSlotTypes.getInstance();
+
+        if (slotTypes.getSlotTypeSize() == 0) {
+            RequestContext requestContext = new RequestContext();
+            SqlPersistence persistence = new SqlPersistence(requestContext);
+
+            try {
+                slotTypes.loadSlots(persistence);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
     class XmlFileFilter implements FileFilter {
 
         public boolean accept(File file) {
