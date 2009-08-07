@@ -147,6 +147,11 @@
         <createdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}" template="${db.templatePostgis}"/>
     </target>
 
+    <target name="db-drop">
+        <taskdef name="createdb" classname="be.kzen.ergorr.deploy.ant.DropDbTask" classpathref="libs.ref" onerror="ignore"/>
+        <createdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}"/>
+    </target>
+
     <target name="db-create-tables">
         <sql driver="org.postgresql.Driver" classpath="ErgoRR-shared/postgreSQL/postgresql-8.3-603.jdbc3.jar"
         url="jdbc:postgresql://${db.url}/${deployName}"
