@@ -38,7 +38,6 @@ public class InternalConstants {
     public static final int MAX_RESULTS = 10;
     public static final int START_POSITION = 11;
     public static final int ORDER_BY = 12;
-    public static final int ELEMENT_SET = 13;
     public static final int DB_CONNECTION_PARAMS = 14;
     public static final int DEPLOY_NAME = 15;
 

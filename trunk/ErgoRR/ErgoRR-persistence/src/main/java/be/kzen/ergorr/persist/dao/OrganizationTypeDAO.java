@@ -1,6 +1,5 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.OrganizationType;
 import be.kzen.ergorr.model.util.OFactory;
 import java.sql.PreparedStatement;
@@ -66,7 +65,7 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
+        if (returnNestedObjects()) {
             PostalAddressTypeDAO addressDAO = new PostalAddressTypeDAO(xmlObject);
             addressDAO.setConnection(connection);
             addressDAO.addComposedObjects();

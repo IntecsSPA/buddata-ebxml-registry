@@ -1,13 +1,10 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.InternalConstants;
-import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import javax.xml.bind.JAXBElement;
 
@@ -60,7 +57,7 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        if (context.getParam(InternalConstants.RETURN_NAME_DESC, Boolean.class)) {
+        if (returnNameDesc()) {
             NameDAO nameDAO = new NameDAO(xmlObject);
             nameDAO.setConnection(connection);
             nameDAO.addComposedObjects();
@@ -70,7 +67,7 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
             descDAO.addComposedObjects();
         }
 
-        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
+        if (returnNestedObjects()) {
             ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
             clDAO.setConnection(connection);
             clDAO.addClassifications(xmlObject);

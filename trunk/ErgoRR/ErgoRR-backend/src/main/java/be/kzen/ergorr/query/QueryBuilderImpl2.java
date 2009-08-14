@@ -70,10 +70,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private QueryType filterQuery;
     private List<Object> queryParams;
     private String sortByStr;
-    private boolean returnSlots;
-    private boolean returnNameDesc;
-    private boolean returnNestedObjects;
-    private boolean returnAssociations;
+    private ElementSetType resultSet;
     private static final String EQUAL_SIGN = " = ";
     private static final String NOT_EQUAL_SIGN = " != ";
     private static final String GREATER_SIGN = " > ";
@@ -121,19 +118,19 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     }
 
     public boolean returnAssociations() {
-        return returnAssociations;
+        return resultSet.returnAssociations();
     }
 
     public boolean returnNameDesc() {
-        return returnNameDesc;
+        return resultSet.returnNameDesc();
     }
 
     public boolean returnNestedObjects() {
-        return returnNestedObjects;
+        return resultSet.returnNestedObjects();
     }
 
     public boolean returnSlots() {
-        return returnSlots;
+        return resultSet.returnSlots();
     }
 
     public String getSortByStr() {
@@ -168,33 +165,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     }
 
     private void initReturnElements() {
-        ElementSetType resultSet;
-
         if (filterQuery.getElementSetName().isSetValue()) {
             resultSet = filterQuery.getElementSetName().getValue();
         } else {
             resultSet = ElementSetType.SUMMARY;
-        }
-
-        switch (resultSet) {
-            case BRIEF:
-                returnSlots = false;
-                returnNameDesc = false;
-                returnNestedObjects = false;
-                returnAssociations = false;
-                break;
-            case SUMMARY:
-                returnSlots = true;
-                returnNameDesc = true;
-                returnNestedObjects = true;
-                returnAssociations = false;
-                break;
-            case FULL:
-                returnSlots = true;
-                returnNameDesc = true;
-                returnNestedObjects = true;
-                returnAssociations = true;
-                break;
         }
     }
 
