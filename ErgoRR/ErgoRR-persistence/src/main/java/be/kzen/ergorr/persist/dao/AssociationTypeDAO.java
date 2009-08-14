@@ -31,11 +31,9 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
     protected AssociationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
 
-        if (!isBrief()) {
-            xmlObject.setAssociationType(result.getString("associationtype"));
-            xmlObject.setSourceObject(result.getString("sourceobject"));
-            xmlObject.setTargetObject(result.getString("targetobject"));
-        }
+        xmlObject.setAssociationType(result.getString("associationtype"));
+        xmlObject.setSourceObject(result.getString("sourceobject"));
+        xmlObject.setTargetObject(result.getString("targetobject"));
         return xmlObject;
     }
 

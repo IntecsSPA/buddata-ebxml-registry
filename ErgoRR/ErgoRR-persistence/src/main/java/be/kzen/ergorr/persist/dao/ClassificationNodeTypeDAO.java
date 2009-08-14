@@ -38,11 +38,9 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
     protected ClassificationNodeType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
 
-        if (!isBrief()) {
-            xmlObject.setCode(result.getString("code"));
-            xmlObject.setParent(result.getString("parent"));
-            xmlObject.setPath(result.getString("path_"));
-        }
+        xmlObject.setCode(result.getString("code"));
+        xmlObject.setParent(result.getString("parent"));
+        xmlObject.setPath(result.getString("path_"));
         return xmlObject;
     }
 

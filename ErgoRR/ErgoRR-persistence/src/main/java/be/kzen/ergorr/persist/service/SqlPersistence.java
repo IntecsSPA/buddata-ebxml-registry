@@ -82,6 +82,11 @@ public class SqlPersistence {
         Integer maxResults = requestContext.getParam(InternalConstants.MAX_RESULTS, Integer.class);
         Integer startPosition = requestContext.getParam(InternalConstants.START_POSITION, Integer.class);
         Integer allowedMaxResults = CommonProperties.getInstance().getInt("db.maxResponse");
+        String orderBy = requestContext.getParam(InternalConstants.ORDER_BY, String.class);
+
+        if (orderBy != null && orderBy.length() > 3) {
+            query += " order by " + orderBy;
+        }
 
         if (maxResults != null && maxResults != -1) {
             if (maxResults == 0 || maxResults > allowedMaxResults) {

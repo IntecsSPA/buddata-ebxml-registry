@@ -23,12 +23,10 @@ import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ErrorCodes;
 import be.kzen.ergorr.exceptions.ServiceException;
-import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordByIdType;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
-import be.kzen.ergorr.model.csw.QueryType;
 import be.kzen.ergorr.model.csw.RequestStatusType;
 import be.kzen.ergorr.model.csw.SearchResultsType;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
@@ -43,7 +41,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 /**
  * Manages query requests to the server.
@@ -101,7 +98,11 @@ public class QueryManager {
 
         requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
         requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
-        requestContext.putParam(InternalConstants.ELEMENT_SET, queryBuilder.getResultSet());
+        requestContext.putParam(InternalConstants.RETURN_SLOTS, queryBuilder.returnSlots());
+        requestContext.putParam(InternalConstants.RETURN_NAME_DESC, queryBuilder.returnNameDesc());
+        requestContext.putParam(InternalConstants.RETURN_NESTED_OBJECTS, queryBuilder.returnNestedObjects());
+        requestContext.putParam(InternalConstants.RETURN_ASSOCIATIONS, queryBuilder.returnAssociations());
+        requestContext.putParam(InternalConstants.ORDER_BY, queryBuilder.getSortByStr());
 
         SqlPersistence service = new SqlPersistence(requestContext);
         long recordsMatched = 0;
@@ -116,7 +117,7 @@ public class QueryManager {
         }
 
         int size = idents.size();
-        if (queryBuilder.getResultSet() != null && queryBuilder.getResultSet() == ElementSetType.FULL) {
+        if (queryBuilder.returnAssociations()) {
             List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
             idents.addAll(assoEls);
         }

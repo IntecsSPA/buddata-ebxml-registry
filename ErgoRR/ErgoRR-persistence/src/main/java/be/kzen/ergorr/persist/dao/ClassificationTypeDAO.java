@@ -49,12 +49,10 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
     @Override
     protected ClassificationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        if (!isBrief()) {
-            xmlObject.setClassificationNode(result.getString("classificationnode"));
-            xmlObject.setClassificationScheme(result.getString("classificationscheme"));
-            xmlObject.setClassifiedObject(result.getString("classifiedobject"));
-            xmlObject.setNodeRepresentation(result.getString("noderepresentation"));
-        }
+        xmlObject.setClassificationNode(result.getString("classificationnode"));
+        xmlObject.setClassificationScheme(result.getString("classificationscheme"));
+        xmlObject.setClassifiedObject(result.getString("classifiedobject"));
+        xmlObject.setNodeRepresentation(result.getString("noderepresentation"));
         return xmlObject;
     }
 
