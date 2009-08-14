@@ -60,10 +60,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     protected T loadXmlObject(ResultSet result) throws SQLException {
         xmlObject.setId(result.getString("id"));
-
-        if (!isBrief()) {
-            xmlObject.setHome(result.getString("home"));
-        }
+        xmlObject.setHome(result.getString("home"));
         return xmlObject;
     }
 

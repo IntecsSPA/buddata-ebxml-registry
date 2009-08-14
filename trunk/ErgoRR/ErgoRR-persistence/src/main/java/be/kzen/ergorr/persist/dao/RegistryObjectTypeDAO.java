@@ -1,5 +1,6 @@
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
@@ -59,7 +60,7 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        if (!isBrief()) {
+        if (context.getParam(InternalConstants.RETURN_NAME_DESC, Boolean.class)) {
             NameDAO nameDAO = new NameDAO(xmlObject);
             nameDAO.setConnection(connection);
             nameDAO.addComposedObjects();
@@ -67,16 +68,16 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
             DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
             descDAO.setConnection(connection);
             descDAO.addComposedObjects();
+        }
 
-            if (!isSummary()) {
-                ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
-                clDAO.setConnection(connection);
-                clDAO.addClassifications(xmlObject);
+        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
+            ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
+            clDAO.setConnection(connection);
+            clDAO.addClassifications(xmlObject);
 
-                ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
-                eiDAO.setConnection(connection);
-                eiDAO.addExternalIdentifiers(xmlObject);
-            }
+            ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
+            eiDAO.setConnection(connection);
+            eiDAO.addExternalIdentifiers(xmlObject);
         }
     }
 

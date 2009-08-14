@@ -1,5 +1,6 @@
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.PersonNameType;
 import be.kzen.ergorr.model.rim.PersonType;
 import be.kzen.ergorr.model.util.OFactory;
@@ -33,7 +34,7 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
     protected PersonType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
 
-        if (!isBrief()) {
+        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
             PersonNameType personName = new PersonNameType();
             personName.setFirstName(result.getString(8));
             personName.setMiddleName(result.getString(9));
@@ -50,7 +51,7 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        if (!isBrief()) {
+        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
             PostalAddressTypeDAO addressDAO = new PostalAddressTypeDAO(xmlObject);
             addressDAO.setConnection(connection);
             addressDAO.addComposedObjects();

@@ -65,9 +65,7 @@ public abstract class GenericObjectDAO<T> extends GenericDAO<T> {
 
     public T loadCompleteXmlObject(ResultSet result) throws SQLException {
         T t = loadXmlObject(result);
-        if (!isBrief()) {
-            loadRelatedObjects();
-        }
+        loadRelatedObjects();
         return t;
     }
 

@@ -40,6 +40,7 @@ import be.kzen.ergorr.model.ogc.PropertyIsLikeType;
 import be.kzen.ergorr.model.ogc.PropertyIsNullType;
 import be.kzen.ergorr.model.ogc.PropertyNameType;
 import be.kzen.ergorr.model.ogc.SortByType;
+import be.kzen.ergorr.model.ogc.SortOrderType;
 import be.kzen.ergorr.model.ogc.SortPropertyType;
 import be.kzen.ergorr.query.xpath.XPathToSqlConverter;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
@@ -65,10 +66,14 @@ public class QueryBuilderImpl2 implements QueryBuilder {
 
     private static Logger logger = Logger.getLogger(QueryBuilderImpl2.class.getName());
     private SqlQuery sqlQuery;
-    private ElementSetType resultSet;
     private GetRecordsType request;
     private QueryType filterQuery;
     private List<Object> queryParams;
+    private String sortByStr;
+    private boolean returnSlots;
+    private boolean returnNameDesc;
+    private boolean returnNestedObjects;
+    private boolean returnAssociations;
     private static final String EQUAL_SIGN = " = ";
     private static final String NOT_EQUAL_SIGN = " != ";
     private static final String GREATER_SIGN = " > ";
@@ -111,12 +116,28 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         return sqlQuery.getStartPosition();
     }
 
-    public ElementSetType getResultSet() {
-        return resultSet;
-    }
-
     public QueryObject getReturnObject() {
         return sqlQuery.getReturnType();
+    }
+
+    public boolean returnAssociations() {
+        return returnAssociations;
+    }
+
+    public boolean returnNameDesc() {
+        return returnNameDesc;
+    }
+
+    public boolean returnNestedObjects() {
+        return returnNestedObjects;
+    }
+
+    public boolean returnSlots() {
+        return returnSlots;
+    }
+
+    public String getSortByStr() {
+        return (sortByStr != null) ? sortByStr : "";
     }
 
     /**
@@ -140,11 +161,41 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             int startPos = request.getStartPosition().intValue() - 1;
             sqlQuery.setStartPosition(startPos);
         }
+
+        initReturnElements();
+        initQueriedObjects();
+        initSortBy();
+    }
+
+    private void initReturnElements() {
+        ElementSetType resultSet;
+
         if (filterQuery.getElementSetName().isSetValue()) {
             resultSet = filterQuery.getElementSetName().getValue();
+        } else {
+            resultSet = ElementSetType.SUMMARY;
         }
 
-        initQueriedObjects();
+        switch (resultSet) {
+            case BRIEF:
+                returnSlots = false;
+                returnNameDesc = false;
+                returnNestedObjects = false;
+                returnAssociations = false;
+                break;
+            case SUMMARY:
+                returnSlots = true;
+                returnNameDesc = true;
+                returnNestedObjects = true;
+                returnAssociations = false;
+                break;
+            case FULL:
+                returnSlots = true;
+                returnNameDesc = true;
+                returnNestedObjects = true;
+                returnAssociations = true;
+                break;
+        }
     }
 
     /**
@@ -177,6 +228,35 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         } else {
             throw new QueryException("No queriable types specified in Query elements typeNames attribute");
         }
+    }
+
+    private void initSortBy() throws QueryException {
+        SortByType sortBy = filterQuery.getSortBy();
+        logger.info("SortBy init");
+        if (sortBy != null && !sortBy.getSortProperty().isEmpty()) {
+            logger.info("SortBy exists");
+            SortPropertyType sortProp = sortBy.getSortProperty().get(0);
+            PropertyNameType propName = sortProp.getPropertyName();
+
+            if (propName != null && !propName.getContent().isEmpty()) {
+                String propXPath = (String) propName.getContent().get(0);
+                logger.info("Sort property exists: " + propXPath);
+                XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, propXPath);
+                XPathNode xpath = null;
+
+                try {
+                    xpath = xpathConv.process();
+                } catch (XPathException ex) {
+                    throw new QueryException(ex);
+                }
+
+                sortByStr = xpath.getQueryObject().getSqlAlias() + "." + xpath.getAttributeName() + " ";
+                SortOrderType order = (sortProp.getSortOrder() != null) ? sortProp.getSortOrder() : SortOrderType.ASC;
+                sortByStr += order.value();
+                logger.info("Sort string: " + sortByStr);
+            }
+        }
+
     }
 
     /**
@@ -225,7 +305,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 throw new QueryException(ex);
             }
         }
-        
+
         return sqlQuery.buildQuery();
     }
 
@@ -722,9 +802,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             XPathNode xpNode = xpathConv.process();
 
             if (xpNode.getQueryObject().getTableName().equals("t_slot")) {
-                sqlQuery.append("st_").append(spatialQueryOperation).append("(").append(xpNode.getQueryObject().getSqlAlias())
-                        .append(".geometryvalue, transform(geomfromwkb(?),")
-                        .append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
+                sqlQuery.append("st_").append(spatialQueryOperation).append("(").append(xpNode.getQueryObject().getSqlAlias()).append(".geometryvalue, transform(geomfromwkb(?),").append(CommonProperties.getInstance().get("db.defaultSrsId")).append(")) = true");
             } else {
                 throw new QueryException("XPath not pointing to a geometry value: " + xpath);
             }

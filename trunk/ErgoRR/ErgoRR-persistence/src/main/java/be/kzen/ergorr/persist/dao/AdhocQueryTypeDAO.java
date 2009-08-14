@@ -1,5 +1,6 @@
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.QueryExpressionType;
@@ -35,7 +36,7 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
     public AdhocQueryType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
 
-        if (!isBrief()) {
+        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
             QueryExpressionType queryEx = new QueryExpressionType();
             String queryLang = result.getString("querylanguage");
             String query = result.getString("query");

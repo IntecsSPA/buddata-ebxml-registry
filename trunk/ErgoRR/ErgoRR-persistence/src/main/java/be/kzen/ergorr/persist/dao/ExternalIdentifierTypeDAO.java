@@ -49,11 +49,9 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
     @Override
     protected ExternalIdentifierType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        if (!isBrief()) {
-            xmlObject.setRegistryObject(result.getString("registryobject"));
-            xmlObject.setIdentificationScheme(result.getString("identificationscheme"));
-            xmlObject.setValue(result.getString("value_"));
-        }
+        xmlObject.setRegistryObject(result.getString("registryobject"));
+        xmlObject.setIdentificationScheme(result.getString("identificationscheme"));
+        xmlObject.setValue(result.getString("value_"));
         return xmlObject;
     }
 

@@ -1,5 +1,6 @@
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
 import be.kzen.ergorr.model.util.OFactory;
@@ -34,34 +35,34 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
     protected T loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
 
-        if (!isBrief()) {
-            xmlObject.setIsOpaque(result.getBoolean("isopaque"));
-            xmlObject.setMimeType(result.getString("mimetype"));
+        xmlObject.setIsOpaque(result.getBoolean("isopaque"));
+        xmlObject.setMimeType(result.getString("mimetype"));
 
+        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
             VersionInfoType versionInfo = new VersionInfoType();
             versionInfo.setVersionName(result.getString("contentversionname"));
             versionInfo.setComment(result.getString("contentversioncomment"));
             xmlObject.setContentVersionInfo(versionInfo);
+        }
 
-            if (xmlObject instanceof WrsExtrinsicObjectType) {
-                WrsExtrinsicObjectType wrsEo = (WrsExtrinsicObjectType) xmlObject;
+        if (xmlObject instanceof WrsExtrinsicObjectType) {
+            WrsExtrinsicObjectType wrsEo = (WrsExtrinsicObjectType) xmlObject;
 
-                String wrsactuate = result.getString("wrsactuate");
-                String wrsarcrole = result.getString("wrsarcrole");
-                String wrshref = result.getString("wrshref");
-                String wrsrole = result.getString("wrsrole");
-                String wrsshow = result.getString("wrsshow");
-                String wrstitle = result.getString("wrstitle");
+            String wrsactuate = result.getString("wrsactuate");
+            String wrsarcrole = result.getString("wrsarcrole");
+            String wrshref = result.getString("wrshref");
+            String wrsrole = result.getString("wrsrole");
+            String wrsshow = result.getString("wrsshow");
+            String wrstitle = result.getString("wrstitle");
 
-                if (isSetSimpleLink(wrsactuate, wrsarcrole, wrshref, wrsrole, wrsshow, wrstitle)) {
-                    SimpleLinkType simpleLink = new SimpleLinkType();
-                    simpleLink.setActuate(wrsactuate);
-                    simpleLink.setArcrole(wrsarcrole);
-                    simpleLink.setHref(wrshref);
-                    simpleLink.setShow(wrsshow);
-                    simpleLink.setTitle(wrstitle);
-                    wrsEo.setRepositoryItemRef(simpleLink);
-                }
+            if (isSetSimpleLink(wrsactuate, wrsarcrole, wrshref, wrsrole, wrsshow, wrstitle)) {
+                SimpleLinkType simpleLink = new SimpleLinkType();
+                simpleLink.setActuate(wrsactuate);
+                simpleLink.setArcrole(wrsarcrole);
+                simpleLink.setHref(wrshref);
+                simpleLink.setShow(wrsshow);
+                simpleLink.setTitle(wrstitle);
+                wrsEo.setRepositoryItemRef(simpleLink);
             }
         }
         return xmlObject;

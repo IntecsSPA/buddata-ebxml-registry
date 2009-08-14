@@ -34,10 +34,8 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     @Override
     protected ClassificationSchemeType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
-        if (!isBrief()) {
-            xmlObject.setIsInternal(result.getBoolean("isinternal"));
-            xmlObject.setNodeType(result.getString("nodetype"));
-        }
+        xmlObject.setIsInternal(result.getBoolean("isinternal"));
+        xmlObject.setNodeType(result.getString("nodetype"));
         return xmlObject;
     }
 

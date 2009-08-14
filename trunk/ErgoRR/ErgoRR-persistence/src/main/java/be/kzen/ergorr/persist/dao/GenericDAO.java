@@ -18,13 +18,10 @@
  */
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
-import be.kzen.ergorr.model.csw.ElementSetType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -34,7 +31,6 @@ public abstract class GenericDAO<T> {
 
     protected Connection connection;
     protected RequestContext context;
-    protected ElementSetType elementSet;
 
     public void setConnection(Connection connection) {
         this.connection = connection;
@@ -42,7 +38,6 @@ public abstract class GenericDAO<T> {
 
     public void setContext(RequestContext context) {
         this.context = context;
-        elementSet = context.getParam(InternalConstants.ELEMENT_SET, ElementSetType.class);
     }
 
     protected String createInsertStatement() {
@@ -81,18 +76,6 @@ public abstract class GenericDAO<T> {
         }
     }
 
-    public boolean isBrief() {
-        return elementSet != null && elementSet == ElementSetType.BRIEF;
-    }
-    
-    public boolean isSummary() {
-        return elementSet != null && elementSet == ElementSetType.SUMMARY;
-    }
-    
-    public boolean isFull() {
-        return elementSet != null && elementSet == ElementSetType.FULL;
-    }
-    
     public abstract String getTableName();
     protected abstract String getParamList();
     protected abstract String getQueryParamList();
