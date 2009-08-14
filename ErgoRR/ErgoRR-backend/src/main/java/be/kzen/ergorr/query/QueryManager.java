@@ -145,19 +145,25 @@ public class QueryManager {
     public List<JAXBElement<? extends IdentifiableType>> getByIds() throws ServiceException {
         GetRecordByIdType getRecordsByIdReq = (GetRecordByIdType) requestContext.getRequest();
         List<String> ids = getRecordsByIdReq.getId();
-        ElementSetType elementSet = null;
+        ElementSetType resultSet = null;
 
         if (getRecordsByIdReq.getElementSetName() != null) {
-            elementSet = getRecordsByIdReq.getElementSetName().getValue();
-            requestContext.putParam(InternalConstants.ELEMENT_SET, elementSet);
+            resultSet = getRecordsByIdReq.getElementSetName().getValue();
+        } else {
+            resultSet = ElementSetType.SUMMARY;
         }
+
+        requestContext.putParam(InternalConstants.RETURN_SLOTS, resultSet.returnSlots());
+        requestContext.putParam(InternalConstants.RETURN_NAME_DESC, resultSet.returnNameDesc());
+        requestContext.putParam(InternalConstants.RETURN_NESTED_OBJECTS, resultSet.returnNestedObjects());
+        requestContext.putParam(InternalConstants.RETURN_ASSOCIATIONS, resultSet.returnAssociations());
 
         SqlPersistence service = new SqlPersistence(requestContext);
 
         try {
             List<JAXBElement<? extends IdentifiableType>> idents = service.getByIds(ids);
 
-            if (elementSet != null && elementSet == ElementSetType.FULL) {
+            if (resultSet != null && resultSet == ElementSetType.FULL) {
                 List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
                 idents.addAll(assoEls);
             }

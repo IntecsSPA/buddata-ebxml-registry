@@ -1,6 +1,5 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.util.OFactory;
@@ -61,7 +60,7 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     }
 
     protected void loadRelateObjects() throws SQLException {
-        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
+        if (returnNestedObjects()) {
             UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
             paramDAO.setConnection(connection);
             paramDAO.addComposedObjects();

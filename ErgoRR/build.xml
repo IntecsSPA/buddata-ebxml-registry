@@ -182,7 +182,7 @@
         <be-invoker dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/eo/eo-slot-init.xml"/>
     </target>
 
-    <target name="db-load-basic" depends="db-load-rim">
+    <target name="db-load-basic" depends="db-load-rim, db-load-ogc">
         <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
         <be-invoker dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/basic-package/schemes/ISO19119-Services-Scheme.xml"/>
         <be-invoker dataSrc="${env.ERGO_HOME}/ErgoRR/${rr-web-dir}/src/main/config/data/basic-package/schemes/UNSD-Regions-Scheme.xml"/>

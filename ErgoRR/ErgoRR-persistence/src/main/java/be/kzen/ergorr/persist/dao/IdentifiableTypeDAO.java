@@ -89,9 +89,11 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
 
     @Override
     protected void loadRelatedObjects() throws SQLException {
-        SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
-        slotDAO.setConnection(connection);
-        slotDAO.addComposedObjects();
+        if (returnSlots()) {
+            SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+            slotDAO.setConnection(connection);
+            slotDAO.addComposedObjects();
+        }
     }
 
     @Override

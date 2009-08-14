@@ -38,7 +38,7 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
         xmlObject.setIsOpaque(result.getBoolean("isopaque"));
         xmlObject.setMimeType(result.getString("mimetype"));
 
-        if (context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class)) {
+        if (returnNestedObjects()) {
             VersionInfoType versionInfo = new VersionInfoType();
             versionInfo.setVersionName(result.getString("contentversionname"));
             versionInfo.setComment(result.getString("contentversioncomment"));

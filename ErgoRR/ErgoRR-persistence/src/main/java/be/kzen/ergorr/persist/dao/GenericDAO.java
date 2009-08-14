@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.persist.dao;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -74,6 +75,26 @@ public abstract class GenericDAO<T> {
         } else {
             sb.append("null");
         }
+    }
+
+    public boolean returnSlots() {
+        Boolean r = context.getParam(InternalConstants.RETURN_SLOTS, Boolean.class);
+        return (r == null) ? true : r;
+    }
+
+    public boolean returnNameDesc() {
+        Boolean r = context.getParam(InternalConstants.RETURN_NAME_DESC, Boolean.class);
+        return (r == null) ? true : r;
+    }
+
+    public boolean returnNestedObjects() {
+        Boolean r = context.getParam(InternalConstants.RETURN_NESTED_OBJECTS, Boolean.class);
+        return (r == null) ? true : r;
+    }
+
+    public boolean returnAssociations() {
+        Boolean r = context.getParam(InternalConstants.RETURN_ASSOCIATIONS, Boolean.class);
+        return (r == null) ? false : r;
     }
 
     public abstract String getTableName();

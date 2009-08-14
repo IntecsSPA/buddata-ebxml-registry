@@ -51,4 +51,19 @@ public enum ElementSetType {
         throw new IllegalArgumentException(v);
     }
 
+    public boolean returnSlots() {
+        return this != ElementSetType.BRIEF;
+    }
+
+    public boolean returnNameDesc() {
+        return this != ElementSetType.BRIEF;
+    }
+
+    public boolean returnAssociations() {
+        return this == ElementSetType.FULL;
+    }
+
+    public boolean returnNestedObjects() {
+        return this != ElementSetType.BRIEF;
+    }
 }
