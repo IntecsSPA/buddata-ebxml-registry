@@ -67,14 +67,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
 
         if (returnNestedObjects()) {
             PostalAddressTypeDAO addressDAO = new PostalAddressTypeDAO(xmlObject);
+            addressDAO.setContext(context);
             addressDAO.setConnection(connection);
             addressDAO.addComposedObjects();
 
             EmailAddressTypeDAO emailDAO = new EmailAddressTypeDAO(xmlObject);
+            emailDAO.setContext(context);
             emailDAO.setConnection(connection);
             emailDAO.addComposedObjects();
 
             TelephoneNumberTypeDAO telDAO = new TelephoneNumberTypeDAO(xmlObject);
+            telDAO.setContext(context);
             telDAO.setConnection(connection);
             telDAO.addComposedObjects();
         }
@@ -85,14 +88,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         super.insertRelatedObjects();
 
         PostalAddressTypeDAO addressDAO = new PostalAddressTypeDAO(xmlObject);
+        addressDAO.setContext(context);
         addressDAO.setConnection(connection);
         addressDAO.insert();
 
         EmailAddressTypeDAO emailDAO = new EmailAddressTypeDAO(xmlObject);
+        emailDAO.setContext(context);
         emailDAO.setConnection(connection);
         emailDAO.insert();
 
         TelephoneNumberTypeDAO telDAO = new TelephoneNumberTypeDAO(xmlObject);
+        telDAO.setContext(context);
         telDAO.setConnection(connection);
         telDAO.insert();
     }
@@ -102,14 +108,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         super.updateRelatedObjects();
 
         PostalAddressTypeDAO addressDAO = new PostalAddressTypeDAO(xmlObject);
+        addressDAO.setContext(context);
         addressDAO.setConnection(connection);
         addressDAO.update();
 
         EmailAddressTypeDAO emailDAO = new EmailAddressTypeDAO(xmlObject);
+        emailDAO.setContext(context);
         emailDAO.setConnection(connection);
         emailDAO.update();
 
         TelephoneNumberTypeDAO telDAO = new TelephoneNumberTypeDAO(xmlObject);
+        telDAO.setContext(context);
         telDAO.setConnection(connection);
         telDAO.update();
     }
@@ -119,14 +128,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         super.deleteRelatedObjects();
 
         PostalAddressTypeDAO addressDAO = new PostalAddressTypeDAO(xmlObject);
+        addressDAO.setContext(context);
         addressDAO.setConnection(connection);
         addressDAO.delete();
 
         EmailAddressTypeDAO emailDAO = new EmailAddressTypeDAO(xmlObject);
+        emailDAO.setContext(context);
         emailDAO.setConnection(connection);
         emailDAO.delete();
 
         TelephoneNumberTypeDAO telDAO = new TelephoneNumberTypeDAO(xmlObject);
+        telDAO.setContext(context);
         telDAO.setConnection(connection);
         telDAO.delete();
     }

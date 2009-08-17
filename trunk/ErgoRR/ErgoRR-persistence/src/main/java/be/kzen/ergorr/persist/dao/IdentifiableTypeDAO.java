@@ -68,6 +68,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     protected void insertRelatedObjects() throws SQLException {
         if (xmlObject.isSetSlot()) {
             SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+            slotDAO.setContext(context);
             slotDAO.setConnection(connection);
             slotDAO.insert();
         }
@@ -76,6 +77,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     @Override
     protected void updateRelatedObjects() throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+        slotDAO.setContext(context);
         slotDAO.setConnection(connection);
         slotDAO.update();
     }
@@ -83,6 +85,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     @Override
     protected void deleteRelatedObjects() throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+        slotDAO.setContext(context);
         slotDAO.setConnection(connection);
         slotDAO.delete();
     }
@@ -91,6 +94,7 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
     protected void loadRelatedObjects() throws SQLException {
         if (returnSlots()) {
             SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
+            slotDAO.setContext(context);
             slotDAO.setConnection(connection);
             slotDAO.addComposedObjects();
         }

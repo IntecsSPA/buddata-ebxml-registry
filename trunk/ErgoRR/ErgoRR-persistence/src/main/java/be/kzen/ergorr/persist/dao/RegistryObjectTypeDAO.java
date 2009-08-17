@@ -59,20 +59,24 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
 
         if (returnNameDesc()) {
             NameDAO nameDAO = new NameDAO(xmlObject);
+            nameDAO.setContext(context);
             nameDAO.setConnection(connection);
             nameDAO.addComposedObjects();
 
             DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
+            descDAO.setContext(context);
             descDAO.setConnection(connection);
             descDAO.addComposedObjects();
         }
 
         if (returnNestedObjects()) {
             ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
+            clDAO.setContext(context);
             clDAO.setConnection(connection);
             clDAO.addClassifications(xmlObject);
 
             ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
+            eiDAO.setContext(context);
             eiDAO.setConnection(connection);
             eiDAO.addExternalIdentifiers(xmlObject);
         }
@@ -83,9 +87,11 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super.updateRelatedObjects();
 
         NameDAO nameDAO = new NameDAO(xmlObject);
+        nameDAO.setContext(context);
         nameDAO.setConnection(connection);
         nameDAO.update();
         DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
+        descDAO.setContext(context);
         descDAO.setConnection(connection);
         descDAO.update();
     }
@@ -94,15 +100,19 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
     protected void deleteRelatedObjects() throws SQLException {
         super.deleteRelatedObjects();
         NameDAO nameDAO = new NameDAO(xmlObject);
+        nameDAO.setContext(context);
         nameDAO.setConnection(connection);
         nameDAO.delete();
         DescriptionDAO descDAO = new DescriptionDAO(xmlObject);
+        descDAO.setContext(context);
         descDAO.setConnection(connection);
         descDAO.delete();
         ClassificationTypeDAO clDAO = new ClassificationTypeDAO();
+        clDAO.setContext(context);
         clDAO.setConnection(connection);
         clDAO.deleteClassifications(xmlObject);
         ExternalIdentifierTypeDAO eiDAO = new ExternalIdentifierTypeDAO();
+        eiDAO.setContext(context);
         eiDAO.setConnection(connection);
         eiDAO.deleteExternalIdentifiers(xmlObject);
 

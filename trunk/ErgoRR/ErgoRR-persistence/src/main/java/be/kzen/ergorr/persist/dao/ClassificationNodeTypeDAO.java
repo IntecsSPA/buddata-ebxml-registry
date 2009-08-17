@@ -104,6 +104,7 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
 
         while (result.next()) {
             ClassificationNodeTypeDAO cnDAO = new ClassificationNodeTypeDAO();
+            cnDAO.setContext(context);
             cnDAO.setConnection(connection);
             cNodes.add(cnDAO.newXmlObject(result));
         }

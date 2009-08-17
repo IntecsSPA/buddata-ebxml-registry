@@ -41,6 +41,7 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
     protected void loadRelateObjects() throws SQLException {
         if (returnNestedObjects()) {
             SpecificationLinkTypeDAO specLink = new SpecificationLinkTypeDAO();
+            specLink.setContext(context);
             specLink.setConnection(connection);
             specLink.addSpecificationLink(xmlObject);
         }
