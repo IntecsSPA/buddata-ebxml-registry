@@ -78,6 +78,7 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
                 logger.fine("CS loadNested true");
             }
             ClassificationNodeTypeDAO cnDAO = new ClassificationNodeTypeDAO();
+            cnDAO.setContext(context);
             cnDAO.setConnection(connection);
             xmlObject.getClassificationNode().addAll(cnDAO.getAllByParent(xmlObject.getId()));
         }

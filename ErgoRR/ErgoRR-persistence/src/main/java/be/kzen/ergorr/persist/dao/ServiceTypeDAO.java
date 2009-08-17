@@ -33,6 +33,7 @@ public class ServiceTypeDAO extends RegistryObjectTypeDAO<ServiceType> {
     protected void loadRelateObjects() throws SQLException {
         if (returnNestedObjects()) {
             ServiceBindingTypeDAO bindingDAO = new ServiceBindingTypeDAO();
+            bindingDAO.setContext(context);
             bindingDAO.setConnection(connection);
         }
     }

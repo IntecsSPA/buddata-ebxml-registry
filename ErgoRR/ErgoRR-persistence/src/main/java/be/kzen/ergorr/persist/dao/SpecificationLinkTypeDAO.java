@@ -52,9 +52,11 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     protected void insertRelatedObjects() throws SQLException {
         super.insertRelatedObjects();
         UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
+        paramDAO.setContext(context);
         paramDAO.setConnection(connection);
         paramDAO.insert();
         UsageDescriptionDAO descDAO = new UsageDescriptionDAO(xmlObject);
+        descDAO.setContext(context);
         descDAO.setConnection(connection);
         descDAO.insert();
     }
@@ -62,10 +64,12 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
     protected void loadRelateObjects() throws SQLException {
         if (returnNestedObjects()) {
             UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
+            paramDAO.setContext(context);
             paramDAO.setConnection(connection);
             paramDAO.addComposedObjects();
 
             UsageDescriptionDAO descDAO = new UsageDescriptionDAO(xmlObject);
+            descDAO.setContext(context);
             descDAO.setConnection(connection);
             descDAO.addComposedObjects();
         }
