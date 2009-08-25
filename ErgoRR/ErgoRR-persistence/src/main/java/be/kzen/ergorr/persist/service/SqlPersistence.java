@@ -131,19 +131,21 @@ public class SqlPersistence {
 
             startTime = System.currentTimeMillis();
             int responseCount = 0;
-            while (result.next()) {
-                responseCount++;
-                try {
-                    Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + clazz.getSimpleName() + "DAO");
-                    IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance();
+
+            try {
+                Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + clazz.getSimpleName() + "DAO");
+                
+                while (result.next()) {
+                    responseCount++;
+                    IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance(); // TODO: move out of loop?
                     identDAO.setConnection(conn);
                     identDAO.setContext(requestContext);
                     identDAO.newXmlObject(result);
                     idents.add(identDAO.createJAXBElement());
-                } catch (Exception ex) {
-                    logger.log(Level.SEVERE, "Could not load DAO object for query", ex);
-                    throw new SQLException("Could not load class " + clazz.getName() + ": " + ex.toString());
                 }
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Could not load DAO object for query", ex);
+                throw new SQLException("Could not load class " + clazz.getName() + ": " + ex.toString());
             }
 
             if (logger.isLoggable(Level.FINE)) {
@@ -533,7 +535,7 @@ public class SqlPersistence {
         }
 
         DataSource ds = null;
-        
+
         try {
             ds = (DataSource) new InitialContext().lookup(dataSourceName);
         } catch (Exception ex) {
@@ -548,14 +550,18 @@ public class SqlPersistence {
             conn = ds.getConnection();
         } else {
             try {
-                DbConnectionParams connParams = requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS, DbConnectionParams.class);
+                DbConnectionParams connParams = (DbConnectionParams) requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS);
 
                 if (connParams == null) {
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.info("No custom DB connection params found! Using default.");
+                    }
+                    
                     connParams = DbConnectionParams.getDefaultInstance();
                 }
 
                 if (logger.isLoggable(Level.FINE)) {
-                    logger.fine("Connection: " + connParams.toString());
+                    logger.info("Connection: " + connParams.toString());
                 }
 
                 Class.forName("org.postgresql.Driver");
