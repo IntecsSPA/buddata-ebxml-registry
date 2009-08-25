@@ -19,7 +19,6 @@
 package be.kzen.ergorr.persist;
 
 import be.kzen.ergorr.commons.*;
-import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.util.OFactory;
