@@ -3,6 +3,7 @@ package be.kzen.ergorr.model.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.logging.Level;
@@ -22,6 +23,7 @@ import org.w3c.dom.Node;
  * Java object instances to and from XML.
  * 
  * @author Yaman Ustuntas
+ * @author Massimiliano Fanciulli
  */
 public class JAXBUtil {
 
@@ -121,6 +123,13 @@ public class JAXBUtil {
         synchronized (jaxbContext) {
             Unmarshaller um = jaxbContext.createUnmarshaller();
             return um.unmarshal(bais);
+        }
+    }
+
+    public Object unmarshall(InputStream xml) throws JAXBException {
+        synchronized (jaxbContext) {
+            Unmarshaller um = jaxbContext.createUnmarshaller();
+            return um.unmarshal(xml);
         }
     }
 }
