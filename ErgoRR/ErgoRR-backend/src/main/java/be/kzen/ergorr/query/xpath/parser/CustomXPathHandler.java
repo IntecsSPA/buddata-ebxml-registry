@@ -78,14 +78,14 @@ public class CustomXPathHandler implements XPathHandler {
     }
 
     public void startEqualityExpr() throws SAXPathException {
-        System.out.println("START EQUAL");
+//        System.out.println("START EQUAL");
     }
 
     public void endEqualityExpr(int op) throws SAXPathException {
         if (op == Operator.EQUALS) {
-            System.out.println("EQUAL");
+//            System.out.println("EQUAL");
         } else if (op == Operator.NOT_EQUALS) {
-            System.out.println("NOT EQUAL");
+//            System.out.println("NOT EQUAL");
         }
     }
 
@@ -169,7 +169,7 @@ public class CustomXPathHandler implements XPathHandler {
                 throw new SAXPathException("Unsupported SELF");
         }
 
-        System.out.println("namestep: " + type + "    prefix:" + prefix + "    name:" + name);
+//        System.out.println("namestep: " + type + "    prefix:" + prefix + "    name:" + name);
     }
 
     public void endNameStep() throws SAXPathException {
@@ -205,12 +205,12 @@ public class CustomXPathHandler implements XPathHandler {
     }
 
     public void startPredicate() throws SAXPathException {
-        System.out.println("startPredicate");
+//        System.out.println("startPredicate");
         inCondition = true;
     }
 
     public void endPredicate() throws SAXPathException {
-        System.out.println("endPredicate");
+//        System.out.println("endPredicate");
         inCondition = false;
     }
 
@@ -276,17 +276,17 @@ public class CustomXPathHandler implements XPathHandler {
     }
 
     public void literal(String literal) throws SAXPathException {
-        System.out.println("lit: " + literal);
+//        System.out.println("lit: " + literal);
         parent.setSubSelectValue(literal);
     }
 
     public void number(double num) throws SAXPathException {
-        System.out.println("number: " + num);
+//        System.out.println("number: " + num);
         parent.setSubSelectValue(String.valueOf(num));
     }
 
     public void number(int num) throws SAXPathException {
-        System.out.println("number:" + num);
+//        System.out.println("number:" + num);
         parent.setSubSelectValue(String.valueOf(num));
     }
 

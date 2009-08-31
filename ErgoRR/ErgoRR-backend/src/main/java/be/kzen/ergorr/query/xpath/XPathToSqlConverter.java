@@ -48,11 +48,10 @@ public class XPathToSqlConverter {
         XPathNode rootNode = parseXPath();
 
         if (rootNode != null) {
-            sqlQuery.addXPath(rootNode);
 
             if (rootNode.getChild() == null) {
                 rootNode.setQueryAttrType(InternalConstants.TYPE_STRING);
-                return rootNode;
+                return sqlQuery.addXPath(rootNode);
             } else {
                 XPathNode childNode = rootNode.getChild();
                 String childNodeName = childNode.getName().toLowerCase();
@@ -76,8 +75,11 @@ public class XPathToSqlConverter {
                 } else if (childNodeName.equals("name") || childNodeName.equals("description")) {
                     childNode.setAttributeName("value_");
                     childNode.setQueryAttrType(InternalConstants.TYPE_STRING);
+                } else {
+                    throw new XPathException("Not a valid child node: " + childNode.getName());
                 }
-                return rootNode.getChild();
+                
+                return sqlQuery.addXPath(rootNode).getChild();
             }
 
         } else {
