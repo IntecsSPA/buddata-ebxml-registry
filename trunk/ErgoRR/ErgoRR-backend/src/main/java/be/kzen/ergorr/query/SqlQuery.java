@@ -153,7 +153,7 @@ public class SqlQuery {
         XPathNode node = null;
 
         for (XPathNode joinNode : joinNodes) {
-            if (joinNode.getParent().equals(root)) {
+            if (joinNode.getParent().equalsNode(root)) {
                 node = joinNode.getParent();
                 break;
             }

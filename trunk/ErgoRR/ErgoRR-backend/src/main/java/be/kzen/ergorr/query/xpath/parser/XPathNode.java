@@ -97,17 +97,21 @@ public class XPathNode {
     public boolean equalsNode(XPathNode otherNode) {
         boolean isEqual = false;
 
+        if (getName().equals(otherNode.getName()) &&
+                ((!isSetSubSelectName() && !otherNode.isSetSubSelectName()) ||
+                        (isSetSubSelectName() && otherNode.isSetSubSelectName() && getSubSelectName().equals(otherNode.getSubSelectName()))) &&
+                ((!isSetSubSelectValue() && !otherNode.isSetSubSelectValue()) ||
+                        (isSetSubSelectValue() && otherNode.isSetSubSelectValue() && getSubSelectValue().equals(otherNode.getSubSelectValue())))) {
 
-        if (getName().equals(otherNode.getName()) && getSubSelectName().equals(otherNode.getSubSelectName()) &&
-                getSubSelectValue().equals(otherNode.getSubSelectValue())) {
-            if (parent != null) {
-                if (otherNode.getChild() != null) {
+            if (otherNode.getChild() != null && getChild() != null) {
+                if (getChild().equalsNode(otherNode.getChild())) {
                     isEqual = true;
                 }
-            } else if (otherNode.getChild() != null && getChild().equals(otherNode.getChild())) {
+            } else if (getChild() == null && otherNode.getChild() == null) {
                 isEqual = true;
             }
         }
+
         return isEqual;
     }
 }
