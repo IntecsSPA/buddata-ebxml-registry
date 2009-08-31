@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <description>kZen ERGO-RR</description>
     <display-name>kZen ERGO-RR</display-name>
     <listener>
@@ -13,9 +12,30 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        </servlet>
+    <servlet>
+        <servlet-name>webservice</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        </servlet>
     <servlet-mapping>
         <servlet-name>ergorr</servlet-name>
         <url-pattern>/webservice/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description>HTTP endpoint</description>
+        <display-name>httpergorr</display-name>
+        <servlet-name>httpergorr</servlet-name>
+        <servlet-class>be.kzen.ergorr.interfaces.RegistryHTTPServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>httpergorr</servlet-name>
+        <url-pattern>/httpservice</url-pattern>
     </servlet-mapping>
     <servlet>
         <description>JAX-WS endpoint</description>
@@ -49,6 +69,14 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
         <url-pattern>/repo</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
+        <url-pattern>/ebXMLRegistrySOAPService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>webservice</servlet-name>
+        <url-pattern>/webservice</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
