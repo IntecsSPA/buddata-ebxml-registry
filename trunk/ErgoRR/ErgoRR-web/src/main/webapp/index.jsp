@@ -21,6 +21,7 @@
             <b>Developed by:</b>
             <ul>
                 <li>Yaman Ustuntas (4C Technologies / kZen)</li>
+                <li>Massimiliano Fanciulli (Intecs Informatica e Tecnologia del Software)</li>
             </ul>
             <br/><br/>
             <b>License:</b>
