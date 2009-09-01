@@ -30,7 +30,6 @@ public class InternalConstants {
     public static final String TYPE_STRING = "string";
     public static final String TYPE_DATETIME = "datetime";
     public static final String TYPE_BOOLEAN = "bool";
-    public static final String CONTENT_TYPE_XML = "text/xml";
     
     public static final String SPEC_TYPE_WRS = "wrs";
     public static final String SPEC_TYPE_RIM = "rim";

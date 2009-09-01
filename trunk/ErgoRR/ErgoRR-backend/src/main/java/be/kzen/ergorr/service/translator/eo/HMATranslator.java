@@ -52,6 +52,7 @@ import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.commons.EOPConstants;
 import be.kzen.ergorr.commons.InternalConstants;
+import be.kzen.ergorr.commons.MimeTypeConstants;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.RIMUtil;
 import be.kzen.ergorr.model.rim.ClassificationType;
@@ -142,7 +143,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
 
         try {
             byte[] dataBuf = JAXBUtil.getInstance().marshallToByteArr(getEarthObservationJaxbEl());
-            ByteArrayDataSource dataBufSrc = new ByteArrayDataSource(dataBuf, InternalConstants.CONTENT_TYPE_XML);
+            ByteArrayDataSource dataBufSrc = new ByteArrayDataSource(dataBuf, MimeTypeConstants.APPLICATION_XML);
             DataHandler dh = new DataHandler(dataBufSrc);
             eoProduct.setRepositoryItem(dh);
         } catch (JAXBException ex) {

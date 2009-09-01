@@ -42,6 +42,7 @@ import be.kzen.ergorr.model.ogc.PropertyNameType;
 import be.kzen.ergorr.model.ogc.SortByType;
 import be.kzen.ergorr.model.ogc.SortOrderType;
 import be.kzen.ergorr.model.ogc.SortPropertyType;
+import be.kzen.ergorr.persist.SyntaxElements;
 import be.kzen.ergorr.query.xpath.XPathToSqlConverter;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.lang.reflect.InvocationTargetException;
@@ -71,15 +72,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private List<Object> queryParams;
     private String sortByStr;
     private ElementSetType resultSet;
-    private static final String EQUAL_SIGN = " = ";
-    private static final String NOT_EQUAL_SIGN = " != ";
-    private static final String GREATER_SIGN = " > ";
-    private static final String GREATER_OR_EQUAL_SIGN = " >= ";
-    private static final String LESS_SIGN = " < ";
-    private static final String LESS_OR_EQUAL_SIGN = " <= ";
-    private static final String SINGLE_CHAR = "_";
-    private static final String ESCAPE_CHAR = "!";
-    private static final String WILDCARD_CHAR = "%";
+//    private static final String EQUAL_SIGN = " = ";
+//    private static final String NOT_EQUAL_SIGN = " != ";
+//    private static final String GREATER_SIGN = " > ";
+//    private static final String GREATER_OR_EQUAL_SIGN = " >= ";
+//    private static final String LESS_SIGN = " < ";
+//    private static final String LESS_OR_EQUAL_SIGN = " <= ";
+//    private static final String SINGLE_CHAR = "_";
+//    private static final String ESCAPE_CHAR = "!";
+//    private static final String WILDCARD_CHAR = "%";
+//    private static final String SPACE = " ";
+//    private static final String DOT = ".";
 
     /**
      * Constructor
@@ -224,7 +227,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     throw new QueryException(ex);
                 }
 
-                sortByStr = xpath.getQueryObject().getSqlAlias() + "." + xpath.getAttributeName() + " ";
+                sortByStr = xpath.getQueryObject().getSqlAlias() + SyntaxElements.DOT + xpath.getAttributeName() + SyntaxElements.SPACE;
                 SortOrderType order = (sortProp.getSortOrder() != null) ? sortProp.getSortOrder() : SortOrderType.ASC;
                 sortByStr += order.value();
                 logger.info("Sort string: " + sortByStr);
@@ -326,17 +329,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      */
     private void opAnd(BinaryLogicOpType opAnd) throws QueryException, XPathException {
         List<JAXBElement<?>> els = opAnd.getComparisonOpsOrSpatialOpsOrLogicOps();
-        sqlQuery.append("(");
+        sqlQuery.append(SyntaxElements.OPEN_BR);
         for (int i = 0; i < els.size(); i++) {
             JAXBElement<?> el = els.get(i);
 
             recurseQueryOperator(el);
 
             if (i + 1 < els.size()) {
-                sqlQuery.append(" and ");
+                sqlQuery.append(SyntaxElements.AND);
             }
         }
-        sqlQuery.append(")");
+        sqlQuery.append(SyntaxElements.CLOSE_BR);
     }
 
     /**
@@ -346,17 +349,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      */
     private void opOr(BinaryLogicOpType opOr) throws QueryException, XPathException {
         List<JAXBElement<?>> els = opOr.getComparisonOpsOrSpatialOpsOrLogicOps();
-        sqlQuery.append("(");
+        sqlQuery.append(SyntaxElements.OPEN_BR);
         for (int i = 0; i < els.size(); i++) {
             JAXBElement<?> el = els.get(i);
 
             recurseQueryOperator(el);
 
             if (i + 1 < els.size()) {
-                sqlQuery.append(" or ");
+                sqlQuery.append(SyntaxElements.OR);
             }
         }
-        sqlQuery.append(")");
+        sqlQuery.append(SyntaxElements.CLOSE_BR);
     }
 
     /**
@@ -366,7 +369,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsEqualTo(BinaryComparisonOpType propEqual) throws QueryException {
-        binaryComparisionQuery(propEqual, EQUAL_SIGN);
+        binaryComparisionQuery(propEqual, SyntaxElements.EQUAL_SIGN);
     }
 
     /**
@@ -376,7 +379,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsNotEqualTo(BinaryComparisonOpType propNotEqual) throws QueryException {
-        binaryComparisionQuery(propNotEqual, NOT_EQUAL_SIGN);
+        binaryComparisionQuery(propNotEqual, SyntaxElements.NOT_EQUAL_SIGN);
     }
 
     /**
@@ -386,7 +389,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsGreaterThan(BinaryComparisonOpType propGreater) throws QueryException {
-        binaryComparisionQuery(propGreater, GREATER_SIGN);
+        binaryComparisionQuery(propGreater, SyntaxElements.GREATER_SIGN);
     }
 
     /**
@@ -396,7 +399,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsGreaterThanOrEqualTo(BinaryComparisonOpType propGreaterOrEqual) throws QueryException {
-        binaryComparisionQuery(propGreaterOrEqual, GREATER_OR_EQUAL_SIGN);
+        binaryComparisionQuery(propGreaterOrEqual, SyntaxElements.GREATER_OR_EQUAL_SIGN);
     }
 
     /**
@@ -406,7 +409,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsLessThan(BinaryComparisonOpType propLess) throws QueryException {
-        binaryComparisionQuery(propLess, LESS_SIGN);
+        binaryComparisionQuery(propLess, SyntaxElements.LESS_SIGN);
     }
 
     /**
@@ -416,7 +419,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsLessThanOrEqualTo(BinaryComparisonOpType propGreaterOrEqual) throws QueryException {
-        binaryComparisionQuery(propGreaterOrEqual, LESS_OR_EQUAL_SIGN);
+        binaryComparisionQuery(propGreaterOrEqual, SyntaxElements.LESS_OR_EQUAL_SIGN);
     }
 
     /**
@@ -446,7 +449,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                         throw new QueryException(ex);
                     }
 
-                    sqlQuery.append(xpath1.getQueryObject().getSqlAlias()).append(".").append(xpath1.getAttributeName()).append(" ").append(comparisonOperator);
+                    sqlQuery.append(xpath1.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpath1.getAttributeName()).append(SyntaxElements.SPACE).append(comparisonOperator);
 
                     if (valObj2 instanceof PropertyNameType) {
                         PropertyNameType prop2 = (PropertyNameType) valObj2;
@@ -461,7 +464,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                             throw new QueryException(ex);
                         }
 
-                        sqlQuery.append(xpath2.getQueryObject().getSqlAlias()).append(".").append(xpath2.getAttributeName());
+                        sqlQuery.append(xpath2.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpath2.getAttributeName());
                     } else {
                         LiteralType lit = (LiteralType) valObj2;
                         appendLiteralContent(lit, xpath1.getQueryAttrType());
@@ -490,25 +493,15 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 if (propLike.isSetLiteral() && !propLike.getLiteral().getContent().isEmpty()) {
                     String likeClause = (String) propLike.getLiteral().getContent().get(0);
 
-                    if (propLike.isSetWildCard()) {
-                        likeClause = likeClause.replaceAll(propLike.getWildCard(), WILDCARD_CHAR);
-                    }
-
-                    if (propLike.isSetSingleChar()) {
-                        likeClause = likeClause.replaceAll(propLike.getSingleChar(), SINGLE_CHAR);
-                    }
-
-                    if (propLike.isSetEscapeChar()) {
-                        likeClause = likeClause.replaceAll(propLike.getEscapeChar(), ESCAPE_CHAR);
-                    }
+                    likeClause = SyntaxElements.replaceLike(likeClause, propLike.getSingleChar(), propLike.getWildCard(), propLike.getEscapeChar());
 
                     XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
                     XPathNode xpNode = xpathConv.process();
 
 
-                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(".").append(xpNode.getAttributeName());
+                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
 
-                    sqlQuery.append(" like '").append(likeClause).append("'");
+                    sqlQuery.append(SyntaxElements.LIKE).append(SyntaxElements.SINGLE_QUOTE).append(likeClause).append(SyntaxElements.SINGLE_QUOTE);
 
 
                 } else {
@@ -534,8 +527,8 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
             XPathNode xpNode = xpathConv.process();
 
-            sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(".").append(xpNode.getAttributeName());
-            sqlQuery.append(" is null");
+            sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
+            sqlQuery.append(SyntaxElements.IS_NULL);
         } else {
             throw new QueryException("PropertyName does not have a value");
         }
@@ -561,7 +554,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
                     XPathNode xpNode = xpathConv.process();
 
-                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(".").append(xpNode.getAttributeName());
+                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
                     internalSlotType = xpNode.getQueryAttrType();
                 } else {
                     throw new QueryException("PropertyName does not have a value");
@@ -570,7 +563,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 throw new QueryException("Could not find PropertyName element");
             }
 
-            sqlQuery.append(" between ");
+            sqlQuery.append(SyntaxElements.BETWEEN);
 
             if (propBetween.isSetLowerBoundary() && propBetween.getLowerBoundary().isSetExpression() &&
                     propBetween.isSetUpperBoundary() && propBetween.getUpperBoundary().isSetExpression()) {
@@ -584,7 +577,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     throw new QueryException("PropertyName not supported for PropertyIsBetween.LowerBoundary");
                 }
 
-                sqlQuery.append(" and ");
+                sqlQuery.append(SyntaxElements.AND);
 
                 if (upperBoundaryObj instanceof LiteralType) {
                     appendLiteralContent((LiteralType) upperBoundaryObj, internalSlotType);
@@ -820,10 +813,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 logger.log(Level.FINE, "adding literal content: " + value);
             }
             if (queriedSlotType.equals(InternalConstants.TYPE_STRING)) {
-                sqlQuery.append("'").append(value).append("'");
+                sqlQuery.append(SyntaxElements.SINGLE_QUOTE).append(value).append(SyntaxElements.SINGLE_QUOTE);
             } else if (queriedSlotType.equals(InternalConstants.TYPE_DATETIME)) {
                 DateUtil.getXMLCalendar(value); // validate that it is XSD datetime
-                sqlQuery.append("'").append(value).append("'");
+                sqlQuery.append(SyntaxElements.SINGLE_QUOTE).append(value).append(SyntaxElements.SINGLE_QUOTE);
             } else {
                 sqlQuery.append(value);
             }

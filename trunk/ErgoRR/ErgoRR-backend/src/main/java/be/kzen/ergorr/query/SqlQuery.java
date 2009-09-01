@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.query;
 
+import be.kzen.ergorr.persist.SyntaxElements;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,14 +80,14 @@ public class SqlQuery {
             buildWhereClause();
         }
 
-        return "select " + returnObj.getSqlAlias() + ".*" + whereClause.toString();
+        return SyntaxElements.SELECT + returnObj.getSqlAlias() + SyntaxElements.ALL_COLUMNS + whereClause.toString();
     }
 
     private void buildWhereClause() {
         whereClause.append(buildFromClause());
 
         if (!joinNodes.isEmpty() || criteria.length() > 0) {
-            whereClause.append(" where ").append(buildJoinCriteria()).append(criteria);
+            whereClause.append(SyntaxElements.WHERE).append(buildJoinCriteria()).append(criteria);
         }
     }
 
@@ -95,20 +96,20 @@ public class SqlQuery {
             buildWhereClause();
         }
 
-        return "select count(" + returnObj.getSqlAlias() + ")" + whereClause.toString();
+        return SyntaxElements.SELECT + "count(" + returnObj.getSqlAlias() + SyntaxElements.CLOSE_BR + whereClause.toString();
     }
 
     private String buildFromClause() {
         Iterator<String> it = selectObjs.keySet().iterator();
 
-        StringBuilder fromClause = new StringBuilder(" from ");
+        StringBuilder fromClause = new StringBuilder(SyntaxElements.FROM);
 
         while (it.hasNext()) {
             String key = it.next();
             QueryObject qo = selectObjs.get(key);
 
             if (qo.isUsedInQuery() || qo.getSqlAlias().equals(returnObj.getSqlAlias())) {
-                fromClause.append(qo.getTableName()).append(" ").append(qo.getSqlAlias()).append(", ");
+                fromClause.append(qo.getTableName()).append(SyntaxElements.SPACE).append(qo.getSqlAlias()).append(SyntaxElements.COMMA);
             } else {
                 if (logger.isLoggable(Level.WARNING)) {
                     logger.warning("typeName '" + qo.getObjectName() + "' with alias '" + qo.getSqlAlias() + " is not used in the query");
@@ -118,26 +119,26 @@ public class SqlQuery {
 
         if (!joinNodes.isEmpty()) {
             for (XPathNode node : joinNodes) {
-                fromClause.append(node.getQueryObject().getTableName()).append(" ").append(node.getQueryObject().getSqlAlias()).append(", ");
+                fromClause.append(node.getQueryObject().getTableName()).append(SyntaxElements.SPACE).append(node.getQueryObject().getSqlAlias()).append(SyntaxElements.COMMA);
             }
         }
         
-        fromClause.delete(fromClause.length() - 2, fromClause.length());
+        fromClause.delete(fromClause.length() - 1, fromClause.length());
 
         return fromClause.toString() + LINE_SEPARATOR;
     }
 
     private String buildJoinCriteria() {
         if (!joinNodes.isEmpty()) {
-            StringBuilder joinCriteria = new StringBuilder("");
+            StringBuilder joinCriteria = new StringBuilder();
 
             for (XPathNode node : joinNodes) {
-                joinCriteria.append(node.getParent().getQueryObject().getSqlAlias()).append(".id = ");
-                joinCriteria.append(node.getQueryObject().getSqlAlias()).append(".parent and ");
+                joinCriteria.append(node.getParent().getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append("id").append(SyntaxElements.EQUAL_SIGN);
+                joinCriteria.append(node.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append("parent").append(SyntaxElements.AND);
 
                 if (node.isSetSubSelectName() && node.isSetSubSelectValue()) {
-                    joinCriteria.append(node.getQueryObject().getSqlAlias()).append(".").append(getColumnName(node.getSubSelectName()));
-                    joinCriteria.append(" = '").append(node.getSubSelectValue()).append("' and ");
+                    joinCriteria.append(node.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(getColumnName(node.getSubSelectName()));
+                    joinCriteria.append(SyntaxElements.EQUAL_SIGN).append(SyntaxElements.SINGLE_QUOTE).append(node.getSubSelectValue()).append(SyntaxElements.SINGLE_QUOTE).append(SyntaxElements.AND);
                 }
             }
 
