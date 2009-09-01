@@ -83,7 +83,7 @@ public class CommonFunctions {
      * @return True if string has content.
      */
     public static boolean stringHasData(String value) {
-        return (value != null && value.trim().length() > 0);
+        return (value != null && value.length() > 0);
     }
 
     /**

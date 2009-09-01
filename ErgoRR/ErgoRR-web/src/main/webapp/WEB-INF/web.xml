@@ -12,16 +12,6 @@
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-        </servlet>
-    <servlet>
-        <servlet-name>webservice</servlet-name>
-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-        </servlet>
     <servlet-mapping>
         <servlet-name>ergorr</servlet-name>
         <url-pattern>/webservice/*</url-pattern>
@@ -63,19 +53,9 @@
         <servlet-name>repo</servlet-name>
         <servlet-class>be.kzen.ergorr.interfaces.RepositoryServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>repo</servlet-name>
         <url-pattern>/repo</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
-        <url-pattern>/ebXMLRegistrySOAPService</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>webservice</servlet-name>
-        <url-pattern>/webservice</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
