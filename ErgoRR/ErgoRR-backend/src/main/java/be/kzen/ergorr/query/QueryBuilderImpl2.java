@@ -498,10 +498,13 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
                     XPathNode xpNode = xpathConv.process();
 
-
+                    sqlQuery.append("LOWER(");
                     sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
-
-                    sqlQuery.append(SyntaxElements.LIKE).append(SyntaxElements.SINGLE_QUOTE).append(likeClause).append(SyntaxElements.SINGLE_QUOTE);
+                    sqlQuery.append(SyntaxElements.CLOSE_BR);
+                    sqlQuery.append(SyntaxElements.LIKE);
+                    sqlQuery.append("LOWER(");
+                    sqlQuery.append(SyntaxElements.SINGLE_QUOTE).append(likeClause).append(SyntaxElements.SINGLE_QUOTE);
+                    sqlQuery.append(SyntaxElements.CLOSE_BR);
 
 
                 } else {
