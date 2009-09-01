@@ -45,9 +45,13 @@ import be.kzen.ergorr.model.ows.ExceptionType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.HarvestService;
+import be.kzen.ergorr.service.RepositoryManager;
 import be.kzen.ergorr.service.TransactionService;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -55,9 +59,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
@@ -79,8 +86,8 @@ public class RegistryHTTPServlet extends HttpServlet {
 
        try
        {
-           serviceParameter=request.getParameter("service");
-           versionParameter=request.getParameter("version");
+           serviceParameter=request.getParameter(getRequestParameterIgnoringCase(request,"service"));
+           versionParameter=request.getParameter(getRequestParameterIgnoringCase(request,"version"));
 
            if(serviceParameter.equals("CSW") &&
               versionParameter.equals("2.0.2"))
@@ -312,16 +319,75 @@ public class RegistryHTTPServlet extends HttpServlet {
         Object methodObject;
         Object retValue;
 
-        requestParameter=request.getParameter("REQUEST");
+        requestParameter=request.getParameter(getRequestParameterIgnoringCase(request,"request"));
         if(requestParameter.equals("GetCapabilities"))
             methodObject=extractGetCapabilitiesTypeFromHttpGet(request);
         else if(requestParameter.equals("GetRecordById"))
             methodObject=extractGetRecordByIdTypeFromHttpGet(request);
+        else if(requestParameter.equals("GetRepositoryItem"))
+        {
+            streamItemFromRepository(request,response);
+            return;
+        }
         else throw new UnsupportedOperationException("Not yet implemented");
 
         retValue = process(methodObject, response);
         streamReturnValue(retValue,response);
         response.setStatus(response.SC_OK);
+    }
+
+    protected void streamItemFromRepository(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        response.setContentType("text/xml"); // TODO - read from ExtrinsicObject contenttype
+        ServletOutputStream out = response.getOutputStream();
+        String id = request.getParameter("id");
+
+        if (id != null && !id.trim().equals("")) {
+            RepositoryManager repoMngr = new RepositoryManager();
+            File file = repoMngr.getFile(id);
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info("Request for repo file: " + file.getAbsolutePath());
+            }
+
+            if (file.exists()) {
+                SqlPersistence persistence = new SqlPersistence();
+
+                try {
+                    String mimeType = persistence.getMimeType(id);
+
+                    if (mimeType != null) {
+                        response.setContentType(mimeType);
+
+                        int b = 0;
+                        FileInputStream fis = new FileInputStream(file);
+
+                        while ((b = fis.read()) != -1) {
+                            out.write(b);
+                        }
+                    } else {
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        String err = "Could not find ExtrinsicObject with ID: " + id;
+
+                        if (logger.isLoggable(Level.INFO)) {
+                            logger.info(err);
+                        }
+                        out.print(createExceptionAsString(err, "NotFound"));
+                    }
+                } catch (SQLException ex) {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    logger.log(Level.WARNING, "Could not get mimeType for " + id, ex);
+                    out.print(createExceptionAsString("Could not get mimeType: " + ex.getMessage(), "Error"));
+                }
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.print(createExceptionAsString("Repository does not exist", "NotFound"));
+            }
+
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            out.print(createExceptionAsString("ID not provided", "InvalidRequest"));
+        }
     }
 
     private Object extractGetCapabilitiesTypeFromHttpGet(HttpServletRequest request) {
@@ -395,5 +461,37 @@ public class RegistryHTTPServlet extends HttpServlet {
         exRep.getException().add(ex);
 
         return exRep;
+    }
+
+     private String createExceptionAsString(String error, String code) {
+        ExceptionReport exRep = new ExceptionReport();
+        exRep.setLanguage(CommonProperties.getInstance().get("lang"));
+        exRep.setVersion("1.0");
+        ExceptionType ex = new ExceptionType();
+        ex.setExceptionCode(code);
+        ex.getExceptionText().add(error);
+        exRep.getException().add(ex);
+
+        try {
+            return JAXBUtil.getInstance().marshallToStr(exRep);
+        } catch (JAXBException ex1) {
+            logger.log(Level.SEVERE, "Error marshalling exception report", ex1);
+            return "<error>Oops. Could not Marshall the error message XML. Error message:" + error + "</error>";
+        }
+    }
+
+    private String getRequestParameterIgnoringCase(HttpServletRequest request,String keyToSearch) {
+        Enumeration parEnum;
+        String parName;
+
+        parEnum=request.getParameterNames();
+        while(parEnum.hasMoreElements())
+        {
+            parName=(String) parEnum.nextElement();
+            if(parName.toLowerCase().equals(keyToSearch.toLowerCase()))
+                return parName;
+        }
+
+        return null;
     }
 }
