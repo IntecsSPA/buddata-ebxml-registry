@@ -62,6 +62,10 @@ public class DateUtil {
         return c1;
     }
 
+    public static String nowAsXmlDateString() {
+        return getDatatypeFactory().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat();
+    }
+
     public static Calendar getCalendar(String xsdDateTimeStr) {
         return getDatatypeFactory().newXMLGregorianCalendar(xsdDateTimeStr).toGregorianCalendar();
     }
