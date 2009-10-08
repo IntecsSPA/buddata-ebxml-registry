@@ -79,7 +79,7 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
             logger.fine("loading cn related");
         }
 
-        if (CommonProperties.getInstance().getBoolean("db.loadNestedClassificationNodes")) {
+        if (returnNestedObjects() && CommonProperties.getInstance().getBoolean("db.loadNestedClassificationNodes")) {
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("CN loadNested true, parent id: " + xmlObject.getId());
             }

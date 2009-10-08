@@ -19,6 +19,7 @@
 package be.kzen.ergorr.service;
 
 import be.kzen.ergorr.commons.CommonFunctions;
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ErrorCodes;
@@ -254,6 +255,7 @@ public class TransactionService {
 
         RequestContext rq = new RequestContext();
         rq.setRequest(getRecords);
+        rq.putParam(InternalConstants.DB_CONNECTION_PARAMS, requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS));
 
         QueryManager qm = new QueryManager(rq);
 
