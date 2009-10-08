@@ -19,6 +19,7 @@
 package be.kzen.ergorr.query;
 
 import be.kzen.ergorr.commons.InternalConstants;
+import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ErrorCodes;
@@ -27,11 +28,14 @@ import be.kzen.ergorr.model.csw.ElementSetType;
 import be.kzen.ergorr.model.csw.GetRecordByIdType;
 import be.kzen.ergorr.model.csw.GetRecordsResponseType;
 import be.kzen.ergorr.model.csw.GetRecordsType;
+import be.kzen.ergorr.model.csw.QueryType;
 import be.kzen.ergorr.model.csw.RequestStatusType;
 import be.kzen.ergorr.model.csw.SearchResultsType;
+import be.kzen.ergorr.model.query.AdhocQueryRequest;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
+import be.kzen.ergorr.model.rim.QueryExpressionType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.math.BigInteger;
@@ -61,30 +65,93 @@ public class QueryManager {
         this.requestContext = requestContext;
     }
 
+    public GetRecordsResponseType query() throws ServiceException {
+
+        Object requestObj = requestContext.getRequest();
+        GetRecordsType getRecords = null;
+
+        if (requestObj instanceof GetRecordsType) {
+            getRecords = handleGetRecords((GetRecordsType) requestObj);
+        } else if (requestObj instanceof AdhocQueryRequest) {
+            getRecords = handleAdhocQuery((AdhocQueryRequest) requestObj);
+        } else {
+            throw new ServiceException("Unsupported query object: " + requestObj.getClass().getName());
+        }
+
+        return query(getRecords);
+    }
+
+    private GetRecordsType handleAdhocQuery(AdhocQueryRequest adhocQueryReq) throws ServiceException {
+        AdhocQueryType adhocQuery = adhocQueryReq.getAdhocQuery();
+        GetRecordsType getRecords = new GetRecordsType();
+
+        if (adhocQuery.isSetQueryExpression()) {
+            QueryType ogcQuery = adhocQueryToOgcQuery(adhocQuery.getQueryExpression());
+            getRecords.setAbstractQuery(OFactory.csw.createAbstractQuery(ogcQuery));
+        } else { // it is a stored query request
+
+            getRecords.setAny(OFactory.rim.createAdhocQuery(adhocQuery));
+        }
+
+        getRecords.setMaxRecords(adhocQueryReq.getMaxResults());
+        getRecords.setStartPosition(adhocQueryReq.getStartIndex());
+
+        return getRecords;
+    }
+
+    private GetRecordsType handleGetRecords(GetRecordsType getRecords) throws ServiceException {
+        if (!getRecords.isSetAbstractQuery() && getRecords.isSetAny()) {
+            JAXBElement queryEl = (JAXBElement) getRecords.getAny();
+            AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
+            StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams, requestContext);
+
+            try {
+                getRecords.setAbstractQuery(storeQueryBuilder.build());
+            } catch (Exception ex) {
+                logger.log(Level.WARNING, "Error while building stored query", ex);
+                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while building stored query", ex);
+            }
+        }
+
+        return getRecords;
+    }
+
+    private QueryType adhocQueryToOgcQuery(QueryExpressionType queryExpr) throws ServiceException {
+
+        if (queryExpr.getQueryLanguage() == null || !queryExpr.getQueryLanguage().equals(RIMConstants.CN_QUERY_LANG_GML_FILTER)) {
+            throw new ServiceException("Query language not supported");
+        }
+
+        if (queryExpr.getContent().size() > 0) {
+            throw new ServiceException("No ogc:Query provided");
+        }
+
+        Object ogcQueryEl = queryExpr.getContent().get(0);
+
+        if (ogcQueryEl instanceof JAXBElement) {
+            throw new ServiceException("Query not an instance of ogc:Query");
+        }
+
+        Object ogcQueryObj = ((JAXBElement) ogcQueryEl).getValue();
+        QueryType ogcQuery = null;
+
+        if (ogcQueryObj instanceof QueryType) {
+            ogcQuery = (QueryType) ogcQueryObj;
+        } else {
+            throw new ServiceException("Query not an instance of ogc:Query");
+        }
+
+        return ogcQuery;
+    }
+
     /**
      * Processes the query.
      *
      * @return Query response.
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public GetRecordsResponseType query() throws ServiceException {
+    public GetRecordsResponseType query(GetRecordsType request) throws ServiceException {
         GetRecordsResponseType response = new GetRecordsResponseType();
-
-        GetRecordsType request = (GetRecordsType) requestContext.getRequest();
-
-        // if stored query request, process the AdhocQuery
-        if (!request.isSetAbstractQuery() && request.isSetAny()) {
-            JAXBElement queryEl = (JAXBElement) request.getAny();
-            AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
-            StoredQueryBuilder storeQueryBuilder = new StoredQueryBuilder(adhocParams, requestContext);
-
-            try {
-                request.setAbstractQuery(storeQueryBuilder.build());
-            } catch (Exception ex) {
-                logger.log(Level.WARNING, "Error while building stored query", ex);
-                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while building stored query", ex);
-            }
-        }
 
         QueryBuilderImpl2 queryBuilder = null;
         String sql = null;
@@ -193,7 +260,7 @@ public class QueryManager {
             try {
                 List<JAXBElement<AssociationType>> assos =
                         service.query(sql, new ArrayList<Object>(), (Class) AssociationType.class);
-                
+
                 assoEls.addAll(assos);
             } catch (SQLException ex) {
                 throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could not load associations of object with ID: " + ident.getId(), ex);

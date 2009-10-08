@@ -85,19 +85,21 @@ public class SqlPersistence {
         String orderBy = requestContext.getParam(InternalConstants.ORDER_BY, String.class);
 
         if (orderBy != null && orderBy.length() > 3) {
-            query += " order by " + orderBy;
+            query += " ORDER BY " + orderBy;
         }
 
         if (maxResults != null && maxResults != -1) {
             if (maxResults == 0 || maxResults > allowedMaxResults) {
                 maxResults = allowedMaxResults;
             }
+        } else {
+            maxResults = allowedMaxResults;
+        }
 
-            query += " limit " + maxResults;
+        query += " LIMIT " + maxResults;
 
-            if (startPosition != null && startPosition > 0) {
-                query += " offset " + startPosition;
-            }
+        if (startPosition != null && startPosition > 0) {
+            query += " OFFSET " + startPosition;
         }
 
         if (logger.isLoggable(Level.FINE)) {

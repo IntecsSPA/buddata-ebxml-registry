@@ -73,7 +73,7 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
             logger.fine("loading child classificationnodes");
         }
 
-        if (CommonProperties.getInstance().getBoolean("db.loadNestedClassificationNodes")) {
+        if (returnNestedObjects() && CommonProperties.getInstance().getBoolean("db.loadNestedClassificationNodes")) {
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("CS loadNested true");
             }
