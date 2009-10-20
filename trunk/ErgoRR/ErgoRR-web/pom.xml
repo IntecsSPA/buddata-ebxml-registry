@@ -103,7 +103,7 @@
                         <phase>compile</phase>
                         <configuration>
                             <tasks>
-                                <copy file="${project.parent.basedir}/conf/main/ergorr.properties" todir="${project.build.directory}/classes"/>
+                                <copy file="${project.parent.basedir}/conf/ergorr.properties" todir="${project.build.directory}/classes"/>
                                 <copy file="./src/main/config/template-datasource.xml" tofile="${project.build.directory}/${deployName}.xml"/>
                                 <replace file="${project.build.directory}/${deployName}.xml" token="!!name!!" value="${deployName}"/>
                                 <replace file="${project.build.directory}/${deployName}.xml" token="!!db.url!!" value="${db.url}"/>
