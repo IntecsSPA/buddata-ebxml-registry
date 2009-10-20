@@ -18,12 +18,25 @@
  */
 package be.kzen.ergorr.interfaces.soap;
 
+import be.kzen.ergorr.commons.RIMConstants;
+import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.interfaces.soap.rim.QueryManagerPortType;
+import be.kzen.ergorr.model.csw.GetRecordsType;
+import be.kzen.ergorr.model.csw.QueryType;
+import be.kzen.ergorr.model.csw.SearchResultsType;
 import be.kzen.ergorr.model.query.AdhocQueryRequest;
 import be.kzen.ergorr.model.query.AdhocQueryResponse;
 import be.kzen.ergorr.model.rim.AdhocQueryType;
+import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.QueryExpressionType;
+import be.kzen.ergorr.model.rim.RegistryObjectListType;
+import be.kzen.ergorr.model.util.OFactory;
+import be.kzen.ergorr.query.QueryManager;
+import java.util.List;
 import javax.jws.WebService;
+import javax.xml.bind.JAXBElement;
+import javax.xml.ws.WebServiceException;
 
 /**
  * RIM Query ManagerSOAP interface implemetation.
@@ -36,21 +49,70 @@ endpointInterface = "be.kzen.ergorr.interfaces.soap.rim.QueryManagerPortType")
 public class RimQueryServiceImpl implements QueryManagerPortType {
 
     /**
-     * TODO
      * @param adhocQueryReq
      * @return
      */
     public AdhocQueryResponse submitAdhocQuery(AdhocQueryRequest adhocQueryReq) {
-        AdhocQueryResponse response = new AdhocQueryResponse();
-
         AdhocQueryType adhocQuery = adhocQueryReq.getAdhocQuery();
 
-        if (adhocQuery.isSetQueryExpression()) {
-            QueryExpressionType queryExpr = adhocQuery.getQueryExpression();
+        if (!adhocQuery.isSetQueryExpression()) {
+            throw new WebServiceException("QueryExpression not set");
+        }
+        
+        QueryExpressionType queryExpr = adhocQuery.getQueryExpression();
 
-            
+        if (queryExpr.getQueryLanguage() == null || !queryExpr.getQueryLanguage().equals(RIMConstants.CN_QUERY_LANG_GML_FILTER)) {
+            throw new WebServiceException("Query language not supported");
         }
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        QueryType ogcQuery = null;
+
+        if (queryExpr.getContent().size() > 0) {
+            Object ogcQueryEl = queryExpr.getContent().get(0);
+
+            if (ogcQueryEl instanceof JAXBElement) {
+                Object ogcQueryObj = ((JAXBElement) ogcQueryEl).getValue();
+
+                if (ogcQueryObj instanceof QueryType) {
+                    ogcQuery = (QueryType) ogcQueryObj;
+                } else {
+                    throw new WebServiceException("Query not an instance of ogc:Query");
+                }
+            } else {
+                throw new WebServiceException("Query not an instance of ogc:Query");
+            }
+        } else {
+            throw new WebServiceException("No ogc:Query provided");
+        }
+
+
+        GetRecordsType getRecords = new GetRecordsType();
+        getRecords.setMaxRecords(adhocQueryReq.getMaxResults());
+        getRecords.setStartPosition(adhocQueryReq.getStartIndex());
+        getRecords.setAbstractQuery(OFactory.csw.createAbstractQuery(ogcQuery));
+
+        RequestContext requestContext = new RequestContext();
+        requestContext.setRequest(getRecords);
+
+        QueryManager qm = new QueryManager(requestContext);
+        AdhocQueryResponse response = new AdhocQueryResponse();
+
+        try {
+            SearchResultsType searchResult = qm.query().getSearchResults();
+            List<Object> regObjs = searchResult.getAny();
+
+            response.setRegistryObjectList(new RegistryObjectListType());
+            response.setTotalResultCount(searchResult.getNumberOfRecordsMatched());
+
+            for (Object regObj : regObjs) {
+                response.getRegistryObjectList().getIdentifiable().add((JAXBElement<? extends IdentifiableType>) regObj);
+            }
+
+        } catch (ServiceException ex) {
+            throw new WebServiceException(ex);
+        }
+
+
+        return response;
     }
 }

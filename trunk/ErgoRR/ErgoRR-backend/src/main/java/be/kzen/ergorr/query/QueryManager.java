@@ -74,6 +74,7 @@ public class QueryManager {
             getRecords = handleGetRecords((GetRecordsType) requestObj);
         } else if (requestObj instanceof AdhocQueryRequest) {
             getRecords = handleAdhocQuery((AdhocQueryRequest) requestObj);
+            getRecords = handleGetRecords(getRecords);
         } else {
             throw new ServiceException("Unsupported query object: " + requestObj.getClass().getName());
         }
@@ -89,7 +90,10 @@ public class QueryManager {
             QueryType ogcQuery = adhocQueryToOgcQuery(adhocQuery.getQueryExpression());
             getRecords.setAbstractQuery(OFactory.csw.createAbstractQuery(ogcQuery));
         } else { // it is a stored query request
-
+            // TODO - RIM 3.1 uses adhocQueryReq.getRequestSlotList() as params but not RIM 3.0
+            if (adhocQueryReq.isSetRequestSlotList()) {
+                adhocQuery.getSlot().addAll(adhocQueryReq.getRequestSlotList().getSlot());
+            }
             getRecords.setAny(OFactory.rim.createAdhocQuery(adhocQuery));
         }
 

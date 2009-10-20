@@ -20,6 +20,7 @@ package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
+import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import java.sql.SQLException;
@@ -37,25 +38,56 @@ public class ClassificationTypeV extends RegistryObjectTypeV<ClassificationType>
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();
-        boolean validCn = idExistsInRequest(rimObject.getClassificationNode(), ClassificationNodeType.class);
+
+        // check classifiedObject
         boolean validCo = idExistsInRequest(rimObject.getClassifiedObject());
 
+        if (!validCo) {
+            validCo = persistence.idExist(rimObject.getClassifiedObject());
 
-        if (!validCn || !validCo) {
+            if (!validCo) {
+                String err = "Could not find classified object'" + rimObject.getClassifiedObject() + "' for Classification '" + rimObject.getId() + "'";
+                throw new InvalidReferenceException(err);
+            }
+        }
+
+        // check and validate if it is an external classification
+        boolean isExternal = false;
+
+        if (rimObject.isSetClassificationScheme()) {
+            if (!rimObject.isSetNodeRepresentation()) {
+                throw new InvalidReferenceException("Classificaion " + rimObject.getId() + " has a ClassificationScheme but not a NodeRepresentation");
+            }
+            if (rimObject.isSetClassificationNode()) {
+                throw new InvalidReferenceException("Classificaion " + rimObject.getId() + " has a ClassificationScheme but also a ClassificationNode");
+            }
+
+            isExternal = true;
+            boolean validCs = idExistsInRequest(rimObject.getClassificationScheme(), ClassificationSchemeType.class);
+
+            if (!validCs) {
+                validCs = persistence.idExists(rimObject.getClassificationScheme(), ClassificationSchemeType.class);
+
+                if (!validCs) {
+                    String err = "ClassificationScheme id '" + rimObject.getClassificationScheme() + "' referenced by Classifcation '" + rimObject.getId() + "' does not exist";
+                    throw new InvalidReferenceException(err);
+                }
+            }
+        }
+
+        if (isExternal) {
+            return;
+        }
+
+        // if not an external classification, validate local Classification ClassificationNode
+        boolean validCn = idExistsInRequest(rimObject.getClassificationNode(), ClassificationNodeType.class);
+
+        if (!validCn) {
             if (!validCn) {
                 validCn = persistence.idExists(rimObject.getClassificationNode(), ClassificationNodeType.class);
 
                 if (!validCn) {
                     String err = "ClassificationNode id '" + rimObject.getClassificationNode() + "' referenced by the Classification '" + rimObject.getId() + "' does not exist";
-                    throw new InvalidReferenceException(err);
-                }
-            }
-
-            if (!validCo) {
-                validCo = persistence.idExist(rimObject.getClassifiedObject());
-
-                if (!validCo) {
-                    String err = "Could not find classified object'" + rimObject.getClassifiedObject() + "' for Classification '" + rimObject.getId() + "'";
                     throw new InvalidReferenceException(err);
                 }
             }
