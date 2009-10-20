@@ -33,6 +33,7 @@ import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
+import be.kzen.ergorr.model.rim.ObjectRefType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
@@ -42,18 +43,12 @@ import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
-import be.kzen.ergorr.persist.dao.RegistryPackageTypeDAO;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.service.validator.RimValidator;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
@@ -229,6 +224,10 @@ public class LCManager {
      */
     private void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents) throws ServiceException {
         for (IdentifiableType ident : idents) {
+
+            if (ident instanceof ObjectRefType) {
+                continue; // TODO: quickfix, for now ignore ObjectRefs :)
+            }
 
             if (ident instanceof RegistryObjectType) {
                 RegistryObjectType ro = (RegistryObjectType) ident;

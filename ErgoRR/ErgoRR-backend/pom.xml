@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <name>ErgoRR-backend</name>
@@ -28,29 +29,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>webservices-rt</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.tools.ws</groupId>
-            <artifactId>webservices-tools</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
             <groupId>tomcat</groupId>
             <artifactId>catalina-ant</artifactId>
             <version>5.5.23</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>saxpath</groupId>
             <artifactId>saxpath</artifactId>
             <version>1.0-FCS</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
         </dependency>
     </dependencies>
 
@@ -63,6 +50,14 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <element>${project.parent.basedir}/conf</element>
+                    </additionalClasspathElements>
                 </configuration>
             </plugin>
         </plugins>

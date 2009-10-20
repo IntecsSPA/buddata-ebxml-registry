@@ -18,7 +18,6 @@
  */
 package be.kzen.ergorr.deploy.ant;
 
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.model.csw.InsertType;
@@ -31,7 +30,6 @@ import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.service.TransactionService;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -127,7 +125,7 @@ public class BackendInvokerTask extends Task {
             }
         }
     }
-    
+
     class XmlFileFilter implements FileFilter {
 
         public boolean accept(File file) {

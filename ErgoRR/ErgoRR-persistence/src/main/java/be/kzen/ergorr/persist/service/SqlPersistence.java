@@ -33,6 +33,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -46,9 +47,9 @@ import javax.xml.bind.JAXBElement;
  */
 public class SqlPersistence {
 
-    private static final String dataSourceName = CommonProperties.getInstance().get("db.datasource") +
-            CommonProperties.getInstance().get("deployName");
     private static Logger logger = Logger.getLogger(SqlPersistence.class.getName());
+    private static DataSource dataSource;
+    private static AtomicBoolean useManualCreatedConn = new AtomicBoolean(false);
     private RequestContext requestContext;
 
     /**
@@ -136,7 +137,7 @@ public class SqlPersistence {
 
             try {
                 Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + clazz.getSimpleName() + "DAO");
-                
+
                 while (result.next()) {
                     responseCount++;
                     IdentifiableTypeDAO identDAO = (IdentifiableTypeDAO) daoClass.newInstance(); // TODO: move out of loop?
@@ -536,44 +537,68 @@ public class SqlPersistence {
             logger.log(Level.FINE, "attempting to get a connection");
         }
 
-        DataSource ds = null;
-
-        try {
-            ds = (DataSource) new InitialContext().lookup(dataSourceName);
-        } catch (Exception ex) {
-            if (logger.isLoggable(Level.INFO)) {
-                logger.log(Level.INFO, "Could not get database DateSource, getting DbConnectionParams");
-            }
-        }
-
         Connection conn = null;
 
-        if (ds != null) {
-            conn = ds.getConnection();
+        if (useManualCreatedConn.get()) {
+            conn = createConnection();
         } else {
-            try {
-                DbConnectionParams connParams = (DbConnectionParams) requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS);
-
-                if (connParams == null) {
-                    if (logger.isLoggable(Level.FINE)) {
-                        logger.info("No custom DB connection params found! Using default.");
-                    }
-                    
-                    connParams = DbConnectionParams.getDefaultInstance();
+            if (dataSource != null) {
+                conn = dataSource.getConnection();
+            } else {
+                if (loadDataSource()) {
+                    conn = dataSource.getConnection();
+                } else {
+                    useManualCreatedConn.set(true);
+                    loadDriver();
+                    conn = createConnection();
                 }
-
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.info("Connection: " + connParams.toString());
-                }
-
-                Class.forName("org.postgresql.Driver");
-                conn = DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
-
-            } catch (ClassNotFoundException ex) {
-                throw new SQLException(ex.toString());
             }
         }
 
         return conn;
+    }
+
+    private Connection createConnection() throws SQLException {
+        DbConnectionParams connParams = (DbConnectionParams) requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS);
+        
+        if (connParams == null) {
+            if (logger.isLoggable(Level.FINE)) {
+                logger.info("No custom DB connection params found! Using default.");
+            }
+
+            connParams = DbConnectionParams.getDefaultInstance();
+        }
+
+        if (logger.isLoggable(Level.FINE)) {
+            logger.info("Connecting to: " + connParams.toString());
+        }
+
+        return DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
+    }
+
+    private boolean loadDataSource() throws SQLException {
+        boolean loaded = false;
+
+        try {
+            String dataSourceName = CommonProperties.getInstance().get("db.datasource") +
+                    CommonProperties.getInstance().get("deployName");
+            dataSource = (DataSource) new InitialContext().lookup(dataSourceName);
+            loaded = true;
+        } catch (Exception ex) {
+            if (logger.isLoggable(Level.INFO)) {
+                logger.log(Level.INFO, "Connection pool DateSource not provided");
+            }
+        }
+
+        return loaded;
+    }
+
+    private void loadDriver() throws SQLException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception ex) {
+            logger.severe("Postgres driver not found");
+            throw new SQLException("Oops, Postgres Driver not found");
+        }
     }
 }

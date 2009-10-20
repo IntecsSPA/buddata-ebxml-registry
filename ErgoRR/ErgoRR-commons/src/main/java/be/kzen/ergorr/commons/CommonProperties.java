@@ -62,7 +62,7 @@ public class CommonProperties {
             String sysPropPath = System.getProperty("ergorr.common.properties");
 
             if (sysPropPath == null) {
-                props.load(this.getClass().getResourceAsStream("common.properties"));
+                props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
             } else {
                 File propFile = new File(sysPropPath);
 
@@ -70,11 +70,11 @@ public class CommonProperties {
                     props.load(new FileInputStream(propFile));
                 } else {
                     logger.log(Level.WARNING, "System property 'ergorr.common.properties' is set but file could not be found: " + sysPropPath);
-                    props.load(this.getClass().getResourceAsStream("common.properties"));
+                    props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
                 }
             }
         } catch (IOException ex) {
-            logger.log(Level.WARNING, "Could not load common.properties", ex);
+            logger.log(Level.SEVERE, "Could not load ergorr.properties", ex);
         }
     }
 
