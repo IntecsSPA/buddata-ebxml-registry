@@ -48,7 +48,7 @@ psql -d template_postgis -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sq
 
 == Deploy ==
 
-*Configure conf/ergorr.properties.*
+*Configure: Copy conf/ergorr-template.properties to conf/ergorr.properties and edit configurations if needed*
 
 You can deploy difference instance of Ergo just by changing the 'deployName' property and then running the deployment ant tasks.
 
