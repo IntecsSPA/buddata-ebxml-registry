@@ -1,0 +1,7 @@
+= Since revision 334 =
+
+  * No need to set ERGO_HOME variable anymore.
+  * Build process moved to Maven. Ant is only used for database setup, deployment and data initialization. (See InstallationGuide)
+  * Configuration file moved to conf/ergorr.properties
+  * Configuration file is NOT bundled together with the ErgoRR-commons module anymore but only with ErgoRR-web. E.g If you want to just make use of the ErgoRR-backend (without deploying the ErgoRR-web) then you have to add ergorr.properties manually in your classpath. This way, you don't have to re-package any ErgoRR module on every configuration change.
+  * Dependency libraries (ErgoRR-shared) used by Ant are removed from the project as Maven downloads the same dependencies. Now, Ant uses those dependencies from your local Maven repository.
