@@ -24,6 +24,7 @@ import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.persist.service.DbConnectionParams;
 import be.kzen.ergorr.model.util.OFactory;
 import javax.xml.bind.JAXBElement;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -68,6 +69,7 @@ public class CswBackendClientTest {
     }
 
     @Test
+    @Ignore
     public void testGetRecordDescription() throws Exception {
         DbConnectionParams dbConn = new DbConnectionParams();
         dbConn.setDbName(CommonProperties.getInstance().get("deployName"));
