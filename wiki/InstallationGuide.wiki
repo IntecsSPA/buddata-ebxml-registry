@@ -56,7 +56,7 @@ The 'deployName' property will become the database name and the deployed WAR app
 
 The idea of Maven and Ant is that Maven is used while development and for building the project. Ant used used for deployment, database setup and data initialization.
 
-*Build the root pom file. It includes all the modules.
+*Build the root pom file. It will build all the modules.*
 {{{
 mvn clean install
 }}} 
@@ -68,16 +68,17 @@ ant tomcat-setup
 
 *Restart Tomcat*
 
-* Run these ant tasks in the following order. If you just want to re-deploy the application then you just need to run the 'all-build' and 'deploy' tasks*
+* Run these ant tasks in the following order *
 {{{
 ant db-build
 }}}
 {{{
-ant deploy
-}}}
-{{{
 ant db-load-model
 }}}
+{{{
+ant deploy
+}}}
+
 
 
 
