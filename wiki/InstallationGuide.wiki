@@ -79,7 +79,7 @@ ant db-load-model
 ant deploy
 }}}
 
-*Note*: If you are having issues with the Ant tasks, check the properties defined on the top of the build.xml file. One possible problem might be that your Maven repository directory is not in <user_home>/.m2/repository
+*Note*: If you are having issues with the Ant tasks, check the properties defined on the top of the build.xml file. One possible problem might be that your Maven repository directory is not in USER_HOME/.m2/repository
 
 
 *Note*: After an instance has been deployed on Tomcat, it sometimes throws an exception because of classpath loading problems. In that case a restart is required. I am looking at how to solve this problem.
