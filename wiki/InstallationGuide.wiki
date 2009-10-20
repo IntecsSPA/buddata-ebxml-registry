@@ -1,13 +1,13 @@
 #labels installation
 ==Requirements==
 
-  * JDK 1.5+  -  Tomcat 5.5.x  -  Postgres 8.3+  -  Postgis 1.3+
+  * JDK 1.5+  -  Tomcat 5.5.x  -  Postgres 8.3+  -  Postgis 1.3+ 
+
+  * Maven 2.x  -  Ant 1.6+
 
 Make sure that you have following variables set:
 
-CATALINA_HOME : Root directory of tomcat
-
-ERGO_HOME : Root directory of ERGO project. (Where the ErgoRR folder is in)
+CATALINA_HOME : Root directory of tomcat (Only if the provided Ant script is used for deploymeny)
 
 ==Installation==
 
@@ -17,13 +17,13 @@ ERGO_HOME : Root directory of ERGO project. (Where the ErgoRR folder is in)
 
 The maven projects are:
   * ErgoRR-backend < Contains all the backend logic used by ErgoRR-web and ErgoRR-backend-client
-  * ErgoRR-client < client API through SOAP interface
-  * ErgoRR-backend-client < client API connecting directly to backend
   * ErgoRR-commons < common classes
   * ErgoRR-jaxb < JAXB bindings
   * ErgoRR-persistence < persistence layer
   * ErgoRR-web < web application
-  * There is another folder: "ErgoRR-shared" which contains shared libraries.
+  * ErgoRR-client < client API through SOAP interface
+  * ErgoRR-backend-client < client API connecting directly to backend
+
 
 
 *3. Create a postgre database template*
@@ -48,13 +48,18 @@ psql -d template_postgis -f /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sq
 
 == Deploy ==
 
-*Configure ErgoRR-commons/src/main/resources/be/kzen/ergorr/commons/common.properties.*
+*Configure conf/ergorr.properties.*
 
 You can deploy difference instance of Ergo just by changing the 'deployName' property and then running the deployment ant tasks.
 
-The 'deployName' property will become the database name and the application name for the instance.
+The 'deployName' property will become the database name and the deployed WAR application name for the instance.
 
-*Go to the Ergo root directory from command line*
+The idea of Maven and Ant is that Maven is used while development and for building the project. Ant used used for deployment, database setup and data initialization.
+
+*Build the root pom file. It includes all the modules.
+{{{
+mvn clean install
+}}} 
 
 *Tomcat setup ant task (ONLY ONCE)*
 {{{
@@ -64,9 +69,6 @@ ant tomcat-setup
 *Restart Tomcat*
 
 * Run these ant tasks in the following order. If you just want to re-deploy the application then you just need to run the 'all-build' and 'deploy' tasks*
-{{{
-ant all-build
-}}}
 {{{
 ant db-build
 }}}
