@@ -51,7 +51,6 @@ import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.commons.EOPConstants;
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.MimeTypeConstants;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.RIMUtil;
@@ -563,6 +562,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
                 if (platform.isSetOrbitType()) {
                     SlotType slotOrbitType = RIMUtil.createSlot(EOPConstants.S_ORBIT_TYPE, EOPConstants.T_STRING, platform.getOrbitType());
                     e.getSlot().add(slotOrbitType);
+                }
+
+                if (platform.isSetSerialIdentifier()) {
+                    SlotType slotSerialIdentifierType = RIMUtil.createSlot(EOPConstants.S_SERIAL_IDENTIFIER, EOPConstants.T_STRING, platform.getSerialIdentifier());
+                    e.getSlot().add(slotSerialIdentifierType);
                 }
             }
 
