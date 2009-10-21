@@ -48,7 +48,7 @@ public class RegistryPackageTypeV extends RegistryObjectTypeV<RegistryPackageTyp
 
         String sql = "select * from t_identifiable t_i inner join t_association t_a on t_i.id = t_a.targetobject where " +
                 "t_a.sourceobject = '" + rimObject.getId() + "'" +
-                "and t_a.associationtype = 'urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember';";
+                "and t_a.associationtype = 'urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember'";
 
         List<JAXBElement<? extends IdentifiableType>> identEls = persistence.query(sql, null, (Class) IdentifiableType.class);
 

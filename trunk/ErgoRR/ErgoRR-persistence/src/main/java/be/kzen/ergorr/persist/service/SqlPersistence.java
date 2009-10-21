@@ -80,29 +80,6 @@ public class SqlPersistence {
      */
     public <T extends IdentifiableType> List<JAXBElement<? extends IdentifiableType>> query(String query, List<Object> parameters, Class<T> clazz) throws SQLException {
 
-        Integer maxResults = requestContext.getParam(InternalConstants.MAX_RESULTS, Integer.class);
-        Integer startPosition = requestContext.getParam(InternalConstants.START_POSITION, Integer.class);
-        Integer allowedMaxResults = CommonProperties.getInstance().getInt("db.maxResponse");
-        String orderBy = requestContext.getParam(InternalConstants.ORDER_BY, String.class);
-
-        if (orderBy != null && orderBy.length() > 3) {
-            query += " ORDER BY " + orderBy;
-        }
-
-        if (maxResults != null && maxResults != -1) {
-            if (maxResults == 0 || maxResults > allowedMaxResults) {
-                maxResults = allowedMaxResults;
-            }
-        } else {
-            maxResults = allowedMaxResults;
-        }
-
-        query += " LIMIT " + maxResults;
-
-        if (startPosition != null && startPosition > 0) {
-            query += " OFFSET " + startPosition;
-        }
-
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "Querying object: " + clazz.getSimpleName());
             logger.log(Level.FINE, "SQL: " + query);
@@ -560,7 +537,7 @@ public class SqlPersistence {
 
     private Connection createConnection() throws SQLException {
         DbConnectionParams connParams = (DbConnectionParams) requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS);
-        
+
         if (connParams == null) {
             if (logger.isLoggable(Level.FINE)) {
                 logger.info("No custom DB connection params found! Using default.");

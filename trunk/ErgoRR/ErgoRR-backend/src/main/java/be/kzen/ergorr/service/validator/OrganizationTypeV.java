@@ -57,7 +57,7 @@ public class OrganizationTypeV extends RegistryObjectTypeV<OrganizationType> {
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         super.validateToDelete();
 
-        String sql = "select id from from t_organization where parent='" + rimObject.getId() + "';";
+        String sql = "select id from from t_organization where parent='" + rimObject.getId() + "'";
         List<String> childOrgIds = persistence.getIds(sql);
 
         if (childOrgIds.size() > 0) {

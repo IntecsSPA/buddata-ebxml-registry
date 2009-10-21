@@ -42,18 +42,4 @@ public interface QueryBuilder {
      * @return SQL query.
      */
     public String createCountQuery();
-
-    /**
-     * Start position of the objects to fetch.
-     *
-     * @return Number of objects.
-     */
-    public int getStartPosition();
-
-    /**
-     * Maximum amount of objects to fetch.
-     *
-     * @return Number of objects.
-     */
-    public int getMaxResults();
 }

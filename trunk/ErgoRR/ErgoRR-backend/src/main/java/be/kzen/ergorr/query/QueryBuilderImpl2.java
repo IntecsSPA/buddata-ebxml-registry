@@ -47,6 +47,7 @@ import be.kzen.ergorr.query.xpath.XPathToSqlConverter;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -70,19 +71,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     private GetRecordsType request;
     private QueryType filterQuery;
     private List<Object> queryParams;
-    private String sortByStr;
     private ElementSetType resultSet;
-//    private static final String EQUAL_SIGN = " = ";
-//    private static final String NOT_EQUAL_SIGN = " != ";
-//    private static final String GREATER_SIGN = " > ";
-//    private static final String GREATER_OR_EQUAL_SIGN = " >= ";
-//    private static final String LESS_SIGN = " < ";
-//    private static final String LESS_OR_EQUAL_SIGN = " <= ";
-//    private static final String SINGLE_CHAR = "_";
-//    private static final String ESCAPE_CHAR = "!";
-//    private static final String WILDCARD_CHAR = "%";
-//    private static final String SPACE = " ";
-//    private static final String DOT = ".";
 
     /**
      * Constructor
@@ -102,42 +91,12 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         return queryParams;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public int getMaxResults() {
-        return sqlQuery.getMaxResults();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int getStartPosition() {
-        return sqlQuery.getStartPosition();
-    }
-
     public QueryObject getReturnObject() {
         return sqlQuery.getReturnType();
     }
 
-    public boolean returnAssociations() {
-        return resultSet.returnAssociations();
-    }
-
-    public boolean returnNameDesc() {
-        return resultSet.returnNameDesc();
-    }
-
-    public boolean returnNestedObjects() {
-        return resultSet.returnNestedObjects();
-    }
-
-    public boolean returnSlots() {
-        return resultSet.returnSlots();
-    }
-
-    public String getSortByStr() {
-        return (sortByStr != null) ? sortByStr : "";
+    public ElementSetType getResultSet() {
+        return resultSet;
     }
 
     /**
@@ -155,6 +114,8 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     public void init() throws QueryException {
         if (request.isSetMaxRecords()) {
             sqlQuery.setMaxResults(request.getMaxRecords().intValue());
+        } else {
+            request.setMaxRecords(BigInteger.ZERO);
         }
         if (request.isSetStartPosition()) {
             // start position for OGC Filter is 1, for PostgreSQL is 0
@@ -227,10 +188,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     throw new QueryException(ex);
                 }
 
-                sortByStr = xpath.getQueryObject().getSqlAlias() + SyntaxElements.DOT + xpath.getAttributeName() + SyntaxElements.SPACE;
+                String sortByStr = xpath.getQueryObject().getSqlAlias() + SyntaxElements.DOT + xpath.getAttributeName() + SyntaxElements.SPACE;
                 SortOrderType order = (sortProp.getSortOrder() != null) ? sortProp.getSortOrder() : SortOrderType.ASC;
                 sortByStr += order.value();
-                logger.info("Sort string: " + sortByStr);
+                sqlQuery.setSortBy(sortByStr);
             }
         }
 

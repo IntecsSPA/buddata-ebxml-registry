@@ -24,7 +24,10 @@ public class SyntaxElements {
     public static final String WHERE = " WHERE ";
     public static final String FROM = " FROM ";
     public static final String LIKE = " LIKE ";
+    public static final String LIMIT = " LIMIT ";
+    public static final String OFFSET = " OFFSET ";
     public static final String BETWEEN = " BETWEEN ";
+    public static final String ORDER_BY = " ORDER BY ";
     public static final String AND = " AND ";
     public static final String OR = " OR ";
     public static final String NULL = " null ";

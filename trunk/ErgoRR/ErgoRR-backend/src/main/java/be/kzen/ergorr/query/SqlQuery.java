@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.query;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.persist.SyntaxElements;
 import be.kzen.ergorr.query.xpath.parser.XPathNode;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class SqlQuery {
 
     private static Logger logger = Logger.getLogger(SqlQuery.class.getName());
     private StringBuilder whereClause;
+    private String sortBy;
     private List<XPathNode> joinNodes;
     private StringBuilder criteria;
     private Map<String, QueryObject> selectObjs;
@@ -75,12 +77,37 @@ public class SqlQuery {
         this.startPosition = startPosition;
     }
 
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
     public String buildQuery() {
         if (whereClause.length() == 0) {
             buildWhereClause();
         }
 
-        return SyntaxElements.SELECT + returnObj.getSqlAlias() + SyntaxElements.ALL_COLUMNS + whereClause.toString();
+        Integer allowedMaxResults = CommonProperties.getInstance().getInt("db.maxResponse");
+
+        StringBuilder selectSql = new StringBuilder();
+        selectSql.append(SyntaxElements.SELECT).append(returnObj.getSqlAlias()).append(SyntaxElements.ALL_COLUMNS)
+                .append(whereClause.toString());
+
+        if (sortBy != null && sortBy.length() > 0) {
+            selectSql.append(SyntaxElements.ORDER_BY).append(sortBy);
+        }
+
+        int limit = maxResults;
+        if (maxResults == 0 || maxResults > allowedMaxResults) {
+            limit = allowedMaxResults;
+        }
+
+        selectSql.append(SyntaxElements.LIMIT).append(limit);
+
+        if (startPosition > 0) {
+            selectSql.append(SyntaxElements.OFFSET).append(startPosition);
+        }
+
+        return selectSql.toString();
     }
 
     private void buildWhereClause() {
