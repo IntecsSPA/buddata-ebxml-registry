@@ -78,12 +78,6 @@ public abstract class GenericDAO<T> {
     }
 
     public boolean returnSlots() {
-        if (context == null) {
-            System.out.println("NULL <<<<<<<<<<<<<<<<<<<<<<<<<");
-            System.out.println("NULL <<<<<<<<<<<<<<<<<<<<<<<<<");
-            System.out.println("NULL <<<<<<<<<<<<<<<<<<<<<<<<<");
-            System.out.println("NULL <<<<<<<<<<<<<<<<<<<<<<<<<");
-        }
         Boolean r = context.getParam(InternalConstants.RETURN_SLOTS, Boolean.class);
         return (r == null) ? true : r;
     }

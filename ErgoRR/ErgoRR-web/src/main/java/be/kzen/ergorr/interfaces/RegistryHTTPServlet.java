@@ -82,26 +82,23 @@ public class RegistryHTTPServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       String serviceParameter,versionParameter;
+        String serviceParameter, versionParameter;
 
-       try
-       {
-           serviceParameter=request.getParameter(getRequestParameterIgnoringCase(request,"service"));
-           versionParameter=request.getParameter(getRequestParameterIgnoringCase(request,"version"));
+        try {
+            serviceParameter = request.getParameter(getRequestParameterIgnoringCase(request, "service"));
+            versionParameter = request.getParameter(getRequestParameterIgnoringCase(request, "version"));
 
-           if(serviceParameter.equals("CSW") &&
-              versionParameter.equals("2.0.2"))
-           {
-               processGetRequest(request,response);
-           }
-           else response.sendError(response.SC_NOT_IMPLEMENTED);
-       }
-       catch(Exception e)
-       {
-           ExceptionReport exRep;
-           
-           try {
-                exRep=createException(e.getMessage(),"500");
+            if (serviceParameter.equals("CSW") &&
+                    versionParameter.equals("2.0.2")) {
+                processGetRequest(request, response);
+            } else {
+                response.sendError(response.SC_NOT_IMPLEMENTED);
+            }
+        } catch (Exception e) {
+            ExceptionReport exRep;
+
+            try {
+                exRep = createException(e.getMessage(), "500");
                 response.setContentType("application/xml");
 
                 JAXBUtil.getInstance().marshall(exRep, response.getOutputStream());
@@ -110,7 +107,7 @@ public class RegistryHTTPServlet extends HttpServlet {
                 response.sendError(response.SC_INTERNAL_SERVER_ERROR);
             }
 
-       }
+        }
     }
 
     @Override
@@ -121,29 +118,26 @@ public class RegistryHTTPServlet extends HttpServlet {
         Object retValue;
         JAXBElement element;
 
-        jaxbUtil=JAXBUtil.getInstance();
-        inStream=request.getInputStream();
+        jaxbUtil = JAXBUtil.getInstance();
+        inStream = request.getInputStream();
         try {
-            unmarshalledObj=jaxbUtil.unmarshall(inStream);
+            unmarshalledObj = jaxbUtil.unmarshall(inStream);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
             response.sendError(response.SC_BAD_REQUEST);
             return;
         }
 
-        try
-        {
-            element=(JAXBElement) unmarshalledObj;
-            retValue=process(element.getValue(),response);
-            streamReturnValue(retValue,response);
+        try {
+            element = (JAXBElement) unmarshalledObj;
+            retValue = process(element.getValue(), response);
+            streamReturnValue(retValue, response);
             response.setStatus(response.SC_OK);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             ExceptionReport exRep;
 
-           try {
-                exRep=createException(e.getMessage(),"500");
+            try {
+                exRep = createException(e.getMessage(), "500");
                 response.setContentType("application/xml");
 
                 JAXBUtil.getInstance().marshall(exRep, response.getOutputStream());
@@ -154,33 +148,35 @@ public class RegistryHTTPServlet extends HttpServlet {
         }
     }
 
-    private Object process(Object value,  HttpServletResponse response) throws Exception {
+    private Object process(Object value, HttpServletResponse response) throws Exception {
         Object retValue;
         String declaredType;
 
-        declaredType=value.getClass().getCanonicalName();
+        declaredType = value.getClass().getCanonicalName();
 
-        if(declaredType.equals("be.kzen.ergorr.model.csw.GetCapabilitiesType"))
-            retValue=processGetCapabilities((GetCapabilitiesType) value);
-        else if(declaredType.equals("be.kzen.ergorr.model.csw.GetDomainType"))
-            retValue=processGetDomain((GetDomainType) value);
-        else if(declaredType.equals("be.kzen.ergorr.model.csw.GetRecordsType"))
-            retValue=processGetRecords((GetRecordsType) value);
-        else if(declaredType.equals("be.kzen.ergorr.model.csw.GetRecordByIdType"))
-            retValue=processGetRecordById((GetRecordByIdType) value);
-        else if(declaredType.equals("be.kzen.ergorr.model.csw.HarvestType"))
-            retValue=processHarvest((HarvestType) value);
-        else if(declaredType.equals("be.kzen.ergorr.model.csw.TransactionType"))
-            retValue=processTransaction((TransactionType) value);
-        else if(declaredType.equals("be.kzen.ergorr.model.csw.DescribeRecordType"))
-            retValue=processDescribeRecord((DescribeRecordType) value);
-        else throw new Exception("Type not supported");
+        if (declaredType.equals("be.kzen.ergorr.model.csw.GetCapabilitiesType")) {
+            retValue = processGetCapabilities((GetCapabilitiesType) value);
+        } else if (declaredType.equals("be.kzen.ergorr.model.csw.GetDomainType")) {
+            retValue = processGetDomain((GetDomainType) value);
+        } else if (declaredType.equals("be.kzen.ergorr.model.csw.GetRecordsType")) {
+            retValue = processGetRecords((GetRecordsType) value);
+        } else if (declaredType.equals("be.kzen.ergorr.model.csw.GetRecordByIdType")) {
+            retValue = processGetRecordById((GetRecordByIdType) value);
+        } else if (declaredType.equals("be.kzen.ergorr.model.csw.HarvestType")) {
+            retValue = processHarvest((HarvestType) value);
+        } else if (declaredType.equals("be.kzen.ergorr.model.csw.TransactionType")) {
+            retValue = processTransaction((TransactionType) value);
+        } else if (declaredType.equals("be.kzen.ergorr.model.csw.DescribeRecordType")) {
+            retValue = processDescribeRecord((DescribeRecordType) value);
+        } else {
+            throw new Exception("Type not supported");
+        }
 
         return retValue;
     }
 
     private Object processGetRecords(GetRecordsType getRecordsReq) throws ServiceExceptionReport {
-       long time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(getRecordsReq);
 
@@ -212,7 +208,7 @@ public class RegistryHTTPServlet extends HttpServlet {
         }
     }
 
-     private static ServiceExceptionReport createExceptionReport(ServiceException ex) {
+    private static ServiceExceptionReport createExceptionReport(ServiceException ex) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLanguage(CommonProperties.getInstance().get("lang"));
         ExceptionType exType = new ExceptionType();
@@ -288,30 +284,32 @@ public class RegistryHTTPServlet extends HttpServlet {
         return response;
     }
 
-      private void streamReturnValue(Object retValue, HttpServletResponse response) throws Exception {
+    private void streamReturnValue(Object retValue, HttpServletResponse response) throws Exception {
         String canonicalName;
         JAXBElement element;
 
-        canonicalName=retValue.getClass().getCanonicalName();
+        canonicalName = retValue.getClass().getCanonicalName();
 
-        if(canonicalName.equals("be.kzen.ergorr.model.csw.GetRecordsResponseType"))
-            element=OFactory.csw.createGetRecordsResponse((GetRecordsResponseType) retValue);
-        else if(canonicalName.equals("be.kzen.ergorr.model.csw.GetRecordByIdResponseType"))
-           element=OFactory.csw.createGetRecordByIdResponse((GetRecordByIdResponseType) retValue);
-         else if(canonicalName.equals("be.kzen.ergorr.model.csw.CapabilitiesType"))
-           element=OFactory.csw.createCapabilities((CapabilitiesType) retValue);
-         else if(canonicalName.equals("be.kzen.ergorr.model.csw.GetDomainResponseType"))
-           element=OFactory.csw.createGetDomainResponse((GetDomainResponseType) retValue);
-         else if(canonicalName.equals("be.kzen.ergorr.model.csw.HarvestType"))
-           element=OFactory.csw.createHarvestResponse((HarvestResponseType) retValue);
-         else if(canonicalName.equals("be.kzen.ergorr.model.csw.TransactionResponseType"))
-           element=OFactory.csw.createTransactionResponse((TransactionResponseType) retValue);
-         else if(canonicalName.equals("be.kzen.ergorr.model.csw.DescribeRecordResponseType"))
-           element=OFactory.csw.createDescribeRecordResponse((DescribeRecordResponseType) retValue);
-         else throw new Exception("Type not supported");
+        if (canonicalName.equals("be.kzen.ergorr.model.csw.GetRecordsResponseType")) {
+            element = OFactory.csw.createGetRecordsResponse((GetRecordsResponseType) retValue);
+        } else if (canonicalName.equals("be.kzen.ergorr.model.csw.GetRecordByIdResponseType")) {
+            element = OFactory.csw.createGetRecordByIdResponse((GetRecordByIdResponseType) retValue);
+        } else if (canonicalName.equals("be.kzen.ergorr.model.csw.CapabilitiesType")) {
+            element = OFactory.csw.createCapabilities((CapabilitiesType) retValue);
+        } else if (canonicalName.equals("be.kzen.ergorr.model.csw.GetDomainResponseType")) {
+            element = OFactory.csw.createGetDomainResponse((GetDomainResponseType) retValue);
+        } else if (canonicalName.equals("be.kzen.ergorr.model.csw.HarvestType")) {
+            element = OFactory.csw.createHarvestResponse((HarvestResponseType) retValue);
+        } else if (canonicalName.equals("be.kzen.ergorr.model.csw.TransactionResponseType")) {
+            element = OFactory.csw.createTransactionResponse((TransactionResponseType) retValue);
+        } else if (canonicalName.equals("be.kzen.ergorr.model.csw.DescribeRecordResponseType")) {
+            element = OFactory.csw.createDescribeRecordResponse((DescribeRecordResponseType) retValue);
+        } else {
+            throw new Exception("Type not supported");
+        }
 
         response.setContentType("application/xml");
-        JAXBUtil.getInstance().marshall(element,response.getOutputStream());
+        JAXBUtil.getInstance().marshall(element, response.getOutputStream());
     }
 
     private void processGetRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -319,25 +317,24 @@ public class RegistryHTTPServlet extends HttpServlet {
         Object methodObject;
         Object retValue;
 
-        requestParameter=request.getParameter(getRequestParameterIgnoringCase(request,"request"));
-        if(requestParameter.equals("GetCapabilities"))
-            methodObject=extractGetCapabilitiesTypeFromHttpGet(request);
-        else if(requestParameter.equals("GetRecordById"))
-            methodObject=extractGetRecordByIdTypeFromHttpGet(request);
-        else if(requestParameter.equals("GetRepositoryItem"))
-        {
-            streamItemFromRepository(request,response);
+        requestParameter = request.getParameter(getRequestParameterIgnoringCase(request, "request"));
+        if (requestParameter.equals("GetCapabilities")) {
+            methodObject = extractGetCapabilitiesTypeFromHttpGet(request);
+        } else if (requestParameter.equals("GetRecordById")) {
+            methodObject = extractGetRecordByIdTypeFromHttpGet(request);
+        } else if (requestParameter.equals("GetRepositoryItem")) {
+            streamItemFromRepository(request, response);
             return;
+        } else {
+            throw new UnsupportedOperationException("Not yet implemented");
         }
-        else throw new UnsupportedOperationException("Not yet implemented");
 
         retValue = process(methodObject, response);
-        streamReturnValue(retValue,response);
+        streamReturnValue(retValue, response);
         response.setStatus(response.SC_OK);
     }
 
-    protected void streamItemFromRepository(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
+    protected void streamItemFromRepository(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/xml"); // TODO - read from ExtrinsicObject contenttype
         ServletOutputStream out = response.getOutputStream();
         String id = request.getParameter("id");
@@ -391,16 +388,16 @@ public class RegistryHTTPServlet extends HttpServlet {
     }
 
     private Object extractGetCapabilitiesTypeFromHttpGet(HttpServletRequest request) {
-        GetCapabilitiesType getCapabilities=null;
-        
-        getCapabilities=new GetCapabilitiesType();
+        GetCapabilitiesType getCapabilities = null;
+
+        getCapabilities = new GetCapabilitiesType();
         getCapabilities.setService("urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM");
 
         return getCapabilities;
     }
 
     private Object extractGetRecordByIdTypeFromHttpGet(HttpServletRequest request) throws Exception {
-        GetRecordByIdType getRecordById=null;
+        GetRecordByIdType getRecordById = null;
         String elementSetNameParameter;
         String outputFormatParameter;
         String outputSchemaParameter;
@@ -409,49 +406,54 @@ public class RegistryHTTPServlet extends HttpServlet {
         List<String> idList;
         ElementSetNameType elementSetName;
 
-        getRecordById=new GetRecordByIdType();
+        getRecordById = new GetRecordByIdType();
 
-        elementSetNameParameter=request.getParameter("ElementSetName");
-        if(elementSetNameParameter==null)
-            elementSetNameParameter="summary";
-        else if((elementSetNameParameter.equals("brief") ||
-           elementSetNameParameter.equals("summary") ||
-           elementSetNameParameter.equals("full"))==false)
+        elementSetNameParameter = request.getParameter("ElementSetName");
+        if (elementSetNameParameter == null) {
+            elementSetNameParameter = "summary";
+        } else if ((elementSetNameParameter.equals("brief") ||
+                elementSetNameParameter.equals("summary") ||
+                elementSetNameParameter.equals("full")) == false) {
             throw new Exception("Element Set Name contains a not allowed value");
+        }
 
-        outputFormatParameter=request.getParameter("outputFormat");
-        if(outputFormatParameter==null)
-            outputFormatParameter="application/xml";
-        else if((outputFormatParameter.equals("application/xml"))==false)
+        outputFormatParameter = request.getParameter("outputFormat");
+        if (outputFormatParameter == null) {
+            outputFormatParameter = "application/xml";
+        } else if ((outputFormatParameter.equals("application/xml")) == false) {
             throw new Exception("OutputFormat contains a not allowed or not supported value");
+        }
 
-        outputSchemaParameter=request.getParameter("outputSchema");
-        if(outputSchemaParameter==null)
-            outputSchemaParameter="http://www.opengis.net/cat/csw/2.0.2";
-        else if((outputSchemaParameter.equals("http://www.opengis.net/cat/csw/2.0.2"))==false)
+        outputSchemaParameter = request.getParameter("outputSchema");
+        if (outputSchemaParameter == null) {
+            outputSchemaParameter = "http://www.opengis.net/cat/csw/2.0.2";
+        } else if ((outputSchemaParameter.equals("http://www.opengis.net/cat/csw/2.0.2")) == false) {
             throw new Exception("Provided outputSchema is not supported");
+        }
 
-        id=request.getParameter("id");
-        if(id==null)
+        id = request.getParameter("id");
+        if (id == null) {
             throw new Exception("No id have been provided.");
+        }
 
-        tokenizer=new StringTokenizer(id, ",");
+        tokenizer = new StringTokenizer(id, ",");
 
-        elementSetName=new ElementSetNameType();
+        elementSetName = new ElementSetNameType();
         elementSetName.setValue(ElementSetType.fromValue(elementSetNameParameter));
         getRecordById.setElementSetName(elementSetName);
 
         getRecordById.setOutputFormat(outputFormatParameter);
         getRecordById.setOutputSchema(outputSchemaParameter);
 
-        idList=getRecordById.getId();
-        while(tokenizer.hasMoreTokens())
+        idList = getRecordById.getId();
+        while (tokenizer.hasMoreTokens()) {
             idList.add(tokenizer.nextToken());
-        
+        }
+
         return getRecordById;
     }
 
-     private ExceptionReport createException(String error, String code) {
+    private ExceptionReport createException(String error, String code) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLanguage(CommonProperties.getInstance().get("lang"));
         exRep.setVersion("1.0");
@@ -463,7 +465,7 @@ public class RegistryHTTPServlet extends HttpServlet {
         return exRep;
     }
 
-     private String createExceptionAsString(String error, String code) {
+    private String createExceptionAsString(String error, String code) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLanguage(CommonProperties.getInstance().get("lang"));
         exRep.setVersion("1.0");
@@ -480,16 +482,16 @@ public class RegistryHTTPServlet extends HttpServlet {
         }
     }
 
-    private String getRequestParameterIgnoringCase(HttpServletRequest request,String keyToSearch) {
+    private String getRequestParameterIgnoringCase(HttpServletRequest request, String keyToSearch) {
         Enumeration parEnum;
         String parName;
 
-        parEnum=request.getParameterNames();
-        while(parEnum.hasMoreElements())
-        {
-            parName=(String) parEnum.nextElement();
-            if(parName.toLowerCase().equals(keyToSearch.toLowerCase()))
+        parEnum = request.getParameterNames();
+        while (parEnum.hasMoreElements()) {
+            parName = (String) parEnum.nextElement();
+            if (parName.toLowerCase().equals(keyToSearch.toLowerCase())) {
                 return parName;
+            }
         }
 
         return null;

@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.commons;
 
+import be.kzen.ergorr.model.csw.ElementSetType;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -47,7 +48,9 @@ public class RequestContext {
     }
 
     public void putParam(Integer key, Object value) {
-        params.put(key, value);
+        if (value != null) {
+            params.put(key, value);
+        }
     }
 
     public Object getParam(Integer key) {
@@ -66,5 +69,19 @@ public class RequestContext {
         }
 
         return null;
+    }
+
+    public void setQueryReturnParams(ElementSetType elSet) {
+        putParam(InternalConstants.RETURN_SLOTS, elSet.returnSlots());
+        putParam(InternalConstants.RETURN_NAME_DESC, elSet.returnNameDesc());
+        putParam(InternalConstants.RETURN_NESTED_OBJECTS, elSet.returnNestedObjects());
+        putParam(InternalConstants.RETURN_ASSOCIATIONS, elSet.returnAssociations());
+    }
+
+    public RequestContext copyForNewConn() {
+        RequestContext rc = new RequestContext();
+        rc.setRequest(getRequest());
+        rc.putParam(InternalConstants.DB_CONNECTION_PARAMS, getParam(InternalConstants.DB_CONNECTION_PARAMS));
+        return rc;
     }
 }

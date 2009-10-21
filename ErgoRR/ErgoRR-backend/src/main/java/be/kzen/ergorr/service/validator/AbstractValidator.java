@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.service.validator;
 
+import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
@@ -58,7 +59,7 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
      */
     public void setRequestContext(RequestContext requestContext) {
         this.requestContext = requestContext;
-        persistence = new SqlPersistence(requestContext);
+        persistence = new SqlPersistence(requestContext.copyForNewConn());
     }
 
     public List<IdentifiableType> getFlatIdents() {

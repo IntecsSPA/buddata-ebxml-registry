@@ -21,23 +21,14 @@ package be.kzen.ergorr.service.validator;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
-import be.kzen.ergorr.model.rim.AdhocQueryType;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
-import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import be.kzen.ergorr.model.rim.ClassificationType;
 import be.kzen.ergorr.model.rim.ExternalIdentifierType;
-import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
-import be.kzen.ergorr.model.rim.ServiceBindingType;
-import be.kzen.ergorr.model.rim.ServiceType;
-import be.kzen.ergorr.model.rim.SpecificationLinkType;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
@@ -104,7 +95,7 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
      */
     protected void valToDelPkgAsso() throws SQLException, ReferenceExistsException {
         String sql = "select sourceobject from t_association where associationtype ='" + RIMConstants.CN_ASSOCIATION_TYPE_ID_HasMember + "' and " +
-                "targetobject ='" + rimObject.getId() + "';";
+                "targetobject ='" + rimObject.getId() + "'";
 
         List<String> ids = persistence.getIds(sql);
 
@@ -119,7 +110,7 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
 
     protected void addReletedObjectToDel() throws SQLException, ReferenceExistsException {
         String sql = "select * from t_association where sourceobject='" + rimObject.getId() +
-                "' or targetobject='" + rimObject.getId() + "';";
+                "' or targetobject='" + rimObject.getId() + "'";
 
         List<JAXBElement<AssociationType>> assoEls = persistence.query(sql, null, (Class) AssociationType.class);
 

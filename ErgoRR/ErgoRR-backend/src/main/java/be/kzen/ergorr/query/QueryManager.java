@@ -18,7 +18,6 @@
  */
 package be.kzen.ergorr.query;
 
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.exceptions.QueryException;
 import be.kzen.ergorr.commons.RequestContext;
@@ -167,13 +166,7 @@ public class QueryManager {
             throw new ServiceException(ErrorCodes.INVALID_REQUEST, ex.getMessage(), ex);
         }
 
-        requestContext.putParam(InternalConstants.MAX_RESULTS, queryBuilder.getMaxResults());
-        requestContext.putParam(InternalConstants.START_POSITION, queryBuilder.getStartPosition());
-        requestContext.putParam(InternalConstants.RETURN_SLOTS, queryBuilder.returnSlots());
-        requestContext.putParam(InternalConstants.RETURN_NAME_DESC, queryBuilder.returnNameDesc());
-        requestContext.putParam(InternalConstants.RETURN_NESTED_OBJECTS, queryBuilder.returnNestedObjects());
-        requestContext.putParam(InternalConstants.RETURN_ASSOCIATIONS, queryBuilder.returnAssociations());
-        requestContext.putParam(InternalConstants.ORDER_BY, queryBuilder.getSortByStr());
+        requestContext.setQueryReturnParams(queryBuilder.getResultSet());
 
         SqlPersistence service = new SqlPersistence(requestContext);
         long recordsMatched = 0;
@@ -188,7 +181,7 @@ public class QueryManager {
         }
 
         int size = idents.size();
-        if (queryBuilder.returnAssociations()) {
+        if (queryBuilder.getResultSet() == ElementSetType.FULL) {
             List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
             idents.addAll(assoEls);
         }
@@ -224,17 +217,14 @@ public class QueryManager {
             resultSet = ElementSetType.SUMMARY;
         }
 
-        requestContext.putParam(InternalConstants.RETURN_SLOTS, resultSet.returnSlots());
-        requestContext.putParam(InternalConstants.RETURN_NAME_DESC, resultSet.returnNameDesc());
-        requestContext.putParam(InternalConstants.RETURN_NESTED_OBJECTS, resultSet.returnNestedObjects());
-        requestContext.putParam(InternalConstants.RETURN_ASSOCIATIONS, resultSet.returnAssociations());
+        requestContext.setQueryReturnParams(resultSet);
 
         SqlPersistence service = new SqlPersistence(requestContext);
 
         try {
             List<JAXBElement<? extends IdentifiableType>> idents = service.getByIds(ids);
 
-            if (resultSet != null && resultSet == ElementSetType.FULL) {
+            if (resultSet == ElementSetType.FULL) {
                 List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
                 idents.addAll(assoEls);
             }
@@ -259,7 +249,9 @@ public class QueryManager {
             IdentifiableType ident = identEl.getValue();
             String sql = "select * from t_association where targetobject='" + ident.getId() + "' or sourceobject='" + ident.getId() + "'";
 
-            SqlPersistence service = new SqlPersistence(requestContext);
+            RequestContext rc = requestContext.copyForNewConn();
+            rc.setQueryReturnParams(ElementSetType.SUMMARY);
+            SqlPersistence service = new SqlPersistence(rc);
 
             try {
                 List<JAXBElement<AssociationType>> assos =
