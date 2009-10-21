@@ -1,8 +1,27 @@
-*1. SVN submit for project members*
+*Coding convension*
+
+Stick to the standard Java coding conventions. Can be found [http://java.sun.com/docs/codeconv/ here].
+
+Some exception to the standard conventions:
+  * 6.3 Putting all declarations at the beginning of blocks is not always the ideal way. That's a practice from decades ago which is not desired anymore for good reasons (memory allocation, readability). Try to define objects when they are used. An exception could be the return parameters, a definition which really should be up there.
+
+*Coding guide*
+
+  * Use generics if possible instead of working with Object.
+  * Use 'static final String' for constants when appropriate.
+  * Try to avoid hard-coding class names as strings. Bad for refactoring. If you know the class, just do TheObjectClass.class.getName()
+
+
+*SVN submit for project members*
 
 This can be done in two ways:
-  * Provide a diff patch to be evaluated and approved.
+  * Provide a diff patch to be evaluated and approved together with the change description.
   * Provide the list of changes in an email to be evaluate and approved. (might be asked for a diff patch depending on the complexity of the changes).
 
 
 More to come ..
+
+
+----
+*Note:* Failing to follow one of the above guidelines might result in the rejection or removal of a contribution.
+----
