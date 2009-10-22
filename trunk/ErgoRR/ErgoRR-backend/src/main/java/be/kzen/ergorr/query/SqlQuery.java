@@ -97,7 +97,7 @@ public class SqlQuery {
         }
 
         int limit = maxResults;
-        if (maxResults == 0 || maxResults > allowedMaxResults) {
+        if (maxResults <= 0 || maxResults > allowedMaxResults) {
             limit = allowedMaxResults;
         }
 
