@@ -39,6 +39,12 @@
             <artifactId>saxpath</artifactId>
             <version>1.0-FCS</version>
         </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.2-504.jdbc3</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
