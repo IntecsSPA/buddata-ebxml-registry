@@ -158,7 +158,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         classification.setId(classificationId);
         classification.setLid(classificationId);
         classification.setClassificationNode(getClassification());
-        classification.setClassificationScheme(CLASSIFICATION_SCHEME);
+//        classification.setClassificationScheme(CLASSIFICATION_SCHEME);
         classification.setClassifiedObject(eoProduct.getId());
         eoProduct.getClassification().add(classification);
         associateToPackage(classification);
