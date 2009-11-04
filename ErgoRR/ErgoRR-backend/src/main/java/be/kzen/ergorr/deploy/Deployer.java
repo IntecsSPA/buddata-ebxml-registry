@@ -143,7 +143,7 @@ public class Deployer {
         File sqlScript = new File(System.getenv("ERGO_HOME") + "/ErgoRR-persistence/conf/database.sql");
 
         try {
-            String sql = FileUtil.readFileAsString(sqlScript);
+            String sql = FileUtil.readAsString(sqlScript);
 
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "Creating tables in database " + deploymentName);
@@ -199,14 +199,14 @@ public class Deployer {
     private void configureDataSource() throws IOException {
         String dataSourceConfPath = System.getenv("ERGO_HOME") + "/ErgoRR-web-war/conf/template-datasource.xml";
         File dataSourceConfTemp = new File(dataSourceConfPath);
-        String dataSourceConfStr = FileUtil.readFileAsString(dataSourceConfTemp);
+        String dataSourceConfStr = FileUtil.readAsString(dataSourceConfTemp);
         dataSourceConfStr = dataSourceConfStr.replaceAll("!!name!!", deploymentName);
         dataSourceConfStr = dataSourceConfStr.replaceAll("!!db.url!!", connParams.getDbUrl());
         dataSourceConfStr = dataSourceConfStr.replaceAll("!!db.user!!", connParams.getDbUser());
         dataSourceConfStr = dataSourceConfStr.replaceAll("!!db.password!!", connParams.getDbPassword());
         
         File newDataSourceConf = new File(System.getenv("ERGO_HOME") + "/ErgoRR-web-war/conf/" + deploymentName + ".xml");
-        FileUtil.writeFile(newDataSourceConf, dataSourceConfStr);
+        FileUtil.write(newDataSourceConf, dataSourceConfStr);
     }
 
     private void executeSql(String sql) throws DeployerException {

@@ -48,6 +48,7 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         // TODO: make sure that ClassificationNode is from ObjectType ClassificationScheme
+        // TODO: check that two objects don't have same ID in one request
 
         rimObject.setStatus(RIMConstants.CN_STATUS_TYPE_CODE_Submitted);
         rimObject.setLid(rimObject.getId());

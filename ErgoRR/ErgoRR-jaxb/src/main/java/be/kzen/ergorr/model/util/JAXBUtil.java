@@ -1,6 +1,5 @@
 package be.kzen.ergorr.model.util;
 
-import be.kzen.ergorr.model.rim.IdentifiableType;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

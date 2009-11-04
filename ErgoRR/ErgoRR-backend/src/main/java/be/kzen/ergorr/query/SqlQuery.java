@@ -264,7 +264,7 @@ public class SqlQuery {
         return returnObj;
     }
 
-    private String getColumnName(String name) {
+    public static String getColumnName(String name) {
         String colName = name;
 
         if (name.equals("name") || name.equals("value")) {

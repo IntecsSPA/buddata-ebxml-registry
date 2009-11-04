@@ -2,17 +2,17 @@
  * Project: Buddata ebXML RegRep
  * Class: CommonProperties.java
  * Copyright (C) 2008 Yaman Ustuntas
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -92,7 +92,7 @@ public class CommonProperties {
      * Get property from common properties.
      *
      * @param key Key of property.
-     * @param defaultValue Default value for property. 
+     * @param defaultValue Default value for property.
      * @return Property.
      */
     public String get(String key, String defaultValue) {
@@ -113,7 +113,7 @@ public class CommonProperties {
         } catch (Throwable t) {
             logger.log(Level.SEVERE, "Could not parse Integer value", t);
         }
-        
+
         return i;
     }
 
@@ -131,7 +131,7 @@ public class CommonProperties {
         } catch (Throwable t) {
             logger.log(Level.SEVERE, "Could not parse Long value", t);
         }
-        
+
         return l;
     }
 
@@ -144,13 +144,13 @@ public class CommonProperties {
      */
     public boolean getBoolean(String key) {
         boolean b = false;
-        
+
         try {
             b = Boolean.valueOf(props.getProperty(key));
         } catch (Throwable t) {
             logger.log(Level.SEVERE, "Could not parse Boolean value", t);
         }
-        
+
         return b;
     }
 
@@ -164,7 +164,7 @@ public class CommonProperties {
      */
     public String[] getStringArray(String key) {
         String val = props.getProperty(key);
-        
+
         return val.split("\\|");
     }
 
@@ -178,15 +178,15 @@ public class CommonProperties {
      */
     public Integer[] getIntArray(String key) {
         String val = props.getProperty(key);
-        
+
         String[] vals = val.split("\\|");
         Integer[] arr = new Integer[vals.length];
-        
+
         for (int i = 0; i < vals.length; i++) {
             String v = vals[i];
             arr[i] = Integer.parseInt(v);
         }
-        
+
         return arr;
     }
 }

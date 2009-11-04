@@ -41,6 +41,7 @@ import be.kzen.ergorr.model.rim.ServiceBindingType;
 import be.kzen.ergorr.model.rim.ServiceType;
 import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.SpecificationLinkType;
+import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.persist.service.SqlPersistence;
@@ -102,7 +103,7 @@ public class LCManager {
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
     public void commit(RegistryObjectListType regObjList) throws ServiceException {
-        List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
+        List<IdentifiableType> idents = JAXBUtil.getExtendedObjects(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
 
@@ -164,7 +165,7 @@ public class LCManager {
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
     public List<IdentifiableType> delete(RegistryObjectListType regObjList) throws ServiceException {
-        List<IdentifiableType> idents = getIdentifiableList(regObjList.getIdentifiable());
+        List<IdentifiableType> idents = JAXBUtil.getExtendedObjects(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
         flatten(idents, flatIdents);
 
@@ -222,7 +223,7 @@ public class LCManager {
      * @param idents IdentifiableType tree.
      * @param flatIdents Flat list of IdentifiableType.
      */
-    private void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents) throws ServiceException {
+    public static void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents) {
         for (IdentifiableType ident : idents) {
 
             if (ident instanceof ObjectRefType) {
@@ -265,7 +266,7 @@ public class LCManager {
                         asso.setTargetObject(identEl.getValue().getId());
                         flatIdents.add(asso);
                     }
-                    flatten(getIdentifiableList(rp.getRegistryObjectList().getIdentifiable()), flatIdents);
+                    flatten(JAXBUtil.getExtendedObjects(rp.getRegistryObjectList().getIdentifiable()), flatIdents);
                     rp.setRegistryObjectList(null);
                 }
             }
@@ -334,22 +335,6 @@ public class LCManager {
     }
 
     /**
-     * Utility method to get list of Identifiables from JAXBElements.
-     *
-     * @param identEls JAXBElement to get Identifiables from.
-     * @return List of Identifiables.
-     */
-    private List<IdentifiableType> getIdentifiableList(List<JAXBElement<? extends IdentifiableType>> identEls) {
-        List<IdentifiableType> idents = new ArrayList<IdentifiableType>();
-
-        for (JAXBElement<? extends IdentifiableType> identEl : identEls) {
-            idents.add(identEl.getValue());
-        }
-
-        return idents;
-    }
-
-    /**
      * Get the ExtrinsicObject from the {@code flatIdents} which
      * have the object type to define slots.
      *
@@ -369,25 +354,6 @@ public class LCManager {
 
         return eos;
     }
-
-    /**
-     * Load <code>indetMap</code> with <code>idents</code>
-     * sorting them by RIM type.
-     */
-//    private void loadMap(List<IdentifiableType> idents, Map<String, List<IdentifiableType>> identMap) {
-//        for (IdentifiableType ident : idents) {
-//            String key = ident.getClass().getName();
-//
-//            List<IdentifiableType> list = identMap.get(key);
-//
-//            if (list == null) {
-//                list = new ArrayList<IdentifiableType>();
-//                identMap.put(key, list);
-//            }
-//
-//            list.add(ident);
-//        }
-//    }
     
     /**
      * Updates the slot cache if needed.
