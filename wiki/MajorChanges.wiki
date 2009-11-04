@@ -1,3 +1,7 @@
+= Since revision 355 =
+
+  * Upgraded from Metro 1.4 to Metro 1.5
+
 = Since revision 334 =
 
   * No need to set ERGO_HOME variable anymore.
