@@ -51,6 +51,8 @@
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:vendorSpecificAttributes" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:vendorSpecificValues" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:yaw" slotType="int"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:wrsLongitudeGrid" slotType="string"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:wrsLatitudeGrid" slotType="string"/>
 
         <!--rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionType" slotType="string"/>
         <rim:Slot name="urn:ogc:def:ebRIM-Slot:OGC-06-131:acquisitionStation" slotType="string"/>
