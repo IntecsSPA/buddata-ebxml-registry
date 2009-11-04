@@ -2,9 +2,8 @@
 <project name="ergorr-deploy" basedir=".">
     <property name="mave-repo" value="${user.home}/.m2/repository"/>
     <property name="jar-postgresql" value="${mave-repo}/postgresql/postgresql/8.2-504.jdbc3/postgresql-8.2-504.jdbc3.jar"/>
-    <property name="jar-webservice-api" value="${mave-repo}/javax/xml/webservices-api/1.4/webservices-api-1.4.jar"/>
-    <property name="jar-webservice-rt" value="${mave-repo}/com/sun/xml/ws/webservices-rt/1.4/webservices-rt-1.4.jar"/>
-    <property name="jar-webservice-rt" value="${mave-repo}/com/sun/xml/ws/webservices-rt/1.4/webservices-rt-1.4.jar"/>
+    <property name="jar-webservice-api" value="${mave-repo}/javax/xml/webservices-api/1.5/webservices-api-1.5.jar"/>
+    <property name="jar-webservice-rt" value="${mave-repo}/com/sun/xml/ws/webservices-rt/1.5/webservices-rt-1.5.jar"/>
     <property name="jar-activation" value="${mave-repo}/javax/activation/activation/1.1/activation-1.1.jar"/>
     <property name="ergorr-web" value="ErgoRR-web"/>
     <property name="ergorr-persistence" value="ErgoRR-persistence"/>
@@ -21,8 +20,8 @@
     </target>
 
     <target name="db-drop">
-        <taskdef name="createdb" classname="be.kzen.ergorr.deploy.ant.DropDbTask" classpathref="libs.ref" onerror="ignore"/>
-        <createdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}"/>
+        <taskdef name="dropdb" classname="be.kzen.ergorr.deploy.ant.DropDbTask" classpathref="libs.ref" onerror="ignore"/>
+        <dropdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}"/>
     </target>
 
     <target name="db-create-tables">
