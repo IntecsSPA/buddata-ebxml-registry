@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 /**
@@ -35,192 +36,163 @@ import java.nio.channels.FileChannel;
  */
 public class FileUtil {
     
-    /**
-     * Deletes a file or directory (recursive).
-     * Will continue if a deletion fails.
-     *
-     * @param f File to be deleted
-     */
-    public static void delete(File f) {
-        if (f.isDirectory()) {
-            File[] files = f.listFiles();
-            
+    public static void delete(File file) {
+        if (file == null) {
+            throw new NullPointerException("file must not be null");
+        }
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+
             for (int i = 0; i < files.length; i++) {
                 delete(files[i]);
             }
         }
-        f.delete();
+        file.delete();
     }
-    
-    /**
-     * Does what it says
-     *
-     * @param in src file
-     * @param out dest file
-     * @throws IOException guess when this one occurs :)
-     */
-    public static void copyFile(File src, File dest) throws IOException {
+
+    public static void copy(File src, File dest) throws IOException {
+
+        if (src == null) {
+            throw new NullPointerException("src must not be null");
+        }
+        if (dest == null) {
+            throw new NullPointerException("dest must not be null");
+        }
+        if (!src.exists() || !src.isFile()) {
+            throw new IllegalArgumentException("src does not exist or is not a file: " + src.getAbsolutePath());
+        }
+
+
         if (dest.isDirectory()) {
             dest = new File(dest, src.getName());
         }
-        FileChannel sourceChannel = new FileInputStream(src).getChannel();
-        FileChannel destinationChannel = new FileOutputStream(dest).getChannel();
-        sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-        sourceChannel.close();
-        destinationChannel.close();
+
+        FileChannel sourceChannel = null;
+        FileChannel destinationChannel = null;
+
+        try {
+            sourceChannel = new FileInputStream(src).getChannel();
+            destinationChannel = new FileOutputStream(dest).getChannel();
+            sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+        } finally {
+            IoUtil.close(sourceChannel);
+            IoUtil.close(destinationChannel);
+        }
     }
-    
-    /**
-     * Read a file into a byte array.
-     *
-     * @param file File to read.
-     * @throws IOException
-     * @return File content as byte array.
-     */
-    public static byte[] readFileAsByte(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-        long length = file.length();
-        
-        if (length > Integer.MAX_VALUE) {
-            throw new IOException("File too large, " + length + " bytes. (max " + Integer.MAX_VALUE + ")");
+
+    public static byte[] readAsBytes(File file) throws IOException {
+
+        if (file == null) {
+            throw new NullPointerException("file must not be null");
         }
-        
-        byte[] bytes = new byte[(int)length];
-        
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-                && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
+        if (!file.exists() || !file.isFile()) {
+            throw new IllegalArgumentException("src does not exist or is not a file: " + file.getAbsolutePath());
         }
-        
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file " + file.getName());
+
+        InputStream inStream = new FileInputStream(file);
+        long len = file.length();
+
+        try {
+            if (len > Integer.MAX_VALUE) {
+                throw new IOException("File too large, " + len + " bytes. (max " + Integer.MAX_VALUE + ")");
+            }
+
+            return IoUtil.toByteArray(inStream, (int) file.length());
+        } finally {
+            IoUtil.close(inStream);
         }
-        
-        is.close();
-        return bytes;
     }
-    
-    /**
-     * Read a file into a String.
-     *
-     * @param file File to read.
-     * @throws java.io.IOException
-     * @return File content as String.
-     */
-    public static String readFileAsString(File file) throws IOException{
-        StringBuffer fileData = new StringBuffer();
+
+    public static String readAsString(File file) throws IOException {
+
+        if (file == null) {
+            throw new NullPointerException("file must not be null");
+        }
+        if (!file.isFile()) {
+            throw new IllegalArgumentException("src does not exist or is not a file: " + file.getAbsolutePath());
+        }
+
+        StringBuilder fileData = new StringBuilder();
         BufferedReader reader = new BufferedReader(new FileReader(file));
         char[] buf = new char[1024];
         int count = 0;
-        
-        while((count = reader.read(buf)) > 0){
-            String readData = String.valueOf(buf, 0, count);
-            fileData.append(readData);
-            buf = new char[1024];
-        }
-        reader.close();
-        return fileData.toString();
-    }
-    
-    public static String streamToString(InputStream isStream) throws IOException {
-        StringBuffer fileData = new StringBuffer();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(isStream));
-        char[] buf = new char[1024];
-        int count = 0;
-        
-        while((count = reader.read(buf)) > 0){
-            String readData = String.valueOf(buf, 0, count);
-            fileData.append(readData);
-            buf = new char[1024];
-        }
-        reader.close();
-        return fileData.toString();
-    }
-    
-    /**
-     * Writes String data to the given path (UTF-8).
-     *
-     * @param file File path to save the data.
-     * @param data String data to save.
-     * @throws java.io.FileNotFoundException
-     * @throws java.io.IOException
-     */
-    public static void writeFile(File file, String data) throws FileNotFoundException, IOException {
-        writeFile(file, data.getBytes("UTF-8"));
-    }
-    
-    /**
-     * Writes data byte array to the given path.
-     *
-     * @param file File path to save the data.
-     * @param data Data to write in the file.
-     * @throws java.io.FileNotFoundException
-     * @throws java.io.IOException
-     */
-    public static void writeFile(File file, byte[] data) throws FileNotFoundException, IOException {
-        writeFile(file, new ByteArrayInputStream(data));
-    }
-    
-    /**
-     * Write data from an <code>InputStream</code> to file.
-     *
-     * @param file File to write to.
-     * @param is Stream to write.
-     * @throws java.io.IOException
-     */
-    public static void writeFile(File file, InputStream is) throws IOException {
-        FileOutputStream fos = new FileOutputStream(file);
-        byte[] buf = new byte[2048];
-        int count = 0;
-        while ((count = is.read(buf)) > 0) {
-            fos.write(buf, 0, count);
-        }
-        fos.flush();
-        fos.close();
-        is.close();
-    }
-    
-    /**
-     * Gets the files extension.
-     * 
-     * @param file File to get extension.
-     * @return Extension of file.
-     * @throws java.io.FileNotFoundException
-     */
-    public static String getExtension(File file) throws FileNotFoundException {
-        
-        if (file.isFile()) {
-            int idx = file.getName().lastIndexOf(".");
-            
-            if (idx > 0 && idx+1 < file.getName().length()) {
-                return file.getName().substring(idx+1);
-            } else {
-                return "";
-            }
-        } else {
-            throw new FileNotFoundException("Could not find " + file.getAbsolutePath());
-        }
-    }
-    /**
-     * Get a new temporary file new. Appends "(-count-)" to the end of the file.
-     * For example: myFile.txt(0), if it exist then myFile.txt(1), ...
-     * 
-     * @param originalFile File to create temporary file for.
-     * @return New temporary file.
-     */
-    public static File getNewTempFile(File originalFile) {
-        int count = 0;
-        String ext = "";
-        File tmpFile;
 
-        do {
-            ext = new StringBuilder().append("(").append(count).append(")").toString();
-            tmpFile = new File(originalFile.getAbsolutePath() + ext);
-            count++;
-        } while (tmpFile.exists());
-        
-        return tmpFile;
+        try {
+            while ((count = reader.read(buf)) > 0) {
+                String readData = String.valueOf(buf, 0, count);
+                fileData.append(readData);
+                buf = new char[1024];
+            }
+        } finally {
+            IoUtil.close(reader);
+        }
+
+        return fileData.toString();
+    }
+
+    public static void write(File file, String data) throws IOException {
+
+        if (file == null) {
+            throw new NullPointerException("file must not be null");
+        }
+        if (!file.exists() || !file.isFile()) {
+            throw new IllegalArgumentException("src does not exist or is not a file: " + file.getAbsolutePath());
+        }
+        if (data == null) {
+            data = "";
+        }
+
+        write(file, data.getBytes(IoUtil.ENCODING));
+    }
+
+    public static void write(File file, byte[] data) throws IOException {
+
+        if (file == null) {
+            throw new NullPointerException("file must not be null");
+        }
+        if (!file.exists() || !file.isFile()) {
+            throw new IllegalArgumentException("src does not exist or is not a file: " + file.getAbsolutePath());
+        }
+        if (data == null) {
+            data = new byte[0];
+        }
+
+        InputStream input = new ByteArrayInputStream(data);
+        OutputStream output = new FileOutputStream(file);
+
+        try {
+            IoUtil.copy(input, output);
+        } finally {
+            IoUtil.close(input);
+            IoUtil.close(output);
+        }
+    }
+
+    public static void contentEquals(File file1, File file2) throws IOException {
+        if (file1 == null) {
+            throw new NullPointerException("file1 must not be null");
+        }
+        if (file2 == null) {
+            throw new NullPointerException("file2 must not be null");
+        }
+        if (!file1.isFile()) {
+            throw new IllegalArgumentException("file1 does not exist or is not a file: " + file1.getAbsolutePath());
+        }
+        if (!file2.isFile()) {
+            throw new IllegalArgumentException("file2 does not exist or is not a file: " + file2.getAbsolutePath());
+        }
+
+        InputStream input1 = null;
+        InputStream input2 = null;
+
+        try {
+            input1 = new FileInputStream(file1);
+            input2 = new FileInputStream(file2);
+            IoUtil.contentEquals(input1, input2);
+        } finally {
+            IoUtil.close(input1);
+            IoUtil.close(input2);
+        }
     }
 }

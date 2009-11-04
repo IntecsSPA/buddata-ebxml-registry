@@ -28,16 +28,6 @@ import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
  */
 public class CswSoapClient implements CswClient {
     private CswClientPortType service;
-
-    /**
-     * Constructor
-     * Uses the property 'service.url' defined in <code>CommonProperties</code>.
-     * 
-     * @throws java.net.MalformedURLException
-     */
-    public CswSoapClient() throws MalformedURLException {
-        this(new URL(CommonProperties.getInstance().get("service.url")));
-    }
     
     /**
      * Constructor

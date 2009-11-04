@@ -410,7 +410,8 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                         throw new QueryException(ex);
                     }
 
-                    sqlQuery.append(xpath1.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpath1.getAttributeName()).append(SyntaxElements.SPACE).append(comparisonOperator);
+                    sqlQuery.append(xpath1.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT)
+                            .append(SqlQuery.getColumnName(xpath1.getAttributeName())).append(SyntaxElements.SPACE).append(comparisonOperator);
 
                     if (valObj2 instanceof PropertyNameType) {
                         PropertyNameType prop2 = (PropertyNameType) valObj2;
@@ -518,7 +519,8 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
                     XPathNode xpNode = xpathConv.process();
 
-                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
+                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT)
+                            .append(SqlQuery.getColumnName(xpNode.getAttributeName()));
                     internalSlotType = xpNode.getQueryAttrType();
                 } else {
                     throw new QueryException("PropertyName does not have a value");

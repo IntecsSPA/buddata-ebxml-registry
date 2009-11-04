@@ -29,34 +29,34 @@
         <ows:AccessConstraints>NONE</ows:AccessConstraints>
     </ows:ServiceIdentification>
     <ows:ServiceProvider>
-        <ows:ProviderName>kZen - 4C Technologies</ows:ProviderName>
-        <ows:ProviderSite xlink:type="simple" xlink:title="Corporate web site" xlink:href="http://www.foresee.be"/>
+        <ows:ProviderName>$serviceProvider.name$</ows:ProviderName>
+        <ows:ProviderSite xlink:type="simple" xlink:title="Corporate web site" xlink:href="$serviceProvider.site$"/>
         <ows:ServiceContact>
-            <ows:IndividualName>Yaman Ustuntas</ows:IndividualName>
-            <ows:PositionName>Catalogue support</ows:PositionName>
+            <ows:IndividualName>$serviceProvider.contact.name$</ows:IndividualName>
+            <ows:PositionName>$serviceProvider.contact.position$</ows:PositionName>
             <ows:ContactInfo>
                 <ows:Phone>
-                    <ows:Voice>+32</ows:Voice>
+                    <ows:Voice>$serviceProvider.contact.phone$</ows:Voice>
                 </ows:Phone>
                 <ows:Address>
-                    <ows:DeliveryPoint>Business Park King Square, Veldkant 35d</ows:DeliveryPoint>
-                    <ows:City>Antwerp</ows:City>
-                    <ows:AdministrativeArea>Kontich</ows:AdministrativeArea>
-                    <ows:PostalCode>B-2550</ows:PostalCode>
-                    <ows:Country>Belgium</ows:Country>
-                    <ows:ElectronicMailAddress>yaman.ustuntas@kzen.be</ows:ElectronicMailAddress>
+                    <ows:DeliveryPoint>$serviceProvider.contact.address.deliveryPoint$</ows:DeliveryPoint>
+                    <ows:City>$serviceProvider.contact.address.city$</ows:City>
+                    <ows:AdministrativeArea>$serviceProvider.contact.address.administrativeArea$</ows:AdministrativeArea>
+                    <ows:PostalCode>$serviceProvider.contact.address.postalCode$</ows:PostalCode>
+                    <ows:Country>$serviceProvider.contact.address.country$</ows:Country>
+                    <ows:ElectronicMailAddress>$serviceProvider.contact.address.electronicMailAddress$</ows:ElectronicMailAddress>
                 </ows:Address>
-                <ows:HoursOfService>09:00-18:00 CEST</ows:HoursOfService>
-                <ows:ContactInstructions>Please use email for all inquiries.</ows:ContactInstructions>
+                <ows:HoursOfService>$serviceProvider.contact.hoursOfService$</ows:HoursOfService>
+                <ows:ContactInstructions>$serviceProvider.contact.contactInstructions$</ows:ContactInstructions>
             </ows:ContactInfo>
-            <ows:Role>pointOfContact</ows:Role>
+            <ows:Role>$serviceProvider.role$</ows:Role>
         </ows:ServiceContact>
     </ows:ServiceProvider>
     <ows:OperationsMetadata>
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
+                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="sections">
@@ -70,7 +70,7 @@
         <ows:Operation name="GetRecords">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
+                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="outputFormat">
@@ -106,12 +106,14 @@
                 <ows:Value>FILTER</ows:Value>
             </ows:Parameter>
             <!--ows:Parameter name="constraint"/-->
-            <!--ows:Parameter name="SortBy"/-->
+            <ows:Parameter name="SortBy">
+                <ows:Value/>
+            </ows:Parameter>
         </ows:Operation>
         <ows:Operation name="GetRecordById">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
+                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="Id">
@@ -134,7 +136,7 @@
         <ows:Operation name="DescribeRecord">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
+                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="TypeNames">
@@ -151,8 +153,8 @@
         <ows:Operation name="GetRepositoryItem">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="http://ebrr.kzenlabs.com/ergorr/repo"/>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/repo"/>
+                    <ows:Get xlink:href="$deploy.url$/repo"/>
+                    <ows:Post xlink:href="$deploy.url$/repo"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="id">
@@ -162,7 +164,7 @@
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"/>
+                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="resourceType">
@@ -174,10 +176,10 @@
             </ows:Parameter>
         </ows:Operation>
         <ows:Parameter name="service">
-                <ows:Value>urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM</ows:Value>
+            <ows:Value>urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM</ows:Value>
         </ows:Parameter>
         <ows:Parameter name="version">
-                <ows:Value>2.0.2</ows:Value>
+            <ows:Value>2.0.2</ows:Value>
         </ows:Parameter>
         <ows:ExtendedCapabilities>
             <rim:Slot name="http://earth.esa.int/eop/parentIdentifier" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">

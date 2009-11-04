@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.service.validator;
 
+import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.persist.service.SqlPersistence;
@@ -39,6 +40,15 @@ public class AssociationTypeV extends RegistryObjectTypeV<AssociationType> {
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();
+
+        if (!CommonFunctions.stringHasData(rimObject.getSourceObject())) {
+            throw new InvalidReferenceException("Association with ID " + rimObject.getId() + " is missing sourceObject");
+        }
+
+        if (!CommonFunctions.stringHasData(rimObject.getTargetObject())) {
+            throw new InvalidReferenceException("Association with ID " + rimObject.getId() + " is missing targetObject");
+        }
+
         boolean sourceObjValid = idExistsInRequest(rimObject.getSourceObject());
         boolean targetObjValid = idExistsInRequest(rimObject.getTargetObject());
 

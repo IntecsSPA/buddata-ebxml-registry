@@ -21,6 +21,7 @@ package be.kzen.ergorr.persist.service;
 import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.commons.RequestContext;
+import be.kzen.ergorr.commons.StopWatch;
 import be.kzen.ergorr.persist.dao.GenericObjectDAO;
 import be.kzen.ergorr.persist.dao.IdentifiableTypeDAO;
 import be.kzen.ergorr.model.rim.IdentifiableType;
@@ -102,14 +103,14 @@ public class SqlPersistence {
                 }
             }
 
-            long startTime = System.currentTimeMillis();
+            StopWatch stopWatch = new StopWatch();
             result = stmt.executeQuery();
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.INFO, "Query exec time: " + (System.currentTimeMillis() - startTime));
+                logger.log(Level.INFO, "Query exec time: " + stopWatch.getDurationAsMillis());
             }
 
 
-            startTime = System.currentTimeMillis();
+            stopWatch.start();
             int responseCount = 0;
 
             try {
@@ -130,7 +131,7 @@ public class SqlPersistence {
 
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.INFO, "Loaded " + responseCount + " objects");
-                logger.log(Level.INFO, "Load XML types time: " + (System.currentTimeMillis() - startTime));
+                logger.log(Level.INFO, "Load XML types time: " + stopWatch.getDurationAsMillis());
             }
 
         } finally {
@@ -158,7 +159,7 @@ public class SqlPersistence {
         Connection conn = getConnection();
 
         try {
-            long startTime = System.currentTimeMillis();
+            StopWatch stopWatch = new StopWatch();
             PreparedStatement stmt = conn.prepareStatement(query);
 
             if (parameters != null) {
@@ -174,7 +175,7 @@ public class SqlPersistence {
                 count = result.getLong(1);
             }
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.INFO, "Count query exec time: " + (System.currentTimeMillis() - startTime));
+                logger.log(Level.INFO, "Count query exec time: " + stopWatch.getDurationAsMillis());
             }
             return count;
         } finally {
@@ -540,14 +541,14 @@ public class SqlPersistence {
 
         if (connParams == null) {
             if (logger.isLoggable(Level.FINE)) {
-                logger.info("No custom DB connection params found! Using default.");
+                logger.fine("No custom DB connection params found! Using default.");
             }
 
             connParams = DbConnectionParams.getDefaultInstance();
         }
 
         if (logger.isLoggable(Level.FINE)) {
-            logger.info("Connecting to: " + connParams.toString());
+            logger.fine("Connecting to: " + connParams.toString());
         }
 
         return DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
@@ -563,7 +564,7 @@ public class SqlPersistence {
             loaded = true;
         } catch (Exception ex) {
             if (logger.isLoggable(Level.INFO)) {
-                logger.log(Level.INFO, "Connection pool DateSource not provided");
+                logger.log(Level.INFO, "Connection pool DataSource not provided");
             }
         }
 

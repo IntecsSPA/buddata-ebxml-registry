@@ -1,5 +1,6 @@
 
 -- =================================================================================== TABLE
+DROP TABLE IF EXISTS t_property CASCADE;
 DROP TABLE IF EXISTS t_association CASCADE;
 DROP TABLE IF EXISTS t_auditableevent CASCADE;
 DROP TABLE IF EXISTS t_affectedobject CASCADE;
@@ -33,6 +34,11 @@ DROP TABLE IF EXISTS t_telephonenumber CASCADE;
 DROP TABLE IF EXISTS t_user CASCADE;
 DROP TABLE IF EXISTS t_person CASCADE;
 
+CREATE TABLE t_property (
+  key_                     VARCHAR(256) NOT NULL PRIMARY KEY,
+  value_                   VARCHAR(4096),
+  editable                 BOOLEAN NOT NULL DEFAULT false
+);
 
 CREATE TABLE t_association (
 --Identifiable Attributes
