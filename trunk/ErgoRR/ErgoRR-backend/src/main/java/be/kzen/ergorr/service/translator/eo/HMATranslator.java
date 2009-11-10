@@ -18,6 +18,7 @@
  */
 package be.kzen.ergorr.service.translator.eo;
 
+import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.service.translator.*;
 import be.kzen.ergorr.model.eo.eop.AcquisitionType;
@@ -235,7 +236,19 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return regObjList;
     }
 
-    protected void validateParentIdentifier(String parentIdentifier) throws TranslationException {
+    protected boolean isValidParentIdentifier(String parentIdentifier) throws TranslationException {
+        boolean valid = false;
+        parentIdentifier = parentIdentifier.toLowerCase();
+        String[] parentIdentifiers = CommonProperties.getInstance().getStringArray("parentIdentifiers");
+
+        for (String pi : parentIdentifiers) {
+            if (pi.toLowerCase().equals(parentIdentifier)) {
+                valid = true;
+                break;
+            }
+        }
+
+        return valid;
     }
 
     protected ExternalIdentifierType translateExternalIdentifier() {
@@ -253,7 +266,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         e.setId(eoId);
         e.setLid(eoId);
 
-        e.setMimeType("text/xml");
+        e.setMimeType(MimeTypeConstants.TEXT_XML);
         e.setObjectType(EOPConstants.E_PRODUCT);
 
         MetaDataPropertyType metadata = eo.getMetaDataProperty().get(0);
@@ -261,14 +274,20 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         JAXBElement el = (JAXBElement) metadata.getAny();
         EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) el.getValue();
 
+        if (eoMetadata.isSetParentIdentifier()) {
+            if (!isValidParentIdentifier(eoMetadata.getParentIdentifier())) {
+                throw new TranslationException("parentIdentifier " + eoMetadata.getParentIdentifier() + " is not valid");
+            }
+            
+            SlotType slotParentIdent = RIMUtil.createSlot(EOPConstants.S_PARENT_IDENTIFIER, EOPConstants.T_STRING, eoMetadata.getParentIdentifier());
+            e.getSlot().add(slotParentIdent);
+        } else {
+            throw new TranslationException("parentIdentifier NULL is not valid");
+        }
+
         if (eoMetadata.isSetDoi()) {
             SlotType slotDoi = RIMUtil.createSlot(EOPConstants.S_DOI, EOPConstants.T_STRING, eoMetadata.getDoi());
             e.getSlot().add(slotDoi);
-        }
-
-        if (eoMetadata.isSetParentIdentifier()) {
-            SlotType slotParentIdent = RIMUtil.createSlot(EOPConstants.S_PARENT_IDENTIFIER, EOPConstants.T_STRING, eoMetadata.getParentIdentifier());
-            e.getSlot().add(slotParentIdent);
         }
 
         if (eoMetadata.isSetProductType()) {

@@ -122,6 +122,11 @@ public class JAXBUtil {
         return um.unmarshal(xml);
     }
 
+    public Object unmarshall(Node node) throws JAXBException {
+        Unmarshaller um = jaxbContext.createUnmarshaller();
+        return um.unmarshal(node);
+    }
+
     public static <T> List<T> getExtendedObjects(List<JAXBElement<? extends T>> objEls) {
         List<T> list = new ArrayList<T>();
 
