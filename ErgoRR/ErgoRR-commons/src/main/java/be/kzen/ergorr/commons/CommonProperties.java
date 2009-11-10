@@ -165,7 +165,7 @@ public class CommonProperties {
     public String[] getStringArray(String key) {
         String val = props.getProperty(key);
 
-        return val.split("\\|");
+        return (val != null) ? val.split("\\|") : new String[0];
     }
 
     /**

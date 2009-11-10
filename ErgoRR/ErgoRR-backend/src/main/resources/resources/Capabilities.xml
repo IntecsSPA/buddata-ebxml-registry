@@ -9,8 +9,10 @@
  xmlns:gml="http://www.opengis.net/gml"
  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
  version="1.0.0">
-
 <!-- xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 /Users/yamanustuntas/workspace/projects/ERGO/buddata-ebxml-registry/ErgoRR/ErgoRR-web/src/main/webapp/WEB-INF/wsdl/xsd/wrs/1.0.0/wrs.xsd" -->
+
+    <!-- ServiceIdentification -->
+
     <ows:ServiceIdentification>
         <ows:Title>EarthObservation ebRIM Catalogue</ows:Title>
         <ows:Abstract>
@@ -28,6 +30,9 @@
         <ows:Fees>NONE</ows:Fees>
         <ows:AccessConstraints>NONE</ows:AccessConstraints>
     </ows:ServiceIdentification>
+
+    <!-- ServiceProvider -->
+
     <ows:ServiceProvider>
         <ows:ProviderName>$serviceProvider.name$</ows:ProviderName>
         <ows:ProviderSite xlink:type="simple" xlink:title="Corporate web site" xlink:href="$serviceProvider.site$"/>
@@ -53,10 +58,27 @@
         </ows:ServiceContact>
     </ows:ServiceProvider>
     <ows:OperationsMetadata>
+
+        <!-- GetCapabilities -->
+
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
+                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="sections">
@@ -67,10 +89,27 @@
                 <ows:Value>ServiceProperties</ows:Value>
             </ows:Parameter>
         </ows:Operation>
+
+        <!-- GetRecords -->
+
         <ows:Operation name="GetRecords">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
+                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="outputFormat">
@@ -105,15 +144,31 @@
             <ows:Parameter name="CONSTRAINTLANGUAGE">
                 <ows:Value>FILTER</ows:Value>
             </ows:Parameter>
-            <!--ows:Parameter name="constraint"/-->
             <ows:Parameter name="SortBy">
                 <ows:Value/>
             </ows:Parameter>
         </ows:Operation>
+
+        <!-- GetRecordById -->
+
         <ows:Operation name="GetRecordById">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
+                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="Id">
@@ -125,7 +180,6 @@
             </ows:Parameter>
             <ows:Parameter name="outputSchema">
                 <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
-                    <!--<ows:Value>http://www.opengis.net/cat/csw</ows:Value>-->
             </ows:Parameter>
             <ows:Parameter name="ElementSetName">
                 <ows:Value>brief</ows:Value>
@@ -133,10 +187,27 @@
                 <ows:Value>full</ows:Value>
             </ows:Parameter>
         </ows:Operation>
+
+        <!-- DescribeRecord -->
+
         <ows:Operation name="DescribeRecord">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
+                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="TypeNames">
@@ -150,21 +221,45 @@
                 <ows:Value>XMLSCHEMA</ows:Value>
             </ows:Parameter>
         </ows:Operation>
+
+        <!-- GetRepositoryItem -->
+
         <ows:Operation name="GetRepositoryItem">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="$deploy.url$/repo"/>
-                    <ows:Post xlink:href="$deploy.url$/repo"/>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="id">
                 <ows:Value/>
             </ows:Parameter>
         </ows:Operation>
+
+        <!-- Harvest -->
+
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="$deploy.url$/webservice?wsdl"/>
+                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
             <ows:Parameter name="resourceType">
@@ -175,6 +270,30 @@
                 <ows:Value>rim:RegistryObjectList</ows:Value>
             </ows:Parameter>
         </ows:Operation>
+
+        <!-- Transaction -->
+
+        <ows:Operation name="Transaction">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>XML</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
         <ows:Parameter name="service">
             <ows:Value>urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM</ows:Value>
         </ows:Parameter>
@@ -182,14 +301,12 @@
             <ows:Value>2.0.2</ows:Value>
         </ows:Parameter>
         <ows:ExtendedCapabilities>
-            <rim:Slot name="http://earth.esa.int/eop/parentIdentifier" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
-                <rim:ValueList>
-                    <rim:Value>urn:ogc:def:EOP:ESA:EECF.ENVISAT_ASA_APx_xS</rim:Value>
-                    <rim:Value>urn:ogc:def:EOP:ESA.EECF.ENVISAT_RA2_MWx_2C</rim:Value>
-                </rim:ValueList>
-            </rim:Slot>
+            <!-- DO NOT EDIT: replaced at runtime -->
         </ows:ExtendedCapabilities>
     </ows:OperationsMetadata>
+
+    <!-- Filter_Capabilities -->
+
     <ogc:Filter_Capabilities>
         <ogc:Spatial_Capabilities>
             <ogc:GeometryOperands>
@@ -225,39 +342,12 @@
                 <ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
             </ogc:ComparisonOperators>
             <ogc:ArithmeticOperators>
-                <ogc:SimpleArithmetic />
+                <ogc:SimpleArithmetic/>
             </ogc:ArithmeticOperators>
         </ogc:Scalar_Capabilities>
         <ogc:Id_Capabilities>
             <ogc:EID/>
         </ogc:Id_Capabilities>
     </ogc:Filter_Capabilities>
-    <!--wrs:ServiceProperties>
-        <wrs:property name="http://www.opengis.net/cat/wrs/properties/extension-packages">
-            <wrs:value>urn:ogc:specification:csw-ebrim:ext-pkg:Basic</wrs:value>
-            <wrs:value>urn:x-ogc:specification:csw-ebrim:package:EOProducts</wrs:value>
-        </wrs:property>
-        <wrs:property name="http://www.opengis.net/cat/wrs/properties/harvest-protocols">
-            <wrs:value>http</wrs:value>
-        </wrs:property>
-        <wrs:property name="http://www.opengis.net/cat/wrs/properties/query-languages">
-            <wrs:value>http://www.opengis.net/ogc</wrs:value>
-            <wrs:value>http://www.w3.org/TR/xpath</wrs:value>
-        </wrs:property>
-        <wrs:property name="http://www.opengis.net/cat/wrs/properties/mime-types">
-            <wrs:value>application/xml</wrs:value>
-            <wrs:value>text/xml</wrs:value>
-        </wrs:property>
-        <wrs:property name="http://www.opengis.net/cat/wrs/properties/temporal-ref-systems">
-            <wrs:value>urn:ogc:def:trs:ISO-8601:2000</wrs:value>
-        </wrs:property>
-        <wrs:property name="http://www.opengis.net/cat/wrs/properties/spatial-ref-systems">
-            <wrs:value>urn:ogc:def:crs:EPSG:4326</wrs:value>
-        </wrs:property>
-    </wrs:ServiceProperties>
-    <wrs:WSDL-services xlink:type="simple"
-  xlink:href="http://ebrr.kzenlabs.com/ergorr/webservice?wsdl"
-  xlink:title="Available service endpoints WSDL"
-  xlink:role="http://www.w3.org/2005/08/wsdl" /-->
 </wrs:Capabilities>
 

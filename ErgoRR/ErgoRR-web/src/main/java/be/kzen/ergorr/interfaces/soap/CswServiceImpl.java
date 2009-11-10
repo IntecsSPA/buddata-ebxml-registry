@@ -48,17 +48,20 @@ import be.kzen.ergorr.persist.InternalSlotTypes;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
 import be.kzen.ergorr.model.ows.ExceptionReport;
 import be.kzen.ergorr.model.ows.ExceptionType;
+import be.kzen.ergorr.service.CapabilitiesReader;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 import org.w3c.dom.Document;
 
 /**
@@ -82,9 +85,11 @@ public class CswServiceImpl implements CswPortType {
      */
     public CapabilitiesType cswGetCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
+        MessageContext mc = wsContext.getMessageContext();
+        HttpServletRequest request = (HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
         
         try {
-            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("/resources/Capabilities.xml"));
+            JAXBElement capabilitiesEl = new CapabilitiesReader().getCapabilities(request.getRequestURL().toString());
             logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {

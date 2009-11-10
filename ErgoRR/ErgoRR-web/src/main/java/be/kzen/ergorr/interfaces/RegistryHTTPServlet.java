@@ -48,6 +48,7 @@ import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import be.kzen.ergorr.query.QueryManager;
+import be.kzen.ergorr.service.CapabilitiesReader;
 import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.RepositoryManager;
 import be.kzen.ergorr.service.TransactionService;
@@ -136,7 +137,7 @@ public class RegistryHTTPServlet extends HttpServlet {
 
         try {
             JAXBElement requestElement = (JAXBElement) unmarshalledRequestObj;
-            JAXBElement responseEl = process(requestElement.getValue());
+            JAXBElement responseEl = process(requestElement.getValue(), request);
             response.setContentType(MimeTypeConstants.APPLICATION_XML);
             JAXBUtil.getInstance().marshall(responseEl, response.getOutputStream());
             response.setStatus(response.SC_OK);
@@ -152,11 +153,11 @@ public class RegistryHTTPServlet extends HttpServlet {
         }
     }
 
-    private JAXBElement process(Object requestObj) throws Exception {
+    private JAXBElement process(Object requestObj, HttpServletRequest request) throws Exception {
         JAXBElement retValue;
 
         if (requestObj instanceof GetCapabilitiesType) {
-            retValue = processGetCapabilities((GetCapabilitiesType) requestObj);
+            retValue = processGetCapabilities((GetCapabilitiesType) requestObj, request.getRequestURL().toString());
         } else if (requestObj instanceof GetDomainType) {
             retValue = processGetDomain((GetDomainType) requestObj);
         } else if (requestObj instanceof GetRecordsType) {
@@ -219,10 +220,10 @@ public class RegistryHTTPServlet extends HttpServlet {
         return new ServiceExceptionReport(ex.getMessage(), exRep, ex);
     }
 
-    private JAXBElement processGetCapabilities(GetCapabilitiesType getCapabilitiesType) throws ServiceExceptionReport {
+    private JAXBElement processGetCapabilities(GetCapabilitiesType getCapabilitiesType, String requestUrl) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         try {
-            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("/resources/Capabilities.xml"));
+            JAXBElement capabilitiesEl = new CapabilitiesReader().getCapabilities(requestUrl);
             logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
             return capabilitiesEl;
         } catch (JAXBException ex) {
@@ -299,7 +300,7 @@ public class RegistryHTTPServlet extends HttpServlet {
             throw new UnsupportedOperationException("Not yet implemented");
         }
 
-        JAXBElement retValue = process(methodObject);
+        JAXBElement retValue = process(methodObject, request);
         response.setContentType(MimeTypeConstants.APPLICATION_XML);
         JAXBUtil.getInstance().marshall(retValue, response.getOutputStream());
         response.setStatus(response.SC_OK);
