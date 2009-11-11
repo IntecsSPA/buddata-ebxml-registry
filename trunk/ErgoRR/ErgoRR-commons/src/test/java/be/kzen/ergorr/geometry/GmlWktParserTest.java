@@ -30,6 +30,15 @@ public class GmlWktParserTest {
     }
 
     @Test
+    public void testPointScientific() throws Exception {
+        GmlWktParser parser = new GmlWktParser("POINT(6.1E5 6.1E5)");
+        PointType p = ((JAXBElement<PointType>) parser.parse()).getValue();
+
+        assertTrue(p.getPos().getValue().get(0) == 6.1E5);
+        assertTrue(p.getPos().getValue().get(1) == 6.1E5);
+    }
+
+    @Test
     public void testPointWithSrs() throws Exception {
         GmlWktParser parser = new GmlWktParser("POINT(1.0 2.0)TEST:123");
         PointType p = ((JAXBElement<PointType>) parser.parse()).getValue();
@@ -84,5 +93,5 @@ public class GmlWktParserTest {
         assertTrue(pos.getValue().get(3) == 2.0);
         assertTrue(pos.getValue().get(4) == 4.0);
         assertTrue(pos.getValue().get(5) == 4.0);
-    }    
+    }
 }
