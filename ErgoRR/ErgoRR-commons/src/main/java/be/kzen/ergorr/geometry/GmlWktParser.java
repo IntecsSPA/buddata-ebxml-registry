@@ -30,6 +30,7 @@ import be.kzen.ergorr.model.util.OFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.xml.bind.JAXBElement;
 
 /**
  *
@@ -53,8 +54,8 @@ public class GmlWktParser {
         srs = null;
     }
 
-    public Object parse() {
-        Object geometry = null;
+    public JAXBElement parse() {
+        JAXBElement geometry = null;
         int openBrIdx = openBrIdx();
         int closeBrIdx = closeBrIdx();
         int coordinatesLen = wkt.length - ((wkt.length - closeBrIdx) + openBrIdx) - 1;
@@ -211,9 +212,12 @@ public class GmlWktParser {
 
         for (int i = 0; i < coordinates.length; i++) {
             char c = coordinates[i];
-            if (c == SP || c == CM || (i + 1) == coordinates.length) {
+
+            if (c == SP || c == CM) {
                 xys.add(Double.valueOf(String.valueOf(coordinates, lastIdx, i - lastIdx)));
                 lastIdx = i + 1;
+            } else if ((i+1) >= coordinates.length) {
+                xys.add(Double.valueOf(String.valueOf(coordinates, lastIdx, i - lastIdx + 1)));
             }
         }
 
