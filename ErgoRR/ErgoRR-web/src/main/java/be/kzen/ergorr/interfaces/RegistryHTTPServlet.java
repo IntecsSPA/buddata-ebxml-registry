@@ -157,7 +157,8 @@ public class RegistryHTTPServlet extends HttpServlet {
         JAXBElement retValue;
 
         if (requestObj instanceof GetCapabilitiesType) {
-            retValue = processGetCapabilities((GetCapabilitiesType) requestObj, request.getRequestURL().toString());
+            String servletUrl = request.getRequestURL().substring(0, (request.getRequestURL().length() - request.getServletPath().length()));
+            retValue = processGetCapabilities((GetCapabilitiesType) requestObj, servletUrl);
         } else if (requestObj instanceof GetDomainType) {
             retValue = processGetDomain((GetDomainType) requestObj);
         } else if (requestObj instanceof GetRecordsType) {

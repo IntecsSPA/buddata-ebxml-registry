@@ -236,21 +236,6 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return regObjList;
     }
 
-    protected boolean isValidParentIdentifier(String parentIdentifier) throws TranslationException {
-        boolean valid = false;
-        parentIdentifier = parentIdentifier.toLowerCase();
-        String[] parentIdentifiers = CommonProperties.getInstance().getStringArray("parentIdentifiers");
-
-        for (String pi : parentIdentifiers) {
-            if (pi.toLowerCase().equals(parentIdentifier)) {
-                valid = true;
-                break;
-            }
-        }
-
-        return valid;
-    }
-
     protected ExternalIdentifierType translateExternalIdentifier() {
         MetaDataPropertyType metadata = eo.getMetaDataProperty().get(0);
         JAXBElement el = (JAXBElement) metadata.getAny();
@@ -275,10 +260,6 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         EarthObservationMetaDataType eoMetadata = (EarthObservationMetaDataType) el.getValue();
 
         if (eoMetadata.isSetParentIdentifier()) {
-            if (!isValidParentIdentifier(eoMetadata.getParentIdentifier())) {
-                throw new TranslationException("parentIdentifier " + eoMetadata.getParentIdentifier() + " is not valid");
-            }
-            
             SlotType slotParentIdent = RIMUtil.createSlot(EOPConstants.S_PARENT_IDENTIFIER, EOPConstants.T_STRING, eoMetadata.getParentIdentifier());
             e.getSlot().add(slotParentIdent);
         } else {

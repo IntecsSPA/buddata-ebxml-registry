@@ -1,4 +1,3 @@
-
 package be.kzen.ergorr.interfaces.soap;
 
 import be.kzen.ergorr.commons.CommonProperties;
@@ -38,23 +37,28 @@ import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.SchemaComponentType;
 import be.kzen.ergorr.model.ows.ExceptionReport;
 import be.kzen.ergorr.model.ows.ExceptionType;
+import be.kzen.ergorr.service.CapabilitiesReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
-
 
 /**
  *
  * @author Yaman Ustuntas
  */
 public class CswBackendClient implements CswClient {
+
     private static Logger logger = Logger.getLogger(CswBackendClient.class.getName());
     private InternalSlotTypes slotTypes;
     private DbConnectionParams dbConnParams;
-    
-    public CswBackendClient(DbConnectionParams dbConnParams) {
+
+    public CswBackendClient(DbConnectionParams dbConnParams, String serviceUrl) {
         this.dbConnParams = dbConnParams;
         init();
+    }
+
+    public CswBackendClient(DbConnectionParams dbConnParams) {
+        this(dbConnParams, "");
     }
 
     /**
@@ -62,8 +66,8 @@ public class CswBackendClient implements CswClient {
      */
     public CapabilitiesType getCapabilities(GetCapabilitiesType getCapabilitiesReq) throws ServiceExceptionReport {
         try {
-            JAXBElement capabilitiesEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("/resources/Capabilities.xml"));
-            return (CapabilitiesType) capabilitiesEl.getValue();
+            CapabilitiesReader capReader = new CapabilitiesReader(newRequestContext());
+            return capReader.getCapabilities("").getValue();
         } catch (JAXBException ex) {
             throw new ServiceExceptionReport("Could not load capabilities document from file.", ex);
         }
@@ -73,8 +77,7 @@ public class CswBackendClient implements CswClient {
      * {@inheritDoc}
      */
     public GetRecordsResponseType getRecords(GetRecordsType getRecordsReq) throws ServiceExceptionReport {
-        RequestContext requestContext = new RequestContext();
-        requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        RequestContext requestContext = newRequestContext();
         requestContext.setRequest(getRecordsReq);
 
         QueryManager qm = new QueryManager(requestContext);
@@ -90,8 +93,7 @@ public class CswBackendClient implements CswClient {
      * {@inheritDoc}
      */
     public GetRecordByIdResponseType getRecordById(GetRecordByIdType getRecordByIdReq) throws ServiceExceptionReport {
-        RequestContext requestContext = new RequestContext();
-        requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        RequestContext requestContext = newRequestContext();
         requestContext.setRequest(getRecordByIdReq);
         GetRecordByIdResponseType response = new GetRecordByIdResponseType();
 
@@ -116,8 +118,7 @@ public class CswBackendClient implements CswClient {
      * {@inheritDoc}
      */
     public HarvestResponseType harvest(HarvestType body) throws ServiceExceptionReport {
-        RequestContext requestContext = new RequestContext();
-        requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        RequestContext requestContext = newRequestContext();
         requestContext.putParam(InternalConstants.DEPLOY_NAME, dbConnParams.getDbName());
         requestContext.setRequest(body);
 
@@ -132,8 +133,7 @@ public class CswBackendClient implements CswClient {
      * {@inheritDoc}
      */
     public TransactionResponseType transact(TransactionType transactionReq) throws ServiceExceptionReport {
-        RequestContext requestContext = new RequestContext();
-        requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        RequestContext requestContext = newRequestContext();
         requestContext.putParam(InternalConstants.DEPLOY_NAME, dbConnParams.getDbName());
         requestContext.setRequest(transactionReq);
 
@@ -186,9 +186,7 @@ public class CswBackendClient implements CswClient {
         slotTypes = InternalSlotTypes.getInstance();
 
         if (slotTypes.getSlotTypeSize() == 0) {
-            RequestContext requestContext = new RequestContext();
-            requestContext.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
-            SqlPersistence persistence = new SqlPersistence(requestContext);
+            SqlPersistence persistence = new SqlPersistence(newRequestContext());
 
             try {
                 slotTypes.loadSlots(persistence);
@@ -196,5 +194,15 @@ public class CswBackendClient implements CswClient {
                 logger.log(Level.SEVERE, "Could not load slot types", ex);
             }
         }
+    }
+
+    private RequestContext newRequestContext() {
+        RequestContext rc = new RequestContext();
+
+        if (dbConnParams != null) {
+            rc.putParam(InternalConstants.DB_CONNECTION_PARAMS, dbConnParams);
+        }
+        
+        return rc;
     }
 }

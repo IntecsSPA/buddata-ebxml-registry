@@ -64,7 +64,7 @@
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -73,8 +73,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -95,7 +95,7 @@
         <ows:Operation name="GetRecords">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -104,8 +104,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -154,7 +154,7 @@
         <ows:Operation name="GetRecordById">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -163,8 +163,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -193,7 +193,7 @@
         <ows:Operation name="DescribeRecord">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -202,8 +202,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -227,8 +227,8 @@
         <ows:Operation name="GetRepositoryItem">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -245,7 +245,7 @@
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -254,8 +254,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -276,7 +276,7 @@
         <ows:Operation name="Transaction">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -285,8 +285,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
