@@ -89,7 +89,8 @@ public class CswServiceImpl implements CswPortType {
         HttpServletRequest request = (HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
         
         try {
-            JAXBElement capabilitiesEl = new CapabilitiesReader().getCapabilities(request.getRequestURL().toString());
+            String servletUrl = request.getRequestURL().substring(0, (request.getRequestURL().length() - request.getServletPath().length()));
+            JAXBElement capabilitiesEl = new CapabilitiesReader().getCapabilities(servletUrl);
             logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {

@@ -18,9 +18,11 @@
  */
 package be.kzen.ergorr.service;
 
+import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.CommonProperties;
-import be.kzen.ergorr.commons.IoUtil;
+import be.kzen.ergorr.commons.EOPConstants;
 import be.kzen.ergorr.commons.NamespaceConstants;
+import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.model.csw.CapabilitiesType;
 import be.kzen.ergorr.model.ows.ContactType;
 import be.kzen.ergorr.model.ows.DCP;
@@ -28,27 +30,26 @@ import be.kzen.ergorr.model.ows.Operation;
 import be.kzen.ergorr.model.ows.RequestMethodType;
 import be.kzen.ergorr.model.ows.ResponsiblePartySubsetType;
 import be.kzen.ergorr.model.ows.ServiceProvider;
-import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.SlotListType;
 import be.kzen.ergorr.model.rim.SlotType;
 import be.kzen.ergorr.model.rim.ValueListType;
 import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
-import be.kzen.ergorr.xpath.XMLNamespaces;
-import be.kzen.ergorr.xpath.XPathUtil;
-import java.io.IOException;
-import java.util.Arrays;
+import be.kzen.ergorr.persist.service.SqlPersistence;
+import com.sun.tools.ws.processor.model.jaxb.JAXBProperty;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  *
@@ -71,14 +72,21 @@ public class CapabilitiesReader {
     private static final String SP_CONTACT_SERVICEHOURS = "serviceProvider.contact.hoursOfService";
     private static final String SP_CONTACT_INSTRUCTIONS = "serviceProvider.contact.contactInstructions";
     private static final String SP_ROLE = "serviceProvider.role";
-    private static final String PARENT_IDENTIFIERS = "parentIdentifiers";
     private static final String DEPLOY_NAME = "deployName";
+    private static final String SQL_QUERY_PARENT_IDENTIFIER = "select stringvalue from t_slot where name_ = '" +
+            EOPConstants.S_PARENT_IDENTIFIER + "' group by stringvalue";
+
+    private RequestContext requestContext;
 
     public CapabilitiesReader() {
     }
 
-    public JAXBElement<CapabilitiesType> getCapabilities(String requestUrl) throws JAXBException {
-        return load(getServletUrl(requestUrl));
+    public CapabilitiesReader(RequestContext requestContext) {
+        this.requestContext = requestContext;
+    }
+
+    public JAXBElement<CapabilitiesType> getCapabilities(String servletUrl) throws JAXBException {
+        return load(servletUrl);
     }
 
     private JAXBElement<CapabilitiesType> load(String servletUrl) throws JAXBException {
@@ -108,18 +116,6 @@ public class CapabilitiesReader {
 
         contact.getRole().setValue(CommonProperties.getInstance().get(SP_ROLE));
 
-        // set ParentIdentifiers
-        SlotType slot = new SlotType();
-        slot.setName("http://earth.esa.int/eop/parentIdentifier");
-        ValueListType valList = new ValueListType();
-        slot.setValueList(OFactory.rim.createValueList(valList));
-        String[] parantIdents = CommonProperties.getInstance().getStringArray(PARENT_IDENTIFIERS);
-        valList.getValue().addAll(Arrays.asList(parantIdents));
-
-        SlotListType slotList = new SlotListType();
-        slotList.getSlot().add(slot);
-        cap.getOperationsMetadata().setExtendedCapabilities(slotList);
-
         // set service URLs
         List<Operation> operations = cap.getOperationsMetadata().getOperation();
 
@@ -132,11 +128,69 @@ public class CapabilitiesReader {
             }
         }
 
+//        // set ParentIdentifiers slot
+//        SlotType slotParentIdents = new SlotType();
+//        slotParentIdents.setName(EOPConstants.S_PARENT_IDENTIFIER);
+//        ValueListType valListParentIdens = new ValueListType();
+//        slotParentIdents.setValueList(OFactory.rim.createValueList(valListParentIdens));
+//        valListParentIdens.getValue().addAll(getParentIdentifiers());
+//
+//        SlotListType slotList = new SlotListType();
+//        slotList.getSlot().add(slotParentIdents);
+//        cap.getOperationsMetadata().setExtendedCapabilities(slotList);
+
+        setExtendedCapabilities((Element) cap.getOperationsMetadata().getExtendedCapabilities(), servletUrl);
+
         return capabilities;
+
     }
 
-    private String getServletUrl(String requestUrl) {
-        int idx = requestUrl.lastIndexOf("/");
-        return (idx > 0) ? requestUrl.substring(0, idx + 1) : requestUrl;
+    private void setExtendedCapabilities(Element capEl, String servletUrl) {
+        Document doc = capEl.getOwnerDocument();
+
+        capEl.setAttribute("xmlns:wsdi", "http://www.w3.org/ns/wsdl-instance");
+        capEl.setAttributeNS("http://www.w3.org/ns/wsdl-instance", "wsdi:wsdlLocation", servletUrl + "/webservice?wsdl");
+
+
+        Element slotEl = doc.createElementNS(NamespaceConstants.RIM, "rim:Slot");
+        capEl.appendChild(slotEl);
+        slotEl.setAttribute("name", EOPConstants.S_PARENT_IDENTIFIER);
+        Element valListEl = doc.createElementNS(NamespaceConstants.RIM, "rim:ValueList");
+        slotEl.appendChild(valListEl);
+
+        List<String> parentIdents = getParentIdentifiers();
+
+        for (String parentIdent : parentIdents) {
+            Element valEl = doc.createElementNS(NamespaceConstants.RIM, "rim:Value");
+            valListEl.appendChild(valEl);
+            valEl.setTextContent(parentIdent);
+        }
+    }
+
+    private List<String> getParentIdentifiers() {
+        List<String> parentIdents = new ArrayList<String>();
+
+        SqlPersistence persistence = new SqlPersistence(requestContext);
+        Connection conn = null;
+
+        try {
+            conn = persistence.getConnection();
+            ResultSet result = conn.createStatement()
+                    .executeQuery(SQL_QUERY_PARENT_IDENTIFIER);
+
+            while (result.next()) {
+                String parentIdent = result.getString(1);
+
+                if (CommonFunctions.stringHasData(parentIdent)) {
+                    parentIdents.add(parentIdent);
+                }
+            }
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Could not get parentIdentifier list from database", ex);
+        } finally {
+            persistence.closeConnection(conn);
+        }
+        return parentIdents;
     }
 }
