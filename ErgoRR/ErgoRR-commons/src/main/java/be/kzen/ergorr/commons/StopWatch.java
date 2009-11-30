@@ -26,14 +26,26 @@ package be.kzen.ergorr.commons;
 public class StopWatch {
     private long startTime;
 
+    /**
+     * Starts the stop watch on initialization.
+     */
     public StopWatch() {
         start();
     }
 
+    /**
+     * Start/reset stop watch.
+     */
     public void start() {
         startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Get the duration in milliseconds from the time the
+     * stop watch was started.
+     *
+     * @return Duration in milliseconds.
+     */
     public long getDurationAsMillis() {
         return (System.currentTimeMillis() - startTime);
     }

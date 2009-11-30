@@ -19,6 +19,7 @@
 package be.kzen.ergorr.service.translator;
 
 /**
+ * Thrown by any translation related exception.
  *
  * @author Yaman Ustuntas
  */

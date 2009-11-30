@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * AdhocQuery DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
@@ -24,12 +25,18 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
         super(aqXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AdhocQueryType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new AdhocQueryType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AdhocQueryType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -54,6 +61,9 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -62,21 +72,33 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
         stmt.setString(9,(String) content);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_adhocquery";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",querylanguage,query";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",querylanguage=?,query=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -86,6 +108,9 @@ public class AdhocQueryTypeDAO extends RegistryObjectTypeDAO<AdhocQueryType> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<AdhocQueryType> createJAXBElement() {
         return OFactory.rim.createAdhocQuery(xmlObject);

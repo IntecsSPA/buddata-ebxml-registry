@@ -25,7 +25,10 @@ import javax.xml.namespace.QName;
  * 
  * @author Yaman Ustuntas
  */
-public interface RIMConstants {
+public class RIMConstants {
+
+    private RIMConstants() {
+    }
 
     public final static QName QNAME_EXTRINSIC_OBJECT = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ExtrinsicObject", "rim");
     public final static QName QNAME_SERVICE_BINDING = new QName("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ServiceBinding", "rim");

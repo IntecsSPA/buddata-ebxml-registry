@@ -182,6 +182,9 @@ public class CswBackendClient implements CswClient {
         return response;
     }
 
+    /**
+     * Initialize the backend client.
+     */
     private void init() {
         slotTypes = InternalSlotTypes.getInstance();
 
@@ -196,6 +199,11 @@ public class CswBackendClient implements CswClient {
         }
     }
 
+    /**
+     * Create a new RequestContext with default values.
+     *
+     * @return New RequestContext.
+     */
     private RequestContext newRequestContext() {
         RequestContext rc = new RequestContext();
 

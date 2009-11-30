@@ -3,10 +3,14 @@ package be.kzen.ergorr.persist;
 import be.kzen.ergorr.commons.CommonFunctions;
 
 /**
+ * Helper class to provide SQL syntax constants and helpers.
  *
  * @author yamanustuntas
  */
 public class SyntaxElements {
+
+    private SyntaxElements() {
+    }
 
     public static final String EQUAL_SIGN = " = ";
     public static final String NOT_EQUAL_SIGN = " != ";
@@ -39,6 +43,19 @@ public class SyntaxElements {
     public static final String SINGLE_QUOTE = "'";
     private static final String ESCAPE = "\\\\";
 
+    /**
+     * Replace SQL LIKE characters from user provided characters to database supported characters.
+     * Database supported characters are:
+     * {@code SINGLE_CHAR}
+     * {@code WILDCARD_CHAR}
+     * {@code ESCAPE_CHAR}
+     *
+     * @param str String to replace.
+     * @param single Single character token.
+     * @param wildcard Wildcard character token.
+     * @param escape Escape character token.
+     * @return Replaced SQL LIKE value.
+     */
     public static String replaceLike(String str, String single, String wildcard, String escape) {
 
         char[] chars = str.toCharArray();

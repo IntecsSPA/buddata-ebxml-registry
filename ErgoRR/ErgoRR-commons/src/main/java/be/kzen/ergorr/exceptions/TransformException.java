@@ -19,7 +19,8 @@
 package be.kzen.ergorr.exceptions;
 
 /**
- *
+ * Transformation exception.
+ * 
  * @author Yaman Ustuntas
  */
 public class TransformException extends Exception {

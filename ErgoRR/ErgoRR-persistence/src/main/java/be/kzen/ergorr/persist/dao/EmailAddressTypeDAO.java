@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * EmailAddress DAO
  *
  * @author yamanustuntas
  */
@@ -20,7 +21,10 @@ public class EmailAddressTypeDAO extends GenericComposedObjectDAO<EmailAddressTy
     public EmailAddressTypeDAO(RegistryObjectType parent) {
         super(parent);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
@@ -44,6 +48,9 @@ public class EmailAddressTypeDAO extends GenericComposedObjectDAO<EmailAddressTy
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
         List<EmailAddressType> emails = null;
@@ -68,29 +75,43 @@ public class EmailAddressTypeDAO extends GenericComposedObjectDAO<EmailAddressTy
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_emailaddress";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return "address,type_,parent";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         return "address,type_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?,?";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

@@ -11,7 +11,8 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * ClassificationScheme DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<ClassificationSchemeType> {
@@ -25,12 +26,18 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
         super(csXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassificationSchemeType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationSchemeType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ClassificationSchemeType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -39,6 +46,9 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -46,11 +56,17 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
         stmt.setString(9, xmlObject.getNodeType());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",isinternal,nodetype";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -60,11 +76,17 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",isinternal=?,nodetype=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
@@ -84,11 +106,17 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_classificationscheme";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<ClassificationSchemeType> createJAXBElement() {
         return OFactory.rim.createClassificationScheme(xmlObject);

@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * TelephoneNumber DAO.
+ * 
  * @author yamanustuntas
  */
 public class TelephoneNumberTypeDAO extends GenericComposedObjectDAO<TelephoneNumberType, RegistryObjectType>{
@@ -21,6 +22,9 @@ public class TelephoneNumberTypeDAO extends GenericComposedObjectDAO<TelephoneNu
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
@@ -47,6 +51,9 @@ public class TelephoneNumberTypeDAO extends GenericComposedObjectDAO<TelephoneNu
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
         List<TelephoneNumberType> tels = null;
@@ -74,29 +81,43 @@ public class TelephoneNumberTypeDAO extends GenericComposedObjectDAO<TelephoneNu
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_telephonenumber";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return "areacode,countrycode,extension,number_,phonetype,parent";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         return "areacode,countrycode,extension,number_,phonetype";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?,?,?,?,?";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

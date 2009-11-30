@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * Organization DAO.
+ * 
  * @author yamanustuntas
  */
 public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType> {
@@ -20,12 +21,18 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         super(oXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrganizationType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new OrganizationType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected OrganizationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -35,6 +42,9 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -42,11 +52,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         stmt.setString(9, xmlObject.getPrimaryContact());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",parent,primarycontact";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -56,11 +72,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",parent=?,primarycontact=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
@@ -83,6 +105,9 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void insertRelatedObjects() throws SQLException {
         super.insertRelatedObjects();
@@ -103,6 +128,9 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         telDAO.insert();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateRelatedObjects() throws SQLException {
         super.updateRelatedObjects();
@@ -123,6 +151,9 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         telDAO.update();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void deleteRelatedObjects() throws SQLException {
         super.deleteRelatedObjects();
@@ -143,11 +174,17 @@ public class OrganizationTypeDAO extends RegistryObjectTypeDAO<OrganizationType>
         telDAO.delete();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_organization";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<OrganizationType> createJAXBElement() {
         return OFactory.rim.createOrganization(xmlObject);

@@ -38,7 +38,9 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
- *
+ * Ant task to insert RIM or other supported models through
+ * the webservice interface.
+ * 
  * @author yamanustuntas
  */
 public class WsInvokerTask extends Task {
@@ -47,14 +49,28 @@ public class WsInvokerTask extends Task {
     private String dataSrc;
     private CswPortType service;
 
+    /**
+     * Set a folder path containing metadata XML files
+     * or the path of a single metadata file.
+     *
+     * @param dataSrc Data source folder or file.
+     */
     public void setDataSrc(String dataSrc) {
         this.dataSrc = dataSrc;
     }
 
+    /**
+     * URL of the deployed service.
+     *
+     * @param url Service URL.
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws BuildException {
         File[] xmlFiles = null;
@@ -75,11 +91,17 @@ public class WsInvokerTask extends Task {
         }
 
         if (xmlFiles.length > 0) {
-            invoke(xmlFiles);
+            insert(xmlFiles);
         }
     }
 
-    public void invoke(File[] xmlFiles) throws BuildException {
+    /**
+     * Insert the list of XML metadata files into the registry.
+     *
+     * @param xmlFiles List of XML metadata files.
+     * @throws BuildException
+     */
+    private void insert(File[] xmlFiles) throws BuildException {
         QName serviceQName = new QName("http://www.kzen.be/ergorr/interfaces/soap", "webservice");
         Unmarshaller unmarshaller = null;
 
@@ -113,6 +135,12 @@ public class WsInvokerTask extends Task {
         }
     }
 
+    /**
+     * Create a {@code URL} instance from {@code url} String.
+     *
+     * @return URL of the service.
+     * @throws BuildException
+     */
     private URL getURL() throws BuildException {
         URL serviceUrl = null;
         try {
@@ -124,8 +152,14 @@ public class WsInvokerTask extends Task {
         return serviceUrl;
     }
 
+    /**
+     * File filter for XML files.
+     */
     class XmlFileFilter implements FileFilter {
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean accept(File file) {
             return file.isFile() && file.getName().toLowerCase().endsWith(".xml");
         }

@@ -37,6 +37,7 @@ import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.persist.service.SqlPersistence;
 import com.sun.tools.ws.processor.model.jaxb.JAXBProperty;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,6 +53,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 /**
+ * Helper class to read an populate csw:Capabilities.
  *
  * @author yamanustuntas
  */
@@ -72,9 +74,9 @@ public class CapabilitiesReader {
     private static final String SP_CONTACT_SERVICEHOURS = "serviceProvider.contact.hoursOfService";
     private static final String SP_CONTACT_INSTRUCTIONS = "serviceProvider.contact.contactInstructions";
     private static final String SP_ROLE = "serviceProvider.role";
-    private static final String DEPLOY_NAME = "deployName";
     private static final String SQL_QUERY_PARENT_IDENTIFIER = "select stringvalue from t_slot where name_ = '" +
             EOPConstants.S_PARENT_IDENTIFIER + "' group by stringvalue";
+    private static final String CAPABILITIES_FILE = "/resources/Capabilities.xml";
 
     private RequestContext requestContext;
 
@@ -89,10 +91,24 @@ public class CapabilitiesReader {
         return load(servletUrl);
     }
 
+    /**
+     * Load and populate the Capabilities document.
+     *
+     * @param servletUrl URL of the servlet.
+     * @return Capabilities document.
+     * @throws JAXBException
+     */
     private JAXBElement<CapabilitiesType> load(String servletUrl) throws JAXBException {
 
-        JAXBElement<CapabilitiesType> capabilities = (JAXBElement<CapabilitiesType>) JAXBUtil.getInstance().unmarshall(this.getClass().getResource("/resources/Capabilities.xml"));
-        CapabilitiesType cap = (CapabilitiesType) capabilities.getValue();
+        URL capFile = this.getClass().getResource(CAPABILITIES_FILE);
+
+        if (capFile == null) {
+            throw new JAXBException("Could not find capabilities document");
+        }
+
+        JAXBElement<CapabilitiesType> capabilities =
+                (JAXBElement<CapabilitiesType>) JAXBUtil.getInstance().unmarshall(capFile);
+        CapabilitiesType cap = capabilities.getValue();
 
         ServiceProvider sp = cap.getServiceProvider();
         sp.setProviderName(CommonProperties.getInstance().get(SP_NAME));
@@ -128,23 +144,19 @@ public class CapabilitiesReader {
             }
         }
 
-//        // set ParentIdentifiers slot
-//        SlotType slotParentIdents = new SlotType();
-//        slotParentIdents.setName(EOPConstants.S_PARENT_IDENTIFIER);
-//        ValueListType valListParentIdens = new ValueListType();
-//        slotParentIdents.setValueList(OFactory.rim.createValueList(valListParentIdens));
-//        valListParentIdens.getValue().addAll(getParentIdentifiers());
-//
-//        SlotListType slotList = new SlotListType();
-//        slotList.getSlot().add(slotParentIdents);
-//        cap.getOperationsMetadata().setExtendedCapabilities(slotList);
-
         setExtendedCapabilities((Element) cap.getOperationsMetadata().getExtendedCapabilities(), servletUrl);
 
         return capabilities;
 
     }
 
+    /**
+     * Add additional capabilities through csw:ExtendedCapabilities.
+     * Appends DOM nodes to {@code calEl}.
+     *
+     * @param capEl ExtendedCapabilities element.
+     * @param servletUrl URL of the servlet.
+     */
     private void setExtendedCapabilities(Element capEl, String servletUrl) {
         Document doc = capEl.getOwnerDocument();
 
@@ -167,6 +179,11 @@ public class CapabilitiesReader {
         }
     }
 
+    /**
+     * Get all used parentIdentifier slots in EOP profile.
+     *
+     * @return List of parentIdentifiers.
+     */
     private List<String> getParentIdentifiers() {
         List<String> parentIdents = new ArrayList<String>();
 

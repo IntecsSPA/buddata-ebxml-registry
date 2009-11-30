@@ -53,6 +53,11 @@ public class InternalSlotTypes {
         slotMap = new ConcurrentHashMap<String, String>();
     }
 
+    /**
+     * Get Singleton instance of InternalSlotTypes.
+     *
+     * @return Singleton instance.
+     */
     public static synchronized InternalSlotTypes getInstance() {
         if (instance == null) {
             instance = new InternalSlotTypes();
@@ -61,26 +66,61 @@ public class InternalSlotTypes {
         return instance;
     }
 
+    /**
+     * Check if the Singleton instance is initialized.
+     *
+     * @return True if initialized.
+     */
     public static boolean isInitialized() {
         return (instance != null);
     }
 
+    /**
+     * Get the type of the slot with a specific name {@code slotName}.
+     *
+     * @param slotName Name of the slot.
+     * @return Type of the slot.
+     */
     public String getSlotType(String slotName) {
         return slotMap.get(slotName);
     }
 
+    /**
+     * Put a slot name, type pair.
+     *
+     * @param name Name of slot.
+     * @param slotType Type of slot.
+     * @throws Exception
+     */
     public void putSlot(String name, String slotType) throws Exception {
         slotMap.put(name, slotType);
     }
 
+    /**
+     * Remove slot by slot name.
+     *
+     * @param name Name of slot.
+     */
     public void removeSlot(String name) {
         slotMap.remove(name);
     }
 
+    /**
+     * Total size of slots.
+     *
+     * @return Size of slots.
+     */
     public int getSlotTypeSize() {
         return slotMap.size();
     }
 
+    /**
+     * Load slots to {@code slotMap} from database.
+     *
+     * @param persist Persistence instance to use to fetch slots.
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public void loadSlots(SqlPersistence persist) throws ClassNotFoundException, SQLException {
         String sql = "select * from t_extrinsicobject where objecttype='" + RIMConstants.CN_OBJ_DEF + "'";
         List<JAXBElement<ExtrinsicObjectType>> eoEls =
@@ -96,10 +136,22 @@ public class InternalSlotTypes {
         }
     }
 
+    /**
+     * Load slots to {@code slotMap} from database with a default {@code SQLPersistence}.
+     * 
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public void loadSlots() throws SQLException, ClassNotFoundException {
         loadSlots(new SqlPersistence());
     }
 
+    /**
+     * Check if slot type {@code slotType} is an internal slot type.
+     *
+     * @param slotType Slot type to check.
+     * @return True if {@code slotType} is an internal slot type.
+     */
     public static boolean isInternalSlotType(String slotType) {
         boolean isInternal = false;
 

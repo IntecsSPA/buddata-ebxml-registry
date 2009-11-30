@@ -19,6 +19,9 @@
 package be.kzen.ergorr.exceptions;
 
 /**
+ * Query exception.
+ * Should be used as a high level exception for
+ * exceptions during qeury execution and processing.
  *
  * @author Yaman Ustuntas
  */

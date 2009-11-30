@@ -10,7 +10,8 @@ import java.sql.Statement;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * ServiceBinding DAO.
+ * 
  * @author yamanustuntas
  */
 public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingType> {
@@ -22,11 +23,17 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         super(serviceXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBindingType newXmlObject(ResultSet result) throws SQLException {
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ServiceBindingType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -38,7 +45,13 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         return xmlObject;
     }
 
-    protected void loadRelateObjects() throws SQLException {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void loadRelatedObjects() throws SQLException {
+        super.loadRelatedObjects();
+        
         if (returnNestedObjects()) {
             SpecificationLinkTypeDAO specLink = new SpecificationLinkTypeDAO();
             specLink.setContext(context);
@@ -58,6 +71,9 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -66,16 +82,25 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         stmt.setString(11, xmlObject.getTargetBinding());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_servicebinding";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",service,accessuri,targetbinging";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -85,11 +110,17 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",service=?,accessuri=?,targetbinging=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<ServiceBindingType> createJAXBElement() {
         return OFactory.rim.createServiceBinding(xmlObject);

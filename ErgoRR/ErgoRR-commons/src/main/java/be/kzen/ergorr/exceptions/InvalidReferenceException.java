@@ -19,7 +19,9 @@
 package be.kzen.ergorr.exceptions;
 
 /**
- *
+ * Invalid reference exception.
+ * Should be used if an invalid reference to or from an object is detected.
+ * 
  * @author Yaman Ustuntas
  */
 public class InvalidReferenceException extends Exception {

@@ -19,7 +19,9 @@
 package be.kzen.ergorr.exceptions;
 
 /**
- *
+ * High level exception which can be used by any service to wrap
+ * other exceptions.
+ * 
  * @author Yaman Ustuntas
  */
 public class ServiceException extends Exception {

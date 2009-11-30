@@ -19,10 +19,14 @@
 package be.kzen.ergorr.commons;
 
 /**
- *
+ * MimeType constants.
+ * 
  * @author yamanustuntas
  */
-public interface MimeTypeConstants {
+public class MimeTypeConstants {
+
+    private MimeTypeConstants() {
+    }
 
     public static final String APPLICATION_GZIP = "application/x-gzip";
     public static final String APPLICATION_JAVASCRIPT = "application/x-javascript";

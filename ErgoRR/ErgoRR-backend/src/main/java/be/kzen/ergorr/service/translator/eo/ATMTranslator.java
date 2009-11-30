@@ -35,18 +35,25 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * ATM translator
+ * 
  * @author Yaman Ustuntas
  */
 public class ATMTranslator extends HMATranslator<EarthObservationType> {
 
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:ATM"; 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getClassification() {
         return CLASSIFICATION;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegistryObjectListType translate() throws TranslationException {
         super.translate();
@@ -70,11 +77,18 @@ public class ATMTranslator extends HMATranslator<EarthObservationType> {
         return regObjList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_atm.createEarthObservation(eo);
     }
 
+    /**
+     * Translate the DataLayer ExtrinsicObjects.
+     * @return DataLayer ExtrinsicObjects.
+     */
     protected List<WrsExtrinsicObjectType> translateDataLayer() {
         List<WrsExtrinsicObjectType> es = new ArrayList<WrsExtrinsicObjectType>();
 

@@ -10,7 +10,8 @@ import java.sql.Statement;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * Classification DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationType> {
@@ -22,6 +23,12 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         super(clXml);
     }
 
+    /**
+     * Add Classifications belonging to the RegistryObject {@code parent}.
+     *
+     * @param parent RegistryObject to add its Classifications to.
+     * @throws SQLException
+     */
     public void addClassifications(RegistryObjectType parent) throws SQLException {
         Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
@@ -33,6 +40,12 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         }
     }
 
+    /**
+     * Delete Classifications belonging to the RegistryObject {@code parent}.
+     *
+     * @param parent RegistryObject whose Classifications should be deleted.
+     * @throws SQLException
+     */
     public void deleteClassifications(RegistryObjectType parent) throws SQLException {
         Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
@@ -40,12 +53,18 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         stmt.execute(sql.toString());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassificationType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ClassificationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -56,6 +75,9 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -65,11 +87,17 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         stmt.setString(11, xmlObject.getNodeRepresentation());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",classificationnode,classificationscheme,classifiedobject,noderepresentation";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -79,16 +107,25 @@ public class ClassificationTypeDAO extends RegistryObjectTypeDAO<ClassificationT
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?,?" : ",classificationnode=?,classificationscheme=?,classifiedobject=?,noderepresentation=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_classification";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<ClassificationType> createJAXBElement() {
         return OFactory.rim.createClassification(xmlObject);

@@ -27,7 +27,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
- *
+ * Ant task to drop a database.
+ * 
  * @author yamanustuntas
  */
 public class DropDbTask extends Task {
@@ -38,22 +39,49 @@ public class DropDbTask extends Task {
     private String dbPassword;
     private final static String MAIN_DB = "postgres";
 
+    /**
+     * Set the database name.
+     *
+     * @param dbName Database name.
+     */
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
 
+    /**
+     * Set the database password.
+     *
+     * @param dbPassword Database password.
+     */
     public void setDbPassword(String dbPassword) {
         this.dbPassword = dbPassword;
     }
 
+    /**
+     * Set database URL.
+     * Format:
+     *   <host>:<port>
+     * E.g:
+     *   localhost:5432
+     *
+     * @param dbUrl Database URL.
+     */
     public void setDbUrl(String dbUrl) {
         this.dbUrl = dbUrl;
     }
 
+    /**
+     * Set the database user with access rights to drop a database.
+     *
+     * @param dbUser Database user.
+     */
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws BuildException {
         try {
@@ -85,6 +113,11 @@ public class DropDbTask extends Task {
         closeConnection(conn);
     }
 
+    /**
+     * Silently closes a SQL connection.
+     *
+     * @param conn Connection to close.
+     */
     private void closeConnection(Connection conn) {
         if (conn != null) {
             try {
@@ -93,6 +126,11 @@ public class DropDbTask extends Task {
         }
     }
 
+    /**
+     * Creates the JDBC driver connection string with the user provided input.
+     *
+     * @return SQL connection string.
+     */
     private String createConnectionString() {
         return "jdbc:postgresql://" + dbUrl + "/" + MAIN_DB;
     }

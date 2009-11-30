@@ -53,7 +53,11 @@ public class CommonProperties {
     }
 
     /**
-     * Load the common properties
+     * Load the common properties.
+     * First looks up the system variable "ergorr.common.properties"
+     * and if it exists, uses the path for the properties file.
+     * Otherwise loads "ergorr.properties" file from class path.
+     *
      */
     public void loadProperties() {
         try {
@@ -111,7 +115,7 @@ public class CommonProperties {
         try {
             i = Integer.parseInt(props.getProperty(key));
         } catch (Throwable t) {
-            logger.log(Level.SEVERE, "Could not parse Integer value", t);
+            logger.log(Level.WARNING, "Could not parse Integer value", t);
         }
 
         return i;
@@ -129,7 +133,7 @@ public class CommonProperties {
         try {
             l = Long.parseLong(props.getProperty(key));
         } catch (Throwable t) {
-            logger.log(Level.SEVERE, "Could not parse Long value", t);
+            logger.log(Level.WARNING, "Could not parse Long value", t);
         }
 
         return l;
@@ -148,7 +152,7 @@ public class CommonProperties {
         try {
             b = Boolean.valueOf(props.getProperty(key));
         } catch (Throwable t) {
-            logger.log(Level.SEVERE, "Could not parse Boolean value", t);
+            logger.log(Level.WARNING, "Could not parse Boolean value", t);
         }
 
         return b;

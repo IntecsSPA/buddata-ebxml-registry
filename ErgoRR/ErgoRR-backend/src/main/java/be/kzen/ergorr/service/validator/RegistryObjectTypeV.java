@@ -38,8 +38,8 @@ import javax.xml.bind.JAXBElement;
  * @author yamanustuntas
  */
 public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractValidator<T> {
+
     private static Logger logger = Logger.getLogger(RegistryObjectTypeV.class.getName());
-    
     private static final String URN_REGEX = "^urn:[\\w-.]*:[\\w-.:]*";
 
     /**
@@ -53,16 +53,16 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
         rimObject.setStatus(RIMConstants.CN_STATUS_TYPE_CODE_Submitted);
         rimObject.setLid(rimObject.getId());
 
+        if (!rimObject.isSetId() || !rimObject.getId().matches(URN_REGEX)) {
+            throw new InvalidReferenceException("'" + (rimObject.isSetId() ? rimObject.getId() : "EMPTY") + "' is not a valid URN");
+        }
+
         if (rimObject.getObjectType() == null || rimObject.getObjectType().equals("") || rimObject.hasStaticObjectTypeUrn()) {
             rimObject.setObjectType(rimObject.getObjectTypeUrn());
         } else {
-            if (!rimObject.getId().matches(URN_REGEX)) {
-                throw new InvalidReferenceException("'" + rimObject.getId() + "' is not a valid URN");
-            }
-            
             if (!rimObject.getObjectType().equals(rimObject.getObjectTypeUrn())) {
                 boolean valid = idExistsInRequest(rimObject.getObjectType(), ClassificationNodeType.class);
-                
+
                 if (!valid) {
                     valid = persistence.idExists(rimObject.getObjectType(), ClassificationNodeType.class);
 
@@ -109,6 +109,12 @@ public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractV
         }
     }
 
+    /**
+     * Add objects related to {@code rimObject} to be deleted in addition to the {@code rimObject} itself.
+     * 
+     * @throws SQLException
+     * @throws ReferenceExistsException
+     */
     protected void addReletedObjectToDel() throws SQLException, ReferenceExistsException {
         String sql = "select * from t_association where sourceobject='" + rimObject.getId() +
                 "' or targetobject='" + rimObject.getId() + "'";

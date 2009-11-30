@@ -31,6 +31,7 @@ import be.kzen.ergorr.model.util.OFactory;
 import javax.xml.bind.JAXBElement;
 
 /**
+ * OPT translator
  *
  * @author Yaman Ustuntas
  */
@@ -38,11 +39,17 @@ public class OPTTranslator<T extends EarthObservationType> extends HMATranslator
 
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:OPT"; 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getClassification() {
         return CLASSIFICATION;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected WrsExtrinsicObjectType translateProduct() throws TranslationException {
         WrsExtrinsicObjectType e = super.translateProduct();
@@ -91,6 +98,9 @@ public class OPTTranslator<T extends EarthObservationType> extends HMATranslator
         return e;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_opt.createEarthObservation(eo);

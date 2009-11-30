@@ -18,7 +18,6 @@
  */
 package be.kzen.ergorr.service.translator.eo;
 
-import be.kzen.ergorr.commons.CommonProperties;
 import be.kzen.ergorr.commons.IDGenerator;
 import be.kzen.ergorr.service.translator.*;
 import be.kzen.ergorr.model.eo.eop.AcquisitionType;
@@ -72,7 +71,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
- *
+ * HMA translator.
+ * 
  * @author Yaman Ustuntas
  */
 public class HMATranslator<T extends EarthObservationType> implements Translator<T> {
@@ -95,18 +95,36 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         regPkg.setDescription(RIMUtil.createString("Provides Earth Observation Products extensions to the Basic package of the CSW-ebRIM catalogue profile."));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setObject(T obj) {
         this.eo = obj;
     }
 
+    /**
+     * Get the rim:Classification of the translated object.
+     *
+     * @return rim:Classifcation type.
+     */
     public String getClassification() {
         return CLASSIFICATION;
     }
 
+    /**
+     * Get the translated object as a JAXBElement.
+     *
+     * @return Translated object wraped as JAXBElement.
+     */
     protected JAXBElement<T> getEarthObservationJaxbEl() {
         return (JAXBElement<T>) OFactory.eo_eop.createEarthObservation(eo);
     }
 
+    /**
+     * Get the ID of the EarthObservationProduct.
+     * @return ID.
+     * @throws TranslationException
+     */
     private String getEopId() throws TranslationException {
         if (eo.isSetMetaDataProperty() && !eo.getMetaDataProperty().isEmpty()) {
             MetaDataPropertyType mdp = eo.getMetaDataProperty().get(0);
@@ -118,6 +136,12 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         }
     }
 
+    /**
+     * Associate {@code regObj} with the EOP RegistryPackage and
+     * add the new Association to the {@code regObjList}.
+     *
+     * @param regObj RegistryObject to associate.
+     */
     protected void associateToPackage(RegistryObjectType regObj) {
         AssociationType asso = RIMUtil.createAssociation(regObj.getId() + ":pkg-asso",
                 RIMConstants.CN_ASSOCIATION_TYPE_ID_HasMember, regPkg.getId(), regObj.getId());
@@ -125,6 +149,9 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         regObjList.getIdentifiable().add(OFactory.rim.createAssociation(asso));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public RegistryObjectListType translate() throws TranslationException {
         AssociationType asso;
         JAXBElement<AssociationType> assoEl;
@@ -147,7 +174,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
             DataHandler dh = new DataHandler(dataBufSrc);
             eoProduct.setRepositoryItem(dh);
         } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, "Could not marshall EarthObservation to byte[]", ex);
+            logger.log(Level.WARNING, "Could not marshall EarthObservation to byte[]", ex);
         }
 
         ExternalIdentifierType exIdent = translateExternalIdentifier();
@@ -236,6 +263,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return regObjList;
     }
 
+    /**
+     * Translate the ExternalIdentifier of the EOP ExtrinsicObject.
+     *
+     * @return ExternalIdentifier of EOP.
+     */
     protected ExternalIdentifierType translateExternalIdentifier() {
         MetaDataPropertyType metadata = eo.getMetaDataProperty().get(0);
         JAXBElement el = (JAXBElement) metadata.getAny();
@@ -243,6 +275,12 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return RIMUtil.createExternalIdentifier(eoProduct.getId() + ":exIdent", eoProduct.getId(), eoMetadata.getIdentifier(), "");
     }
 
+    /**
+     * Translate the EarthObservationProduct ExtrinsicObject.
+     *
+     * @return EarthObservationProduct ExtrinsicObject.
+     * @throws TranslationException
+     */
     protected WrsExtrinsicObjectType translateProduct() throws TranslationException {
         WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
 
@@ -542,6 +580,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return e;
     }
 
+    /**
+     * Translate the AcquisitionPlatform ExtrinsicObject.
+     * 
+     * @return AcquisitionPlatform ExtrinsicObject.
+     */
     protected WrsExtrinsicObjectType translateAcquisitionPlatform() {
         WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
         e.setObjectType(EOPConstants.E_ACQUISITION_PLATFORM);
@@ -608,6 +651,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return e;
     }
 
+    /**
+     * Translate the ProductInformation ExtrinsicObject.
+     *
+     * @return ProductInformation ExtrinsicObject.
+     */
     protected WrsExtrinsicObjectType translateProductInformation() {
         WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
         e.setObjectType(EOPConstants.E_PRODUCT_INFORMATION);
@@ -654,6 +702,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return e;
     }
 
+    /**
+     * Translate the BrowseInformation ExtrinsicObjects.
+     * 
+     * @return BrowseInformation ExtrinsicObjects.
+     */
     protected List<WrsExtrinsicObjectType> translateBrowseInformation() {
         List<WrsExtrinsicObjectType> browseInfoExtObjs = new ArrayList<WrsExtrinsicObjectType>();
 
@@ -707,6 +760,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return browseInfoExtObjs;
     }
 
+    /**
+     * Translate the MarkInformation ExtrinsicObjects.
+     *
+     * @return MarkInformation ExtrinsicObjects.
+     */
     protected List<WrsExtrinsicObjectType> translateMaskInformation() {
         List<WrsExtrinsicObjectType> eObjs = new ArrayList<WrsExtrinsicObjectType>();
 
@@ -754,6 +812,11 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         return eObjs;
     }
 
+    /**
+     * Translate the ArchivingInformation ExtrinsicObject.
+     *
+     * @return ArchivingInformation ExtrinsicObject.
+     */
     protected WrsExtrinsicObjectType translateArchivingInformation() {
         WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
         e.setObjectType(EOPConstants.E_ARCHIVING_INFORMATION);

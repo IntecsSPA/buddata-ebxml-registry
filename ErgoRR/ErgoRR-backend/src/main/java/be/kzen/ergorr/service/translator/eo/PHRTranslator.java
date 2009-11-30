@@ -29,12 +29,18 @@ import javax.xml.bind.JAXBElement;
  */
 public class PHRTranslator extends HMATranslator<EarthObservationType> {
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:SAR"; 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getClassification() {
         return CLASSIFICATION;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_sar.createEarthObservation(eo);

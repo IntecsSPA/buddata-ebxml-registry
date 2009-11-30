@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * Service DAO.
+ * 
  * @author yamanustuntas
  */
 public class ServiceTypeDAO extends RegistryObjectTypeDAO<ServiceType> {
@@ -19,30 +20,49 @@ public class ServiceTypeDAO extends RegistryObjectTypeDAO<ServiceType> {
         super(serviceXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceType newXmlObject(ResultSet result) throws SQLException {
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ServiceType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
         return xmlObject;
     }
 
-    protected void loadRelateObjects() throws SQLException {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void loadRelatedObjects() throws SQLException {
+        super.loadRelatedObjects();
+
         if (returnNestedObjects()) {
             ServiceBindingTypeDAO bindingDAO = new ServiceBindingTypeDAO();
             bindingDAO.setContext(context);
             bindingDAO.setConnection(connection);
+            bindingDAO.addServiceBinding(xmlObject);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_service";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<ServiceType> createJAXBElement() {
         return OFactory.rim.createService(xmlObject);

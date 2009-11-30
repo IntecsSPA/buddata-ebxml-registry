@@ -37,11 +37,17 @@ public class RegistryPackageTypeV extends RegistryObjectTypeV<RegistryPackageTyp
 
     private static Logger logger = Logger.getLogger(RegistryPackageTypeV.class.getName());
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate() throws InvalidReferenceException, SQLException {
         super.validate();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         super.validateToDelete();
@@ -67,11 +73,11 @@ public class RegistryPackageTypeV extends RegistryObjectTypeV<RegistryPackageTyp
                     validator.validateToDelete();
                     addedIdents.add(ident);
                 } catch (InstantiationException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.WARNING, null, ex);
                 } catch (IllegalAccessException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.WARNING, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.WARNING, null, ex);
                 }
             }
         }

@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * IdentifiableType DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObjectDAO<T> {
@@ -29,14 +30,34 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         this.xmlObject = xmlObject;
     }
 
+    /**
+     * Get XML object.
+     *
+     * @return XML object.
+     */
     public T getXmlObject() {
         return xmlObject;
     }
 
+    /**
+     * Set the XML object.
+     *
+     * @param xmlObject XML object.
+     */
     public void setXmlObject(T xmlObject) {
         this.xmlObject = xmlObject;
     }
 
+    /**
+     * Load a new XML object from the ResultSet {@code result}.
+     * ResultSet must be from the t_identifiable VIEW as it contains the class name
+     * of the object in the 'class_' column.
+     * This helps to load the proper subtype of IdentifiableType using reflection.
+     * 
+     * @param result ResultSet to load a new instance of Identifiable.
+     * @return New instance of {@code T}.
+     * @throws SQLException
+     */
     public T newXmlObject(ResultSet result) throws SQLException {
         String daoClassName = "be.kzen.ergorr.persist.dao." + result.getString("class_") + "TypeDAO";
         Class<? extends GenericObjectDAO> daoClass = null;
@@ -52,18 +73,25 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
             genericObjDAO.setContext(context);
             return (T) genericObjDAO.newXmlObject(result);
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Could not load class", ex);
-            throw new SQLException("Could not load class " + daoClass.getName());
+            String err = "Could not load class " + daoClass.getName();
+            logger.log(Level.WARNING, err, ex);
+            throw new SQLException(err);
         }
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected T loadXmlObject(ResultSet result) throws SQLException {
         xmlObject.setId(result.getString("id"));
         xmlObject.setHome(result.getString("home"));
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void insertRelatedObjects() throws SQLException {
         if (xmlObject.isSetSlot()) {
@@ -74,6 +102,9 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateRelatedObjects() throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
@@ -82,6 +113,9 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         slotDAO.update();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void deleteRelatedObjects() throws SQLException {
         SlotTypeDAO slotDAO = new SlotTypeDAO(xmlObject);
@@ -90,6 +124,9 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         slotDAO.delete();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         if (returnSlots()) {
@@ -100,16 +137,25 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_identifiable";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return "id,home";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -119,20 +165,32 @@ public class IdentifiableTypeDAO<T extends IdentifiableType> extends GenericObje
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<T> createJAXBElement() {
         return (genericObjDAO != null) ? genericObjDAO.createJAXBElement() : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getFetchCondition() {
-        return "id='" + xmlObject.getId() + "'";
+        return new StringBuilder("id='").append(xmlObject.getId()).append("'").toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return (xmlObject.isNewObject() ? "?,?" : "id=?,home=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         stmt.setString(1, xmlObject.getId());

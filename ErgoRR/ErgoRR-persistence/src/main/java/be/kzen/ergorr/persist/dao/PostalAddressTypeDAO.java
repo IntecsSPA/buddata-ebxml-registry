@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- *
+ * PostalAddress DAO.
+ * 
  * @author yamanustuntas
  */
 public class PostalAddressTypeDAO extends GenericComposedObjectDAO<PostalAddressType, RegistryObjectType> {
@@ -23,6 +24,9 @@ public class PostalAddressTypeDAO extends GenericComposedObjectDAO<PostalAddress
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
@@ -50,6 +54,9 @@ public class PostalAddressTypeDAO extends GenericComposedObjectDAO<PostalAddress
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
         List<PostalAddressType> postalAddress = null;
@@ -81,29 +88,43 @@ public class PostalAddressTypeDAO extends GenericComposedObjectDAO<PostalAddress
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_postaladdress";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return "city,country,postalcode,state_,street,streetnumber,parent";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         return "city,country,postalcode,state_,street,streetnumber";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?,?,?,?,?,?";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

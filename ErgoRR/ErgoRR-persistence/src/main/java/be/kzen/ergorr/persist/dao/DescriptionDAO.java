@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * Description DAO
  *
  * @author Yaman Ustuntas
  */
@@ -18,26 +19,41 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_description";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getParamList() {
         return "charset,lang,value_,parent";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getQueryParamList() {
         return "charset,lang,value_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?,?,?";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
 
@@ -57,6 +73,9 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
@@ -82,6 +101,9 @@ public class DescriptionDAO extends GenericComposedObjectDAO<LocalizedStringType
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");

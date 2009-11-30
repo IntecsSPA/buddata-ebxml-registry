@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
+ * ClassificationNode DAO.
  *
  * @author Yaman Ustuntas
  */
@@ -28,12 +29,18 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         super(cnXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassificationNodeType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ClassificationNodeType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ClassificationNodeType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -44,6 +51,9 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -52,11 +62,17 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         stmt.setString(10, xmlObject.getPath());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",code,parent,path_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -66,11 +82,17 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",code=?,parent=?,path_=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
@@ -88,6 +110,13 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         }
     }
 
+    /**
+     * Get all ClassificationNodes by parent ID.
+     *
+     * @param parentId Parent ClassificationScheme or ClassificationNode ID.
+     * @return ClassificationNodes with parent {@code parentId}.
+     * @throws SQLException
+     */
     public List<ClassificationNodeType> getAllByParent(String parentId) throws SQLException {
         List<ClassificationNodeType> cNodes = new ArrayList<ClassificationNodeType>();
 
@@ -112,11 +141,17 @@ public class ClassificationNodeTypeDAO extends RegistryObjectTypeDAO<Classificat
         return cNodes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_classificationnode";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<ClassificationNodeType> createJAXBElement() {
         return OFactory.rim.createClassificationNode(xmlObject);

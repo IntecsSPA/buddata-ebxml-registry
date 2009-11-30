@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * WrsExtrinsicObject DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class WrsExtrinsicObjectTypeDAO extends ExtrinsicObjectTypeDAO<WrsExtrinsicObjectType> {
@@ -20,12 +21,18 @@ public class WrsExtrinsicObjectTypeDAO extends ExtrinsicObjectTypeDAO<WrsExtrins
         super(eoXml);
     }
 
-     @Override
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public WrsExtrinsicObjectType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new WrsExtrinsicObjectType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<WrsExtrinsicObjectType> createJAXBElement() {
         return OFactory.wrs.createExtrinsicObject(xmlObject);

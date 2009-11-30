@@ -25,6 +25,9 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         super(roXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected T loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -37,6 +40,9 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void insertRelatedObjects() throws SQLException {
         super.insertRelatedObjects();
@@ -54,6 +60,9 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
@@ -83,6 +92,9 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateRelatedObjects() throws SQLException {
         super.updateRelatedObjects();
@@ -97,6 +109,9 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         descDAO.update();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void deleteRelatedObjects() throws SQLException {
         super.deleteRelatedObjects();
@@ -116,35 +131,27 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         eiDAO.setContext(context);
         eiDAO.setConnection(connection);
         eiDAO.deleteExternalIdentifiers(xmlObject);
-
-//        String sqlAsso = "select * from t_association asso where asso.targetobject ='" +
-//                xmlObject.getId() + "' or asso.sourceobject = '" + xmlObject.getId() +"';";
-//
-//        Statement assoStmt = connection.createStatement();
-//        ResultSet assoResults = assoStmt.executeQuery(sqlAsso);
-//
-//        // TODO - validate, deleted association shouldn't be in a package.
-//        while (assoResults.next()) {
-//            AssociationTypeDAO assoDAO = new AssociationTypeDAO();
-//            assoDAO.setConnection(connection);
-//            assoDAO.setContext(context);
-//            assoDAO.newXmlObject(assoResults);
-//            assoDAO.delete();
-//        }
-//
-//        assoStmt.close();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",lid,objecttype,status,versionname,versioncomment";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?,?,?" : ",lid=?,objecttype=?,status=?,versionname=?,versioncomment=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
 
@@ -155,11 +162,17 @@ public class RegistryObjectTypeDAO<T extends RegistryObjectType> extends Identif
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<T> createJAXBElement() {
         throw new UnsupportedOperationException("Should not return Identifiable");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);

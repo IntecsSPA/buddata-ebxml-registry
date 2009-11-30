@@ -168,7 +168,7 @@ public class TransactionService {
                     Translator translator = TranslatorFactory.getInstance(jaxbEl);
                     regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
                 } catch (TranslationException ex) {
-                    logger.log(Level.SEVERE, "Transaction error", ex);
+                    logger.log(Level.WARNING, "Transaction error", ex);
                     throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Transaction error", ex);
                 }
             }

@@ -5,11 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- *
+ * UsageParameter DAO.
+ * 
  * @author yamanustuntas
  */
 public class UsageParameterDAO extends GenericComposedObjectDAO<String, SpecificationLinkType> {
@@ -18,6 +17,9 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder();
@@ -32,6 +34,9 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(createInsertStatement());
@@ -43,26 +48,41 @@ public class UsageParameterDAO extends GenericComposedObjectDAO<String, Specific
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_usageparameter";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return "parent,value_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         return "value_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");

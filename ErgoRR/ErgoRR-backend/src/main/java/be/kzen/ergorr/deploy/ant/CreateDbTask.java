@@ -19,17 +19,15 @@
  */
 package be.kzen.ergorr.deploy.ant;
 
-import be.kzen.ergorr.commons.CommonProperties;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
+ * Ant task to create a new database with a given template.
  *
  * @author yamanustuntas
  */
@@ -42,26 +40,59 @@ public class CreateDbTask extends Task {
     private String template;
     private final static String MAIN_DB = "postgres";
 
+    /**
+     * Set database name.
+     *
+     * @param dbName Database name.
+     */
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
 
+    /**
+     * Set database password.
+     *
+     * @param dbPassword Database password.
+     */
     public void setDbPassword(String dbPassword) {
         this.dbPassword = dbPassword;
     }
 
+    /**
+     * Set database URL.
+     * Format:
+     *   <host>:<port>
+     * E.g:
+     *   localhost:5432
+     *
+     * @param dbUrl Database URL.
+     */
     public void setDbUrl(String dbUrl) {
         this.dbUrl = dbUrl;
     }
 
+    /**
+     * Set the database user with access rights to create a new database.
+     *
+     * @param dbUser Database user.
+     */
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
     }
 
+    /**
+     * Set the template database which is going to be
+     * used as a template for the new database.
+     *
+     * @param template Template database.
+     */
     public void setTemplate(String template) {
         this.template = template;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws BuildException {
         try {
@@ -99,6 +130,11 @@ public class CreateDbTask extends Task {
         closeConnection(conn);
     }
 
+    /**
+     * Silently close a SQL connection.
+     *
+     * @param conn Connection to close.
+     */
     private void closeConnection(Connection conn) {
         if (conn != null) {
             try {
@@ -107,6 +143,11 @@ public class CreateDbTask extends Task {
         }
     }
 
+    /**
+     * Create the JDBC driver connection string with the user provided input.
+     *
+     * @return SQL connection string.
+     */
     private String createConnectionString() {
         return "jdbc:postgresql://" + dbUrl + "/" + MAIN_DB;
     }
