@@ -73,7 +73,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 /**
- * CSW GetRepositoryItem HTTP interface.
+ * CSW HTTP interface.
  * 
  * @author Massimiliano Fanciulli
  * @author Yaman Ustuntas
@@ -94,6 +94,9 @@ public class RegistryHTTPServlet extends HttpServlet {
     private static final String OP_GET_REPOSITORY_ITEM = "GetRepositoryItem";
     private static final String INTERNAL_ERROR = "500";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String serviceParameter, versionParameter;
@@ -116,13 +119,16 @@ public class RegistryHTTPServlet extends HttpServlet {
 
                 JAXBUtil.getInstance().marshall(exRep, response.getOutputStream());
             } catch (JAXBException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, "Could not create error messsage", ex);
                 response.sendError(response.SC_INTERNAL_SERVER_ERROR);
             }
 
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Object unmarshalledRequestObj;
@@ -130,7 +136,7 @@ public class RegistryHTTPServlet extends HttpServlet {
         try {
             unmarshalledRequestObj = JAXBUtil.getInstance().unmarshall(request.getInputStream());
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.WARNING, "Could not unmarshall request", ex);
             response.sendError(response.SC_BAD_REQUEST);
             return;
         }
@@ -147,12 +153,21 @@ public class RegistryHTTPServlet extends HttpServlet {
                 response.setContentType(MimeTypeConstants.APPLICATION_XML);
                 JAXBUtil.getInstance().marshall(exRep, response.getOutputStream());
             } catch (JAXBException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, "Could not create error message", ex);
                 response.sendError(response.SC_INTERNAL_SERVER_ERROR);
             }
         }
     }
 
+    /**
+     * Process the request object {@code requestObj}.
+     * Depending on the type of {@code requestObj}, calls the appropriate handler method.
+     *
+     * @param requestObj Reqest object.
+     * @param request Servlet request.
+     * @return Response JAXBElement.
+     * @throws Exception
+     */
     private JAXBElement process(Object requestObj, HttpServletRequest request) throws Exception {
         JAXBElement retValue;
 
@@ -178,6 +193,13 @@ public class RegistryHTTPServlet extends HttpServlet {
         return retValue;
     }
 
+    /**
+     * Process a GetRecords request.
+     *
+     * @param getRecordsReq GetRecords request.
+     * @return GetRecordResponse.
+     * @throws ServiceExceptionReport
+     */
     private JAXBElement processGetRecords(GetRecordsType getRecordsReq) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         RequestContext requestContext = new RequestContext();
@@ -185,16 +207,25 @@ public class RegistryHTTPServlet extends HttpServlet {
 
         QueryManager qm = new QueryManager(requestContext);
 
-        logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
-
         try {
             GetRecordsResponseType response = qm.query();
+            
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return OFactory.csw.createGetRecordsResponse(response);
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
         }
     }
 
+    /**
+     * Process a GetRecordById request.
+     *
+     * @param getRecordByIdReq GetRecordById request.
+     * @return GetRecordByIdResponseType
+     * @throws ServiceExceptionReport
+     */
     private JAXBElement processGetRecordById(GetRecordByIdType getRecordByIdReq) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         RequestContext requestContext = new RequestContext();
@@ -205,13 +236,23 @@ public class RegistryHTTPServlet extends HttpServlet {
         try {
             List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds();
             response.getAny().addAll(idents);
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return OFactory.csw.createGetRecordByIdResponse(response);
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
         }
     }
 
+    /**
+     * Helper method to create a ServiceExceptionReport
+     * with information from ServiceException {@code ex}.
+     *
+     * @param ex Exception.
+     * @return ServiceExceptionReport
+     */
     private static ServiceExceptionReport createExceptionReport(ServiceException ex) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLanguage(CommonProperties.getInstance().get("lang"));
@@ -221,22 +262,46 @@ public class RegistryHTTPServlet extends HttpServlet {
         return new ServiceExceptionReport(ex.getMessage(), exRep, ex);
     }
 
+    /**
+     * Process GetCapabilities request.
+     *
+     * @param getCapabilitiesType GetCapabilities request.
+     * @param requestUrl Request URL.
+     * @return Capabilities.
+     * @throws ServiceExceptionReport
+     */
     private JAXBElement processGetCapabilities(GetCapabilitiesType getCapabilitiesType, String requestUrl) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         try {
             JAXBElement capabilitiesEl = new CapabilitiesReader().getCapabilities(requestUrl);
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return capabilitiesEl;
         } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, "Could not load Capabilities document", ex);
-            throw new ServiceExceptionReport("Could not load capabilities document from file.", ex);
+            String err = "Could not load Capabilities document";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         }
     }
 
+    /**
+     * not supported
+     * 
+     * @param getDomainType GetDomain request.
+     * @return nothing
+     */
     private JAXBElement processGetDomain(GetDomainType getDomainType) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /**
+     * Process Harvest request.
+     * @param harvest Harvest request.
+     * @return HarvestResponse.
+     * @throws ServiceExceptionReport
+     */
     private JAXBElement processHarvest(HarvestType harvest) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         RequestContext requestContext = new RequestContext();
@@ -244,13 +309,23 @@ public class RegistryHTTPServlet extends HttpServlet {
 
         try {
             HarvestResponseType response = new HarvestService(requestContext).process();
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return OFactory.csw.createHarvestResponse(response);
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
         }
     }
 
+    /**
+     * Process Transaction request.
+     *
+     * @param transactionReq Transaction request.
+     * @return TransactionResponse.
+     * @throws ServiceExceptionReport
+     */
     private JAXBElement processTransaction(TransactionType transactionReq) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         RequestContext requestContext = new RequestContext();
@@ -258,13 +333,23 @@ public class RegistryHTTPServlet extends HttpServlet {
 
         try {
             TransactionResponseType response = new TransactionService(requestContext).process();
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return OFactory.csw.createTransactionResponse(response);
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
         }
     }
 
+    /**
+     * Process DescribeRecord request.
+     *
+     * @param describeRecordType DescribeRecord request.
+     * @return DescribeRecordResponse.
+     * @throws ServiceExceptionReport
+     */
     private JAXBElement processDescribeRecord(DescribeRecordType describeRecordType) throws ServiceExceptionReport {
         StopWatch sw = new StopWatch();
         DescribeRecordResponseType response = new DescribeRecordResponseType();
@@ -277,15 +362,26 @@ public class RegistryHTTPServlet extends HttpServlet {
             Document doc = docBuilder.parse(this.getClass().getResourceAsStream("/resources/rim.xsd"));
             schemaComp.getContent().add(doc.getDocumentElement());
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Could not load RIM schema", ex);
-            throw new ServiceExceptionReport("Could not load RIM schema", ex);
+            String err = "Could not load RIM schema";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         }
 
         response.getSchemaComponent().add(schemaComp);
-        logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+        }
         return OFactory.csw.createDescribeRecordResponse(response);
     }
 
+    /**
+     * Process HTTP Get request.
+     *
+     * @param request Servlet request.
+     * @param response Servlet response.
+     * @throws Exception
+     */
     private void processGetRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Object methodObject;
 
@@ -298,7 +394,11 @@ public class RegistryHTTPServlet extends HttpServlet {
             streamItemFromRepository(request, response);
             return;
         } else {
-            throw new UnsupportedOperationException("Not yet implemented");
+            String err = "User requested unsuppored operation: " + requestParameter;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new UnsupportedOperationException(err);
         }
 
         JAXBElement retValue = process(methodObject, request);
@@ -307,6 +407,17 @@ public class RegistryHTTPServlet extends HttpServlet {
         response.setStatus(response.SC_OK);
     }
 
+    /**
+     * Streams repository item through servlet response {@code response}.
+     * Looks up repository item ID from {@code request}.
+     *
+     * @param request Servlet request.
+     * @param response Servlet response.
+     * @throws Exception
+     *   - if ID was not provided in request.
+     *   - if repository item with given ID was not found.
+     *   - if mimeType of object was not found.
+     */
     protected void streamItemFromRepository(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType(MimeTypeConstants.TEXT_XML); // TODO - read from ExtrinsicObject contenttype
         ServletOutputStream out = response.getOutputStream();
@@ -316,8 +427,8 @@ public class RegistryHTTPServlet extends HttpServlet {
             RepositoryManager repoMngr = new RepositoryManager();
             File file = repoMngr.getFile(id);
 
-            if (logger.isLoggable(Level.INFO)) {
-                logger.info("Request for repo file: " + file.getAbsolutePath());
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Request for repo file: " + file.getAbsolutePath());
             }
 
             if (file.exists()) {
@@ -337,8 +448,7 @@ public class RegistryHTTPServlet extends HttpServlet {
                         }
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                        String err = "Could not find ExtrinsicObject with ID: " + id;
-
+                        String err = "User requested not existing ExtrinsicObject ID: " + id;
                         if (logger.isLoggable(Level.INFO)) {
                             logger.info(err);
                         }
@@ -346,20 +456,33 @@ public class RegistryHTTPServlet extends HttpServlet {
                     }
                 } catch (SQLException ex) {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    logger.log(Level.WARNING, "Could not get mimeType for " + id, ex);
+                    logger.log(Level.WARNING, "Could not load mimeType for " + id, ex);
                     out.print(createExceptionAsString("Could not get mimeType: " + ex.getMessage(), "Error"));
                 }
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                out.print(createExceptionAsString("Repository does not exist", "NotFound"));
+                String err = "Repository item not found";
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(err);
+                }
+                out.print(createExceptionAsString(err, "NotFound"));
             }
 
         } else {
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info("User did not provide an ID");
+            }
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             out.print(createExceptionAsString("ID not provided", ErrorCodes.INVALID_REQUEST));
         }
     }
 
+    /**
+     * not implemented
+     * 
+     * @param request Servlet request.
+     * @return Empty capabilities document.
+     */
     private Object extractGetCapabilitiesTypeFromHttpGet(HttpServletRequest request) {
         GetCapabilitiesType getCapabilities = null;
 
@@ -369,6 +492,13 @@ public class RegistryHTTPServlet extends HttpServlet {
         return getCapabilities;
     }
 
+    /**
+     * Creates a GetRecordById request from the servlet {@code request} parameters.
+     *
+     * @param request Servlet request.
+     * @return GetRecordByIdType.
+     * @throws Exception
+     */
     private Object extractGetRecordByIdTypeFromHttpGet(HttpServletRequest request) throws Exception {
         GetRecordByIdType getRecordById = new GetRecordByIdType();
 
@@ -378,26 +508,47 @@ public class RegistryHTTPServlet extends HttpServlet {
         } else if ((elementSetNameParam.equals(ElementSetType.BRIEF.value()) ||
                 elementSetNameParam.equals(ElementSetType.SUMMARY.value()) ||
                 elementSetNameParam.equals(ElementSetType.FULL.value())) == false) {
-            throw new Exception("Element Set Name contains a not allowed value");
+
+            String err = "User did not provide a valid ElementSetName: " + elementSetNameParam;
+            
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+
+            throw new Exception(err);
         }
 
         String outputFormatParam = request.getParameter(PARAM_OUTPUT_FORMAT);
         if (outputFormatParam == null) {
             outputFormatParam = MimeTypeConstants.APPLICATION_XML;
         } else if (!outputFormatParam.equals(MimeTypeConstants.APPLICATION_XML)) {
-            throw new Exception("OutputFormat contains a not allowed or not supported value");
+            String err = "User did not provide a valid OutputFormat: " + outputFormatParam;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new Exception(err);
         }
 
         String outputSchemaParam = request.getParameter("outputSchema");
         if (outputSchemaParam == null) {
             outputSchemaParam = NamespaceConstants.CSW;
         } else if (!outputSchemaParam.equals(NamespaceConstants.CSW)) {
-            throw new Exception("Provided outputSchema is not supported");
+            String err = "User did not provide a valid outputSchema: " + outputSchemaParam;
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new Exception(err);
         }
 
         String id = request.getParameter(PARAM_ID);
-        if (id == null) {
-            throw new Exception("No id have been provided.");
+        if (id == null || id.trim().equals("")) {
+            String err = "User did not provide an ID";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new Exception(err);
         }
 
         StringTokenizer tokenizer = new StringTokenizer(id, ",");
@@ -417,6 +568,13 @@ public class RegistryHTTPServlet extends HttpServlet {
         return getRecordById;
     }
 
+    /**
+     * Creates a new ExceptionReport.
+     *
+     * @param error Exception detail.
+     * @param code Exception code.
+     * @return new ExceptionReport.
+     */
     private ExceptionReport createException(String error, String code) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLanguage(CommonProperties.getInstance().get("lang"));
@@ -429,23 +587,38 @@ public class RegistryHTTPServlet extends HttpServlet {
         return exRep;
     }
 
+    /**
+     * Create an ExceptionReport as String representation.
+     *
+     * @param error Exception detail.
+     * @param code Exception code.
+     * @return ExceptionReport as String.
+     */
     private String createExceptionAsString(String error, String code) {
         ExceptionReport exRep = new ExceptionReport();
         exRep.setLanguage(CommonProperties.getInstance().get("lang"));
         exRep.setVersion("1.0");
-        ExceptionType ex = new ExceptionType();
-        ex.setExceptionCode(code);
-        ex.getExceptionText().add(error);
-        exRep.getException().add(ex);
+        ExceptionType exType = new ExceptionType();
+        exType.setExceptionCode(code);
+        exType.getExceptionText().add(error);
+        exRep.getException().add(exType);
 
         try {
             return JAXBUtil.getInstance().marshallToStr(exRep);
-        } catch (JAXBException ex1) {
-            logger.log(Level.SEVERE, "Error marshalling exception report", ex1);
+        } catch (JAXBException ex) {
+            logger.log(Level.SEVERE, "Error marshalling exception report", ex);
             return "<error>Oops. Could not Marshall the error message XML. Error message:" + error + "</error>";
         }
     }
 
+    /**
+     * Gets a value from {@code params} with the key {@code keyToSearch}
+     * with a case insensitive key comparison.
+     *
+     * @param params Parameters.
+     * @param keyToSearch Key to get value of.
+     * @return String value if key was found else empty String.
+     */
     private String getRequestParameterIgnoringCase(Enumeration params, String keyToSearch) {
         String paramName = "";
         String keyLowerCase = keyToSearch.toLowerCase();

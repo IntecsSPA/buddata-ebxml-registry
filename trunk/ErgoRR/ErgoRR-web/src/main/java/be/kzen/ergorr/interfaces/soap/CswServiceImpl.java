@@ -91,11 +91,15 @@ public class CswServiceImpl implements CswPortType {
         try {
             String servletUrl = request.getRequestURL().substring(0, (request.getRequestURL().length() - request.getServletPath().length()));
             JAXBElement capabilitiesEl = new CapabilitiesReader().getCapabilities(servletUrl);
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return (CapabilitiesType) capabilitiesEl.getValue();
         } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, "Could not load Capabilities document", ex);
-            throw new ServiceExceptionReport("Could not load capabilities document from file.", ex);
+            String err = "Could not load Capabilities document";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         }
     }
 
@@ -109,10 +113,14 @@ public class CswServiceImpl implements CswPortType {
 
         QueryManager qm = new QueryManager(requestContext);
 
-        logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
-
         try {
-            return qm.query();
+            GetRecordsResponseType response = qm.query();
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
+
+            return response;
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
         }
@@ -131,7 +139,10 @@ public class CswServiceImpl implements CswPortType {
         try {
             List<JAXBElement<? extends IdentifiableType>> idents = new QueryManager(requestContext).getByIds();
             response.getAny().addAll(idents);
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return response;
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
@@ -156,7 +167,10 @@ public class CswServiceImpl implements CswPortType {
 
         try {
             response = new HarvestService(requestContext).process();
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return response;
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
@@ -174,7 +188,10 @@ public class CswServiceImpl implements CswPortType {
 
         try {
             response = new TransactionService(requestContext).process();
-            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+            }
             return response;
         } catch (ServiceException ex) {
             throw createExceptionReport(ex);
@@ -196,12 +213,16 @@ public class CswServiceImpl implements CswPortType {
             Document doc = docBuilder.parse(this.getClass().getResourceAsStream("/resources/rim.xsd"));
             schemaComp.getContent().add(doc.getDocumentElement());
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Could not load RIM schema", ex);
-            throw new ServiceExceptionReport("Could not load RIM schema", ex);
+            String err = "Could not load RIM schema";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceExceptionReport(err, ex);
         }
 
         response.getSchemaComponent().add(schemaComp);
-        logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+        
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
+        }
         return response;
     }
 

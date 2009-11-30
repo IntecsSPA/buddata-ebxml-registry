@@ -73,12 +73,12 @@ public class TranslatorFactory {
                 return translator;
             } catch (Exception ex) {
                 String err = "Could not invoke translator for namespace: " + jaxbEl.getName().getNamespaceURI();
-                logger.log(Level.SEVERE, err, ex);
+                logger.log(Level.WARNING, err, ex);
                 throw new TranslationException(err, ex);
             }
         } else {
             String err = "Could not find translator for namespace: " + jaxbEl.getName().getNamespaceURI();
-            logger.log(Level.SEVERE, err);
+            logger.log(Level.WARNING, err);
             throw new TranslationException(err);
         }
     }

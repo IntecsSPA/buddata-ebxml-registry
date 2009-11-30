@@ -21,6 +21,7 @@ package be.kzen.ergorr.service.translator;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 
 /**
+ * Any RIM translator must implement this interface.
  *
  * @author Yaman Ustuntas
  */

@@ -105,7 +105,7 @@ public class LCManager {
     public void commit(RegistryObjectListType regObjList) throws ServiceException {
         List<IdentifiableType> idents = JAXBUtil.getExtendedObjects(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
-        flatten(idents, flatIdents);
+        flatten(idents, flatIdents, true);
 
         RimValidator validator = new RimValidator(flatIdents, requestContext);
         try {
@@ -114,8 +114,9 @@ public class LCManager {
             logger.log(Level.WARNING, "Validation failed", ex);
             throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, ex.getMessage(), ex);
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "SQL error while validating", ex);
-            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "SQL error while validating", ex);
+            String err = "SQL error while validating";
+            logger.log(Level.SEVERE, err, ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, err, ex);
         }
 
         List<String> ids = new ArrayList<String>();
@@ -153,8 +154,9 @@ public class LCManager {
             updateSlotCache(slotDescEos);
             insertRepositoryItems(flatIdents);
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "Error while committing data", ex);
-            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Error while committing data", ex);
+            String err = "Error while committing data";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, err, ex);
         }
     }
 
@@ -167,7 +169,7 @@ public class LCManager {
     public List<IdentifiableType> delete(RegistryObjectListType regObjList) throws ServiceException {
         List<IdentifiableType> idents = JAXBUtil.getExtendedObjects(regObjList.getIdentifiable());
         List<IdentifiableType> flatIdents = new ArrayList<IdentifiableType>();
-        flatten(idents, flatIdents);
+        flatten(idents, flatIdents, true);
 
         RimValidator validator = new RimValidator(flatIdents, requestContext);
 
@@ -177,11 +179,12 @@ public class LCManager {
             persistence.delete(flatIdents);
 
         } catch (ReferenceExistsException ex) {
-            logger.log(Level.SEVERE, "Cannot delete object because of existing references", ex);
+            logger.log(Level.WARNING, "Cannot delete object because of existing references", ex);
             throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, ex.getMessage(), ex);
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "SQL exception while deleting objects", ex);
-            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "SQL exception while deleting objects", ex);
+            String err = "SQL exception while deleting objects";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, err, ex);
         }
 
         return flatIdents;
@@ -222,8 +225,9 @@ public class LCManager {
      *
      * @param idents IdentifiableType tree.
      * @param flatIdents Flat list of IdentifiableType.
+     * @param removeNested Remove nested object which are flattened and added to {@code flatIdents}.
      */
-    public static void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents) {
+    public static void flatten(List<? extends IdentifiableType> idents, List<IdentifiableType> flatIdents, boolean removeNested) {
         for (IdentifiableType ident : idents) {
 
             if (ident instanceof ObjectRefType) {
@@ -238,7 +242,9 @@ public class LCManager {
                         cl.setClassifiedObject(ro.getId());
                         flatIdents.add(cl);
                     }
-                    ro.unsetClassification();
+                    if (removeNested) {
+                        ro.unsetClassification();
+                    }
                 }
 
                 if (ro.isSetExternalIdentifier()) {
@@ -246,7 +252,9 @@ public class LCManager {
                         ei.setRegistryObject(ro.getId());
                         flatIdents.add(ei);
                     }
-                    ro.unsetExternalIdentifier();
+                    if (removeNested) {
+                        ro.unsetExternalIdentifier();
+                    }
                 }
             }
 
@@ -266,8 +274,11 @@ public class LCManager {
                         asso.setTargetObject(identEl.getValue().getId());
                         flatIdents.add(asso);
                     }
-                    flatten(JAXBUtil.getExtendedObjects(rp.getRegistryObjectList().getIdentifiable()), flatIdents);
-                    rp.setRegistryObjectList(null);
+                    flatten(JAXBUtil.getExtendedObjects(rp.getRegistryObjectList().getIdentifiable()), flatIdents, removeNested);
+
+                    if (removeNested) {
+                        rp.setRegistryObjectList(null);
+                    }
                 }
             }
 
@@ -280,8 +291,10 @@ public class LCManager {
                     for (ClassificationNodeType cn : cs.getClassificationNode()) {
                         cn.setParent(cs.getId());
                     }
-                    flatten(cs.getClassificationNode(), flatIdents);
-                    cs.unsetClassificationNode();
+                    flatten(cs.getClassificationNode(), flatIdents, removeNested);
+                    if (removeNested) {
+                        cs.unsetClassificationNode();
+                    }
                 }
             }
 
@@ -299,11 +312,13 @@ public class LCManager {
                             for (ClassificationNodeType childOfChildCn : childCn.getClassificationNode()) {
                                 childOfChildCn.setParent(childCn.getId());
                             }
-                            flatten(childCn.getClassificationNode(), flatIdents);
+                            flatten(childCn.getClassificationNode(), flatIdents, removeNested);
                         }
                     }
 
-                    cn.unsetClassificationNode();
+                    if (removeNested) {
+                        cn.unsetClassificationNode();
+                    }
                 }
             }
 
@@ -316,8 +331,11 @@ public class LCManager {
                     for (ServiceBindingType binding : bindings) {
                         binding.setService(service.getId());
                     }
-                    flatten(bindings, flatIdents);
-                    service.unsetServiceBinding();
+                    flatten(bindings, flatIdents, removeNested);
+
+                    if (removeNested) {
+                        service.unsetServiceBinding();
+                    }
                 }
             }
 
@@ -366,7 +384,7 @@ public class LCManager {
                 try {
                     InternalSlotTypes.getInstance().putSlot(slot.getName(), slot.getSlotType());
                 } catch (Exception ex) {
-                    logger.log(Level.WARNING, "Error while updating slot type cache", ex);
+                    logger.log(Level.SEVERE, "Error while updating slot type cache", ex);
                 }
             }
         }
@@ -389,8 +407,11 @@ public class LCManager {
                 String slotType = InternalSlotTypes.getInstance().getSlotType(slot.getName());
 
                 if (slotType != null && !slotType.equals(slot.getSlotType())) {
-                    throw new ServiceException("Slot description with name '" + slot.getName() +
-                            "' has existing type '" + slotType + "' but was inserted as '" + slot.getSlotType() + "'");
+                    String err = "Slot description with name '" + slot.getName() +
+                            "' has existing type '" + slotType + "' but was inserted as '" + slot.getSlotType() + "'";
+                    
+                    logger.warning(err);
+                    throw new ServiceException(err);
                 }
             }
         }

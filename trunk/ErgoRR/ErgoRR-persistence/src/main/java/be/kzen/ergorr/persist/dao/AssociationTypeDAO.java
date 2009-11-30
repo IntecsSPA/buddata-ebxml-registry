@@ -9,7 +9,8 @@ import java.sql.Statement;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * Association DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
@@ -21,12 +22,18 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
         super(assoXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssociationType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new AssociationType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected AssociationType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -37,6 +44,9 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -45,16 +55,25 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
         stmt.setString(10, xmlObject.getTargetObject());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",associationtype,sourceobject,targetobject";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",associationtype=?,sourceobject=?,targetobject=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -64,11 +83,17 @@ public class AssociationTypeDAO extends RegistryObjectTypeDAO<AssociationType> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_association";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<AssociationType> createJAXBElement() {
         return OFactory.rim.createAssociation(xmlObject);

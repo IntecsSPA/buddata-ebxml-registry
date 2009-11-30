@@ -40,7 +40,8 @@ import org.postgis.Geometry;
 import org.postgis.binary.BinaryWriter;
 
 /**
- *
+ * Slot DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, IdentifiableType> {
@@ -100,6 +101,13 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         return slotValues;
     }
 
+    /**
+     * Get the WRS value for a t_slot ResultSet {@code result}.
+     *
+     * @param result ResultSet to read the value.
+     * @return WRS value.
+     * @throws SQLException
+     */
     public Object getWrsValue(ResultSet result) throws SQLException {
         String val = result.getString(4);
         String internalSlotType = InternalSlotTypes.getInstance().getSlotType(result.getString(1));
@@ -117,25 +125,41 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_slot";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getParamList() {
         return "seq,parent,name_,slottype,spectype,stringvalue,boolvalue,datetimevalue,doublevalue,intvalue,geometryvalue";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getQueryParamList() {
         return "name_,slottype,spectype,stringvalue";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?,?,?,?,?,?,?,?,?,transform(?," + CommonProperties.getInstance().get("db.defaultSrsId") + ")";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         Map<String, SlotType> slotMap = new HashMap<String, SlotType>();
@@ -187,6 +211,9 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         parent.getSlot().addAll(slotMap.values());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
         PreparedStatement stmt = connection.prepareCall(createInsertStatement());
@@ -238,6 +265,13 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         stmt.executeBatch();
     }
 
+    /**
+     * Add a batch insert of a Slot without values to the {@code stmt}.
+     *
+     * @param slot Slot without values.
+     * @param stmt PreparedStatement to add batch insert.
+     * @throws SQLException
+     */
     private void addSlotWithoutValues(SlotType slot, PreparedStatement stmt) throws SQLException {
         SlotValues slotValues = new SlotValues(parent.getId(), slot.getName(), slot.getSlotType());
         slotValues.specType = InternalConstants.SPEC_TYPE_RIM;
@@ -247,6 +281,15 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         stmt.addBatch();
     }
 
+    /**
+     * Adds a batch statement to th {@code stmt} to insert the WSR value.
+     *
+     * @param wrsValueList List of WRS values.
+     * @param internalSlotType The internal slot type of the value.
+     * @param slot The slot itself.
+     * @param stmt PreparedStatement to add batch to.
+     * @throws SQLException
+     */
     private void insertWrsValues(WrsValueListType wrsValueList, String internalSlotType, SlotType slot, PreparedStatement stmt) throws SQLException {
         for (int i = 0; i < wrsValueList.getAnyValue().size(); i++) {
             AnyValueType anyVal = wrsValueList.getAnyValue().get(i);
@@ -297,6 +340,9 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -325,6 +371,12 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
             this.slotType = (slotType != null) ? slotType : null;
         }
 
+        /**
+         * Add values to the {@code stmt}.
+         *
+         * @param stmt PreparedStatement to add values.
+         * @throws SQLException
+         */
         public void loadValues(PreparedStatement stmt) throws SQLException {
             stmt.setInt(1, seq);
             stmt.setString(2, parent);

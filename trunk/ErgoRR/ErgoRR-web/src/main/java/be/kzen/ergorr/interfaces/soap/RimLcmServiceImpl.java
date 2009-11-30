@@ -108,7 +108,7 @@ public class RimLcmServiceImpl implements LifeCycleManagerPortType {
      * Remove objects.
      *
      * @param removeObjReq Remove objects request.
-     * @return
+     * @return Registry response.
      */
     public RegistryResponseType removeObjects(RemoveObjectsRequest removeObjReq) {
         AdhocQueryType adhocQuery = removeObjReq.getAdhocQuery();

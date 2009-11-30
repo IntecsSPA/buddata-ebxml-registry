@@ -49,8 +49,10 @@ endpointInterface = "be.kzen.ergorr.interfaces.soap.rim.QueryManagerPortType")
 public class RimQueryServiceImpl implements QueryManagerPortType {
 
     /**
-     * @param adhocQueryReq
-     * @return
+     * Process adhoc query requests.
+     *
+     * @param adhocQueryReq Request.
+     * @return Adhoc query response.
      */
     public AdhocQueryResponse submitAdhocQuery(AdhocQueryRequest adhocQueryReq) {
         AdhocQueryType adhocQuery = adhocQueryReq.getAdhocQuery();

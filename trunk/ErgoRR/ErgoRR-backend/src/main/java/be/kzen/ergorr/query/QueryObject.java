@@ -38,12 +38,24 @@ public class QueryObject {
     private boolean usedInQuery;
     private static final String TABLE_NAME_PREFIX = "t_";
 
+    /**
+     * Constructor.
+     *
+     * @param objectName Name of the queried object.
+     * @param sqlAlias SQL alias of the queried object.
+     */
     public QueryObject(String objectName, String sqlAlias) {
         usedInQuery = false;
         this.objectName = objectName;
         this.sqlAlias = sqlAlias;
     }
 
+    /**
+     * Get the class of the queried object.
+     *
+     * @return Class of queried object.
+     * @throws QueryException
+     */
     public Class getObjClass() throws QueryException {
         try {
             return OFactory.getXmlClassByElementName(objectName);
@@ -52,22 +64,47 @@ public class QueryObject {
         }
     }
 
+    /**
+     * Table name of the queried object.
+     *
+     * @return Table name.
+     */
     public String getTableName() {
         return TABLE_NAME_PREFIX + objectName.toLowerCase();
     }
 
+    /**
+     * Get object name.
+     *
+     * @return Object name.
+     */
     public String getObjectName() {
         return objectName;
     }
 
+    /**
+     * Get SQL alias.
+     *
+     * @return SQL alias.
+     */
     public String getSqlAlias() {
         return sqlAlias;
     }
 
+    /**
+     * Check if this auery object is used in the query.
+     *
+     * @return True if object used in query.
+     */
     public boolean isUsedInQuery() {
         return usedInQuery;
     }
 
+    /**
+     * Set if this auery object is used in the query.
+     *
+     * @param usedInQuery Set to {@code true} if object used in query.
+     */
     public void setUsedInQuery(boolean usedInQuery) {
         this.usedInQuery = usedInQuery;
     }

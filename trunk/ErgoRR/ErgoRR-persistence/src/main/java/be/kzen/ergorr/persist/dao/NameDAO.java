@@ -1,6 +1,5 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.InternationalStringType;
 import be.kzen.ergorr.model.rim.LocalizedStringType;
 import be.kzen.ergorr.model.rim.RegistryObjectType;
@@ -10,7 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
+ * Name DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, RegistryObjectType> {
@@ -19,21 +19,33 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_name";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getParamList() {
         return "charset,lang,value_,parent";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getQueryParamList() {
         return "charset,lang,value_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insert() throws SQLException {
 
@@ -53,6 +65,9 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComposedObjects() throws SQLException {
         StringBuilder sql = new StringBuilder(200);
@@ -78,11 +93,17 @@ public class NameDAO extends GenericComposedObjectDAO<LocalizedStringType, Regis
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return "?,?,?,?";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");

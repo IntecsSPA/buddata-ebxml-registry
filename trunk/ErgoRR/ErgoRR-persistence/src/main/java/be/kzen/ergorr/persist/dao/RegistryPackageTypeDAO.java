@@ -1,27 +1,20 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.CommonFunctions;
 import be.kzen.ergorr.commons.CommonProperties;
-import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RIMConstants;
-import be.kzen.ergorr.model.rim.AssociationType;
-import be.kzen.ergorr.model.rim.IdentifiableType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.util.OFactory;
-import be.kzen.ergorr.model.wrs.WrsExtrinsicObjectType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 
 /**
- *
+ * RegistryPackage DAO.
+ * 
  * @author Yaman Ustuntas
  */
 public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackageType> {
@@ -35,18 +28,27 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
         super(pkgXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegistryPackageType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new RegistryPackageType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected RegistryPackageType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
@@ -78,11 +80,17 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<RegistryPackageType> createJAXBElement() {
         return OFactory.rim.createRegistryPackage(xmlObject);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_registrypackage";

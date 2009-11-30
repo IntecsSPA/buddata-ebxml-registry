@@ -1,3 +1,21 @@
+/*
+ * Project: Buddata ebXML RegRep
+ * Class: XPathToSqlConverter.java
+ * Copyright (C) 2008 Yaman Ustuntas
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package be.kzen.ergorr.query.xpath;
 
 import be.kzen.ergorr.commons.InternalConstants;
@@ -63,11 +81,21 @@ public class XPathToSqlConverter {
                         internalSlotType = InternalSlotTypes.getInstance().getSlotType(childNode.getSubSelectValue());
 
                         if (internalSlotType == null) {
-                            throw new XPathException("Not a registered slot name: " + childNode.getSubSelectValue());
+                            String err = "Not a registered slot name: " + childNode.getSubSelectValue();
+                            
+                            if (logger.isLoggable(Level.INFO)) {
+                                logger.info(err);
+                            }
+                            throw new XPathException(err);
                         }
 
                     } else {
-                        throw new XPathException("Not a queriable slot attribute: " + childNode.getSubSelectName());
+                        String err = "Not a queriable slot attribute: " + childNode.getSubSelectName();
+
+                        if (logger.isLoggable(Level.INFO)) {
+                            logger.info(err);
+                        }
+                        throw new XPathException(err);
                     }
 
                     childNode.setAttributeName(internalSlotType + "value");
@@ -76,7 +104,12 @@ public class XPathToSqlConverter {
                     childNode.setAttributeName("value_");
                     childNode.setQueryAttrType(InternalConstants.TYPE_STRING);
                 } else {
-                    throw new XPathException("Not a valid child node: " + childNode.getName());
+                    String err = "Not a valid child node: " + childNode.getName();
+
+                    if (logger.isLoggable(Level.INFO)) {
+                        logger.info(err);
+                    }
+                    throw new XPathException(err);
                 }
                 
                 return sqlQuery.addXPath(rootNode).getChild();
@@ -84,7 +117,10 @@ public class XPathToSqlConverter {
 
         } else {
             String err = "Could not evaluate XPath: " + xpath;
-            logger.log(Level.SEVERE, err);
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
             throw new XPathException(err);
         }
     }
@@ -106,6 +142,9 @@ public class XPathToSqlConverter {
         try {
             reader.parse(xpath);
         } catch (SAXPathException ex) {
+            if (logger.isLoggable(Level.INFO)) {
+                logger.log(Level.INFO, "Could not parse XPath: " + xpath, ex);
+            }
             throw new XPathException(ex);
         }
 

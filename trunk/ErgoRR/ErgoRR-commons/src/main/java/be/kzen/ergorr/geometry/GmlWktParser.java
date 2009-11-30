@@ -33,6 +33,14 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 /**
+ * GML WKT parser.
+ * Parser a custom WKT to a JAXB representation.
+ *
+ * The reason of WKT being custom is that we also have
+ * to store the srsId.
+ *
+ * TODO: to be removed when we stop storing geometry values
+ * on string column.
  *
  * @author yamanustuntas
  */
@@ -54,6 +62,11 @@ public class GmlWktParser {
         srs = null;
     }
 
+    /**
+     * Parse to JAXB representation.
+     *
+     * @return JAXB representation of geometry.
+     */
     public JAXBElement parse() {
         JAXBElement geometry = null;
         int openBrIdx = openBrIdx();
@@ -146,7 +159,7 @@ public class GmlWktParser {
         return p;
     }
 
-    public EnvelopeType parseEnvelope(char[] coordinates) {
+    private EnvelopeType parseEnvelope(char[] coordinates) {
         EnvelopeType env = new EnvelopeType();
 
         List<Double> xys = getXYs(coordinates);
@@ -166,7 +179,7 @@ public class GmlWktParser {
         return env;
     }
 
-    public LineStringType parseLineString(char[] coordinates) {
+    private LineStringType parseLineString(char[] coordinates) {
         LineStringType line = new LineStringType();
         line.setPosList(coordToDirectPosList(coordinates));
         line.setSrsName(srs);
@@ -174,7 +187,7 @@ public class GmlWktParser {
         return line;
     }
 
-    public PolygonType parsePolygon(char[] coordinateList) {
+    private PolygonType parsePolygon(char[] coordinateList) {
         PolygonType p = new PolygonType();
         AbstractRingPropertyType exRingProp = new AbstractRingPropertyType();
         LinearRingType exRing = new LinearRingType();

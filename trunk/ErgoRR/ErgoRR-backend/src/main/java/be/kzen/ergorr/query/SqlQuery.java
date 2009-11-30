@@ -61,26 +61,56 @@ public class SqlQuery {
         maxResults = 0;
     }
 
+    /**
+     * Get the max results to be returned by the query.
+     *
+     * @return Maximum number of results.
+     */
     public int getMaxResults() {
         return maxResults;
     }
 
+    /**
+     * Set the max results to be returned by the query.
+     *
+     * @param maxResults Maximum number of results.
+     */
     public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
     }
 
+    /**
+     * Get the start position of the results to be returned by the query.
+     *
+     * @return Start position of results.
+     */
     public int getStartPosition() {
         return startPosition;
     }
 
+    /**
+     * Set the start position of the results to be returned by the query.
+     * 
+     * @param startPosition Start position of results.
+     */
     public void setStartPosition(int startPosition) {
         this.startPosition = startPosition;
     }
 
+    /**
+     * Set the 'sort by' SQL query clause.
+     *
+     * @param sortBy SQL sort by.
+     */
     public void setSortBy(String sortBy) {
         this.sortBy = sortBy;
     }
 
+    /**
+     * Build the SQL query from the collected input.
+     *
+     * @return SQL query string.
+     */
     public String buildQuery() {
         if (whereClause.length() == 0) {
             buildWhereClause();
@@ -110,6 +140,9 @@ public class SqlQuery {
         return selectSql.toString();
     }
 
+    /**
+     * Build the SQL WHERE clause of the query.
+     */
     private void buildWhereClause() {
         whereClause.append(buildFromClause());
 
@@ -118,6 +151,12 @@ public class SqlQuery {
         }
     }
 
+    /**
+     * Build the SQL count query to be able to
+     * get the count of matched objects.
+     *
+     * @return SQL count query.
+     */
     public String buildCountQuery() {
         if (whereClause.length() == 0) {
             buildWhereClause();
@@ -126,6 +165,11 @@ public class SqlQuery {
         return SyntaxElements.SELECT + "count(" + returnObj.getSqlAlias() + SyntaxElements.CLOSE_BR + whereClause.toString();
     }
 
+    /**
+     * Build the SQL FROM clause of the query.
+     *
+     * @return SQL FROM clause.
+     */
     private String buildFromClause() {
         Iterator<String> it = selectObjs.keySet().iterator();
 
@@ -155,6 +199,11 @@ public class SqlQuery {
         return fromClause.toString() + LINE_SEPARATOR;
     }
 
+    /**
+     * Build the JOIN between RegistryObjects and [Slot, Name, Description]
+     *
+     * @return SQL JOIN criteria.
+     */
     private String buildJoinCriteria() {
         if (!joinNodes.isEmpty()) {
             StringBuilder joinCriteria = new StringBuilder();
@@ -177,6 +226,14 @@ public class SqlQuery {
         }
     }
 
+    /**
+     * Add a new JOIN criteria.
+     * If JOIN doesn't exist in the request, set the joined table
+     * as a {@code QueryObject} to the join node of the XPath.
+     *
+     * @param root XPath root element of the JOIN.
+     * @return
+     */
     private XPathNode addJoin(XPathNode root) {
         XPathNode node = null;
 
@@ -198,6 +255,12 @@ public class SqlQuery {
         return node;
     }
 
+    /**
+     * Add a new QueryObject to the request.
+     *
+     * @param fullType type name.
+     * @return QueryObject constructed by the {@code fullName}
+     */
     public QueryObject addNewQueryObject(String fullType) {
         int idx = fullType.indexOf("_");
 
@@ -214,12 +277,30 @@ public class SqlQuery {
         return qo;
     }
 
+    /**
+     * Add a XPath to the query.
+     * Extracts the QueryObject from the {@code rootNode}.
+     * A QueryObject previously constructed by the csw:Query/@typeNames
+     * has to match the QueryObject extracted from {@code rootNode}.
+     *
+     * If {@code rootNode} contains a joined child node, it will
+     * be added as a JOIN criteria.
+     *
+     * @param rootNode XPath root node.
+     * @return Root node itself or its child node if exists.
+     * @throws XPathException If QueryObject constructed from {@code rootNode} is not already in the request.
+     */
     public XPathNode addXPath(XPathNode rootNode) throws XPathException {
         QueryObject qo = getQueryObject(rootNode.getName());
         XPathNode node = null;
 
         if (qo == null) {
-            throw new XPathException("Object: " + rootNode.getName() + " not defined in typeNames attribute");
+            String err = "Object: " + rootNode.getName() + " not defined in typeNames attribute";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new XPathException(err);
         }
 
         qo.setUsedInQuery(true);
@@ -234,6 +315,12 @@ public class SqlQuery {
         return node;
     }
 
+    /**
+     * Get the QueryObject by alias from {@code selectObjs}.
+     *
+     * @param queryAlias Query alias.
+     * @return QueryObject of alias or {@code null} if not found.
+     */
     public QueryObject getQueryObject(String queryAlias) {
         int idx = queryAlias.indexOf("_");
         String alias = "";
@@ -248,22 +335,51 @@ public class SqlQuery {
         return selectObjs.get(alias);
     }
 
+    /**
+     * Append to the SQL WHERE criteria.
+     *
+     * @param str String to append.
+     * @return StringBuilder of criteria.
+     */
     public StringBuilder append(String str) {
         return criteria.append(str);
     }
 
+    /**
+     * Append to the SQL WHERE criteria.
+     *
+     * @param obj Object to append.
+     * @return StringBuilder of criteria.
+     */
     public StringBuilder append(Object obj) {
         return criteria.append(obj);
     }
 
+    /**
+     * Set the object type to be returned by this query.
+     * @param returnObj Object type to return.
+     */
     public void setReturnType(QueryObject returnObj) {
         this.returnObj = returnObj;
     }
 
+    /**
+     * Get the object type to be returned by this query.
+     * @return Object type to return.
+     */
     public QueryObject getReturnType() {
         return returnObj;
     }
 
+    /**
+     * Some column names are keywords in some database.
+     * E.g: 'name'
+     * This method follows the convention to append
+     * a '_' at the end of those column names.
+     *
+     * @param name Unescaped column name.
+     * @return Escapsed column name.
+     */
     public static String getColumnName(String name) {
         String colName = name;
 
@@ -273,6 +389,11 @@ public class SqlQuery {
         return colName;
     }
 
+    /**
+     * Get the next, unused object alias.
+     *
+     * @return new alias.
+     */
     private String getNextObjectAlias() {
         return OBJECT_ALIAS + aliasIdx++;
     }

@@ -19,6 +19,9 @@
 package be.kzen.ergorr.exceptions;
 
 /**
+ * Reference exists exception.
+ * 
+ * TODO: consider removing.
  *
  * @author yamanustuntas
  */

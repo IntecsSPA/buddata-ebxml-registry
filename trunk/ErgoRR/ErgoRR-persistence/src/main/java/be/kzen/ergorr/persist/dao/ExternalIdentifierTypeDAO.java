@@ -10,7 +10,8 @@ import java.sql.Statement;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * ExternalIdentifier DAO
+ * 
  * @author Yaman Ustuntas
  */
 public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIdentifierType> {
@@ -22,6 +23,12 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         super(eiXml);
     }
 
+    /**
+     * Add ExternalIdentifiers belonging to the RegistryObject {@code parent}.
+     *
+     * @param parent RegistryObject to add its ExternalIdentifiers to.
+     * @throws SQLException
+     */
     public void addExternalIdentifiers(RegistryObjectType parent) throws SQLException {
         Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
@@ -33,6 +40,12 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         }
     }
 
+    /**
+     * Delete ExternalIdentifiers belonging to the RegistryObject {@code parent}.
+     *
+     * @param parent RegistryObject whose ExternalIdentifiers should be deleted.
+     * @throws SQLException
+     */
     public void deleteExternalIdentifiers(RegistryObjectType parent) throws SQLException {
         Statement stmt = connection.createStatement();
         StringBuilder sql = new StringBuilder();
@@ -40,12 +53,18 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         stmt.execute(sql.toString());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExternalIdentifierType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new ExternalIdentifierType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ExternalIdentifierType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -55,6 +74,9 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -63,11 +85,17 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         stmt.setString(10, xmlObject.getValue());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",registryobject,identificationscheme,value_";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -77,16 +105,25 @@ public class ExternalIdentifierTypeDAO extends RegistryObjectTypeDAO<ExternalIde
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",registryobject=?,identificationscheme=?,value_=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_externalidentifier";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<ExternalIdentifierType> createJAXBElement() {
         return OFactory.rim.createExternalIdentifier(xmlObject);

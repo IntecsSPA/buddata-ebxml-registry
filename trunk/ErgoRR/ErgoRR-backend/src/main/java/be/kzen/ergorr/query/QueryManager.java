@@ -64,23 +64,42 @@ public class QueryManager {
         this.requestContext = requestContext;
     }
 
+    /**
+     * Execute the query with the request in {@code requestContext}.
+     *
+     * @return Query response.
+     * @throws ServiceException
+     */
     public GetRecordsResponseType query() throws ServiceException {
 
         Object requestObj = requestContext.getRequest();
         GetRecordsType getRecords = null;
 
         if (requestObj instanceof GetRecordsType) {
-            getRecords = handleGetRecords((GetRecordsType) requestObj);
+            getRecords = handleStoreQuery((GetRecordsType) requestObj);
         } else if (requestObj instanceof AdhocQueryRequest) {
             getRecords = handleAdhocQuery((AdhocQueryRequest) requestObj);
-            getRecords = handleGetRecords(getRecords);
+            getRecords = handleStoreQuery(getRecords);
         } else {
-            throw new ServiceException("Unsupported query object: " + requestObj.getClass().getName());
+            String err = "Unsupported query object type request: " + requestObj.getClass().getName();
+            
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new ServiceException(err);
         }
 
         return query(getRecords);
     }
 
+    /**
+     * Handle request depending on, 
+     * if {@code adhocQueryReq} is a stored query or adhoc query request.
+     *
+     * @param adhocQueryReq AdhocQuery request.
+     * @return GetRecordsType request.
+     * @throws ServiceException
+     */
     private GetRecordsType handleAdhocQuery(AdhocQueryRequest adhocQueryReq) throws ServiceException {
         AdhocQueryType adhocQuery = adhocQueryReq.getAdhocQuery();
         GetRecordsType getRecords = new GetRecordsType();
@@ -102,7 +121,15 @@ public class QueryManager {
         return getRecords;
     }
 
-    private GetRecordsType handleGetRecords(GetRecordsType getRecords) throws ServiceException {
+    /**
+     * If {@code getRecords} contains a stored AdhocQuery request,
+     * query the stored query from the registry and construct the request.
+     *
+     * @param getRecords GetRecordsType request.
+     * @return Edited GetRecordsType request if {@code getRecords} contained a stored AdhocQuery request.
+     * @throws ServiceException
+     */
+    private GetRecordsType handleStoreQuery(GetRecordsType getRecords) throws ServiceException {
         if (!getRecords.isSetAbstractQuery() && getRecords.isSetAny()) {
             JAXBElement queryEl = (JAXBElement) getRecords.getAny();
             AdhocQueryType adhocParams = (AdhocQueryType) queryEl.getValue();
@@ -111,28 +138,51 @@ public class QueryManager {
             try {
                 getRecords.setAbstractQuery(storeQueryBuilder.build());
             } catch (Exception ex) {
-                logger.log(Level.WARNING, "Error while building stored query", ex);
-                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while building stored query", ex);
+                String err = "Error while building stored query";
+                logger.log(Level.WARNING, err, ex);
+                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, err, ex);
             }
         }
 
         return getRecords;
     }
 
+    /**
+     * Wrap a query content of a QueryExpressionType request in a QueryType.
+     *
+     * @param queryExpr Query expression to extract content from.
+     * @return QueryType
+     * @throws ServiceException
+     */
     private QueryType adhocQueryToOgcQuery(QueryExpressionType queryExpr) throws ServiceException {
 
         if (queryExpr.getQueryLanguage() == null || !queryExpr.getQueryLanguage().equals(RIMConstants.CN_QUERY_LANG_GML_FILTER)) {
-            throw new ServiceException("Query language not supported");
+            String err = "Query language not supported";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new ServiceException(err);
         }
 
         if (queryExpr.getContent().size() > 0) {
-            throw new ServiceException("No ogc:Query provided");
+            String err = "No ogc:Query provided in request";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new ServiceException(err);
         }
 
         Object ogcQueryEl = queryExpr.getContent().get(0);
 
         if (ogcQueryEl instanceof JAXBElement) {
-            throw new ServiceException("Query not an instance of ogc:Query");
+            String err = "Query not an instance of ogc:Query";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new ServiceException(err);
         }
 
         Object ogcQueryObj = ((JAXBElement) ogcQueryEl).getValue();
@@ -141,7 +191,12 @@ public class QueryManager {
         if (ogcQueryObj instanceof QueryType) {
             ogcQuery = (QueryType) ogcQueryObj;
         } else {
-            throw new ServiceException("Query not an instance of ogc:Query");
+            String err = "Query not an instance of ogc:Query";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new ServiceException(err);
         }
 
         return ogcQuery;
@@ -153,10 +208,10 @@ public class QueryManager {
      * @return Query response.
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    public GetRecordsResponseType query(GetRecordsType request) throws ServiceException {
+    private GetRecordsResponseType query(GetRecordsType request) throws ServiceException {
         GetRecordsResponseType response = new GetRecordsResponseType();
 
-        QueryBuilderImpl2 queryBuilder = null;
+        QueryBuilder queryBuilder = null;
         String sql = null;
 
         try {
@@ -231,7 +286,9 @@ public class QueryManager {
 
             return idents;
         } catch (SQLException ex) {
-            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Error while constructing SQL query", ex);
+            String err = "Error while constructing getByIds SQL query";
+            logger.log(Level.WARNING, err);
+            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, err, ex);
         }
     }
 
@@ -259,53 +316,12 @@ public class QueryManager {
 
                 assoEls.addAll(assos);
             } catch (SQLException ex) {
-                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could not load associations of object with ID: " + ident.getId(), ex);
+                String err = "Could not load associations of object with ID: " + ident.getId();
+                logger.log(Level.WARNING, err, ex);
+                throw new ServiceException(ErrorCodes.INTERNAL_ERROR, err, ex);
             }
         }
 
         return assoEls;
-    }
-
-    /**
-     * Get the associations and associated objects to the objects in <code>identEls</code>.
-     * 
-     * @param identEls Identifiables to get association and association objects from.
-     * @return List of associations and associated identifiables.
-     * @throws be.kzen.ergorr.exceptions.ServiceException
-     */
-    private List<JAXBElement<? extends IdentifiableType>> getAssociatedObjects(List<JAXBElement<? extends IdentifiableType>> identEls) throws ServiceException {
-        List<JAXBElement<? extends IdentifiableType>> relatedIdents = new ArrayList<JAXBElement<? extends IdentifiableType>>();
-
-        try {
-            for (JAXBElement<? extends IdentifiableType> identEl : identEls) {
-                IdentifiableType ident = identEl.getValue();
-                String sql = "select * from t_association where targetobject='" + ident.getId() + "' or sourceobject='" + ident.getId() + "'";
-
-                SqlPersistence service = new SqlPersistence(requestContext);
-
-                List<JAXBElement<AssociationType>> assos =
-                        service.query(sql, new ArrayList<Object>(), OFactory.getXmlClassByElementName("Association"));
-
-                List<String> relatedObjIds = new ArrayList<String>();
-
-                for (JAXBElement<AssociationType> assoEl : assos) {
-                    relatedIdents.add(assoEl);
-                    AssociationType asso = assoEl.getValue();
-
-                    if (asso.getSourceObject().equals(ident.getId())) {
-                        relatedObjIds.add(asso.getTargetObject());
-                    } else {
-                        relatedObjIds.add(asso.getSourceObject());
-                    }
-                }
-
-                List<JAXBElement<? extends IdentifiableType>> relatedObjs = service.getByIds(relatedObjIds);
-                relatedIdents.addAll(relatedObjs);
-            }
-        } catch (Exception ex) {
-            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could not load associated objects", ex);
-        }
-
-        return relatedIdents;
     }
 }

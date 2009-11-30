@@ -30,17 +30,24 @@ import be.kzen.ergorr.model.util.OFactory;
 import javax.xml.bind.JAXBElement;
 
 /**
+ * SAR translator.
  *
  * @author Yaman Ustuntas
  */
 public class SARTranslator extends HMATranslator<EarthObservationType> {
     private static final String CLASSIFICATION = "urn:x-ogc:specification:csw-ebrim:EO:EOProductTypes:SAR";
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getClassification() {
         return CLASSIFICATION;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected WrsExtrinsicObjectType translateProduct() throws TranslationException {
         WrsExtrinsicObjectType e = super.translateProduct();
@@ -94,6 +101,9 @@ public class SARTranslator extends HMATranslator<EarthObservationType> {
         return e;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JAXBElement<EarthObservationType> getEarthObservationJaxbEl() {
         return OFactory.eo_sar.createEarthObservation(eo);

@@ -19,6 +19,8 @@
 package be.kzen.ergorr.query;
 
 import be.kzen.ergorr.exceptions.QueryException;
+import be.kzen.ergorr.model.csw.ElementSetType;
+import java.util.List;
 
 /**
  * Interface for a OGC filter to SQL builder.
@@ -42,4 +44,26 @@ public interface QueryBuilder {
      * @return SQL query.
      */
     public String createCountQuery();
+
+    /**
+     * List of query parameters in the order
+     * as they should appear in the SQL query statement.
+     *
+     * @return Query parameter list.
+     */
+    public List<Object> getParameters();
+
+    /**
+     * Get the object to be returned by query.
+     *
+     * @return Object to return.
+     */
+    public QueryObject getReturnObject();
+
+    /**
+     * Get the element set type of the query.
+     *
+     * @return ElementSetType
+     */
+    public ElementSetType getResultSet();
 }

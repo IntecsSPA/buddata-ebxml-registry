@@ -33,6 +33,14 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 /**
+ * Writes a JAXB representation of a geometry as
+ * a custom WKT format.
+ * 
+ * The reason of WKT being custom is that we also have
+ * to store the srsId.
+ *
+ * TODO: to be removed when we stop storing geometry values
+ * on string column.
  *
  * @author yamanustuntas
  */
@@ -46,6 +54,12 @@ public class GmlWktWriter {
         wkt = new StringBuilder(64);
     }
 
+    /**
+     * Writers JAXB geometry object to String.
+     *
+     * @return Custom WKT representation of geometry.
+     * @throws TransformException
+     */
     public String write() throws TransformException {
         if (geometry instanceof PolygonType) {
             writePolygon((PolygonType) geometry);

@@ -24,6 +24,10 @@ package be.kzen.ergorr.commons;
  * @author yaman
  */
 public class NamespaceConstants {
+
+    private NamespaceConstants() {
+    }
+    
     public static final String SCHEMA = "http://www.w3c.org/2001/XMLSchema";
     public static final String RIM = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
     public static final String CSW = "http://www.opengis.net/cat/csw/2.0.2";

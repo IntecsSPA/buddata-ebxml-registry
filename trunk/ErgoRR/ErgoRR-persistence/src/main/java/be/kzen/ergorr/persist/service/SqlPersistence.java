@@ -106,7 +106,7 @@ public class SqlPersistence {
             StopWatch stopWatch = new StopWatch();
             result = stmt.executeQuery();
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.INFO, "Query exec time: " + stopWatch.getDurationAsMillis());
+                logger.fine("Query exec time: " + stopWatch.getDurationAsMillis());
             }
 
 
@@ -125,13 +125,14 @@ public class SqlPersistence {
                     idents.add(identDAO.createJAXBElement());
                 }
             } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Could not load DAO object for query", ex);
-                throw new SQLException("Could not load class " + clazz.getName() + ": " + ex.toString());
+                String err = "Could not load DAO object for query: " + clazz.getName();
+                logger.log(Level.SEVERE, err, ex);
+                throw new SQLException(err + " " + ex.toString());
             }
 
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.INFO, "Loaded " + responseCount + " objects");
-                logger.log(Level.INFO, "Load XML types time: " + stopWatch.getDurationAsMillis());
+                logger.fine("Loaded " + responseCount + " objects");
+                logger.fine("Load XML types time: " + stopWatch.getDurationAsMillis());
             }
 
         } finally {
@@ -153,7 +154,7 @@ public class SqlPersistence {
     public long getResultCount(String query, List<Object> parameters) throws SQLException {
 
         if (logger.isLoggable(Level.FINE)) {
-            logger.log(Level.FINE, "SQL: " + query);
+            logger.fine("SQL: " + query);
         }
 
         Connection conn = getConnection();
@@ -175,7 +176,8 @@ public class SqlPersistence {
                 count = result.getLong(1);
             }
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.INFO, "Count query exec time: " + stopWatch.getDurationAsMillis());
+                logger.fine("Count query exec time: " + stopWatch.getDurationAsMillis());
+                logger.fine("Result count: " + count);
             }
             return count;
         } finally {
@@ -197,8 +199,8 @@ public class SqlPersistence {
 
             for (IdentifiableType ident : idents) {
 
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, "Deleting " + ident.getClass().getSimpleName() + " with ID: " + ident.getId());
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info("Deleting " + ident.getClass().getSimpleName() + " with ID: " + ident.getId());
                 }
 
                 Class daoClass = Class.forName("be.kzen.ergorr.persist.dao." + ident.getClass().getSimpleName() + "DAO");
@@ -211,6 +213,7 @@ public class SqlPersistence {
 
             conn.commit();
         } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error while deleting objects", ex);
             throw new SQLException(ex.toString());
         } finally {
             if (conn != null) {
@@ -469,14 +472,14 @@ public class SqlPersistence {
             conn.commit();
 
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "Failed to insert objects", ex);
+            logger.log(Level.WARNING, "Failed to insert objects", ex);
 
             if (ex.getNextException() != null) {
-                logger.log(Level.SEVERE, "   NextException >>>>>", ex.getNextException());
+                logger.log(Level.WARNING, "   NextException >>>>>", ex.getNextException());
             }
             throw ex;
         } catch (Throwable t) {
-            logger.log(Level.SEVERE, "Failed to insert objects", t);
+            logger.log(Level.WARNING, "Failed to insert objects", t);
             throw new SQLException("Could not insert objects: " + t.toString());
         } finally {
             if (conn != null) {
@@ -502,9 +505,8 @@ public class SqlPersistence {
     }
 
     /**
-     * Get database connection.
-     * First attempts to get connection from the application server DataSource.
-     * If that fails then tries to create a connect manually.
+     * Get database connection from {@code dataSource} or by
+     * manually creating a connection.
      *
      * @return Database connection.
      * @throws java.sql.SQLException
@@ -536,6 +538,15 @@ public class SqlPersistence {
         return conn;
     }
 
+    /**
+     * Manually create a connection.
+     * First checks if {@code requestContext} has {@code DbConnectionParams} set
+     * and uses that if it exists. Otherwise uses default connection parameters
+     * from configuration.
+     *
+     * @return New SQL connection.
+     * @throws SQLException
+     */
     private Connection createConnection() throws SQLException {
         DbConnectionParams connParams = (DbConnectionParams) requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS);
 
@@ -554,6 +565,12 @@ public class SqlPersistence {
         return DriverManager.getConnection(connParams.createConnectionString(), connParams.getDbUser(), connParams.getDbPassword());
     }
 
+    /**
+     * Load {@code dataSource} with context lookup if provided by application server.
+     *
+     * @return Returns true if {@code dataSource} was loaded successfully.
+     * @throws SQLException
+     */
     private boolean loadDataSource() throws SQLException {
         boolean loaded = false;
 
@@ -571,12 +588,17 @@ public class SqlPersistence {
         return loaded;
     }
 
+    /**
+     * Load the JDBC driver class.
+     * 
+     * @throws SQLException
+     */
     private void loadDriver() throws SQLException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (Exception ex) {
             logger.severe("Postgres driver not found");
-            throw new SQLException("Oops, Postgres Driver not found");
+            throw new SQLException("Postgres Driver not found");
         }
     }
 }

@@ -56,7 +56,7 @@ public class RimValidator {
     }
 
     /**
-     * Start validation of the RegistryObjects.
+     * Validation of the objects to be inserted/updated.
      * 
      * @throws be.kzen.ergorr.exceptions.InvalidReferenceException
      * @throws java.sql.SQLException
@@ -73,15 +73,21 @@ public class RimValidator {
                 validator.validate();
                 
             } catch (InstantiationException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, null, ex);
             } catch (IllegalAccessException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, null, ex);
             } catch (ClassNotFoundException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, null, ex);
             }
         }
     }
 
+    /**
+     * Validate the list of objects to be deleted.
+     * 
+     * @throws ReferenceExistsException
+     * @throws SQLException
+     */
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         List<IdentifiableType> addedIdents = new ArrayList<IdentifiableType>();
 
@@ -98,11 +104,11 @@ public class RimValidator {
                 addedIdents.addAll(validator.getAddedIdents());
 
             } catch (InstantiationException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, null, ex);
             } catch (IllegalAccessException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, null, ex);
             } catch (ClassNotFoundException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, null, ex);
             }
         }
 

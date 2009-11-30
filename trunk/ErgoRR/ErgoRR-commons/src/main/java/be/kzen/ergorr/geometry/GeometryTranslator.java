@@ -233,7 +233,8 @@ public class GeometryTranslator {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     public static Polygon polygonFromEnvelope(EnvelopeType env) throws TransformException {
-        if (env.getLowerCorner().getValue().size() == 2 && env.getUpperCorner().getValue().size() == 2) {
+        if (env.isSetLowerCorner() && env.getLowerCorner().getValue().size() == 2 &&
+                env.isSetUpperCorner() && env.getUpperCorner().getValue().size() == 2) {
             double x1 = env.getLowerCorner().getValue().get(0);
             double y1 = env.getLowerCorner().getValue().get(1);
             double x2 = env.getUpperCorner().getValue().get(0);

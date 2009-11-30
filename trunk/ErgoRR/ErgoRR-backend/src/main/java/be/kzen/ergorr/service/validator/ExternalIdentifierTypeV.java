@@ -22,6 +22,7 @@ import be.kzen.ergorr.model.rim.ExternalIdentifierType;
 
 /**
  * Validates ExternalIdentifiers.
+ * TODO implement
  * 
  * @author yamanustuntas
  */

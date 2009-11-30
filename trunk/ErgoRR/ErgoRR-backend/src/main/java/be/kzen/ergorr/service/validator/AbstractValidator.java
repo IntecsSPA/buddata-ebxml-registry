@@ -62,18 +62,46 @@ public abstract class AbstractValidator<T extends IdentifiableType> {
         persistence = new SqlPersistence(requestContext.copyForNewConn());
     }
 
+    /**
+     * Get flat list of IdentifiableType.
+     *
+     * @return List of IdentifiableType.
+     */
     public List<IdentifiableType> getFlatIdents() {
         return flatIdents;
     }
 
+    /**
+     * Set flat list of IdentifiableType.
+     *
+     * @param flatIdents List of IdentifiableType
+     */
     public void setFlatIdents(List<IdentifiableType> flatIdents) {
         this.flatIdents = flatIdents;
     }
 
+    /**
+     * Get the list of added IdentifiableTypes.
+     * These objects are a result of validation of an insert or delete.
+     * Example, if an object is to be deleted in {@code flatIdents},
+     * a validator would add nested/related object to be deleted
+     * in this list.
+     *
+     * @return List of added IdentifiableTypes.
+     */
     public List<IdentifiableType> getAddedIdents() {
         return addedIdents;
     }
 
+    /**
+     * Set the list of added IdentifiableTypes.
+     * These objects are a result of validation of an insert or delete.
+     * Example, if an object is to be deleted in {@code flatIdents},
+     * a validator would add nested/related object to be deleted
+     * in this list.
+     *
+     * @param addedIdents List of added IdentifiableTypes.
+     */
     public void setAddedIdents(List<IdentifiableType> addedIdents) {
         this.addedIdents = addedIdents;
     }

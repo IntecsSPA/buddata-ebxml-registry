@@ -35,7 +35,13 @@ import java.nio.channels.FileChannel;
  * @author <a href="mailto:yaman@cryptosense.com">Yaman Ustuntas</a>
  */
 public class FileUtil {
-    
+
+    /**
+     * Delete a single file or a directory recursively.
+     * Ingores files which cannot be deleted.
+     *
+     * @param file File or directory to delete.
+     */
     public static void delete(File file) {
         if (file == null) {
             throw new NullPointerException("file must not be null");
@@ -51,6 +57,13 @@ public class FileUtil {
         file.delete();
     }
 
+    /**
+     * Copy file {@code src} to directory {@code dest}.
+     *
+     * @param src File to copy.
+     * @param dest Directory to copy to.
+     * @throws IOException
+     */
     public static void copy(File src, File dest) throws IOException {
 
         if (src == null) {
@@ -81,6 +94,13 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Read file to byte array.
+     *
+     * @param file File to read.
+     * @return File content as byte array.
+     * @throws IOException
+     */
     public static byte[] readAsBytes(File file) throws IOException {
 
         if (file == null) {
@@ -104,6 +124,13 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Read file to String.
+     *
+     * @param file File to read.
+     * @return File content as String,
+     * @throws IOException
+     */
     public static String readAsString(File file) throws IOException {
 
         if (file == null) {
@@ -131,6 +158,13 @@ public class FileUtil {
         return fileData.toString();
     }
 
+    /**
+     * Write String {@code data} to {@code file} path.
+     *
+     * @param file File to write to.
+     * @param data Data to write.
+     * @throws IOException
+     */
     public static void write(File file, String data) throws IOException {
 
         if (file == null) {
@@ -146,6 +180,13 @@ public class FileUtil {
         write(file, data.getBytes(IoUtil.ENCODING));
     }
 
+    /**
+     * Write byte array {@code data} to {@code file} path.
+     *
+     * @param file File to write to.
+     * @param data Data to write.
+     * @throws IOException
+     */
     public static void write(File file, byte[] data) throws IOException {
 
         if (file == null) {
@@ -169,6 +210,13 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Check if the content of {@code file1} and {@code file2} are equal.
+     *
+     * @param file1 File to compare.
+     * @param file2 File to compare.
+     * @throws IOException
+     */
     public static void contentEquals(File file1, File file2) throws IOException {
         if (file1 == null) {
             throw new NullPointerException("file1 must not be null");

@@ -37,6 +37,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
+ * Ant task to the ErgoRR-backend directly to insert RIM or other supported models.
  *
  * @author yamanustuntas
  */
@@ -49,10 +50,19 @@ public class BackendInvokerTask extends Task {
         initSlots();
     }
 
+    /**
+     * Set a folder path containing metadata XML files
+     * or the path of a single metadata file.
+     *
+     * @param dataSrc Data source folder or file.
+     */
     public void setDataSrc(String dataSrc) {
         this.dataSrc = dataSrc;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws BuildException {
         File[] xmlFiles = null;
@@ -73,11 +83,17 @@ public class BackendInvokerTask extends Task {
         }
 
         if (xmlFiles.length > 0) {
-            invoke(xmlFiles);
+            insert(xmlFiles);
         }
     }
 
-    public void invoke(File[] xmlFiles) throws BuildException {
+    /**
+     * Insert the list of XML metadata files into the registry.
+     *
+     * @param xmlFiles List of XML metadata files.
+     * @throws BuildException
+     */
+    private void insert(File[] xmlFiles) throws BuildException {
         Unmarshaller unmarshaller = null;
 
         try {
@@ -111,6 +127,9 @@ public class BackendInvokerTask extends Task {
         }
     }
 
+    /**
+     * Initialize the slot cache from the database.
+     */
     private void initSlots() {
         slotTypes = InternalSlotTypes.getInstance();
 
@@ -126,8 +145,14 @@ public class BackendInvokerTask extends Task {
         }
     }
 
+    /**
+     * File filter for XML files.
+     */
     class XmlFileFilter implements FileFilter {
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean accept(File file) {
             return file.isFile() && file.getName().toLowerCase().endsWith(".xml");
         }

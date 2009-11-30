@@ -61,7 +61,10 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
         descDAO.insert();
     }
 
-    protected void loadRelateObjects() throws SQLException {
+    @Override
+    protected void loadRelatedObjects() throws SQLException {
+        super.loadRelatedObjects();
+        
         if (returnNestedObjects()) {
             UsageParameterDAO paramDAO = new UsageParameterDAO(xmlObject);
             paramDAO.setContext(context);

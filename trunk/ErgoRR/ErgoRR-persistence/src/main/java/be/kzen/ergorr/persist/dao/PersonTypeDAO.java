@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * Person DAO.
+ * 
  * @author yamanustuntas
  */
 public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
@@ -23,12 +24,18 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         super(personXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PersonType newXmlObject(ResultSet result) throws SQLException {
         xmlObject = new PersonType();
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected PersonType loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -46,6 +53,9 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         return xmlObject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
@@ -68,6 +78,9 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void insertRelatedObjects() throws SQLException {
         super.insertRelatedObjects();
@@ -88,6 +101,9 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         telDAO.insert();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateRelatedObjects() throws SQLException {
         super.updateRelatedObjects();
@@ -108,6 +124,9 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         telDAO.update();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void deleteRelatedObjects() throws SQLException {
         super.deleteRelatedObjects();
@@ -128,6 +147,9 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         telDAO.delete();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -139,11 +161,17 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         stmt.setString(10, personName.getLastName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",firstname,middlename,lastname";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -153,16 +181,25 @@ public class PersonTypeDAO extends RegistryObjectTypeDAO<PersonType> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",firstname=?,middlename=?,lastname=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_person";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<PersonType> createJAXBElement() {
         return OFactory.rim.createPerson(xmlObject);

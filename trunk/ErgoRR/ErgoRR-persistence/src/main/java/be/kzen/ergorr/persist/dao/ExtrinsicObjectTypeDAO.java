@@ -1,6 +1,5 @@
 package be.kzen.ergorr.persist.dao;
 
-import be.kzen.ergorr.commons.InternalConstants;
 import be.kzen.ergorr.model.rim.ExtrinsicObjectType;
 import be.kzen.ergorr.model.rim.VersionInfoType;
 import be.kzen.ergorr.model.util.OFactory;
@@ -13,7 +12,7 @@ import java.sql.Types;
 import javax.xml.bind.JAXBElement;
 
 /**
- *
+ * ExtrinsicObject DAO
  * @author Yaman Ustuntas
  */
 public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends RegistryObjectTypeDAO<T> {
@@ -25,12 +24,18 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
         super(eoXml);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T newXmlObject(ResultSet result) throws SQLException {
         xmlObject = (T) (result.getString("spectype").equals("rim") ? new ExtrinsicObjectType() : new WrsExtrinsicObjectType());
         return loadCompleteXmlObject(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected T loadXmlObject(ResultSet result) throws SQLException {
         super.loadXmlObject(result);
@@ -68,6 +73,17 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
         return xmlObject;
     }
 
+    /**
+     * Check if data is provided to construct a SimpleLink
+     *
+     * @param wrsactuate
+     * @param wrsarcrole
+     * @param wrshref
+     * @param wrsrole
+     * @param wrsshow
+     * @param wrstitle
+     * @return True if SimpleLink data is provided.
+     */
     protected boolean isSetSimpleLink(String wrsactuate, String wrsarcrole, String wrshref, String wrsrole, String wrsshow, String wrstitle) {
         return (wrsactuate != null && !wrsactuate.equals("")) ||
                 (wrsarcrole != null && !wrsarcrole.equals("")) ||
@@ -77,6 +93,9 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
                 (wrstitle != null && !wrstitle.equals(""));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
@@ -121,16 +140,25 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "t_extrinsicobject";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParamList() {
         return super.getParamList() + ",isopaque,mimetype,contentversionname,contentversioncomment,spectype,wrsactuate,wrsarcrole,wrshref,wrsrole,wrsshow,wrstitle";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
@@ -140,11 +168,17 @@ public class ExtrinsicObjectTypeDAO<T extends ExtrinsicObjectType> extends Regis
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPlaceHolders() {
         return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?,?,?,?,?,?,?,?,?" : ",isopaque=?,mimetype=?,contentversionname=?,contentversioncomment=?,spectype=?,wrsactuate=?,wrsarcrole=?,wrshref=?,wrsrole=?,wrsshow=?,wrstitle=?");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JAXBElement<T> createJAXBElement() {
         if (xmlObject instanceof WrsExtrinsicObjectType) {
