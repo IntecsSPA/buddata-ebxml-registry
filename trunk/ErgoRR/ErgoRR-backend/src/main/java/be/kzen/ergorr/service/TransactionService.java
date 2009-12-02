@@ -24,7 +24,6 @@ import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ErrorCodes;
 import be.kzen.ergorr.exceptions.ServiceException;
-import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.DeleteType;
 import be.kzen.ergorr.model.csw.ElementSetNameType;
@@ -48,7 +47,6 @@ import be.kzen.ergorr.service.translator.TranslationException;
 import be.kzen.ergorr.service.translator.TranslatorFactory;
 import be.kzen.ergorr.service.translator.Translator;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -103,7 +101,7 @@ public class TransactionService {
             } else if (action instanceof DeleteType) {
                 doDelete((DeleteType) action);
             } else {
-                logger.severe("Transaction request not an Insert, Update or Delete");
+                logger.warning("Transaction request not an Insert, Update or Delete");
             }
         }
 
@@ -168,7 +166,7 @@ public class TransactionService {
                     Translator translator = TranslatorFactory.getInstance(jaxbEl);
                     regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
                 } catch (TranslationException ex) {
-                    logger.log(Level.WARNING, "Transaction error", ex);
+                    logger.log(Level.WARNING, "Translation error", ex);
                     throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Transaction error", ex);
                 }
             }

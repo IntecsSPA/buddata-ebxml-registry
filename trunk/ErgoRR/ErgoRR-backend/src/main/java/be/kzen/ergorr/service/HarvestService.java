@@ -21,7 +21,6 @@ package be.kzen.ergorr.service;
 import be.kzen.ergorr.commons.RequestContext;
 import be.kzen.ergorr.exceptions.ErrorCodes;
 import be.kzen.ergorr.exceptions.ServiceException;
-import be.kzen.ergorr.interfaces.soap.csw.ServiceExceptionReport;
 import be.kzen.ergorr.model.csw.BriefRecordType;
 import be.kzen.ergorr.model.csw.HarvestResponseType;
 import be.kzen.ergorr.model.csw.HarvestType;
@@ -80,8 +79,9 @@ public class HarvestService {
         try {
             xmlLocaltion = new URL(request.getSource());
         } catch (MalformedURLException ex) {
-            logger.log(Level.WARNING, "Invalid URL", ex);
-            throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Invalid URL", ex);
+            String err = "User requested harvesting from an invalid URL";
+            logger.log(Level.INFO, err, ex);
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
         }
 
         JAXBElement remoteXmlEl = null;
@@ -89,8 +89,9 @@ public class HarvestService {
         try {
             remoteXmlEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(xmlLocaltion);
         } catch (JAXBException ex) {
-            logger.log(Level.WARNING, "Could not load remote object", ex);
-            throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Could not load remote object", ex);
+            String err = "Could not load remote object to harvest";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
         }
 
         Object remoteXml = remoteXmlEl.getValue();
@@ -107,8 +108,9 @@ public class HarvestService {
                 Translator translator = TranslatorFactory.getInstance(remoteXmlEl);
                 regObjList = translator.translate();
             } catch (TranslationException ex) {
-                logger.log(Level.WARNING, "Translation failed", ex);
-                throw new ServiceException(ErrorCodes.INVALID_REQUEST, "Translation failed", ex);
+                String err = "Translation error";
+                logger.log(Level.WARNING, err, ex);
+                throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
             }
         }
 

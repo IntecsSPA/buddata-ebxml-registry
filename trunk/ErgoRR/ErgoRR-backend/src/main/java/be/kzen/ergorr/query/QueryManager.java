@@ -287,7 +287,7 @@ public class QueryManager {
             return idents;
         } catch (SQLException ex) {
             String err = "Error while constructing getByIds SQL query";
-            logger.log(Level.WARNING, err);
+            logger.log(Level.SEVERE, err);
             throw new ServiceException(ErrorCodes.INTERNAL_ERROR, err, ex);
         }
     }
@@ -317,7 +317,7 @@ public class QueryManager {
                 assoEls.addAll(assos);
             } catch (SQLException ex) {
                 String err = "Could not load associations of object with ID: " + ident.getId();
-                logger.log(Level.WARNING, err, ex);
+                logger.log(Level.SEVERE, err, ex);
                 throw new ServiceException(ErrorCodes.INTERNAL_ERROR, err, ex);
             }
         }

@@ -73,11 +73,11 @@ public class RegistryPackageTypeV extends RegistryObjectTypeV<RegistryPackageTyp
                     validator.validateToDelete();
                     addedIdents.add(ident);
                 } catch (InstantiationException ex) {
-                    logger.log(Level.WARNING, null, ex);
+                    logger.log(Level.SEVERE, "Validator InstantiationException", ex);
                 } catch (IllegalAccessException ex) {
-                    logger.log(Level.WARNING, null, ex);
+                    logger.log(Level.SEVERE, "Validator IllegalAccessException", ex);
                 } catch (ClassNotFoundException ex) {
-                    logger.log(Level.WARNING, null, ex);
+                    logger.log(Level.SEVERE, "Validator ClassNotFoundException", ex);
                 }
             }
         }

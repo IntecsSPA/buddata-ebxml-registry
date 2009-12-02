@@ -63,7 +63,7 @@ public class TranslatorFactory {
         if (className != null) {
 
             if (logger.isLoggable(Level.FINE)) {
-                logger.info("Found translator class: " + className + " for ns: " + jaxbEl.getName().getNamespaceURI());
+                logger.fine("Found translator class: " + className + " for ns: " + jaxbEl.getName().getNamespaceURI());
             }
 
             try {

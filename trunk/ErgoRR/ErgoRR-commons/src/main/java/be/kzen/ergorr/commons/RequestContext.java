@@ -64,7 +64,8 @@ public class RequestContext {
             if (clazz.isInstance(value)) {
                 return (T) value;
             } else {
-                logger.log(Level.WARNING, "Context with key '" + key + "' was expected to be of type " + clazz.getSimpleName() + " but was inserted as " + value.getClass().getSimpleName());
+                logger.log(Level.SEVERE, "Context with key '" + key + "' was expected to be of type "
+                        + clazz.getSimpleName() + " but was inserted as " + value.getClass().getSimpleName());
             }
         }
 

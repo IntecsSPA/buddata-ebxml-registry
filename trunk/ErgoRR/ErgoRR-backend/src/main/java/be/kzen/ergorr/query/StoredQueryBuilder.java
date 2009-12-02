@@ -50,7 +50,6 @@ public class StoredQueryBuilder {
         List<JAXBElement<? extends IdentifiableType>> adhocQueryEls = service.query(sql, null, AdhocQueryType.class);
 
         if (adhocQueryEls.size() > 0) {
-            logger.info("found Adhoc query in database");
             AdhocQueryType adhocQuery = (AdhocQueryType) adhocQueryEls.get(0).getValue();
 
             String gmlQueryStr = (String) adhocQuery.getQueryExpression().getContent().get(0);
@@ -74,7 +73,12 @@ public class StoredQueryBuilder {
             
             return (JAXBElement<QueryType>) JAXBUtil.getInstance().unmarshall(gmlQueryStr);
         } else {
-            throw new SQLException("AdhocQuery with ID '" + adhocParams.getId() + "' not found");
+            String err = "AdhocQuery with ID '" + adhocParams.getId() + "' not found";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new SQLException(err);
         }
     }
 }

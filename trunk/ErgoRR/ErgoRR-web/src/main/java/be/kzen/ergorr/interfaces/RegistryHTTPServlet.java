@@ -108,6 +108,9 @@ public class RegistryHTTPServlet extends HttpServlet {
             if (serviceParameter.equals(SERVICE_NAME) && versionParameter.equals(SERVICE_VERSION)) {
                 processGetRequest(request, response);
             } else {
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info("Requested service name and version are not supported.");
+                }
                 response.sendError(response.SC_NOT_IMPLEMENTED);
             }
         } catch (Exception e) {
