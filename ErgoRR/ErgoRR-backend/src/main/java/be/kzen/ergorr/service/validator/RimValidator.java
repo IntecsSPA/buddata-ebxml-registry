@@ -73,11 +73,11 @@ public class RimValidator {
                 validator.validate();
                 
             } catch (InstantiationException ex) {
-                logger.log(Level.WARNING, null, ex);
+                logger.log(Level.SEVERE, "Validator InstantiationException", ex);
             } catch (IllegalAccessException ex) {
-                logger.log(Level.WARNING, null, ex);
+                logger.log(Level.SEVERE, "Validator IllegalAccessException", ex);
             } catch (ClassNotFoundException ex) {
-                logger.log(Level.WARNING, null, ex);
+                logger.log(Level.SEVERE, "Validator ClassNotFoundException", ex);
             }
         }
     }
@@ -104,11 +104,11 @@ public class RimValidator {
                 addedIdents.addAll(validator.getAddedIdents());
 
             } catch (InstantiationException ex) {
-                logger.log(Level.WARNING, null, ex);
+                logger.log(Level.SEVERE, "Validator InstantiationException", ex);
             } catch (IllegalAccessException ex) {
-                logger.log(Level.WARNING, null, ex);
+                logger.log(Level.SEVERE, "Validator IllegalAccessException", ex);
             } catch (ClassNotFoundException ex) {
-                logger.log(Level.WARNING, null, ex);
+                logger.log(Level.SEVERE, "Validator ClassNotFoundException", ex);
             }
         }
 

@@ -165,7 +165,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                         sqlQuery.setReturnType(qo);
                     }
                 } else {
-                    String err = "Invalid QName in Query csw:Query/csw:ElementSetName/@typeNames attribute";
+                    String err = "Invalid QName in Query csw:Query/@typeNames attribute";
 
                     if (logger.isLoggable(Level.INFO)) {
                         logger.info(err);
@@ -175,7 +175,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             }
 
             if (sqlQuery.getReturnType() == null) {
-                String err = "Return type csw:Query/csw:ElementSetName/@typeNames not valid or not specified in the query";
+                String err = "Return type in path csw:Query/csw:ElementSetName/@typeNames not valid or not specified in the query";
 
                 if (logger.isLoggable(Level.INFO)) {
                     logger.info(err);
@@ -183,7 +183,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 throw new QueryException(err);
             }
         } else {
-            String err = "No queriable types specified in Query csw:Query/csw:ElementSetName/@typeNames attribute";
+            String err = "No queriable types specified in Query csw:Query/@typeNames attribute";
 
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
@@ -302,15 +302,15 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             Method method = this.getClass().getDeclaredMethod(opName, new Class[]{queryOperator.getValue().getClass()});
             method.invoke(this, new Object[]{queryOperator.getValue()});
         } catch (IllegalArgumentException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.log(Level.SEVERE, "IllegalArgumentException while building query", ex);
             throw new QueryException("Illegal argument invoking " + opName, ex);
         } catch (InvocationTargetException ex) {
             throw new QueryException(ex.getCause().getMessage(), ex);
         } catch (NoSuchMethodException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.log(Level.SEVERE, "NoSuchMethodException while building query", ex);
             throw new QueryException("Method not found: " + opName, ex);
         } catch (IllegalAccessException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.log(Level.SEVERE, "IllegalAccessException while building query", ex);
             throw new QueryException("Illegal access: " + opName, ex);
         }
     }
@@ -480,6 +480,14 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 }
                 throw new QueryException(err);
             }
+        } else {
+            String err = "Two elements must be provided with a BinaryComparison operator (E.g PropertyIsEqualTo)";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+
+            throw new QueryException(err);
         }
     }
 
@@ -490,45 +498,53 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     private void opPropertyIsLike(PropertyIsLikeType propLike) throws QueryException, XPathException {
-        if (propLike.getLiteral().getContent().size() > 0) {
-            PropertyNameType propName = propLike.getPropertyName();
 
-            if (!propName.getContent().isEmpty()) {
-                String xpath = (String) propName.getContent().get(0);
+        if (propLike.getLiteral().getContent().size() == 0) {
+            String err = "ogc:PropertyIsLike requires one element ogc:Literal";
 
-                if (propLike.isSetLiteral() && !propLike.getLiteral().getContent().isEmpty()) {
-                    String likeClause = (String) propLike.getLiteral().getContent().get(0);
-
-                    likeClause = SyntaxElements.replaceLike(likeClause, propLike.getSingleChar(), propLike.getWildCard(), propLike.getEscapeChar());
-
-                    XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
-                    XPathNode xpNode = xpathConv.process();
-
-                    sqlQuery.append("LOWER(");
-                    sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
-                    sqlQuery.append(SyntaxElements.CLOSE_BR);
-                    sqlQuery.append(SyntaxElements.LIKE);
-                    sqlQuery.append("LOWER(");
-                    sqlQuery.append(SyntaxElements.SINGLE_QUOTE).append(likeClause).append(SyntaxElements.SINGLE_QUOTE);
-                    sqlQuery.append(SyntaxElements.CLOSE_BR);
-
-
-                } else {
-                    String err = "ogc:PropertyIsLike/ogc:Literal does not have a content";
-
-                    if (logger.isLoggable(Level.INFO)) {
-                        logger.info(err);
-                    }
-                    throw new QueryException(err);
-                }
-            } else {
-                String err = "ogc:PropertyIsLike/ogc:PropertyName does not have a content";
-
-                if (logger.isLoggable(Level.INFO)) {
-                    logger.info(err);
-                }
-                throw new QueryException(err);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
             }
+            throw new QueryException(err);
+        }
+
+        PropertyNameType propName = propLike.getPropertyName();
+
+        if (propName.getContent().isEmpty()) {
+            String err = "ogc:PropertyIsLike/ogc:PropertyName does not have a content";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new QueryException(err);
+        }
+
+        String xpath = (String) propName.getContent().get(0);
+
+        if (propLike.isSetLiteral() && !propLike.getLiteral().getContent().isEmpty()) {
+            String likeClause = (String) propLike.getLiteral().getContent().get(0);
+
+            likeClause = SyntaxElements.replaceLike(likeClause, propLike.getSingleChar(), propLike.getWildCard(), propLike.getEscapeChar());
+
+            XPathToSqlConverter xpathConv = new XPathToSqlConverter(sqlQuery, xpath);
+            XPathNode xpNode = xpathConv.process();
+
+            sqlQuery.append("LOWER(");
+            sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(xpNode.getAttributeName());
+            sqlQuery.append(SyntaxElements.CLOSE_BR);
+            sqlQuery.append(SyntaxElements.LIKE);
+            sqlQuery.append("LOWER(");
+            sqlQuery.append(SyntaxElements.SINGLE_QUOTE).append(likeClause).append(SyntaxElements.SINGLE_QUOTE);
+            sqlQuery.append(SyntaxElements.CLOSE_BR);
+
+
+        } else {
+            String err = "ogc:PropertyIsLike/ogc:Literal does not have a content";
+
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(err);
+            }
+            throw new QueryException(err);
         }
     }
 
@@ -554,8 +570,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }
+
             throw new QueryException(err);
         }
+
     }
 
     /**
@@ -579,21 +597,25 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     XPathNode xpNode = xpathConv.process();
 
                     sqlQuery.append(xpNode.getQueryObject().getSqlAlias()).append(SyntaxElements.DOT).append(SqlQuery.getColumnName(xpNode.getAttributeName()));
-                    internalSlotType = xpNode.getQueryAttrType();
+                    internalSlotType =
+                            xpNode.getQueryAttrType();
                 } else {
                     String err = "PropertyName does not have a value";
 
                     if (logger.isLoggable(Level.INFO)) {
                         logger.info(err);
                     }
+
                     throw new QueryException(err);
                 }
+
             } else {
                 String err = "Could not find PropertyName element";
 
                 if (logger.isLoggable(Level.INFO)) {
                     logger.info(err);
                 }
+
                 throw new QueryException(err);
             }
 
@@ -613,6 +635,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     if (logger.isLoggable(Level.INFO)) {
                         logger.info(err);
                     }
+
                     throw new QueryException(err);
                 }
 
@@ -626,8 +649,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     if (logger.isLoggable(Level.INFO)) {
                         logger.info(err);
                     }
+
                     throw new QueryException(err);
                 }
+
             }
         }
     }
@@ -657,14 +682,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     if (logger.isLoggable(Level.INFO)) {
                         logger.info(err);
                     }
+
                     throw new QueryException(err);
                 }
+
             } else {
                 String err = "PropertyName element value missing in BBOX element";
 
                 if (logger.isLoggable(Level.INFO)) {
                     logger.info(err);
                 }
+
                 throw new QueryException(err);
             }
 
@@ -677,6 +705,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 if (logger.isLoggable(Level.INFO)) {
                     logger.log(Level.INFO, err, ex);
                 }
+
                 throw new QueryException(err, ex);
             }
 
@@ -686,8 +715,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }
+
             throw new QueryException(err);
         }
+
     }
 
     /**
@@ -806,14 +837,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                     if (logger.isLoggable(Level.INFO)) {
                         logger.info(err);
                     }
+
                     throw new QueryException(err);
                 }
+
             } else {
                 String err = "PropertyName element value missing in Disjoint element";
 
                 if (logger.isLoggable(Level.INFO)) {
                     logger.info(err);
                 }
+
                 throw new QueryException(err);
             }
 
@@ -826,16 +860,20 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 if (logger.isLoggable(Level.INFO)) {
                     logger.log(Level.INFO, err, ex);
                 }
+
                 throw new QueryException(err, ex);
             }
+
         } else {
             String err = "Distance is not set for DWithin";
 
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }
+
             throw new QueryException(err);
         }
+
     }
 
     /**
@@ -860,14 +898,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 if (logger.isLoggable(Level.INFO)) {
                     logger.info(err);
                 }
+
                 throw new QueryException(err);
             }
+
         } else {
             String err = "PropertyName element value missing in" + spatialQueryOperation + " element";
 
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }
+
             throw new QueryException(err);
         }
 
@@ -883,8 +924,10 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 if (logger.isLoggable(Level.INFO)) {
                     logger.log(Level.INFO, err, ex);
                 }
+
                 throw new QueryException(err, ex);
             }
+
         } else if (binSpatialOp.isSetGeometry()) {
             try {
                 byte[] geom = GeometryTranslator.wkbFromGmlGeometry(binSpatialOp.getGeometry().getValue());
@@ -895,16 +938,20 @@ public class QueryBuilderImpl2 implements QueryBuilder {
                 if (logger.isLoggable(Level.INFO)) {
                     logger.log(Level.INFO, err, ex);
                 }
+
                 throw new QueryException(err, ex);
             }
+
         } else {
             String err = "Does not have a geometry constraint";
 
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }
+
             throw new QueryException(err);
         }
+
     }
 
     /**
@@ -921,6 +968,7 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "adding literal content: " + value);
             }
+
             if (queriedSlotType.equals(InternalConstants.TYPE_STRING)) {
                 sqlQuery.append(SyntaxElements.SINGLE_QUOTE).append(value).append(SyntaxElements.SINGLE_QUOTE);
             } else if (queriedSlotType.equals(InternalConstants.TYPE_DATETIME)) {
@@ -929,12 +977,14 @@ public class QueryBuilderImpl2 implements QueryBuilder {
             } else {
                 sqlQuery.append(value);
             }
+
         } else {
             String err = "Literal element does not have a value";
 
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }
+
             throw new QueryException(err);
         }
     }

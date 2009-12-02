@@ -40,7 +40,6 @@ import be.kzen.ergorr.model.csw.HarvestType;
 import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionType;
 import be.kzen.ergorr.model.rim.IdentifiableType;
-import be.kzen.ergorr.model.util.JAXBUtil;
 import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.TransactionService;

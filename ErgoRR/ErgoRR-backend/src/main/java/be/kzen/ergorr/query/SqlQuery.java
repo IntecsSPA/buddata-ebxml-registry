@@ -182,8 +182,8 @@ public class SqlQuery {
             if (qo.isUsedInQuery() || qo.getSqlAlias().equals(returnObj.getSqlAlias())) {
                 fromClause.append(qo.getTableName()).append(SyntaxElements.SPACE).append(qo.getSqlAlias()).append(SyntaxElements.COMMA);
             } else {
-                if (logger.isLoggable(Level.WARNING)) {
-                    logger.warning("typeName '" + qo.getObjectName() + "' with alias '" + qo.getSqlAlias() + " is not used in the query");
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info("typeName '" + qo.getObjectName() + "' with alias '" + qo.getSqlAlias() + " is not used in the query");
                 }
             }
         }
@@ -295,7 +295,7 @@ public class SqlQuery {
         XPathNode node = null;
 
         if (qo == null) {
-            String err = "Object: " + rootNode.getName() + " not defined in typeNames attribute";
+            String err = "Object: " + rootNode.getName() + " not defined in csw:Query/@typeNames attribute";
 
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
