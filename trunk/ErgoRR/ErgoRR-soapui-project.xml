@@ -6468,15 +6468,12 @@ application schema.</documentation>
     </complexContent>
   </complexType>
   <!--==========================================================-->
-</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:endpoint>http://10.1.20.70:8080/esa1/webservice</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#DescribeRecord" name="csw.describeRecord" bindingOperationName="csw.describeRecord" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:endpoint>http://10.1.20.70:8080/esa1/webservice</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#DescribeRecord" name="csw.describeRecord" bindingOperationName="csw.describeRecord" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
    <soapenv:Header/>
    <soapenv:Body>
-      <ns:DescribeRecord service="CSW" version="2.0.2" outputFormat="application/xml" schemaLanguage="http://www.w3.org/XML/Schema">
-         <!--Zero or more repetitions:-->
-         <ns:TypeName>?</ns:TypeName>
-      </ns:DescribeRecord>
+      <csw:DescribeRecord service="CSW" version="2.0.2" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"></csw:DescribeRecord>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.describeRecordRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetCapabilities" name="csw.getCapabilities" bindingOperationName="csw.getCapabilities" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ns1="http://www.opengis.net/ows/1.1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.describeRecordRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetCapabilities" name="csw.getCapabilities" bindingOperationName="csw.getCapabilities" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ns1="http://www.opengis.net/ows/1.1">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:GetCapabilities updateSequence="" service="http://www.opengis.net/cat/csw">
@@ -6497,7 +6494,7 @@ application schema.</documentation>
          </ns1:AcceptFormats>
       </ns:GetCapabilities>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getCapabilitiesRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetDomain" name="csw.getDomain" bindingOperationName="csw.getDomain" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getCapabilitiesRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetDomain" name="csw.getDomain" bindingOperationName="csw.getDomain" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:GetDomain service="CSW" version="2.0.2">
@@ -6506,7 +6503,7 @@ application schema.</documentation>
          <ns:ParameterName>?</ns:ParameterName>
       </ns:GetDomain>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getDomainRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecordsById" name="csw.getRecordById" bindingOperationName="csw.getRecordById" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Single ID"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getDomainRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecordsById" name="csw.getRecordById" bindingOperationName="csw.getRecordById" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Single ID"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:GetRecordById service="CSW" version="2.0.2" outputFormat="application/xml" outputSchema="?">
@@ -6514,7 +6511,7 @@ application schema.</documentation>
          <ns:ElementSetName>full</ns:ElementSetName>
       </ns:GetRecordById>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordByIdRequest"/></con:call><con:call name="Multiple IDs"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordByIdRequest"/></con:call><con:call name="Multiple IDs"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:GetRecordById service="CSW" version="2.0.2" outputFormat="application/xml" outputSchema="">
@@ -6523,7 +6520,7 @@ application schema.</documentation>
          <ns:ElementSetName>full</ns:ElementSetName>
       </ns:GetRecordById>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordByIdRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords" name="csw.getRecords" bindingOperationName="csw.getRecords" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="BBOX_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordByIdRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords" name="csw.getRecords" bindingOperationName="csw.getRecords" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="BBOX_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" 
@@ -6550,7 +6547,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="StoredQuery BBOX"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="StoredQuery BBOX"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Body>
       <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          <rim:AdhocQuery id="urn:query:adhoc:bbox">
@@ -6567,7 +6564,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </rim:AdhocQuery>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Contains_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Contains_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6592,7 +6589,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Crosses_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Crosses_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6621,7 +6618,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="DWithin_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="DWithin_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" xmlns:xsd="http://www.w3.org/2001/XMLSchema" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6647,7 +6644,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Disjoint"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Disjoint"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <!--startPosition="0" maxRecords="50"-->
@@ -6673,7 +6670,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Intersects_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Intersects_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6698,7 +6695,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Overlaps_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Overlaps_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6727,7 +6724,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIs Less-Greater_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIs Less-Greater_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" maxRecords="50" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6754,7 +6751,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIs Mixed_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIs Mixed_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" maxRecords="50" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6797,7 +6794,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsBetween_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsBetween_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" maxRecords="50" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6825,7 +6822,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsEqual_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsEqual_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" maxRecords="50" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6864,7 +6861,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsLike_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsLike_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6887,7 +6884,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Touches_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Touches_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6916,7 +6913,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsNull_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsNull_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" maxRecords="50" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6938,14 +6935,14 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="StoredQuery BasicPackage ListExtensionPackages"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="StoredQuery BasicPackage ListExtensionPackages"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Body>
       <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          <rim:AdhocQuery id="urn:ogc:def:ebRIM-Query:OGC:listExtensionPackages">
          </rim:AdhocQuery>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsEqual_2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="PropertyIsEqual_2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" maxRecords="50" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
@@ -6968,7 +6965,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Get Slot Descriptions"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Get Slot Descriptions"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" 
@@ -6988,7 +6985,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Get Objecttypes ClassificationScheme"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call><con:call name="Get Objecttypes ClassificationScheme"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:GetRecords startPosition="1" maxRecords="10" version="2.0.2" service="CSW" outputFormat="text/xml; charset=UTF-8" outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" 
@@ -7008,14 +7005,14 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Query>
       </csw:GetRecords>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#Harvest" name="csw.harvest" bindingOperationName="csw.harvest" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.getRecordsRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#Harvest" name="csw.harvest" bindingOperationName="csw.harvest" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:Harvest service="CSW" version="2.0.2">
          <ns:Source>http://hrt-11.pisa.intecs.it/CMPL_TEST/CMPL_TEST_ASAR/urn_ogc_def_EOP_ESA.TEST.ENVISAT_ASA_GMI_1S-EN1-07010101263568-14914-XG0.xml</ns:Source>
       </ns:Harvest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.harvestRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#Transaction" name="csw.transaction" bindingOperationName="csw.transaction" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Insert HMA_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc/3.2" xmlns:gml="http://www.opengis.net/gml">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.harvestRequest"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.opengis.net/cat/csw/2.0.2/requests#Transaction" name="csw.transaction" bindingOperationName="csw.transaction" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Insert HMA_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc/3.2" xmlns:gml="http://www.opengis.net/gml">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="1">
@@ -7023,6 +7020,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
             <hma:EarthObservation gml:id="DS_PHR1A_20010822110247_TLS_PX_E123N45_0101_01234" version="1.2.1" xmlns:hma="http://earth.esa.int/eop" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                <gml:metaDataProperty>
                   <hma:EarthObservationMetaData>
+		   <hma:parentIdentifier>urn:ogc:def:EOP:ESA.EECF.ENVISAT_RA2_MWx_2C</hma:parentIdentifier>
                      <hma:identifier>DS_PHR1A_20010822110247_TLS_PX_E123N45_0101_01234</hma:identifier>
                      <hma:acquisitionType>NOMINAL</hma:acquisitionType>
                      <hma:productType>TBD</hma:productType>
@@ -7127,7 +7125,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </ns:Insert>
       </ns:Transaction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Delete by ID_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Delete by ID_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="1">
@@ -7145,7 +7143,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </ns:Delete>
       </ns:Transaction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Insert StoredQuery BBOX"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Insert StoredQuery BBOX"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
    <soapenv:Header/>
    <soapenv:Body>
       <csw:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="1">
@@ -7180,7 +7178,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </csw:Insert>
       </csw:Transaction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Update RIM_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Update RIM_1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0">
    <soapenv:Body>
       <ns:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="?">
          <ns:Update>
@@ -7204,7 +7202,7 @@ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
          </ns:Update>
       </ns:Transaction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Insert RIM"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/esa1/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.kzen.be/ergorr/interfaces/soap/CswPortType/csw.transactionRequest"/></con:call><con:call name="Insert RIM"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ergorr/webservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:Transaction service="CSW" version="2.0.2" verboseResponse="false" requestId="1">

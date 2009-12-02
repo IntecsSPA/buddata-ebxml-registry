@@ -28,7 +28,7 @@
         <module>ErgoRR-backend-client</module>
         <module>ErgoRR-client</module>
         <module>ErgoRR-web</module>
-    </modules>
+  </modules>
 
     <repositories>
         <repository>
