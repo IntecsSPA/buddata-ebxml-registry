@@ -231,25 +231,35 @@ public class QueryManager {
             recordsMatched = service.getResultCount(queryBuilder.createCountQuery(), queryBuilder.getParameters());
             idents = service.query(sql, queryBuilder.getParameters(), queryBuilder.getReturnObject().getObjClass());
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Could load load objects from database", ex);
-            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, "Could load load objects from database", ex);
+            String err = "Could not load objects from database";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceException(ErrorCodes.INTERNAL_ERROR, err, ex);
         }
 
-        int size = idents.size();
+        int responseSize = idents.size();
         if (queryBuilder.getResultSet() == ElementSetType.FULL) {
             List<JAXBElement<AssociationType>> assoEls = getAssociations(idents);
             idents.addAll(assoEls);
         }
 
         SearchResultsType searchResult = new SearchResultsType();
-        searchResult.setNumberOfRecordsReturned(BigInteger.valueOf(size));
+        searchResult.setNumberOfRecordsReturned(BigInteger.valueOf(responseSize));
         searchResult.setNumberOfRecordsMatched(BigInteger.valueOf(recordsMatched));
         searchResult.getAny().addAll(idents);
         response.setSearchResults(searchResult);
 
+        int nextRecordsPos = queryBuilder.getStartPosition() + queryBuilder.getMaxRecords();
+
+        if (nextRecordsPos <= recordsMatched) {
+            searchResult.setNextRecord(BigInteger.valueOf(nextRecordsPos));
+        } else {
+            searchResult.setNextRecord(BigInteger.ZERO);
+        }
+
         RequestStatusType reqStatus = new RequestStatusType();
         response.setSearchStatus(reqStatus);
 
+        
 
         return response;
     }

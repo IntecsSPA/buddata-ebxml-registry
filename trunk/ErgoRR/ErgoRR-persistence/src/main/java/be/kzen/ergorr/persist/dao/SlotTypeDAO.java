@@ -25,17 +25,12 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.postgis.Geometry;
 import org.postgis.binary.BinaryWriter;
 
@@ -261,7 +256,7 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
                 }
             }
         }
-        
+
         stmt.executeBatch();
     }
 
@@ -296,39 +291,48 @@ public class SlotTypeDAO extends GenericComposedObjectDAO<SlotType, Identifiable
 
             if (!anyVal.getContent().isEmpty()) {
                 if (internalSlotType.equals(InternalConstants.TYPE_GEOMETRY)) {
-                    if (anyVal.getContent().get(0) instanceof JAXBElement) {
-                        JAXBElement anyValEl = (JAXBElement) anyVal.getContent().get(0);
-                        Object gmlGeometry = anyValEl.getValue();
 
-                        if (gmlGeometry instanceof AbstractGeometryType || gmlGeometry instanceof EnvelopeType) {
-                            Geometry geometry = null;
+                    JAXBElement anyValEl = null;
 
-                            try {
-                                geometry = GeometryTranslator.geometryFromGmlGeometry(gmlGeometry);
-                            } catch (TransformException ex) {
-                                throw new SQLException(ex.toString());
-                            }
-
-                            SlotValues slotValues = new SlotValues(parent.getId(), slot.getName(), slot.getSlotType());
-                            slotValues.seq = i;
-                            slotValues.specType = InternalConstants.SPEC_TYPE_WRS;
-
-                            GmlWktWriter writer = new GmlWktWriter(gmlGeometry);
-
-                            try {
-                                slotValues.stringValue = writer.write();
-                            } catch (TransformException ex) {
-                                throw new SQLException("Could not format geometry: " + ex.getMessage());
-                            }
-                            slotValues.geometryValue = geometry;
-
-                            slotValues.loadValues(stmt);
-                            stmt.addBatch();
-                        } else {
-                            throw new SQLException("Slot " + slot.getName() + " does not have a geometry value");
+                    for (Object object : anyVal.getContent()) {
+                        if (object instanceof JAXBElement) {
+                            anyValEl = (JAXBElement) object;
+                            break;
                         }
+                    }
+
+                    if (anyValEl == null) {
+                        throw new SQLException("Slot " + slot.getName() + " does not have a valid Geometry JAXBElement type");
+                    }
+
+                    Object gmlGeometry = anyValEl.getValue();
+
+                    if (gmlGeometry instanceof AbstractGeometryType || gmlGeometry instanceof EnvelopeType) {
+                        Geometry geometry = null;
+
+                        try {
+                            geometry = GeometryTranslator.geometryFromGmlGeometry(gmlGeometry);
+                        } catch (TransformException ex) {
+                            throw new SQLException(ex.toString());
+                        }
+
+                        SlotValues slotValues = new SlotValues(parent.getId(), slot.getName(), slot.getSlotType());
+                        slotValues.seq = i;
+                        slotValues.specType = InternalConstants.SPEC_TYPE_WRS;
+
+                        GmlWktWriter writer = new GmlWktWriter(gmlGeometry);
+
+                        try {
+                            slotValues.stringValue = writer.write();
+                        } catch (TransformException ex) {
+                            throw new SQLException("Could not format geometry: " + ex.getMessage());
+                        }
+                        slotValues.geometryValue = geometry;
+
+                        slotValues.loadValues(stmt);
+                        stmt.addBatch();
                     } else {
-                        throw new SQLException("Slot " + slot.getName() + " does not have a valid XML value");
+                        throw new SQLException("Slot " + slot.getName() + " does not have a geometry value");
                     }
                 } else {
                     String val = anyVal.getContent().get(0).toString();

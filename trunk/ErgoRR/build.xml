@@ -5,6 +5,8 @@
     <property name="jar-webservice-api" value="${mave-repo}/javax/xml/webservices-api/1.5/webservices-api-1.5.jar"/>
     <property name="jar-webservice-rt" value="${mave-repo}/com/sun/xml/ws/webservices-rt/1.5/webservices-rt-1.5.jar"/>
     <property name="jar-activation" value="${mave-repo}/javax/activation/activation/1.1/activation-1.1.jar"/>
+    <property name="jar-postgis" value="${mave-repo}/org/postgis/postgis/1.3.3/postgis-1.3.3.jar"/>
+
     <property name="ergorr-web" value="ErgoRR-web"/>
     <property name="ergorr-persistence" value="ErgoRR-persistence"/>
     <property name="properties-file" value="./conf/ergorr.properties"/>
@@ -102,11 +104,13 @@
 
     <target name="db-load-test">
         <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
-        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/test/data"/>
+        <!--be-invoker dataSrc="${basedir}/${ergorr-web}/src/test/data"/-->
+        <be-invoker dataSrc="/Users/yamanustuntas/Desktop/xmlData"/>
     </target>
 
     <path id="libs.ref" description="project libraries">
         <pathelement path="${jar-postgresql}"/>
+        <pathelement path="${jar-postgis}"/>
         <pathelement path="${jar-webservice-api}"/>
         <pathelement path="${jar-webservice-rt}"/>
         <pathelement path="${jar-activation}"/>
