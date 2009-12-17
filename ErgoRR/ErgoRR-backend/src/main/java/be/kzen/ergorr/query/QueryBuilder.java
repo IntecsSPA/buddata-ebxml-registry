@@ -66,4 +66,18 @@ public interface QueryBuilder {
      * @return ElementSetType
      */
     public ElementSetType getResultSet();
+
+    /**
+     * Get the start position of records.
+     *
+     * @return Start position.
+     */
+    public int getStartPosition();
+
+    /**
+     * Get the maximum number of records to fetch.
+     *
+     * @return Number of records;
+     */
+    public int getMaxRecords();
 }

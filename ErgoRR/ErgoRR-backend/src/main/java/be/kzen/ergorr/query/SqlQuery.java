@@ -50,6 +50,7 @@ public class SqlQuery {
     private int maxResults;
     private static final String OBJECT_ALIAS = "o";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final int ALLOWED_MAX_RESULTS = CommonProperties.getInstance().getInt("db.maxResponse");
 
     public SqlQuery() {
         whereClause = new StringBuilder();
@@ -57,8 +58,8 @@ public class SqlQuery {
         joinNodes = new ArrayList<XPathNode>();
         selectObjs = new HashMap<String, QueryObject>();
         aliasIdx = 0;
-        startPosition = 0;
-        maxResults = 0;
+        startPosition = 1; // Postgres starts at 0, OGC filter starts at 1
+        maxResults = ALLOWED_MAX_RESULTS;
     }
 
     /**
@@ -76,6 +77,9 @@ public class SqlQuery {
      * @param maxResults Maximum number of results.
      */
     public void setMaxResults(int maxResults) {
+        if (maxResults < 1 || maxResults > ALLOWED_MAX_RESULTS) {
+            maxResults = ALLOWED_MAX_RESULTS;
+        }
         this.maxResults = maxResults;
     }
 
@@ -94,6 +98,10 @@ public class SqlQuery {
      * @param startPosition Start position of results.
      */
     public void setStartPosition(int startPosition) {
+        if (startPosition <= 0) {
+            startPosition = 1; // OGC filter start position is 1
+        }
+        
         this.startPosition = startPosition;
     }
 
@@ -116,8 +124,6 @@ public class SqlQuery {
             buildWhereClause();
         }
 
-        Integer allowedMaxResults = CommonProperties.getInstance().getInt("db.maxResponse");
-
         StringBuilder selectSql = new StringBuilder();
         selectSql.append(SyntaxElements.SELECT).append(returnObj.getSqlAlias()).append(SyntaxElements.ALL_COLUMNS)
                 .append(whereClause.toString());
@@ -126,15 +132,13 @@ public class SqlQuery {
             selectSql.append(SyntaxElements.ORDER_BY).append(sortBy);
         }
 
-        int limit = maxResults;
-        if (maxResults <= 0 || maxResults > allowedMaxResults) {
-            limit = allowedMaxResults;
-        }
+        selectSql.append(SyntaxElements.LIMIT).append(maxResults);
 
-        selectSql.append(SyntaxElements.LIMIT).append(limit);
+        // Postgres starts at 0, OGC filter starts at 1
+        int postgreStartPosition = startPosition - 1;
 
-        if (startPosition > 0) {
-            selectSql.append(SyntaxElements.OFFSET).append(startPosition);
+        if (postgreStartPosition > 0) {
+            selectSql.append(SyntaxElements.OFFSET).append(postgreStartPosition);
         }
 
         return selectSql.toString();

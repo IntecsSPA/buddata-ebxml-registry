@@ -61,6 +61,7 @@ public class RegistryPackageTypeDAO extends RegistryObjectTypeDAO<RegistryPackag
             sql.append(xmlObject.getId()).append("' and asso.associationtype='").append(RIMConstants.CN_ASSOCIATION_TYPE_ID_HasMember).append("';");
 
             if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Loading nested object of RegistryPackage ID: " + xmlObject.getId());
                 logger.fine("RegistryPackage members query: " + sql.toString());
             }
 

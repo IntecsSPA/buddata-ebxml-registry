@@ -91,14 +91,11 @@ public class ClassificationSchemeTypeDAO extends RegistryObjectTypeDAO<Classific
     protected void loadRelatedObjects() throws SQLException {
         super.loadRelatedObjects();
 
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("loading child classificationnodes");
-        }
-
         if (returnNestedObjects() && CommonProperties.getInstance().getBoolean("db.loadNestedClassificationNodes")) {
             if (logger.isLoggable(Level.FINE)) {
-                logger.fine("CS loadNested true");
+                logger.fine("Loading nested object of ClassificationScheme ID: " + xmlObject.getId());
             }
+            
             ClassificationNodeTypeDAO cnDAO = new ClassificationNodeTypeDAO();
             cnDAO.setContext(context);
             cnDAO.setConnection(connection);

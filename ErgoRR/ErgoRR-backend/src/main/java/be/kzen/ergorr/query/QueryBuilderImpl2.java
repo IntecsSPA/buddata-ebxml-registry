@@ -53,9 +53,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPathException;
 
@@ -111,6 +108,20 @@ public class QueryBuilderImpl2 implements QueryBuilder {
     /**
      * {@inheritDoc}
      */
+    public int getStartPosition() {
+        return sqlQuery.getStartPosition();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMaxRecords() {
+        return sqlQuery.getMaxResults();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String createCountQuery() {
         return sqlQuery.buildCountQuery();
     }
@@ -121,16 +132,17 @@ public class QueryBuilderImpl2 implements QueryBuilder {
      * @throws be.kzen.ergorr.exceptions.QueryException
      */
     public void init() throws QueryException {
-        if (request.isSetMaxRecords()) {
-            sqlQuery.setMaxResults(request.getMaxRecords().intValue());
-        } else {
+        if (!request.isSetMaxRecords()) {
             request.setMaxRecords(BigInteger.ZERO);
         }
-        if (request.isSetStartPosition()) {
-            // start position for OGC Filter is 1, for PostgreSQL is 0
-            int startPos = request.getStartPosition().intValue() - 1;
-            sqlQuery.setStartPosition(startPos);
+
+        sqlQuery.setMaxResults(request.getMaxRecords().intValue());
+
+        if (!request.isSetStartPosition()) {
+            request.setStartPosition(BigInteger.ZERO);
         }
+
+        sqlQuery.setStartPosition(request.getStartPosition().intValue());
 
         initReturnElements();
         initQueriedObjects();
