@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme 
+  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory"
+  objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+  isInternal="true"
+  nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+       <rim:Name>
+          <rim:LocalizedString xml:lang="en" value="ISO 19115 Topic Categories"/>
+       </rim:Name>
+       <rim:Description>
+          <rim:LocalizedString xml:lang="en" value="Defines a classification of application domains to which spatial data are related"/>
+       </rim:Description>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="farming"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:farming">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="farming"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="rearing of animals and/or cultivation of plants"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+        <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="biota"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:biota">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="biota"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="flora and/or fauna in natural environment"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+        <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="boundaries"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:boundaries">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="boundaries"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="legal land descriptions"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+   <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="climatologyMeteorologyAtmosphere"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:climatologyMeteorologyAtmosphere">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="climatologyMeteorologyAtmosphere"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="processes and phenomena of the atmosphere"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+      <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="economy"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:economy">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="economy"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="economic activities, conditions and employment"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+         <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="elevation"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:elevation">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="elevation"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="height above or below sea level"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="environment"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:environment">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="environment"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="environmental resources, protection and conservation"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="geoscientificInformation"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:geoscientificInformation">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="geoscientificInformation"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="information pertaining to earth sciences"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="health"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:health">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="health"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="health, health services, human ecology, and safety"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="imageryBaseMapsEarthCover"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:imageryBaseMapsEarthCover">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="imageryBaseMapsEarthCover"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="base maps"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="intelligenceMilitary"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:intelligenceMilitary">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="intelligenceMilitary"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="military bases, structures, activities"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode>
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="inlandWaters"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:inlandWaters">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="inlandWaters"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="inland water features, drainage systems and their characteristics"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="location"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:location">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="location"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="positional information and services"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="oceans"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:oceans">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="oceans"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="features and characteristics of salt water bodies (excluding inland waters)"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="planningCadastre"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:planningCadastre">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="planningCadastre"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="information used for appropriate actions for future use of the land"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="society"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:society">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="society"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="characteristics of society and cultures"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="structure"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:structure">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="structure"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="man-made construction"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="transportation"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:transportation">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="transportation"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="means and aids for conveying persons and/or goods"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+   
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
+         code="utilitiesCommunication"
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:utilitiesCommunication">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="utilitiesCommunication"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="energy, water and waste systems and communications infrastructure and services"/>
+          </rim:Description>
+          
+       </rim:ClassificationNode> 
+</rim:ClassificationScheme>
