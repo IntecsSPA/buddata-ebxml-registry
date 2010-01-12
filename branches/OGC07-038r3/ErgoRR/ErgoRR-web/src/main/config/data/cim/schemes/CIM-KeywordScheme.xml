@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme 
+  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordScheme"
+  objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+  isInternal="true"
+  nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+       <rim:Name>
+          <rim:LocalizedString xml:lang="en" value="Keyword Scheme"/>
+       </rim:Name>
+       <rim:Description>
+          <rim:LocalizedString xml:lang="en" value="Classification of keywords to be expanded by a user community, classifying each node as a KeywordType"/>
+       </rim:Description>
+  
+    
+   
+</rim:ClassificationScheme>
