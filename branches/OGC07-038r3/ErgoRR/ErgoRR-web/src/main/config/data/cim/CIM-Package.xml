@@ -34,7 +34,7 @@
 		<xi:include href="schemes/CIM-FormatNameAndVersionScheme.xml"/>
 		<xi:include href="schemes/CIM-MetadataStandardNameAndVersionScheme.xml"/-->
 		<!-- member of root package -->
-		<rim:Association id="Association-root" sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root" associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" targetObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:CIM"/>
+		<rim:Association id="urn:ogc:cim:association:root" sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root" associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" targetObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:CIM"/>
 
                 <!-- Extrinsic object types : Application, DatasetCollection, ElementaryDataset, ResourceMetadata, ServiceMetadata, ResponsibleParty, MetadataInformation, LegalConstraints, SecurityConstraints, Format, IdentifiedItem, ServiceOperation, CitedItem -->
 		<rim:ClassificationNode code="Application" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:ebRIM-ObjectType:OGC:Application" id="urn:ogc:def:ebRIM-ObjectType:OGC:Application" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
