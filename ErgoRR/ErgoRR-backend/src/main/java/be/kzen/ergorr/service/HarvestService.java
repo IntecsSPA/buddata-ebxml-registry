@@ -36,6 +36,8 @@ import be.kzen.ergorr.model.util.OFactory;
 import be.kzen.ergorr.service.translator.TranslationException;
 import be.kzen.ergorr.service.translator.TranslatorFactory;
 import be.kzen.ergorr.service.translator.Translator;
+import it.intecs.pisa.ergorr.saxon.SaxonDocument;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -75,7 +77,10 @@ public class HarvestService {
     public HarvestResponseType process() throws ServiceException {
 
         URL xmlLocaltion = null;
-
+        HarvestResponseType response = null;
+        RegistryObjectListType regObjList = null;
+        SaxonDocument sx = null;
+        String objectType = request.getResourceType();
         try {
             xmlLocaltion = new URL(request.getSource());
         } catch (MalformedURLException ex) {
@@ -84,42 +89,42 @@ public class HarvestService {
             throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
         }
 
-        JAXBElement remoteXmlEl = null;
-
-        try {
-            remoteXmlEl = (JAXBElement) JAXBUtil.getInstance().unmarshall(xmlLocaltion);
-        } catch (JAXBException ex) {
-            String err = "Could not load remote object to harvest";
-            logger.log(Level.WARNING, err, ex);
-            throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
-        }
-
-        Object remoteXml = remoteXmlEl.getValue();
-        RegistryObjectListType regObjList = null;
-
-        if (remoteXml instanceof IdentifiableType) {
-            regObjList = new RegistryObjectListType();
-            regObjList.getIdentifiable().add(remoteXmlEl);
-        } else if (remoteXml instanceof RegistryObjectListType) {
-            regObjList = (RegistryObjectListType) remoteXml;
-        } else {
-
+        if (objectType == null) {
+            // extract remote object type
             try {
-                Translator translator = TranslatorFactory.getInstance(remoteXmlEl);
-                regObjList = translator.translate();
-            } catch (TranslationException ex) {
-                String err = "Translation error";
+                sx = new SaxonDocument(xmlLocaltion);
+                objectType = sx.getRootNameSpace();
+            } catch (IOException ex) {
+                String err = "Could not load remote object: " + xmlLocaltion.getPath();
+                logger.log(Level.WARNING, err, ex);
+                throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
+            } catch (Exception ex) {
+                String err = "Could not extract remote object type";
                 logger.log(Level.WARNING, err, ex);
                 throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
             }
         }
+
+        try {
+            Translator translator = TranslatorFactory.getInstance(sx.getXMLDocumentString(), objectType);
+            regObjList = translator.translate();
+        } catch (TranslationException ex) {
+            String err = "Translation failed";
+            logger.log(Level.WARNING, err, ex);
+            throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
+        } catch (Exception ex) {
+            String err = "Could not invoke translator for namespace: " + objectType;
+            logger.log(Level.SEVERE, err, ex);
+            throw new ServiceException(err, ex);
+        }
+
 
         // submit data
         LCManager lcm = new LCManager(requestContext);
         lcm.submit(regObjList);
 
         // create response
-        HarvestResponseType response = new HarvestResponseType();
+        response = new HarvestResponseType();
         response.setTransactionResponse(buildResponse(regObjList));
 
         return response;
