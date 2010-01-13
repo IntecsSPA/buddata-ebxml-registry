@@ -357,7 +357,7 @@
 		<xsl:text>urn:ogc:def:dataType:RFC-4646:Language</xsl:text>
 	</xsl:variable>
 	<xsl:variable name="titleSlotName">
-		<xsl:text>http://purl.org/dc/elements/1.1/title</xsl:text>
+		<xsl:text>http://purl.org/dc/terms/title</xsl:text>
 	</xsl:variable>
 	<xsl:variable name="identifierSlotName">
 		<xsl:text>http://purl.org/dc/elements/1.1/identifier</xsl:text>
