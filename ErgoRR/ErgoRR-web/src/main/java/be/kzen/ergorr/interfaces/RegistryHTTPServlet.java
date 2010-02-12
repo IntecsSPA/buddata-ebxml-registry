@@ -82,7 +82,7 @@ public class RegistryHTTPServlet extends HttpServlet {
 
     private static Logger logger = Logger.getLogger(RegistryHTTPServlet.class.getName());
     private static final String SERVICE_NAME = "CSW-ebRIM";
-    private static final String SERVICE_VERSION = "2.0.2";
+    private static final String SERVICE_VERSION = "1.0.1";
     private static final String PARAM_SERVICE = "service";
     private static final String PARAM_VERSION = "version";
     private static final String PARAM_ELEMENT_SET_NAME = "ElementSetName";
