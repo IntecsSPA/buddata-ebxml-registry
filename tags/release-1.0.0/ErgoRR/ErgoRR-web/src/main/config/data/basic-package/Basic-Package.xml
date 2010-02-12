@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryPackage
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+ id="urn:ogc:def:ebRIM-RegistryPackage:OGC:Basic"
+ objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0  http://www.oasis-open.org/committees/regrep/documents/3.0/schema/rim.xsd"> 
+
+    <rim:Slot name="http://purl.org/dc/elements/1.1/date">
+        <rim:ValueList>
+            <rim:Value>2008-09-23</rim:Value>
+        </rim:ValueList>
+    </rim:Slot>
+    <rim:Name>
+        <rim:LocalizedString xml:lang="en"
+      value="Basic extension package for CSW-ebRIM Registry Service (OGC 07-144r3)." />
+    </rim:Name>
+    <rim:Description>
+        <rim:LocalizedString xml:lang="en"
+      value="Provides general extensions that are supported by all implementations of the CSW-ebRIM profile."/>
+    </rim:Description>
+
+    <rim:RegistryObjectList>
+    <!-- Canonical OASIS AssociationType scheme -->
+    <!-- CHANGED xi:include 
+      href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_AssociationTypeScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+    <!-- Canonical OASIS EventType scheme -->
+    <!-- CHANGED xi:include 
+      href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_EventTypeScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+    <!-- Canonical OASIS NodeType scheme -->
+    <!-- CHANGED xi:include href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_NodeTypeScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+    <!-- Canonical OASIS ObjectType scheme -->
+    <!-- CHANGED xi:include href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_ObjectTypeScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+    <!-- Canonical OASIS QueryLang scheme -->
+    <!-- CHANGED xi:include href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_QueryLangScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+    <!-- Canonical OASIS StatusType scheme -->
+    <!-- CHANGED xi:include href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_StatusTypeScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+    <!-- Canonical OASIS DataType scheme -->
+    <!-- CHANGED xi:include href="http://docs.oasis-open.org/regrep/v3.0/canonical/SubmitObjectsRequest_DataTypeScheme.xml" 
+      xpointer="element(/1/1/1)" /-->
+
+    <!-- ClassificationScheme - ISO 19119 services taxonomy -->
+    <!--xi:include href="schemes/ISO19119-Services-Scheme.xml" /-->
+    
+    <!-- ClassificationScheme - UN Statistics Division: Global geographic regions-->
+    <!--xi:include href="schemes/UNSD-Regions-Scheme.xml" /-->
+    
+    <!-- extension package must be member of root package -->
+        <rim:Association id="urn:ogc:basicPackage:asso"
+      sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root"
+      associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
+      targetObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Basic"/>
+      
+        <rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+      id="urn:ogc:def:ebRIM-ClassificationScheme:DGIWG:2007-1:FeatureConcepts"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+      isInternal="false"
+      nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>https://www.dgiwg.org/FAD/registers.jsp?register=DFDD</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Slot name="http://purl.org/dc/terms/modified">
+                <rim:ValueList>
+                    <rim:Value>2007</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="DGIWG Feature Data Dictionary Register - Feature Concepts"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+          value="The DGIWG Feature Data Dictionary Register contains geographic information concepts used by member states of the DGIWG community to characterize aspects of real world phenomena."/>
+            </rim:Description>
+        </rim:ClassificationScheme>
+
+    <!-- extend canonical ObjectType classification scheme -->
+        <rim:ClassificationNode code="ServiceProfile"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceProfile"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceProfile"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://www.daml.org/services/owl-s/1.1/overview/</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="ServiceProfile" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Describes what the service does: its features and capabilities (e.g., a capabilities document)."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="ServiceModel"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceModel"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceModel"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://www.daml.org/services/owl-s/1.1/overview/</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="ServiceModel" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Describes how the service works, including its essential computational characteristics and behaviours (e.g., a WSDL interface description)."/>
+            </rim:Description>
+      
+            <rim:ClassificationNode code="WSDL-Interface"
+        lid="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceModel:WSDL-Interface"  
+        id="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceModel:WSDL-Interface"
+        parent="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceModel">
+      
+                <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                    <rim:ValueList>
+                        <rim:Value>http://www.w3.org/TR/wsdl20/</rim:Value>
+                    </rim:ValueList>
+                </rim:Slot>
+                <rim:Name>
+                    <rim:LocalizedString value="WSDL-Interface" />
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en"
+            value="Describes the service interface(s) and standard protocol bindings using the WSDL content model. No service-specific details are provided."/>
+                </rim:Description>
+            </rim:ClassificationNode>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="ServiceGrounding"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceGrounding"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceGrounding"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://www.daml.org/services/owl-s/1.1/overview/</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="ServiceGrounding" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Describes how to access the service: the communications protocols and network endpoints (e.g., a WSDL service description)."/>
+            </rim:Description>
+      
+            <rim:ClassificationNode code="WSDL-Service"
+        lid="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceGrounding:WSDL-Service"  
+        id="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceGrounding:WSDL-Service"
+        parent="urn:ogc:def:ebRIM-ObjectType:OGC:ServiceGrounding">
+      
+                <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                    <rim:ValueList>
+                        <rim:Value>http://www.w3.org/TR/wsdl20/</rim:Value>
+                    </rim:ValueList>
+                </rim:Slot>
+                <rim:Name>
+                    <rim:LocalizedString value="WSDL-Service" />
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en"
+            value="Describes the service endpoints and alternative protocol bindings using the WSDL content model. No abstract interface details are provided."/>
+                </rim:Description>
+            </rim:ClassificationNode>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="Dataset"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:Dataset"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:Dataset"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Name>
+                <rim:LocalizedString value="Dataset" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Description of a geographic data set."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="StylingRules"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:StylingRules"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:StylingRules"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Name>
+                <rim:LocalizedString value="StylingRules" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Defines a set of rules for portraying or formatting some information resource for display, typically expressed using a style language (e.g., XSLT, CSS)."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="Image"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:Image"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:Image"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Name>
+                <rim:LocalizedString value="Image" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="A visual representation other than text. Examples: Photographs, maps, diagrams, videos, animations."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="Document"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:Document"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:Document"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Name>
+                <rim:LocalizedString value="Document" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="A text resource consisting primarily of words for reading."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="Annotation"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:Annotation"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:Annotation"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Name>
+                <rim:LocalizedString value="Annotation" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Commentary intended to interpret, explain, or clarify some other resource or part thereof."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode code="Rights"
+      lid="urn:ogc:def:ebRIM-ObjectType:OGC:Rights"  
+      id="urn:ogc:def:ebRIM-ObjectType:OGC:Rights"
+      parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+      
+            <rim:Name>
+                <rim:LocalizedString value="Rights" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Information about the rights held in and over a resource. Typically, a Rights object embodies a rights management statement that stipulates conditions of use or distribution."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+    <!-- Extensions to canonical QueryLang scheme -->
+        <rim:ClassificationNode
+      id="urn:ogc:def:ebRIM-QueryLanguage:OGC:CSW-Filter"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:QueryLanguage"
+      code="CSW-Filter">
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://portal.opengeospatial.org/files/?artifact_id=20555</rim:Value>
+                    <rim:Value>http://portal.opengeospatial.org/files/?artifact_id=8340</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="CSW filter query" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="The XML query syntax defined in Clause 10.8 of the OGC Catalogue Services Specification (OGC 07-006r1). The query specification is a valid csw:Query element; predicates are expressed using the OGC filter grammar (OGC 04-095). "/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+    <!-- extensions to canonical AssociationType scheme -->
+        <rim:ClassificationNode code="OperatesOn"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      lid="urn:ogc:def:ebRIM-AssociationType:OGC:OperatesOn"  
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:OperatesOn"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+      
+            <rim:Name>
+                <rim:LocalizedString value="OperatesOn" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates a Service with a Dataset."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode code="Presents"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      lid="urn:ogc:def:ebRIM-AssociationType:OGC:Presents"  
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:Presents"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+    
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://www.daml.org/services/owl-s/1.1/Service.owl</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="Presents" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates a Service with a ServiceProfile resource that describes its essential capabilities."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="DescribedBy"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      lid="urn:ogc:def:ebRIM-AssociationType:OGC:DescribedBy"  
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:DescribedBy"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+      
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://www.daml.org/services/owl-s/1.1/Service.owl</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="DescribedBy" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates a Service with a ServiceModel resource that describes how the service works."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="Supports"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      lid="urn:ogc:def:ebRIM-AssociationType:OGC:Supports"  
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:Supports"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+      
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://www.daml.org/services/owl-s/1.1/Service.owl</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="Supports" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates a Service with a ServiceGrounding resource that describes how to access the service using some communication protocol."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="GraphicOverview"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      lid="urn:ogc:def:ebRIM-AssociationType:OGC:GraphicOverview"  
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:GraphicOverview"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+            <rim:Name>
+                <rim:LocalizedString value="GraphicOverview" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates a source Dataset with an Image that illustrates or summarizes the data (e.g., a browsing aid)."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+      
+        <rim:ClassificationNode code="Annotates"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      lid="urn:ogc:def:ebRIM-AssociationType:OGC:Annotates"  
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:Annotates"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+            <rim:Name>
+                <rim:LocalizedString value="Annotates" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates an Annotation resource with a registry object that it provides commentary about."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode code="Source"
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+      id="urn:ogc:def:ebRIM-AssociationType:OGC:Source"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+            <rim:Name>
+                <rim:LocalizedString value="Source" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Associates a registry object with an extrinsic object describing the resource from which the registry object is derived. It may be derived from the source resource in whole or in part."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+    <!-- extend canonical DataType classification scheme -->
+        <rim:ClassificationNode code="LanguageTag"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" 
+      id="urn:ogc:def:dataType:RFC-4646:LanguageTag">
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://tools.ietf.org/html/rfc4646</rim:Value>
+                    <rim:Value>http://www.sil.org/iso639-3/</rim:Value>
+                    <rim:Value>http://www.iana.org/assignments/language-subtag-registry</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="LanguageTag"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en" value="Identifies the spoken, written, or signed language of some resource. The value is a string consisting of a primary language subtag and a (possibly empty) series of subsequent subtags (see RFC 4646)."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode code="GM_Envelope"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType" 
+      id="urn:ogc:def:dataType:ISO-19107:2003:GM_Envelope">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="GM_Envelope"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en" value="Denotes a geographic extent using a pair of positions defining opposite corners in arbitrary dimensions. It is represented by a gml:Envelope element."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="GM_Object"
+      id="urn:ogc:def:dataType:ISO-19107:2003:GM_Object"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType">
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://portal.opengeospatial.org/files/?artifact_id=4700</rim:Value>
+                    <rim:Value>http://portal.opengeospatial.org/files/?artifact_id=16339</rim:Value>
+                    <rim:Value>http://portal.opengeospatial.org/files/?artifact_id=15201</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="GM_Object" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="The root geometry data type. Values must be valid GML 3.1 (OGC 03-105r1, ISO/CD 19136) representations. Any geometry subtype allowed by the “simple features” profile (OGC 06-049r1) is a permissible value. Coordinate reference systems are identified using the convention documented in OGC 06-023r1."/>
+            </rim:Description>
+            <rim:ClassificationNode code="GM_Point"
+        parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Object" 
+        id="urn:ogc:def:dataType:ISO-19107:2003:GM_Point">
+                <rim:Name>
+                    <rim:LocalizedString xml:lang="en" value="GM_Point"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en" value="A Point is defined by a single coordinate tuple. It is represented by a gml:Point element."/>
+                </rim:Description>
+            </rim:ClassificationNode>
+            <rim:ClassificationNode code="GM_Curve"
+        parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Object" 
+        id="urn:ogc:def:dataType:ISO-19107:2003:GM_Curve">
+                <rim:Name>
+                    <rim:LocalizedString xml:lang="en" value="GM_Curve"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en" value="A curve is composed of one or more (linear) curve segments. It is represented by a gml:Curve element containing gml:LineStringSegment components."/>
+                </rim:Description>
+                <rim:ClassificationNode code="GM_LineString"
+          parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Curve" 
+          id="urn:ogc:def:dataType:ISO-19107:2003:GM_LineString">
+                    <rim:Name>
+                        <rim:LocalizedString xml:lang="en" value="GM_LineString"/>
+                    </rim:Name>
+                    <rim:Description>
+                        <rim:LocalizedString xml:lang="en" value="A LineString is a special curve that consists of a single segment with linear interpolation. It is represented by a gml:LineString element."/>
+                    </rim:Description>
+                </rim:ClassificationNode>
+            </rim:ClassificationNode>
+            <rim:ClassificationNode code="GM_Surface"
+        parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Object" 
+        id="urn:ogc:def:dataType:ISO-19107:2003:GM_Surface">
+                <rim:Name>
+                    <rim:LocalizedString xml:lang="en" value="GM_Surface"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en" value="A Surface is a 2-dimensional primitive composed of one or more (polygonal) surface patches. It is represented by a gml:Surface element containing gml:PolygonPatch components."/>
+                </rim:Description>
+                <rim:ClassificationNode code="GM_Polygon"
+          parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Surface" 
+          id="urn:ogc:def:dataType:ISO-19107:2003:GM_Polygon">
+                    <rim:Name>
+                        <rim:LocalizedString xml:lang="en" value="GM_Polygon"/>
+                    </rim:Name>
+                    <rim:Description>
+                        <rim:LocalizedString xml:lang="en" value="A Polygon is a special surface that is defined by a single surface patch. It is represented by a gml:Polygon element."/>
+                    </rim:Description>
+                </rim:ClassificationNode>
+            </rim:ClassificationNode>
+            <rim:ClassificationNode code="GM_Aggregate"
+        parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Object" 
+        id="urn:ogc:def:dataType:ISO-19107:2003:GM_Aggregate">
+                <rim:Name>
+                    <rim:LocalizedString xml:lang="en" value="GM_Aggregate"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en" value="A (heterogeneous) geometry collection that includes one or more geometry members. It is represented by a gml:MultiGeometry element."/>
+                </rim:Description>
+                <rim:ClassificationNode code="GM_MultiPoint"
+          parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Aggregate" 
+          id="urn:ogc:def:dataType:ISO-19107:2003:GM_MultiPoint">
+                    <rim:Name>
+                        <rim:LocalizedString xml:lang="en" value="GM_MultiPoint"/>
+                    </rim:Name>
+                    <rim:Description>
+                        <rim:LocalizedString xml:lang="en" value="A homogeneous geometry collection that includes one or more gml:Point members. It is represented by a gml:MultiPoint element."/>
+                    </rim:Description>
+                </rim:ClassificationNode>
+                <rim:ClassificationNode code="GM_MultiCurve"
+          parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Aggregate" 
+          id="urn:ogc:def:dataType:ISO-19107:2003:GM_MultiCurve">
+                    <rim:Name>
+                        <rim:LocalizedString xml:lang="en" value="GM_MultiCurve"/>
+                    </rim:Name>
+                    <rim:Description>
+                        <rim:LocalizedString xml:lang="en" value="A homogeneous geometry collection that includes one or more gml:Curve members. It is represented by a gml:MultiCurve element."/>
+                    </rim:Description>
+                </rim:ClassificationNode>
+                <rim:ClassificationNode code="GM_MultiSurface"
+          parent="urn:ogc:def:dataType:ISO-19107:2003:GM_Aggregate" 
+          id="urn:ogc:def:dataType:ISO-19107:2003:GM_MultiSurface">
+                    <rim:Name>
+                        <rim:LocalizedString xml:lang="en" value="GM_MultiSurface"/>
+                    </rim:Name>
+                    <rim:Description>
+                        <rim:LocalizedString xml:lang="en" value="A homogeneous geometry collection that includes one or more gml:Surface members. It is represented by a gml:MultiSurface element."/>
+                    </rim:Description>
+                </rim:ClassificationNode>
+            </rim:ClassificationNode>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode code="TM_GeometricPrimitive"
+      id="urn:ogc:def:dataType:ISO-19108:2002:TM_GeometricPrimitive"
+      parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:DataType">
+            <rim:Slot name="http://purl.org/dc/elements/1.1/source">
+                <rim:ValueList>
+                    <rim:Value>http://portal.opengeospatial.org/files/?artifact_id=4700</rim:Value>
+                </rim:ValueList>
+            </rim:Slot>
+            <rim:Name>
+                <rim:LocalizedString value="TM_GeometricPrimitive" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en"
+        value="Root temporal primitive data type. Values must be valid GML 3.1 (OGC 03-105r1, ISO/CD 19136) representations. Any primitive temporal subtype is a permissible value. Following ISO 8601, the Gregorian calendar with UTC is the default reference system."/>
+            </rim:Description>
+            <rim:ClassificationNode code="TM_Instant"
+        parent="urn:ogc:def:dataType:ISO-19108:2002:TM_GeometricPrimitive" 
+        id="urn:ogc:def:dataType:ISO-19108:2002:TM_Instant">
+                <rim:Name>
+                    <rim:LocalizedString xml:lang="en" value="TM_Instant"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en"
+            value="The gml:TimeInstant element denotes a position in time. In practice, an instant is an interval whose duration is less than the resolution of the time scale."/>
+                </rim:Description>
+            </rim:ClassificationNode>
+            <rim:ClassificationNode code="TM_Period"
+        parent="urn:ogc:def:dataType:ISO-19108:2002:TM_GeometricPrimitive" 
+        id="urn:ogc:def:dataType:ISO-19108:2002:TM_Period">
+                <rim:Name>
+                    <rim:LocalizedString value="TM_Period"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString
+            value="The gml:TimePeriod element denotes an extent in time. It is an open interval bounded by beginning and end points (i.e. instants), and has a duration."/>
+                </rim:Description>
+            </rim:ClassificationNode>
+        </rim:ClassificationNode>
+    
+    <!-- extend ISO 19119 services taxonomy with OGC service types  -->
+        <rim:ClassificationNode
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+      parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureAccess" 
+      code="WFS" 
+      id="urn:ogc:serviceType:WebFeatureService:1.1">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="Web Feature Service (WFS), Version 1.1"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en" value="OGC web service that provides access to and management of a feature store."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+      parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:MapAccess" 
+      code="WMS" 
+      id="urn:ogc:serviceType:WebMapService:1.3.0">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="Web Mapping Service (WMS), Version 1.3.0"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en" value="OGC web service that provides access to a store of geographic graphics, i.e., pictures of geographic data."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+       
+        <rim:ClassificationNode
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+      parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CoverageAccess" 
+      code="WCS" 
+      id="urn:ogc:serviceType:WebCoverageService:1.1.2">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="Web Coverage Service (WCS), Version 1.1.2"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en" value="OGC web service that provides access to and management of a coverage store."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+    
+        <rim:ClassificationNode
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+      parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Catalogue" 
+      code="CAT" 
+      id="urn:ogc:serviceType:CatalogueService:2.0.2">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en" value="Catalogue Service, Version 2.0.2"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en" value="Provides web-based discovery and metadata management facilities."/>
+            </rim:Description>
+            <rim:ClassificationNode
+             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+             parent="urn:ogc:serviceType:CatalogueService:2.0.2" 
+             code="WRS"
+             id="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM">
+                <rim:Name>
+                    <rim:LocalizedString xml:lang="en" value="CSW-ebRIM catalogue profile"/>
+                </rim:Name>
+                <rim:Description>
+                    <rim:LocalizedString xml:lang="en" value="A profile of the CSW protocol binding based on the OASIS ebXML registry information model (ebRIM)."/>
+                </rim:Description>
+            </rim:ClassificationNode>
+        </rim:ClassificationNode>
+    
+    <!-- CHANGED rim:ExtrinsicObject id="urn:ogc:specification:CSW-ebRIM-Part2:1.0.1" 
+      objectType="urn:ogc:def:ebRIM-ObjectType:OGC:Document" 
+      mimeType="application/pdf" 
+      isOpaque="true">
+          <rim:Slot name="http://purl.org/dc/elements/1.1/language">
+            <rim:ValueList><rim:Value>en</rim:Value></rim:ValueList>
+          </rim:Slot>
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="Basic Extension Package (OGC 07-144r3)"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="Provides documentation and guidance about using the Basic package."/>
+          </rim:Description>
+    </rim:ExtrinsicObject-->
+
+    <!-- Predefined named query definitions -->
+   <!-- CHANGED rim:AdhocQuery id="urn:ogc:def:ebRIM-Query:OGC:findServices" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery">
+      <rim:Slot name="serviceType" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:URI">
+        <rim:ValueList/>
+      </rim:Slot>
+      <rim:Name>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="findServices"/>
+      </rim:Name>
+      <rim:Description>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="Returns a list of registered services. The optional serviceType parameter is an absolute URI value that identifies a service category of interest (a node in the ISO 19119 services taxonomy)."/>
+      </rim:Description>
+    </rim:AdhocQuery-->
+        <rim:AdhocQuery id="urn:ogc:def:ebRIM-Query:OGC:listExtensionPackages" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery">
+            <rim:Name>
+                <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="listExtensionPackages"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="Returns a list of registered extension packages as a sequence of rim:RegistryPackage elements."/>
+            </rim:Description>
+            <rim:QueryExpression queryLanguage="urn:ogc:def:ebRIM-QueryLanguage:CSW-Filter">
+<![CDATA[<csw:Query typeNames="rim:RegistryPackage rim:Association" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+            <csw:ElementSetName typeNames="rim:RegistryPackage">summary</csw:ElementSetName>
+            <csw:ElementName>/Service/</csw:ElementName>
+            <csw:Constraint version="1.1.0">
+               <ogc:Filter>
+                  <ogc:And>
+                     <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:Association/@sourceObject</ogc:PropertyName>
+                        <ogc:Literal>urn:ogc:def:ebRIM-RegistryPackage:OGC:Root</ogc:Literal>
+                     </ogc:PropertyIsEqualTo>
+                     <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:Association/@targetObject</ogc:PropertyName>
+                        <ogc:PropertyName>/rim:RegistryPackage/@id</ogc:PropertyName>
+                     </ogc:PropertyIsEqualTo>
+                  </ogc:And>
+               </ogc:Filter>
+            </csw:Constraint>
+        </csw:Query>]]>
+            </rim:QueryExpression>
+        </rim:AdhocQuery>
+    <!--rim:AdhocQuery id="urn:ogc:def:ebRIM-Query:OGC:showStoredQueries" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery">
+      <rim:Name>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="showStoredQueries"/>
+      </rim:Name>
+      <rim:Description>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="Returns a list of available stored query definitions as a sequence of rim:AdhocQuery elements."/>
+      </rim:Description>
+    </rim:AdhocQuery>
+    
+    <rim:AdhocQuery id="urn:ogc:def:ebRIM-Query:OGC:findObjectsByClassificationNode" 
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery">
+      <rim:Slot name="objectType" 
+        slotType="urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType">
+        <rim:ValueList>
+          <rim:Value>urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject</rim:Value>
+        </rim:ValueList>
+      </rim:Slot>
+      <rim:Slot name="node">
+          <rim:ValueList/>
+      </rim:Slot>
+      <rim:Name>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="findObjectsByClassificationNode"/>
+      </rim:Name>
+      <rim:Description>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="Returns a csw:GetRecordsResponse element containing registry objects of the requested type that are classified using the specified node(s)."/>
+      </rim:Description>
+    </rim:AdhocQuery>
+    
+    <rim:AdhocQuery id="urn:ogc:def:ebRIM-Query:OGC:findObjectsByClassificationPath" 
+      objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:AdhocQuery">
+      <rim:Slot name="objectType" 
+        slotType="urn:oasis:names:tc:ebxml-regrep:classificationScheme:ObjectType">
+        <rim:ValueList>
+          <rim:Value>urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject</rim:Value>
+        </rim:ValueList>
+      </rim:Slot>
+      <rim:Slot name="path" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+          <rim:ValueList/>
+      </rim:Slot>
+      <rim:Name>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="findObjectsByClassificationPath"/>
+      </rim:Name>
+      <rim:Description>
+        <rim:LocalizedString charset="UTF-8" xml:lang="en-US" value="Returns a csw:GetRecordsResponse element containing registry objects of the requested type that are classified according to the the specified path value(s)."/>
+      </rim:Description>
+    </rim:AdhocQuery-->
+    
+    </rim:RegistryObjectList>
+</rim:RegistryPackage>
