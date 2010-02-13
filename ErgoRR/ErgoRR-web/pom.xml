@@ -1,6 +1,6 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <name>ErgoRR-web</name>
     <description>Web client interfaces for the ErgoRR service.</description>
     <url>http://code.google.com/p/buddata-ebxml-registry</url>
@@ -104,6 +104,13 @@
                         <phase>compile</phase>
                         <configuration>
                             <tasks>
+                                <condition property="wsdlFileName" value="CSW-service-secure.wsdl" else="CSW-service-unsecure.wsdl">
+                                    <istrue value="${security.enabled}"/>
+                                </condition>
+
+                                <copy file="${project.basedir}/src/main/config/wsdl/${wsdlFileName}"
+                                        tofile="${project.build.directory}/${deployName}/WEB-INF/wsdl/CSW-service.wsdl"/>
+
                                 <copy file="${project.parent.basedir}/conf/ergorr.properties" todir="${project.build.directory}/classes"/>
                                 <copy file="./src/main/config/template-datasource.xml" tofile="${project.build.directory}/${deployName}.xml"/>
                                 <replace file="${project.build.directory}/${deployName}.xml" token="!!name!!" value="${deployName}"/>
