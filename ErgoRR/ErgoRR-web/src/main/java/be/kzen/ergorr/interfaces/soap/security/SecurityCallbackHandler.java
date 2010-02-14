@@ -72,20 +72,20 @@ public class SecurityCallbackHandler implements CallbackHandler {
             return;
         }
         
-        String keyStoreURL = CommonProperties.getInstance().get("security.keystore.path");
+        String keyStorePath = CommonProperties.getInstance().get("security.keystore.path");
         String keyStorePassword = CommonProperties.getInstance().get("security.keystore.password");
         String serverCertAlias = CommonProperties.getInstance().get("security.keystore.cert.alias");
         String serverCertPw = CommonProperties.getInstance().get("security.keystore.cert.password");
 
-        String trustStoreURL = CommonProperties.getInstance().get("security.truststore.path");
+        String trustStorePath = CommonProperties.getInstance().get("security.truststore.path");
         String trustStorePassword = CommonProperties.getInstance().get("security.truststore.password");
 
         try {
             keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
-            keyStore.load(new FileInputStream(keyStoreURL), keyStorePassword.toCharArray());
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "could not load keystore from path: " + keyStoreURL, e);
-            throw new IOException(e.getMessage());
+            keyStore.load(new FileInputStream(keyStorePath), keyStorePassword.toCharArray());
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "could not load keystore from path: " + keyStorePath, ex);
+            throw ex;
         }
 
         serverKey = (PrivateKey) keyStore.getKey(serverCertAlias, serverCertPw.toCharArray());
@@ -93,10 +93,10 @@ public class SecurityCallbackHandler implements CallbackHandler {
 
         try {
             trustStore = KeyStore.getInstance(KEYSTORE_TYPE);
-            trustStore.load(new FileInputStream(trustStoreURL), trustStorePassword.toCharArray());
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "could not load keystore from path: " + trustStoreURL, e);
-            throw new IOException(e.getMessage());
+            trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "could not load truststore from path: " + trustStorePath, ex);
+            throw new IOException(ex.getMessage());
         }
     }
 

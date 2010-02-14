@@ -25,28 +25,14 @@ public class CswClientService
         extends Service
 {
 
-    private final static URL CSWSERVICE_WSDL_LOCATION;
-    private final static Logger logger = Logger.getLogger(be.kzen.ergorr.interfaces.soap.CswClientService.class.getName());
-
-    static {
-        URL url = null;
-        try {
-            URL baseUrl;
-            baseUrl = be.kzen.ergorr.interfaces.soap.CswClientService.class.getResource(".");
-            url = new URL(baseUrl, "file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR/web/WEB-INF/wsdl/CSW-service.wsdl");
-        } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:/home/yaman/workspace/projects/ESA/trunk/source/ErgoRR/web/WEB-INF/wsdl/CSW-service.wsdl', retrying as a local file");
-            logger.warning(e.getMessage());
-        }
-        CSWSERVICE_WSDL_LOCATION = url;
-    }
+    private final static Logger logger = Logger.getLogger(CswClientService.class.getName());
 
     public CswClientService(URL wsdlLocation, QName serviceName) {
         super(wsdlLocation, serviceName);
     }
 
-    public CswClientService() {
-        super(CSWSERVICE_WSDL_LOCATION, new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswService"));
+    public CswClientService(URL wsdlLocation) {
+        this(wsdlLocation, new QName("http://www.kzen.be/ergorr/interfaces/soap", "CswService"));
     }
 
     /**
