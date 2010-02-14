@@ -42,12 +42,8 @@ public class InternalSlotTypes {
     private static Logger logger = Logger.getLogger(InternalSlotTypes.class.getName());
     private static InternalSlotTypes instance;
     private Map<String, String> slotMap;
-    private static final String[] slotTypes;
+    private static final String[] slotTypes = new String[] {"string", "geometry", "datetime", "double", "int", "boolean"};
 
-
-    static {
-        slotTypes = CommonProperties.getInstance().getStringArray("rim.internalSlotTypes");
-    }
 
     public InternalSlotTypes() {
         slotMap = new ConcurrentHashMap<String, String>();
@@ -153,17 +149,15 @@ public class InternalSlotTypes {
      * @return True if {@code slotType} is an internal slot type.
      */
     public static boolean isInternalSlotType(String slotType) {
-        boolean isInternal = false;
 
         if (slotType != null) {
             for (String type : slotTypes) {
                 if (slotType.equals(type)) {
-                    isInternal = true;
-                    break;
+                    return true;
                 }
             }
         }
 
-        return isInternal;
+        return false;
     }
 }
