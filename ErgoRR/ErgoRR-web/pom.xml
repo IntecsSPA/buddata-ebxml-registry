@@ -61,6 +61,7 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <plugin>
@@ -128,4 +129,8 @@
         </plugins>
         <finalName>${deployName}</finalName>
     </build>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+    </properties>
 </project>
+
