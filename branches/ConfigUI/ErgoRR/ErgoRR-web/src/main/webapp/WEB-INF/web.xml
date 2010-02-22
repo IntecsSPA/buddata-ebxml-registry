@@ -12,6 +12,16 @@
         <servlet-class>be.kzen.ergorr.interfaces.RegistryHTTPServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>webservice</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>http-csw</servlet-name>
         <url-pattern>/httpservice</url-pattern>
@@ -48,6 +58,14 @@
     <servlet-mapping>
         <servlet-name>ws-rimquery</servlet-name>
         <url-pattern>/rimquery/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
+        <url-pattern>/ebXMLRegistrySOAPService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>webservice</servlet-name>
+        <url-pattern>/webservice</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>

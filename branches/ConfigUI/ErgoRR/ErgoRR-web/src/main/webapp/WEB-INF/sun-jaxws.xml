@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<endpoints 
-	xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" 
-	version="2.0">
-    <endpoint
-    name="ergorr"
-    interface="be.kzen.ergorr.interfaces.soap.csw.CswPortType"
-    implementation="be.kzen.ergorr.interfaces.soap.CswServiceImpl"
-    wsdl="WEB-INF/wsdl/CSW-service.wsdl"
-    service="{http://www.kzen.be/ergorr/interfaces/soap}webservice"
-    port="{http://www.kzen.be/ergorr/interfaces/soap}CswPort"
-    url-pattern="/webservice/*"
-    enable-mtom="false"/>
-    <endpoint
-    name="rimlcm"
-    interface="be.kzen.ergorr.interfaces.soap.rim.LifeCycleManagerPortType"
-    implementation="be.kzen.ergorr.interfaces.soap.RimLcmServiceImpl"
-    wsdl="WEB-INF/wsdl/RIM-service.wsdl"
-    service="{http://www.kzen.be/ergorr/interfaces/soap/rim}ebXMLRegistrySOAPService"
-    port="{http://www.kzen.be/ergorr/interfaces/soap/rim}LifeCycleManagerPort"
-    url-pattern="/rimlcm/*"
-    enable-mtom="false"/>
-    <endpoint
-    name="rimquery"
-    interface="be.kzen.ergorr.interfaces.soap.rim.QueryManagerPortType"
-    implementation="be.kzen.ergorr.interfaces.soap.RimQueryServiceImpl"
-    wsdl="WEB-INF/wsdl/RIM-service.wsdl"
-    service="{http://www.kzen.be/ergorr/interfaces/soap/rim}ebXMLRegistrySOAPService"
-    port="{http://www.kzen.be/ergorr/interfaces/soap/rim}QueryManagerPort"
-    url-pattern="/rimquery/*"
-    enable-mtom="false"/>
-    <!-- mtom-threshold-value="10240"/> -->
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+  <endpoint enable-mtom="false" implementation="be.kzen.ergorr.interfaces.soap.CswServiceImpl" interface="be.kzen.ergorr.interfaces.soap.csw.CswPortType" name="ergorr" port="{http://www.kzen.be/ergorr/interfaces/soap}CswPort" service="{http://www.kzen.be/ergorr/interfaces/soap}webservice" url-pattern="/webservice/*" wsdl="WEB-INF/wsdl/CSW-service.wsdl"/>
+  <endpoint enable-mtom="false" implementation="be.kzen.ergorr.interfaces.soap.RimLcmServiceImpl" interface="be.kzen.ergorr.interfaces.soap.rim.LifeCycleManagerPortType" name="rimlcm" port="{http://www.kzen.be/ergorr/interfaces/soap/rim}LifeCycleManagerPort" service="{http://www.kzen.be/ergorr/interfaces/soap/rim}ebXMLRegistrySOAPService" url-pattern="/rimlcm/*" wsdl="WEB-INF/wsdl/RIM-service.wsdl"/>
+  <endpoint enable-mtom="false" implementation="be.kzen.ergorr.interfaces.soap.RimQueryServiceImpl" interface="be.kzen.ergorr.interfaces.soap.rim.QueryManagerPortType" name="rimquery" port="{http://www.kzen.be/ergorr/interfaces/soap/rim}QueryManagerPort" service="{http://www.kzen.be/ergorr/interfaces/soap/rim}ebXMLRegistrySOAPService" url-pattern="/rimquery/*" wsdl="WEB-INF/wsdl/RIM-service.wsdl"/>
+  <!-- mtom-threshold-value="10240"/> -->
+  <endpoint implementation="be.kzen.ergorr.interfaces.soap.RimQueryServiceImpl" name="ebXMLRegistrySOAPService" url-pattern="/ebXMLRegistrySOAPService"/>
+  <endpoint implementation="be.kzen.ergorr.interfaces.soap.CswServiceImpl" name="webservice" url-pattern="/webservice"/>
 </endpoints>

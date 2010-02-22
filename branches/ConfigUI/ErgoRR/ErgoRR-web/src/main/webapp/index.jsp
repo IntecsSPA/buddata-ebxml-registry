@@ -26,6 +26,8 @@
             <br/><br/>
             <b>License:</b>
             General Public License version 3 (GPL3)
+            <br>
+            You can configure this ebRR instance through the Graphical interface. Click <a href="js/console/main.html">here</a> for accessing it.
         </div>
     </body>
 </html>
