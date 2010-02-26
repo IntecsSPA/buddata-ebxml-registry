@@ -8,13 +8,13 @@
 
 Ext.onReady(function() {
     Ext.QuickTips.init();
-    
+
     // create some portlet tools using built in Ext tool ids
     var tools = [{
         id:'refresh',
         handler: function(e, target, panel){
             panel.refresh();
-           
+
         }
     }];
 
@@ -47,10 +47,8 @@ Ext.onReady(function() {
                     tabTip: 'Edit configuration',
                     style: 'padding: 10px;',
                     xtype:'portal',
-                    padding:10,
                     items:[{
                         columnWidth:.5,
-                        style: 'padding: 10px;',
                         items:[{
                             xtype: 'form',
                             id:'miscForm',
@@ -60,12 +58,14 @@ Ext.onReady(function() {
                             bodyStyle: 'padding: 10px;',
                             buttons:[ {
                                 text: 'Reload',
+                                id:'miscReloadButton',
                                 handler: function(){
-                                    submitMisc();
+                                    reloadMisc();
                                 }
                             },
                             {
                                 text: 'Apply',
+                                id:'miscApplyButton',
                                 handler: function(){
                                     submitMisc();
                                 }
@@ -165,13 +165,11 @@ Ext.onReady(function() {
                             items: [{
                                 xtype: 'textfield',
                                 id:'encodingField',
-                                fieldLabel:'Encoding',
-                                value:'UTF-8'
+                                fieldLabel:'Encoding'
                             },{
                                 xtype: 'textfield',
                                 id:'langField',
-                                fieldLabel:'Language',
-                                value:'en-GB'
+                                fieldLabel:'Language'
                             }]
                         },{
                             xtype: 'fieldset',
@@ -185,11 +183,11 @@ Ext.onReady(function() {
                                 width:.9
                             }]
                         }]
-                            
+
                     }]
                 },{
                     columnWidth:.5,
-                    style: 'padding: 10px;',
+		    style: 'padding: 0px 0px 0px 5px;',
                     items:[{
                         title: 'Help',
                         layout:'fit',
@@ -207,21 +205,22 @@ Ext.onReady(function() {
                 xtype:'portal',
                 items:[{
                     columnWidth:.5,
-                    style:'padding:10px 0px 10px 10px',
                     items:[{
                         xtype: 'form',
                         title: 'Database',
                         bodyStyle:'padding:5px 5px 0',
                         buttons:[ {
                                 text: 'Reload',
+                                id: 'dbReloadButton',
                                 handler: function(){
-                                    submitMisc();
+                                    reloadDatabase();
                                 }
                             },
                             {
                                 text: 'Apply',
+                                id: 'dbSubmitButton',
                                 handler: function(){
-                                    submitMisc();
+                                    submitDatabase();
                                 }
                             }
                         ],
@@ -229,25 +228,21 @@ Ext.onReady(function() {
                                     xtype: 'numberfield',
                                     id:'maxRecordsField',
                                     fieldLabel:'Max records to return',
-                                    layout:'fit',
-                                    value:20
+                                    layout:'fit'
                                  },
                                 {
                                     xtype: 'textfield',
                                     id:'srsIdField',
-                                    fieldLabel:'default Srs Id',
-                                    value:'4326'
+                                    fieldLabel:'default Srs Id'
                                  },
                                  {
                                     xtype: 'textfield',
                                     id:'srsNameField',
-                                    fieldLabel:'default Srs Name',
-                                    value:'EPSG:4326'
+                                    fieldLabel:'default Srs Name'
                                  },{
                                     xtype: 'numberfield',
                                     id:'resultDepthField',
-                                    fieldLabel:'Result depth',
-                                    value:4
+                                    fieldLabel:'Result depth'
                                  },{
                                 xtype: 'checkbox',
                                 id:'simplifyModelField',
@@ -270,7 +265,7 @@ Ext.onReady(function() {
                     }]
                 },{
                     columnWidth:.5,
-                    style:'padding:10px 0 10px 10px',
+                    style: 'padding: 0px 0px 0px 5px;',
                     items:[{
                         title: 'Help',
                         layout:'fit',
@@ -288,24 +283,38 @@ Ext.onReady(function() {
                 xtype:'portal',
                 items:[{
                     columnWidth:.5,
-                    padding:10,
                     items:[{
                         xtype: 'form',
+			bodyStyle: 'padding: 10px;',
                         title: 'Security',
                         buttons:[ {
                                 text: 'Reload',
                                 handler: function(){
-                                    submitMisc();
+                                    reloadSecurity();
                                 }
                             },
                             {
                                 text: 'Apply',
                                 handler: function(){
-                                    submitMisc();
+                                    submitSecurity();
                                 }
                             }
                         ],
                         items: [{
+                            xtype: 'fieldset',
+                            title: 'Enable Security',
+                            bodyStyle:'padding:5px;',
+                            items: [
+                            {
+                                xtype: 'checkbox',
+                                id:'enableSecurityCheckbox',
+                                fieldLabel:'Enable security',
+                                width:.9,
+                                handler: function(){
+                                    changeSecurityfieldStatus();
+                                }
+                            }]
+                        },{
                             xtype: 'fieldset',
                             title: 'Keystore',
                             bodyStyle:'padding:5px;',
@@ -313,23 +322,19 @@ Ext.onReady(function() {
                             items: [{
                                 xtype: 'textfield',
                                 id:'keyStorePathField',
-                                fieldLabel:'Path',
-                                value:''
+                                fieldLabel:'Path'
                             },{
                                 xtype: 'textfield',
                                 id:'KeyStorePasswordField',
-                                fieldLabel:'Password',
-                                value:''
+                                fieldLabel:'Password'
                             },{
                                 xtype: 'textfield',
                                 id:'keyStoreCertAliasField',
-                                fieldLabel:'Certificate alias',
-                                value:''
+                                fieldLabel:'Certificate alias'
                             },{
                                 xtype: 'textfield',
                                 id:'keyStoreCertPasswordField',
-                                fieldLabel:'Certificate password',
-                                value:''
+                                fieldLabel:'Certificate password'
                             } ]
                         },{
                             xtype: 'fieldset',
@@ -339,23 +344,22 @@ Ext.onReady(function() {
                             items: [{
                                 xtype: 'textfield',
                                 id:'trustStorePathField',
-                                fieldLabel:'Path',
-                                value:''
+                                fieldLabel:'Path'
                             },{
                                 xtype: 'textfield',
                                 id:'trustStorePasswordField',
-                                fieldLabel:'Password',
-                                value:''
+                                fieldLabel:'Password'
                             }]
                         }]
 
                     }]
                 },{
                     columnWidth:.5,
-                    style:'padding:10px 0 10px 10px',
+                    style: 'padding: 0px 0px 0px 5px;',
                     items:[{
                         title: 'Help',
                         layout:'fit',
+                        bodyStyle: 'padding: 10px;',
                         html: 'help'
                     }]
                 }]
@@ -364,4 +368,5 @@ Ext.onReady(function() {
         }]
     }]
     });
+
 });
