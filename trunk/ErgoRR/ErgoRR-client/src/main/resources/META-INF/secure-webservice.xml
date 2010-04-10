@@ -204,8 +204,8 @@ targetNamespace="http://www.kzen.be/ergorr/interfaces/soap">
     <wsp:Policy wsu:Id="ErgoRR_Binding_Policy">
         <wsp:ExactlyOne>
             <wsp:All>
-                <sc1:KeyStore wspp:visibility="private" alias="xws-security-client" keypass="changeit" storepass="changeit" type="JKS" location="/Users/yamanustuntas/workspace/projects/ERGO/buddata-ebxml-registry/ErgoRR/samples/certs/client-keystore.jks"/>
-                <sc1:TrustStore wspp:visibility="private" peeralias="xws-security-server" storepass="changeit" type="JKS" location="/Users/yamanustuntas/workspace/projects/ERGO/buddata-ebxml-registry/ErgoRR/samples/certs/client-truststore.jks"/>
+                <sc1:KeyStore wspp:visibility="private" alias="xws-security-client" keypass="changeit" storepass="changeit" type="JKS" location="/opt/certs/client-keystore.jks"/>
+                <sc1:TrustStore wspp:visibility="private" peeralias="xws-security-server" storepass="changeit" type="JKS" location="/opt/certs/client-truststore.jks"/>
             </wsp:All>
         </wsp:ExactlyOne>
     </wsp:Policy>

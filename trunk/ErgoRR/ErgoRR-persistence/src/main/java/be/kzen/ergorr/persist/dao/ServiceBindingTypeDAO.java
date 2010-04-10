@@ -28,6 +28,7 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
      */
     @Override
     public ServiceBindingType newXmlObject(ResultSet result) throws SQLException {
+        xmlObject = new ServiceBindingType();
         return loadCompleteXmlObject(result);
     }
 
@@ -77,9 +78,9 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
     @Override
     protected void setParameters(PreparedStatement stmt) throws SQLException {
         super.setParameters(stmt);
-        stmt.setString(9, xmlObject.getService());
-        stmt.setString(10, xmlObject.getAccessURI());
-        stmt.setString(11, xmlObject.getTargetBinding());
+        stmt.setString(8, xmlObject.getService());
+        stmt.setString(9, xmlObject.getAccessURI());
+        stmt.setString(10, xmlObject.getTargetBinding());
     }
 
     /**
@@ -95,7 +96,7 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
      */
     @Override
     protected String getParamList() {
-        return super.getParamList() + ",service,accessuri,targetbinging";
+        return super.getParamList() + ",service,accessuri,targetbinding";
     }
 
     /**
@@ -115,7 +116,7 @@ public class ServiceBindingTypeDAO extends RegistryObjectTypeDAO<ServiceBindingT
      */
     @Override
     protected String getPlaceHolders() {
-        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",service=?,accessuri=?,targetbinging=?");
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?,?" : ",service=?,accessuri=?,targetbinding=?");
     }
 
     /**
