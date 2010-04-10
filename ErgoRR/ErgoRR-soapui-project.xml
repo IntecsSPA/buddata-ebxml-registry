@@ -6507,7 +6507,7 @@ application schema.</documentation>
    <soapenv:Header/>
    <soapenv:Body>
       <ns:GetRecordById service="CSW" version="2.0.2" outputFormat="application/xml" outputSchema="?">
-         <ns:Id>urn:lala:30</ns:Id>
+         <ns:Id>urn:DS:PHR1A:20010822110247:TLS:PX:E123N45:0101:01234</ns:Id>
          <ns:ElementSetName>full</ns:ElementSetName>
       </ns:GetRecordById>
    </soapenv:Body>

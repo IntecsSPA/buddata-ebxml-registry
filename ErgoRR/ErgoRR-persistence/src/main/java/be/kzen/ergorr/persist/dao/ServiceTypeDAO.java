@@ -25,6 +25,7 @@ public class ServiceTypeDAO extends RegistryObjectTypeDAO<ServiceType> {
      */
     @Override
     public ServiceType newXmlObject(ResultSet result) throws SQLException {
+        xmlObject = new ServiceType();
         return loadCompleteXmlObject(result);
     }
 

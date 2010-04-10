@@ -24,6 +24,7 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
 
     @Override
     public SpecificationLinkType newXmlObject(ResultSet result) throws SQLException {
+        xmlObject = new SpecificationLinkType();
         return loadCompleteXmlObject(result);
     }
 
@@ -92,13 +93,13 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
 
     @Override
     protected String getParamList() {
-        return super.getParamList() + ",servicebinding,specificationlink";
+        return super.getParamList() + ",servicebinding,specificationobject";
     }
 
     @Override
     protected String getQueryParamList() {
         if (alias != null && !alias.equals("")) {
-            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".servicebinding,").append(alias).append(".specificationlink,").toString();
+            return new StringBuilder(super.getQueryParamList()).append(",").append(alias).append(".servicebinding,").append(alias).append(".specificationobject,").toString();
         } else {
             return getParamList();
         }
@@ -106,7 +107,7 @@ public class SpecificationLinkTypeDAO extends RegistryObjectTypeDAO<Specificatio
 
     @Override
     protected String getPlaceHolders() {
-        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",servicebinding=?,specificationlink=?");
+        return super.getPlaceHolders() + (xmlObject.isNewObject() ? ",?,?" : ",servicebinding=?,specificationobject=?");
     }
 
     @Override
