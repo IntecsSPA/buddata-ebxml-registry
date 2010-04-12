@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:saxon="http://saxon.sf.net/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gml32="http://www.opengis.net/gml/3.2" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
+<xsl:stylesheet version="2.0"
+                xmlns:saxon="http://saxon.sf.net/"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+                xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+                xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:gmx="http://www.isotc211.org/2005/gmx"
+                xmlns:srv="http://www.isotc211.org/2005/srv"
+                xmlns:gml32="http://www.opengis.net/gml/3.2"
+                xmlns:gml="http://www.opengis.net/gml"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
     <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
     <xsl:param name="cswURL">http://hrt-11.pisa.intecs.it/ergorr2/httpservice</xsl:param>
     <xsl:param name="metadataInformationId">urn:CIM:metadataInformationId:1</xsl:param>
 
     <xsl:include href="ISO19139toCIM_Include.xslt"/>
 
-
     <xsl:variable name="resourceMetadataId" select="concat( 'urn:CIM:', $isoId, ':ResourceMetadata' )"/>
     <xsl:template match="gmd:MD_Metadata">
         <!--xsl:variable name="metadataInformationId" select="$urnCimMetadataInformationExtrinsicObjectID"/-->
         <xsl:variable name="registryPackageId" select="concat( $metadataInformationId , ':pkg')"/>
         <rim:RegistryObjectList>
-            <xsl:attribute name="iso19139Id"><xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/></xsl:attribute>
-
+            <xsl:attribute name="iso19139Id">
+                <xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/>
+            </xsl:attribute>
             <!-- Keywords -->
             <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords">
                 <xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
                 <xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
-                <rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}"  classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
+                <rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
                 <xsl:choose>
                     <xsl:when test="gmd:MD_Keywords/gmd:thesaurusName">
                         <!-- gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title     thesaurusIdentifier-->
@@ -58,7 +69,7 @@
                                     <rim:LocalizedString xml:lang="en" value="{concat( . , ' - Thesaurus (', $thesaurusName, ') Keyword' )}"/>
                                 </rim:Description>
                             </rim:ClassificationNode>
-                            <rim:Classification id="{$keywordThesaurusSchemeClassificationId}" classifiedObject="{$resourceMetadataId}"  classificationNode="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}"/>
+                            <rim:Classification id="{$keywordThesaurusSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}"/>
                         </xsl:for-each>
                         <xsl:variable name="citedItemId" select="concat( $urnCimCitedItemExtrinsicObjectIDPrefix, generate-id(.))"/>
                         <xsl:call-template name="CitationInformation">
@@ -78,14 +89,14 @@
                                     <rim:LocalizedString xml:lang="en" value="{concat( . , ' Generic Keyword ' )}"/>
                                 </rim:Description>
                             </rim:ClassificationNode>
-                            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}"  classificationNode="{concat( $keywordSchemeClassificationSchemePrefix, . )}"/>
+                            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordSchemeClassificationSchemePrefix, . )}"/>
                         </xsl:for-each>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
             <!-- -End Keywords-->
 
-                        <!-- Metadata Information Extrinsic Object  START -->
+           <!-- Metadata Information Extrinsic Object  START -->
             <rim:ExtrinsicObject id="{$metadataInformationId}" objectType="{$metadataInformationObjectType}">
                 <!-- 	From fileIdentifier to <<slot>> identifier -->
                 <xsl:call-template name="slot-identifier">
@@ -118,15 +129,15 @@
             </rim:ExtrinsicObject>
             <!-- Metadata Information Extrinsic Object  END -->
 
-                        <!-- Rsourse Metadata EO Call Tempalate START -->
+           <!-- Resource Metadata EO Call Template START -->
             <xsl:for-each select="gmd:identificationInfo">
                 <xsl:call-template name="resourceMetadata">
                     <xsl:with-param name="metadadataEOIdentifier" select="$metadataInformationId"/>
                 </xsl:call-template>
             </xsl:for-each>
-            <!-- Rsourse Metadata EO Call Tempalate END -->
+            <!-- Resource Metadata EO Call Tempalate END -->
 
-                        <!-- Parent Idenfier (Metadata Information EO) Call Tempalte  START-->
+            <!-- Parent Idenfier (Metadata Information EO) Call Template  START-->
             <xsl:variable name="parentIdentifier" select="gmd:parentIdentifier/gco:CharacterString"/>
             <xsl:if test="$parentIdentifier">
                 <xsl:call-template name="parentIdentifierMetadataInformation">
@@ -134,12 +145,11 @@
                     <xsl:with-param name="parentIdentifier" select="$parentIdentifier"/>
                 </xsl:call-template>
             </xsl:if>
-            <!-- Parent Idenfier (Metadata Information EO) Call Tempalte END -->
-
+            <!-- Parent Idenfier (Metadata Information EO) Call Template END -->
         </rim:RegistryObjectList>
     </xsl:template>
 
-    <!-- Parent Idenfier (Metadata Information EO) Tempalte  START-->
+    <!-- Parent Idenfier (Metadata Information EO) Template  START-->
     <xsl:template name="parentIdentifierMetadataInformation">
         <xsl:param name="childIdentifier"/>
         <xsl:param name="parentIdentifier"/>
@@ -152,9 +162,9 @@
         <xsl:variable name="parentMetadataInformationAssociationId" select="concat( $urnCimParentMetadataInformationAssociationIDPrefix, generate-id(.))"/>
         <rim:Association id="{$parentMetadataInformationAssociationId}" associationType="{$parentMetadataInformationAssociationType}" sourceObject="{$parentMetadataInformationAssociationId}" targetObject="{$childIdentifier}"/>
     </xsl:template>
-    <!-- Parent Idenfier (Metadata Information EO) Tempalte  END-->
+    <!-- Parent Identifier (Metadata Information EO) Template  END-->
 
-        <!-- Resource Metadata EO Template START-->
+    <!-- Resource Metadata EO Template START-->
     <xsl:template name="resourceMetadata">
         <xsl:param name="metadadataEOIdentifier"/>
         <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$resourceMetadataObjectType}">
@@ -171,33 +181,35 @@
                                 <rim:LocalizedString value="{$abstract}"/>
                         </rim:Description>
                         -->
-                        <!--xsl:call-template name="slot-identifier">
+                        <!--
+                        <xsl:call-template name="slot-identifier">
                                 <xsl:with-param name="identifier" select="/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"/>
                         </xsl:call-template>
                         <xsl:call-template name="slot-language">
                                 <xsl:with-param name="languageNode" select="/gmd:MD_Metadata/gmd:language"/>
-                        </xsl:call-template-->
+                        </xsl:call-template>
+                        -->
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode">
                 <xsl:variable name="objTypeClassificationID" select="concat( $objectTypeClassificationIDPrefix, generate-id(.))"/>
                 <!-- Dataset,  ElementaryDataset, DatasetCollection, Service and Application-->
                 <xsl:if test="@codeListValue = 'series' or @codeListValue = 'DatasetCollection'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'DatasetCollection' )}" >
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'DatasetCollection' )}">
                     </rim:Classification>
                 </xsl:if>
                 <xsl:if test="@codeListValue = 'Dataset'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'Dataset' )}" >
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'Dataset' )}">
                     </rim:Classification>
                 </xsl:if>
                 <xsl:if test="@codeListValue = 'ElementaryDataset'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'ElementaryDataset' )}" >
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'ElementaryDataset' )}">
                     </rim:Classification>
                 </xsl:if>
                 <xsl:if test="@codeListValue = 'Service'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'Service' )}" >
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'Service' )}">
                     </rim:Classification>
                 </xsl:if>
                 <xsl:if test="@codeListValue = 'Application'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $couplingTypeClassificationSchemePrefix , 'Application' )}" >
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $couplingTypeClassificationSchemePrefix , 'Application' )}">
                     </rim:Classification>
                 </xsl:if>
             </xsl:for-each>
@@ -259,17 +271,18 @@
                 </rim:Slot>
             </xsl:if>
 
-
             <xsl:if test="gmd:MD_DataIdentification">
                 <xsl:call-template name="datametadata">
                     <xsl:with-param name="dataset-id" select="$resourceMetadataId"/>
                 </xsl:call-template>
             </xsl:if>
+
             <xsl:if test="gmd:MD_ServiceIdentification">
                 <xsl:call-template name="datametadata">
                     <xsl:with-param name="dataset-id" select="$resourceMetadataId"/>
                 </xsl:call-template>
             </xsl:if>
+
             <xsl:if test="srv:SV_ServiceIdentification">
                 <xsl:call-template name="servicemetadata">
                     <xsl:with-param name="servicemetadata-id" select="$resourceMetadataId"/>
@@ -281,11 +294,11 @@
         </wrs:ExtrinsicObject>
 
         <xsl:call-template name="resourceConstraints-slot-rights"/>
-
-
+        
         <xsl:for-each select="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report//gmd:result">
 
             <xsl:variable name="referenceSpecificationID" select="concat ( $urnCimReferenceSpecificationExtrinsicObjectIDPrefix, count(.) )"/>
+
             <rim:ExtrinsicObject id="{$referenceSpecificationID}" objectType="{$referenceSpecificationObjectType}">
                 <rim:Name>
                     <xsl:variable name="nameK">
@@ -365,13 +378,12 @@
                     <xsl:variable name="dcpListValue" select="srv:DCPList/@codeListValue"/>
                     <xsl:variable name="dcpListClassificationId" select="concat( $urnCimDCPListClassificationIDPrefix, generate-id(.))"/>
                     <xsl:if test="$dcpListValue='XML' or $dcpListValue='CORBA' or $dcpListValue='JAVA' or $dcpListValue='COM' or $dcpListValue='SQL' or $dcpListValue='WebServices' or $dcpListValue='SOAP' ">
-                        <rim:Classification id="{$dcpListClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="{concat( $DCPListClassificationSchemePrefix, $dcpListValue)}"/>
+                        <rim:Classification id="{$dcpListClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $DCPListClassificationSchemePrefix, $dcpListValue)}"/>
                     </xsl:if>
                 </xsl:for-each>
             </rim:ExtrinsicObject>
         </xsl:for-each>
     </xsl:template>
-
 
     <xsl:template name="resourceConstraints-slot-rights">
         <xsl:variable name="resourceMetadataIDforRights"/>
@@ -428,7 +440,7 @@
             <!-- heikki : the codelist for rolecode has *many* more options than just PointOfCOntact, Author, Originator, Publisher.
                                  If it is not one of those 4, I ignore it so no classification will be created. Does not make any sense. -->
             <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyClassificationIDPrefix, generate-id(.) )"/>
-            <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+            <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
         </xsl:for-each>
     </xsl:template>
 
@@ -447,16 +459,16 @@
             <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
             <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.))"/>
             <xsl:if test="$role = 'pointOfContact'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
             </xsl:if>
             <xsl:if test="$role = 'author'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
             </xsl:if>
             <xsl:if test="$role = 'publisher'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
             </xsl:if>
             <xsl:if test="$role = 'originator'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
@@ -479,14 +491,14 @@
                     </rim:ExtrinsicObject>
                     <xsl:variable name="restrictionTypeClassificationId" select="concat($urnCimRestrictionTypeClassificationIDPrefix, generate-id(.))"/>
                     <xsl:if test="gmd:MD_LegalConstraints/gmd:useConstraints">
-                        <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}"  classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'use')}"/>
+                        <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}" classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'use')}"/>
                     </xsl:if>
                     <xsl:if test="gmd:MD_LegalConstraints/gmd:accessConstraints">
-                        <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}"  classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'access')}"/>
+                        <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}" classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'access')}"/>
                     </xsl:if>
                     <xsl:variable name="restrictionCodeClassificationId" select="concat( $urnCimRestrictionCodeClassificationIDPrefix, generate-id(.))"/>
                     <xsl:variable name="restrictionCode" select="gmd:MD_LegalConstraints/*/gmd:MD_RestrictionCode/@codeListValue"/>
-                    <rim:Classification id="{$restrictionCodeClassificationId}" classifiedObject="{$restrictionTypeClassificationId}"  classificationNode="{concat($restrictionCodeClassificationSchemePrefix, $restrictionCode)}"/>
+                    <rim:Classification id="{$restrictionCodeClassificationId}" classifiedObject="{$restrictionTypeClassificationId}" classificationNode="{concat($restrictionCodeClassificationSchemePrefix, $restrictionCode)}"/>
                 </xsl:if>
             </xsl:if>
             <xsl:if test="gmd:MD_SecurityConstraints">
@@ -498,7 +510,7 @@
                 </rim:ExtrinsicObject>
                 <xsl:variable name="classificationCodeClassificationId" select="concat( $urnClassificationCodeClassificationIDPrefix, generate-id(.))"/>
                 <xsl:variable name="classificationCode" select="gmd:MD_SecurityConstraints/gmd:classification/gmd:MD_ClassificationCode/@codeListValue"/>
-                <rim:Classification id="{$classificationCodeClassificationId}" classifiedObject="{$securityConstraintsId}"  classificationNode="{concat( $classificationCodeClassificationSchemePrefix, $classificationCode)}"/>
+                <rim:Classification id="{$classificationCodeClassificationId}" classifiedObject="{$securityConstraintsId}" classificationNode="{concat( $classificationCodeClassificationSchemePrefix, $classificationCode)}"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
@@ -536,44 +548,49 @@
     <xsl:template name="servicemetadata">
         <xsl:param name="servicemetadata-id"/>
         <xsl:variable name="serviceType" select="srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
+        <xsl:variable name="serviceTypeVersion" select="srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString"/>
+        <xsl:variable name="serviceTypeVersionSuffix">
+            <xsl:if test="string-length($serviceTypeVersion) > 0">
+                <xsl:value-of select="concat(':', $serviceTypeVersion)"/>
+            </xsl:if>
+        </xsl:variable>
         <xsl:variable name="servicesClassificationId" select="concat( $urnCimServicesClassificationIDPrefix, generate-id(.))"/>
         <xsl:choose>
-            <xsl:when test="$serviceType = 'OGC:CSW'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Catalogue"/>
+            <!-- References to chapter 8.4 "OGC service types" of document OGC 07-144r4 on CSW-ebRIM Basic Extension package-->
+            <xsl:when test="$serviceType = 'WFS'">
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebFeatureService' , $serviceTypeVersionSuffix)}"/>
             </xsl:when>
-            <xsl:when test="$serviceType = 'OGC:WMS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Map-Access"/>
+            <xsl:when test="$serviceType = 'WMS'">
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebMapService' , $serviceTypeVersionSuffix)}"/>
             </xsl:when>
-            <xsl:when test="$serviceType = 'OGC:WFS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Feature-Access"/>
+            <xsl:when test="$serviceType = 'WCS'">
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebCoverageService' , $serviceTypeVersionSuffix)}"/>
             </xsl:when>
-            <xsl:when test="$serviceType = 'OGC:WCS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Coverage-Access"/>
+            <xsl:when test="$serviceType = 'CSW'">
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService' , $serviceTypeVersionSuffix)}"/>
             </xsl:when>
-            <xsl:when test="$serviceType = 'OGC:WCTS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Coordinate-Trans"/>
+            <xsl:when test="$serviceType = 'CSW-ebRIM'">
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM, $serviceTypeVersionSuffix)}"/>
             </xsl:when>
-            <xsl:when test="$serviceType = 'OGC:WPS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Processing"/>
+            <!-- The following entry is an addition to the OGC services types listed in OGC 07-144r4 -->
+            <xsl:when test="$serviceType = 'WPS'">
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebProcessingService' , $serviceTypeVersionSuffix)}"/>
             </xsl:when>
-            <xsl:when test="$serviceType = 'website'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Human-Interaction"/>
-            </xsl:when>
-            <xsl:when test="$serviceType = 'download'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="urn:x-ogc:specification:csw-ebrim:Service:Product-Access"/>
-            </xsl:when>
+            <xsl:otherwise>
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $servicesClassificationSchemePrefix, $serviceType, $serviceTypeVersionSuffix)}"/>
+            </xsl:otherwise>
         </xsl:choose>
         <xsl:variable name="couplingTypeClassificationId" select="concat( $urnCimCouplingTypeClassificationIDPrefix, generate-id(.))"/>
         <xsl:variable name="couplingType" select="srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType/@codeListValue"/>
         <xsl:choose>
             <xsl:when test="$couplingType='loose'">
-                <rim:Classification id="{$couplingTypeClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="{concat( $couplingTypeClassificationSchemePrefix, $couplingType)}"/>
+                <rim:Classification id="{$couplingTypeClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $couplingTypeClassificationSchemePrefix, $couplingType)}"/>
             </xsl:when>
             <xsl:when test="$couplingType='mixed'">
-                <rim:Classification id="{$couplingTypeClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="{concat( $couplingTypeClassificationSchemePrefix, $couplingType)}"/>
+                <rim:Classification id="{$couplingTypeClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $couplingTypeClassificationSchemePrefix, $couplingType)}"/>
             </xsl:when>
             <xsl:when test="$couplingType='tight'">
-                <rim:Classification id="{$couplingTypeClassificationId}" classifiedObject="{$servicemetadata-id}"  classificationNode="{concat( $couplingTypeClassificationSchemePrefix, $couplingType)}"/>
+                <rim:Classification id="{$couplingTypeClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $couplingTypeClassificationSchemePrefix, $couplingType)}"/>
             </xsl:when>
         </xsl:choose>
     </xsl:template>
@@ -632,13 +649,13 @@
                     <rim:ValueList>
                         <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimeInstant">
                             <rim:Value>
-                                <xsl:value-of  select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimeInstant/gml32:timePosition"/>
+                                <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimeInstant/gml32:timePosition"/>
                             </rim:Value>
                         </xsl:if>
                         <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod">
                             <rim:Value>
                                 <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:begin/gml32:TimeInstant/gml32:timePosition">
-                                    <xsl:value-of  select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:begin/gml32:TimeInstant/gml32:timePosition"/>
+                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:begin/gml32:TimeInstant/gml32:timePosition"/>
                                 </xsl:if>
                                 <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:beginPosition">
                                     <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:beginPosition"/>
@@ -678,7 +695,7 @@
             <xsl:variable name="spatialRepresentationTypeClassificationId" select="concat( $urnSpatialRepresentationClassificationIDPrefix, generate-id(.))"/>
             <xsl:variable name="spatialRepresentationType" select="gmd:MD_SpatialRepresentationTypeCode/@codeListValue"/>
             <!-- TODO what is the ID of the spatialRepresentationType classificationNode ? -->
-            <rim:Classification id="{$spatialRepresentationTypeClassificationId}" classifiedObject="{$dataset-id}"  classificationNode="{concat( $spatialRepresentationClassificationSchemePrefix , $spatialRepresentationType )}"/>
+            <rim:Classification id="{$spatialRepresentationTypeClassificationId}" classifiedObject="{$dataset-id}" classificationNode="{concat( $spatialRepresentationClassificationSchemePrefix , $spatialRepresentationType )}"/>
         </xsl:for-each>
         <xsl:for-each select="gmd:MD_DataIdentification/gmd:characterSet">
             <xsl:variable name="charset" select="gmd:MD_CharacterSetCode/@codeListValue"/>
@@ -691,7 +708,7 @@
             <xsl:variable name="topicCategoryClassificationId" select="concat( $urnTopicCategoryClassificationIDPrefix, generate-id(.) )"/>
             <xsl:variable name="topicCategory" select="gmd:MD_TopicCategoryCode"/>
             <!-- TODO what is the ID of the topicCategory classificationNode ?  {$topicCategory} -->
-            <rim:Classification id="{$topicCategoryClassificationId}" classifiedObject="{$dataset-id}"  classificationNode="{concat( $topicCategoryClassificationSchemePrefix, $topicCategory )}"/>
+            <rim:Classification id="{$topicCategoryClassificationId}" classifiedObject="{$dataset-id}" classificationNode="{concat( $topicCategoryClassificationSchemePrefix, $topicCategory )}"/>
         </xsl:for-each>
         <xsl:for-each select="gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier">
             <xsl:variable name="codespace" select="gmd:code/gmd:CI_DateTypeCode/@codeSpace"/>
@@ -700,7 +717,6 @@
                 <xsl:variable name="externalIdentifierId" select="concat( $urnCimExternalIdentifierIDPrefix, generate-id(.))"/>
                 <rim:ExternalIdentifier id="{$externalIdentifierId}" registryObject="{$dataset-id}" identificationScheme="{$codespace}" value="{$codevalue}"/>
             </xsl:if>
-
         </xsl:for-each>
     </xsl:template>
 
@@ -796,7 +812,7 @@
         <rim:Slot name="{$slotname}" slotType="{$dateSlotType}">
             <rim:ValueList>
                 <rim:Value>
-                    <xsl:value-of  select="$date"/>
+                    <xsl:value-of select="$date"/>
                 </rim:Value>
             </rim:ValueList>
         </rim:Slot>
@@ -889,12 +905,12 @@
             <rim:ValueList>
                 <xsl:if test="$dateStamp/gco:Date">
                     <rim:Value>
-                        <xsl:value-of  select="$dateStamp/gco:Date"/>
+                        <xsl:value-of select="$dateStamp/gco:Date"/>
                     </rim:Value>
                 </xsl:if>
                 <xsl:if test="$dateStamp/gco:DateTime">
                     <rim:Value>
-                        <xsl:value-of  select="$dateStamp/gco:DateTime"/>
+                        <xsl:value-of select="$dateStamp/gco:DateTime"/>
                     </rim:Value>
                 </xsl:if>
             </rim:ValueList>
@@ -946,7 +962,7 @@
         <xsl:param name="characterSet"/>
         <xsl:param name="classifiedObjectId"/>
         <xsl:variable name="classificationId" select="concat( $urnCharacterSetClassificationIDPrefix, generate-id(.))"/>
-        <rim:Classification id="{$classificationId}" classifiedObject="{$classifiedObjectId}"  classificationNode="{concat( $characterSetClassificationSchemePrefix, $characterSet )}"/>
+        <rim:Classification id="{$classificationId}" classifiedObject="{$classifiedObjectId}" classificationNode="{concat( $characterSetClassificationSchemePrefix, $characterSet )}"/>
     </xsl:template>
 
     <xsl:template name="CitationInformation">
@@ -1004,16 +1020,16 @@
             <xsl:variable name="role" select="./gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
             <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.))"/>
             <xsl:if test="$role = 'pointOfContact'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
             </xsl:if>
             <xsl:if test="$role = 'author'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
             </xsl:if>
             <xsl:if test="$role = 'publisher'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
             </xsl:if>
             <xsl:if test="$role = 'originator'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}"  classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
@@ -1041,6 +1057,5 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
 
 </xsl:stylesheet>
