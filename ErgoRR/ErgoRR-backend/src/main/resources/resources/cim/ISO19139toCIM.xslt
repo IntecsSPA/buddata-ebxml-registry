@@ -189,30 +189,7 @@
                                 <xsl:with-param name="languageNode" select="/gmd:MD_Metadata/gmd:language"/>
                         </xsl:call-template>
                         -->
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode">
-                <xsl:variable name="objTypeClassificationID" select="concat( $objectTypeClassificationIDPrefix, generate-id(.))"/>
-                <!-- Dataset,  ElementaryDataset, DatasetCollection, Service and Application-->
-                <xsl:if test="@codeListValue = 'series' or @codeListValue = 'DatasetCollection'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'DatasetCollection' )}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'Dataset'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'Dataset' )}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'ElementaryDataset'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'ElementaryDataset' )}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'Service'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $objectTypeClassificationSchemePrefix , 'Service' )}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'Application'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $couplingTypeClassificationSchemePrefix , 'Application' )}">
-                    </rim:Classification>
-                </xsl:if>
-            </xsl:for-each>
+
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevelName">
                 <xsl:call-template name="slot-hierarchyLevel">
                     <xsl:with-param name="hierarchyLevel" select="."/>
@@ -288,13 +265,39 @@
                     <xsl:with-param name="servicemetadata-id" select="$resourceMetadataId"/>
                 </xsl:call-template>
             </xsl:if>
+
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode">
+                <xsl:variable name="objTypeClassificationID" select="concat( $objectTypeClassificationIDPrefix, generate-id(.))"/>
+                <!-- Dataset,  ElementaryDataset, DatasetCollection, Service and Application-->
+                <xsl:if test="@codeListValue = 'series' ">
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$datasetCollectionObjectType}">
+                    </rim:Classification>
+                </xsl:if>
+                <xsl:if test="@codeListValue = 'dataset' and string-length(/gmd:MD_Metadata/gmd:parentIdentifier) = 0">
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$datasetObjectType}">
+                    </rim:Classification>
+                </xsl:if>
+                <xsl:if test="@codeListValue = 'dataset' and string-length(/gmd:MD_Metadata/gmd:parentIdentifier) > 0">
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$elementaryDatasetObjectType}">
+                    </rim:Classification>
+                </xsl:if>
+                <xsl:if test="@codeListValue = 'service'">
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$serviceObjectType}">
+                    </rim:Classification>
+                </xsl:if>
+                <xsl:if test="@codeListValue = 'application'">
+                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$applicationObjectType}">
+                    </rim:Classification>
+                </xsl:if>
+            </xsl:for-each>
+            
             <!--xsl:variable name="idRepo" select="translate( $metadataInformationId, ':', '_' )"/-->
             <wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $resourceMetadataId)}"/>
             <!--wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $metadataInformationId)}"/-->
         </wrs:ExtrinsicObject>
 
         <xsl:call-template name="resourceConstraints-slot-rights"/>
-        
+
         <xsl:for-each select="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report//gmd:result">
 
             <xsl:variable name="referenceSpecificationID" select="concat ( $urnCimReferenceSpecificationExtrinsicObjectIDPrefix, count(.) )"/>
