@@ -191,8 +191,8 @@
                         -->
 
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevelName">
-                <xsl:call-template name="slot-hierarchyLevel">
-                    <xsl:with-param name="hierarchyLevel" select="."/>
+                <xsl:call-template name="slot-hierarchyLevelName">
+                    <xsl:with-param name="hierarchyLevelName" select="."/>
                 </xsl:call-template>
             </xsl:for-each>
             <!-- template CITATION Inserire -->
@@ -290,7 +290,7 @@
                     </rim:Classification>
                 </xsl:if>
             </xsl:for-each>
-            
+
             <!--xsl:variable name="idRepo" select="translate( $metadataInformationId, ':', '_' )"/-->
             <wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $resourceMetadataId)}"/>
             <!--wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $metadataInformationId)}"/-->
@@ -821,35 +821,15 @@
         </rim:Slot>
     </xsl:template>
 
-    <xsl:template name="slot-hierarchyLevel">
-        <xsl:param name="hierarchyLevel"/>
-        <xsl:if test="$hierarchyLevel = 'dataset'">
-            <rim:Slot name="{$typeSlotName}" slotType="xsd:string">
-                <rim:ValueList>
-                    <rim:Value>
-                        <xsl:value-of select="$datasetObjectType"/>
-                    </rim:Value>
-                </rim:ValueList>
-            </rim:Slot>
-        </xsl:if>
-        <xsl:if test="$hierarchyLevel = 'service'">
-            <rim:Slot name="{$typeSlotName}" slotType="xsd:string">
-                <rim:ValueList>
-                    <rim:Value>
-                        <xsl:value-of select="$serviceObjectType"/>
-                    </rim:Value>
-                </rim:ValueList>
-            </rim:Slot>
-        </xsl:if>
-        <xsl:if test="$hierarchyLevel = 'application'">
-            <rim:Slot name="{$typeSlotName}" slotType="xsd:string">
-                <rim:ValueList>
-                    <rim:Value>
-                        <xsl:value-of select="$applicationObjectType"/>
-                    </rim:Value>
-                </rim:ValueList>
-            </rim:Slot>
-        </xsl:if>
+    <xsl:template name="slot-hierarchyLevelName">
+        <xsl:param name="hierarchyLevelName"/>
+        <rim:Slot name="{$typeSlotName}" slotType="xsd:string">
+            <rim:ValueList>
+                <rim:Value>
+                    <xsl:value-of select="$hierarchyLevelName"/>
+                </rim:Value>
+            </rim:ValueList>
+        </rim:Slot>
     </xsl:template>
 
     <xsl:template name="slot-identifier">
