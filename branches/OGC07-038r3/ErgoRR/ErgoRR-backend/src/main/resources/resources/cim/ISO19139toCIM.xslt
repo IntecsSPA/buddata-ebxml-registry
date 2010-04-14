@@ -196,13 +196,13 @@
                 </xsl:call-template>
             </xsl:for-each>
             <!-- template CITATION Inserire -->
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:alternateTitle">
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:alternateTitle">
                 <xsl:variable name="alternateTitle" select="gco:CharacterString"/>
                 <xsl:call-template name="slot-title">
                     <xsl:with-param name="title" select="$alternateTitle"/>
                 </xsl:call-template>
             </xsl:for-each>
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date">
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:date">
                 <xsl:call-template name="slot-date-with-type">
                     <xsl:with-param name="date" select="gmd:CI_Date/gmd:date"/>
                     <xsl:with-param name="dateType" select="gmd:CI_Date/gmd:dateType"/>
@@ -550,6 +550,17 @@
 
     <xsl:template name="servicemetadata">
         <xsl:param name="servicemetadata-id"/>
+          
+          <rim:Name>
+            <xsl:variable name="name" select="srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/>
+            <rim:LocalizedString value="{$name}"/>
+        </rim:Name>
+        
+        <rim:Description>
+            <xsl:variable name="abstract" select="srv:SV_ServiceIdentification/gmd:abstract/gco:CharacterString"/>
+            <rim:LocalizedString value="{$abstract}"/>
+        </rim:Description>
+        
         <xsl:variable name="serviceType" select="srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
         <xsl:variable name="serviceTypeVersion" select="srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString"/>
         <xsl:variable name="serviceTypeVersionSuffix">
@@ -583,6 +594,7 @@
                 <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $servicesClassificationSchemePrefix, $serviceType, $serviceTypeVersionSuffix)}"/>
             </xsl:otherwise>
         </xsl:choose>
+        
         <xsl:variable name="couplingTypeClassificationId" select="concat( $urnCimCouplingTypeClassificationIDPrefix, generate-id(.))"/>
         <xsl:variable name="couplingType" select="srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType/@codeListValue"/>
         <xsl:choose>
