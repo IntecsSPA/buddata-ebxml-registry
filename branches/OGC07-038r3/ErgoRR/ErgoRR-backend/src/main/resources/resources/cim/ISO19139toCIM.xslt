@@ -25,8 +25,9 @@
             <xsl:attribute name="iso19139Id">
                 <xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/>
             </xsl:attribute>
+            
             <!-- Keywords -->
-            <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords">
+            <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
                 <xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
                 <xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
                 <rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
@@ -129,7 +130,29 @@
             </rim:ExtrinsicObject>
             <!-- Metadata Information Extrinsic Object  END -->
 
-           <!-- Resource Metadata EO Call Template START -->
+            <!-- Creation of the Organization Extrinsic Object and the MetadataPointOfcontat association for each instance of
+                                        gmd:MD_Metatada/gmd.contact -->
+            <xsl:for-each select="gmd:contact">
+                <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.) )"/>
+                <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
+                    <rim:Name>
+                        <xsl:variable name="name" select="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString"/>
+                        <rim:LocalizedString value="{$name}"/>
+                    </rim:Name>
+                </rim:Organization>
+                <xsl:variable name="metadataPointOfContactAssociationId" select="concat( $urnCimMetadataPointOfContactAssociationIDPrefix, generate-id(.) )"/>
+                <rim:Association id="{$metadataPointOfContactAssociationId}" associationType="{$metadataPointOfContactAssociationType}" sourceObject="{$metadataInformationId}" targetObject="{$organizationId}">
+                    <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
+                    <!-- heikki : the codelist for rolecode has *many* more options than just PointOfCOntact, Author, Originator, Publisher.
+                                 If it is not one of those 4, I ignore it so no classification will be created. Does not make any sense. -->
+                    <xsl:variable name="metadataPointOfContactAssociationClassificationId" select="concat( $citedResponsiblePartyClassificationSchemePrefix, generate-id(.) )"/>
+                    <rim:Classification id="{$metadataPointOfContactAssociationClassificationId}" classifiedObject="{$metadataPointOfContactAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+                </rim:Association>
+            </xsl:for-each>
+
+
+
+            <!-- Resource Metadata EO Call Template START -->
             <xsl:for-each select="gmd:identificationInfo">
                 <xsl:call-template name="resourceMetadata">
                     <xsl:with-param name="metadadataEOIdentifier" select="$metadataInformationId"/>
@@ -169,26 +192,6 @@
         <xsl:param name="metadadataEOIdentifier"/>
         <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$resourceMetadataObjectType}">
             <xsl:call-template name="specifyTypeOfResourceMetadata"/>
-            <!--
-                        <rim:Name>
-                                <xsl:variable name="name" select="child::node()/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/>
-                                <rim:LocalizedString value="{$name}"/>
-                        </rim:Name>
-
-
-                        <rim:Description>
-                                <xsl:variable name="abstract" select="child::node()/gmd:abstract/gco:CharacterString"/>
-                                <rim:LocalizedString value="{$abstract}"/>
-                        </rim:Description>
-                        -->
-                        <!--
-                        <xsl:call-template name="slot-identifier">
-                                <xsl:with-param name="identifier" select="/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"/>
-                        </xsl:call-template>
-                        <xsl:call-template name="slot-language">
-                                <xsl:with-param name="languageNode" select="/gmd:MD_Metadata/gmd:language"/>
-                        </xsl:call-template>
-                        -->
 
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevelName">
                 <xsl:call-template name="slot-hierarchyLevelName">
@@ -335,20 +338,25 @@
                 <xsl:with-param name="servicemetadata-id" select="$resourceMetadataId"/>
             </xsl:call-template>
         </xsl:if>
+
         <xsl:call-template name="resourceConstraints">
             <xsl:with-param name="resourceConstraints-id" select="$resourceMetadataId"/>
         </xsl:call-template>
+
         <xsl:call-template name="citedResponsibleParty">
             <xsl:with-param name="citedResponsibleParty-id" select="$resourceMetadataId"/>
         </xsl:call-template>
+
         <xsl:call-template name="pointOfContact">
             <xsl:with-param name="pointOfContact-id" select="$resourceMetadataId"/>
         </xsl:call-template>
+
         <xsl:for-each select="/gmd:MD_Metadata/gmd:referenceSystemInfo">
             <xsl:call-template name="referenceSystemInfo">
                 <xsl:with-param name="referenceSystemInfo_id" select="$resourceMetadataId"/>
             </xsl:call-template>
         </xsl:for-each>
+
         <xsl:variable name="resourceMetadataInformationAssociationId" select="concat( $urnCimResourceMetadataInformationAssociationIDPrefix, generate-id(.))"/>
         <!-- Controllare se ci va la resource che linkata dal metadata-->
         <rim:Association id="{$resourceMetadataInformationAssociationId}" associationType="{$resourceMetadataInformationAssociationType}" sourceObject="{$resourceMetadataId}" targetObject="{$metadadataEOIdentifier}"/>
@@ -429,50 +437,53 @@
 
     <xsl:template name="pointOfContact">
         <xsl:param name="pointOfContact-id"/>
-        <xsl:for-each select="gmd:MD_DataIdentification/gmd:pointOfContact">
+        <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:pointOfContact">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.) )"/>
-            <rim:Organization id="{$organizationId}">
+            <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
                 <rim:Name>
                     <xsl:variable name="name" select="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString"/>
                     <rim:LocalizedString value="{$name}"/>
                 </rim:Name>
             </rim:Organization>
             <xsl:variable name="citedResponsiblePartyAssociationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.) )"/>
-            <rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$pointOfContact-id}" targetObject="{$organizationId}"/>
-            <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
-            <!-- heikki : the codelist for rolecode has *many* more options than just PointOfCOntact, Author, Originator, Publisher.
+            <rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$pointOfContact-id}" targetObject="{$organizationId}">
+                <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
+                <!-- heikki : the codelist for rolecode has *many* more options than just PointOfCOntact, Author, Originator, Publisher.
                                  If it is not one of those 4, I ignore it so no classification will be created. Does not make any sense. -->
-            <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyClassificationIDPrefix, generate-id(.) )"/>
-            <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+                <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyClassificationIDPrefix, generate-id(.) )"/>
+                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
+            </rim:Association>
         </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="citedResponsibleParty">
         <xsl:param name="citedResponsibleParty-id"/>
-        <xsl:for-each select="gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty">
+        <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.))"/>
-            <rim:Organization id="{$organizationId}">
+            <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
                 <rim:Name>
                     <xsl:variable name="name" select="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString"/>
                     <rim:LocalizedString value="{$name}"/>
                 </rim:Name>
+
             </rim:Organization>
             <xsl:variable name="citedResponsiblePartyAssociationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.) )"/>
-            <rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$citedResponsibleParty-id}" targetObject="{$organizationId}"/>
-            <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
-            <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.))"/>
-            <xsl:if test="$role = 'pointOfContact'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
-            </xsl:if>
-            <xsl:if test="$role = 'author'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
-            </xsl:if>
-            <xsl:if test="$role = 'publisher'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
-            </xsl:if>
-            <xsl:if test="$role = 'originator'">
-                <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
-            </xsl:if>
+            <rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$citedResponsibleParty-id}" targetObject="{$organizationId}">
+                <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
+                <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.))"/>
+                <xsl:if test="$role = 'pointOfContact'">
+                    <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                </xsl:if>
+                <xsl:if test="$role = 'author'">
+                    <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                </xsl:if>
+                <xsl:if test="$role = 'publisher'">
+                    <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                </xsl:if>
+                <xsl:if test="$role = 'originator'">
+                    <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
+                </xsl:if>
+            </rim:Association>
         </xsl:for-each>
     </xsl:template>
 
@@ -550,17 +561,17 @@
 
     <xsl:template name="servicemetadata">
         <xsl:param name="servicemetadata-id"/>
-          
-          <rim:Name>
+
+        <rim:Name>
             <xsl:variable name="name" select="srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/>
             <rim:LocalizedString value="{$name}"/>
         </rim:Name>
-        
+
         <rim:Description>
             <xsl:variable name="abstract" select="srv:SV_ServiceIdentification/gmd:abstract/gco:CharacterString"/>
             <rim:LocalizedString value="{$abstract}"/>
         </rim:Description>
-        
+
         <xsl:variable name="serviceType" select="srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
         <xsl:variable name="serviceTypeVersion" select="srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString"/>
         <xsl:variable name="serviceTypeVersionSuffix">
@@ -594,7 +605,7 @@
                 <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $servicesClassificationSchemePrefix, $serviceType, $serviceTypeVersionSuffix)}"/>
             </xsl:otherwise>
         </xsl:choose>
-        
+
         <xsl:variable name="couplingTypeClassificationId" select="concat( $urnCimCouplingTypeClassificationIDPrefix, generate-id(.))"/>
         <xsl:variable name="couplingType" select="srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType/@codeListValue"/>
         <xsl:choose>
@@ -1004,7 +1015,7 @@
         </rim:ExtrinsicObject>
         <xsl:for-each select="$citationInformationNode//gmd:CI_Citation/gmd:citedResponsibleParty">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.) )"/>
-            <rim:Organization id="{$organizationId}">
+            <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
                 <rim:Name>
                     <xsl:variable name="name" select="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString"/>
                     <rim:LocalizedString value="{$name}"/>
