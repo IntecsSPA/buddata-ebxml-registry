@@ -84,7 +84,9 @@
         <xsl:text>urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service</xsl:text>
     </xsl:variable>
 
-
+	<xsl:variable name="organizationObjectType">
+        <xsl:text>urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Organization</xsl:text>
+    </xsl:variable>
 
     <xsl:variable name="datasetObjectType">
         <xsl:text>urn:ogc:def:ebRIM-ObjectType:OGC:Dataset</xsl:text>
@@ -211,8 +213,6 @@
 
 
 
-
-
     <!-- Associations -->
 
     <xsl:variable name="cimAssociationTypeUrnPrefix">
@@ -288,7 +288,7 @@
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'Specification' )"/>
     </xsl:variable>
 
-    <xsl:variable name="metadataPointOfContactOnAssociationType">
+    <xsl:variable name="metadataPointOfContactAssociationType">
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'MetadataPointOfContact' )"/>
     </xsl:variable>
 
@@ -427,6 +427,8 @@
     <!--Association ID prefix -->
 
     <xsl:variable name="urnRegisrtryPackageToMetadataInformationAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:HasMember:')"/>
+    
+    <xsl:variable name="urnCimMetadataPointOfContactAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:MetadataPointOfContact:')"/>
 
     <xsl:variable name="urnCimCitedResponsiblePartyAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:CitedResponsibleParty:')"/>
 
