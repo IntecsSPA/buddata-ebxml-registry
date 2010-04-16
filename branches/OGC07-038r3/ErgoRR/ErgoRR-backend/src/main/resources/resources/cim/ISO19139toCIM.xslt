@@ -28,9 +28,11 @@
             
             <!-- Keywords -->
             <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
-                <xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
-                <xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
-                <rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
+                <xsl:if test="gmd:MD_Keywords/gmd:type">
+					<xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
+					<xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
+					<rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
+                </xsl:if>
                 <xsl:choose>
                     <xsl:when test="gmd:MD_Keywords/gmd:thesaurusName">
                         <!-- gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title     thesaurusIdentifier-->
