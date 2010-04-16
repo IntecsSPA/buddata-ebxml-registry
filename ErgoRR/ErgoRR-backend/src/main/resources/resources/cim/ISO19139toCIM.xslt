@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-                xmlns:saxon="http://saxon.sf.net/"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:gmd="http://www.isotc211.org/2005/gmd"
-                xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
-                xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
-                xmlns:gco="http://www.isotc211.org/2005/gco"
-                xmlns:gmx="http://www.isotc211.org/2005/gmx"
-                xmlns:srv="http://www.isotc211.org/2005/srv"
-                xmlns:gml32="http://www.opengis.net/gml/3.2"
-                xmlns:gml="http://www.opengis.net/gml"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+<xsl:stylesheet version="2.0" xmlns:saxon="http://saxon.sf.net/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gml32="http://www.opengis.net/gml/3.2" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
     <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
     <xsl:param name="cswURL">http://hrt-11.pisa.intecs.it/ergorr2/httpservice</xsl:param>
     <xsl:param name="metadataInformationId">urn:CIM:metadataInformationId:1</xsl:param>
 
     <xsl:include href="ISO19139toCIM_Include.xslt"/>
-
+    
     <xsl:variable name="resourceMetadataId" select="concat( 'urn:CIM:', $isoId, ':ResourceMetadata' )"/>
+
     <xsl:template match="gmd:MD_Metadata">
         <!--xsl:variable name="metadataInformationId" select="$urnCimMetadataInformationExtrinsicObjectID"/-->
         <xsl:variable name="registryPackageId" select="concat( $metadataInformationId , ':pkg')"/>
         <rim:RegistryObjectList>
-            <xsl:attribute name="iso19139Id">
-                <xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/>
-            </xsl:attribute>
-            
+            <xsl:attribute name="iso19139Id"><xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/></xsl:attribute>
+
             <!-- Keywords -->
-            <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
-                <xsl:if test="gmd:MD_Keywords/gmd:type">
-					<xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
-					<xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
-					<rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
-                </xsl:if>
-                <xsl:choose>
-                    <xsl:when test="gmd:MD_Keywords/gmd:thesaurusName">
+            <xsl:variable name="descriptiveKeywordsClassificationNodes">
+                <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
+                    <xsl:if test="not(gmd:MD_Keywords/gmd:thesaurusName/*)">
+                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordSchemeClassificationScheme}" code="{.}" id="{concat( $keywordSchemeClassificationSchemePrefix, . )}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{.}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat( . , ' Generic Keyword ' )}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:for-each>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:variable>
+
+            <xsl:if test="$descriptiveKeywordsClassificationNodes">
+                <xsl:copy-of select="$descriptiveKeywordsClassificationNodes"/>
+            </xsl:if>
+
+            <xsl:variable name="descriptiveKeywordsClassificationSchemes">
+                <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
+                    <xsl:if test="gmd:MD_Keywords/gmd:thesaurusName">
                         <!-- gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title     thesaurusIdentifier-->
                         <xsl:variable name="thesaurusIdentifier">
                             <xsl:call-template name="getIdByNodeContent">
@@ -57,49 +61,40 @@
                             <rim:Name>
                                 <rim:LocalizedString xml:lang="en" value="{$thesaurusName}"/>
                             </rim:Name>
-                            <rim:Description>
-                                <rim:LocalizedString xml:lang="en" value="{$thesaurusDescription}"/>
-                            </rim:Description>
-                        </rim:ClassificationScheme>
-                        <xsl:variable name="urnCimKeywordThesaurusSchemeClassificationIDPrefix" select="concat( $cimIDPrefix , 'Classification:KeywordThesaurusScheme:')"/>
-                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
-                            <xsl:variable name="keywordThesaurusSchemeClassificationId" select="concat( $urnCimKeywordThesaurusSchemeClassificationIDPrefix, generate-id(.) )"/>
-                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordThesaurusSchemeClassificationScheme}" code="{.}" id="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}">
-                                <rim:Name>
-                                    <rim:LocalizedString xml:lang="en" value="{.}"/>
-                                </rim:Name>
+                            <xsl:if test="$thesaurusDescription">
                                 <rim:Description>
-                                    <rim:LocalizedString xml:lang="en" value="{concat( . , ' - Thesaurus (', $thesaurusName, ') Keyword' )}"/>
+                                    <rim:LocalizedString xml:lang="en" value="{$thesaurusDescription}"/>
                                 </rim:Description>
-                            </rim:ClassificationNode>
-                            <rim:Classification id="{$keywordThesaurusSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}"/>
-                        </xsl:for-each>
+                            </xsl:if>
+                            <xsl:variable name="urnCimKeywordThesaurusSchemeClassificationIDPrefix" select="concat( $cimIDPrefix , 'Classification:KeywordThesaurusScheme:')"/>
+                            <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
+                                <xsl:variable name="keywordThesaurusSchemeClassificationId" select="concat( $urnCimKeywordThesaurusSchemeClassificationIDPrefix, generate-id(.) )"/>
+                                <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordThesaurusSchemeClassificationScheme}" code="{.}" id="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}">
+                                    <rim:Name>
+                                        <rim:LocalizedString xml:lang="en" value="{.}"/>
+                                    </rim:Name>
+                                    <rim:Description>
+                                        <rim:LocalizedString xml:lang="en" value="{concat( . , ' - Thesaurus (', $thesaurusName, ') Keyword' )}"/>
+                                    </rim:Description>
+                                </rim:ClassificationNode>
+                            </xsl:for-each>
+                        </rim:ClassificationScheme>
                         <xsl:variable name="citedItemId" select="concat( $urnCimCitedItemExtrinsicObjectIDPrefix, generate-id(.))"/>
                         <xsl:call-template name="CitationInformation">
                             <xsl:with-param name="citationInformationNode" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation"/>
                             <xsl:with-param name="citedItemEOId" select="$citedItemId"/>
                         </xsl:call-template>
                         <!--rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$citedItemId}" targetObject="{$organizationId}"/-->
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
-                            <xsl:variable name="keywordSchemeClassificationId" select="concat( $urnCimKeywordSchemeClassificationIDPrefix, generate-id(.) )"/>
-                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordSchemeClassificationScheme}" code="{.}" id="{concat( $keywordSchemeClassificationSchemePrefix, . )}">
-                                <rim:Name>
-                                    <rim:LocalizedString xml:lang="en" value="{.}"/>
-                                </rim:Name>
-                                <rim:Description>
-                                    <rim:LocalizedString xml:lang="en" value="{concat( . , ' Generic Keyword ' )}"/>
-                                </rim:Description>
-                            </rim:ClassificationNode>
-                            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordSchemeClassificationSchemePrefix, . )}"/>
-                        </xsl:for-each>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:for-each>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:variable>
+
+            <xsl:if test="$descriptiveKeywordsClassificationSchemes">
+                <xsl:copy-of select="$descriptiveKeywordsClassificationSchemes"/>
+            </xsl:if>
             <!-- -End Keywords-->
 
-           <!-- Metadata Information Extrinsic Object  START -->
+            <!-- Metadata Information Extrinsic Object  START -->
             <rim:ExtrinsicObject id="{$metadataInformationId}" objectType="{$metadataInformationObjectType}">
                 <!-- 	From fileIdentifier to <<slot>> identifier -->
                 <xsl:call-template name="slot-identifier">
@@ -128,7 +123,7 @@
                         <xsl:with-param name="classifiedObjectId" select="$metadataInformationId"/>
                     </xsl:call-template>
                 </xsl:for-each>
-
+                
             </rim:ExtrinsicObject>
             <!-- Metadata Information Extrinsic Object  END -->
 
@@ -152,16 +147,16 @@
                 </rim:Association>
             </xsl:for-each>
 
-
-
             <!-- Resource Metadata EO Call Template START -->
             <xsl:for-each select="gmd:identificationInfo">
                 <xsl:call-template name="resourceMetadata">
                     <xsl:with-param name="metadadataEOIdentifier" select="$metadataInformationId"/>
+                    <xsl:with-param name="descriptiveKeywordsClassificationNodes" select="$descriptiveKeywordsClassificationNodes"/>
+                    <xsl:with-param name="descriptiveKeywordsClassificationSchemes" select="$descriptiveKeywordsClassificationSchemes"/>
                 </xsl:call-template>
             </xsl:for-each>
             <!-- Resource Metadata EO Call Tempalate END -->
-
+            
             <!-- Parent Idenfier (Metadata Information EO) Call Template  START-->
             <xsl:variable name="parentIdentifier" select="gmd:parentIdentifier/gco:CharacterString"/>
             <xsl:if test="$parentIdentifier">
@@ -192,15 +187,17 @@
     <!-- Resource Metadata EO Template START-->
     <xsl:template name="resourceMetadata">
         <xsl:param name="metadadataEOIdentifier"/>
+        <xsl:param name="descriptiveKeywordsClassificationNodes"/>
+        <xsl:param name="descriptiveKeywordsClassificationSchemes"/>
         <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$resourceMetadataObjectType}">
             <xsl:call-template name="specifyTypeOfResourceMetadata"/>
-
+            
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevelName">
                 <xsl:call-template name="slot-hierarchyLevelName">
                     <xsl:with-param name="hierarchyLevelName" select="."/>
                 </xsl:call-template>
             </xsl:for-each>
-            <!-- template CITATION Inserire -->
+            <!-- Management of CITATION START -->
             <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:alternateTitle">
                 <xsl:variable name="alternateTitle" select="gco:CharacterString"/>
                 <xsl:call-template name="slot-title">
@@ -213,8 +210,7 @@
                     <xsl:with-param name="dateType" select="gmd:CI_Date/gmd:dateType"/>
                 </xsl:call-template>
             </xsl:for-each>
-            <!-- Fine inserimento CITATION-->
-
+            <!-- Management of CITATION END -->
             <xsl:for-each select="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat">
                 <rim:Slot name="{$formatSlotName}" slotType="{$stringSlotType}">
                     <rim:ValueList>
@@ -241,7 +237,7 @@
                     </rim:ValueList>
                 </rim:Slot>
             </xsl:for-each>
-
+            
             <xsl:if test="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
                 <xsl:variable name="url" select="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
                 <rim:Slot name="http://purl.org/dc/terms/references" slotType="xsd:URI">
@@ -258,7 +254,7 @@
                     <xsl:with-param name="dataset-id" select="$resourceMetadataId"/>
                 </xsl:call-template>
             </xsl:if>
-
+            
             <xsl:if test="gmd:MD_ServiceIdentification">
                 <xsl:call-template name="datametadata">
                     <xsl:with-param name="dataset-id" select="$resourceMetadataId"/>
@@ -295,7 +291,22 @@
                     </rim:Classification>
                 </xsl:if>
             </xsl:for-each>
-
+            <!--  ................................................................................................................... -->
+            <xsl:call-template name="createDescriptiveKeywordsClassificationIdByNodes">
+                <xsl:with-param name="classificationNodes" select="$descriptiveKeywordsClassificationNodes"/>
+            </xsl:call-template>
+            <!--  ................................................................................................................... -->
+            <xsl:call-template name="createDescriptiveKeywordsClassificationIdBySchemes">
+                <xsl:with-param name="classificationSchemes" select="$descriptiveKeywordsClassificationSchemes"/>
+            </xsl:call-template>
+            <!--  ................................................................................................................... -->
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
+                <xsl:if test="gmd:MD_Keywords/gmd:type">
+                    <xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
+                    <xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
+                    <rim:Classification id="{$keywordTypeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{concat( $keywordTypeClassificationSchemePrefix, $keywordType)}"/>
+                </xsl:if>
+            </xsl:for-each>
             <!--xsl:variable name="idRepo" select="translate( $metadataInformationId, ':', '_' )"/-->
             <wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $resourceMetadataId)}"/>
             <!--wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $metadataInformationId)}"/-->
@@ -304,9 +315,7 @@
         <xsl:call-template name="resourceConstraints-slot-rights"/>
 
         <xsl:for-each select="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report//gmd:result">
-
             <xsl:variable name="referenceSpecificationID" select="concat ( $urnCimReferenceSpecificationExtrinsicObjectIDPrefix, count(.) )"/>
-
             <rim:ExtrinsicObject id="{$referenceSpecificationID}" objectType="{$referenceSpecificationObjectType}">
                 <rim:Name>
                     <xsl:variable name="nameK">
@@ -332,7 +341,6 @@
                     </rim:Slot>
                 </xsl:if>
             </rim:ExtrinsicObject>
-
         </xsl:for-each>
 
         <xsl:if test="srv:SV_ServiceIdentification">
@@ -467,7 +475,6 @@
                     <xsl:variable name="name" select="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString"/>
                     <rim:LocalizedString value="{$name}"/>
                 </rim:Name>
-
             </rim:Organization>
             <xsl:variable name="citedResponsiblePartyAssociationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.) )"/>
             <rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$citedResponsibleParty-id}" targetObject="{$organizationId}">
@@ -568,7 +575,7 @@
             <xsl:variable name="name" select="srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/>
             <rim:LocalizedString value="{$name}"/>
         </rim:Name>
-
+        
         <rim:Description>
             <xsl:variable name="abstract" select="srv:SV_ServiceIdentification/gmd:abstract/gco:CharacterString"/>
             <rim:LocalizedString value="{$abstract}"/>
@@ -776,7 +783,7 @@
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-
+    
     <xsl:template name="slot-date-with-type">
         <xsl:param name="date"/>
         <xsl:param name="dateType"/>
@@ -991,13 +998,13 @@
                     <xsl:with-param name="title" select="$citationInformationNode/gmd:alternateTitle"/>
                 </xsl:call-template>
             </xsl:if>
-            <xsl:for-each select="$citationInformationNode//gmd:CI_Citation/gmd:date">
+            <xsl:for-each select="$citationInformationNode/gmd:date">
                 <xsl:call-template name="slot-date-with-type">
                     <xsl:with-param name="date" select="./gmd:CI_Date/gmd:date"/>
                     <xsl:with-param name="dateType" select="./gmd:CI_Date/gmd:dateType"/>
                 </xsl:call-template>
             </xsl:for-each>
-            <xsl:for-each select="$citationInformationNode//gmd:CI_Citation/gmd:identifier">
+            <xsl:for-each select="$citationInformationNode/gmd:identifier">
                 <xsl:variable name="codespace" select="gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString"/>
                 <xsl:variable name="codevalue" select="gmd:RS_Identifier/gmd:code/child::*/@codeListValue"/>
                 <xsl:if test="$codespace">
@@ -1005,17 +1012,17 @@
                     <rim:ExternalIdentifier id="{$externalIdentifierId}" registryObject="{$citedItemId}" identificationScheme="{$codespace}" value="{$codevalue}"/>
                 </xsl:if>
             </xsl:for-each>
-            <xsl:if test="$citationInformationNode//gmd:CI_Citation/gmd:title/gmx:anchor/@xlink:href">
+            <xsl:if test="$citationInformationNode/gmd:title/gmx:anchor/@xlink:href">
                 <rim:Slot name="{$referencesSlotName}" slotType="xsd:string">
                     <rim:ValueList>
                         <rim:Value>
-                            <xsl:value-of select="$citationInformationNode//gmd:CI_Citation/gmd:title/gmx:anchor/@xlink:href"/>
+                            <xsl:value-of select="$citationInformationNode/gmd:title/gmx:anchor/@xlink:href"/>
                         </rim:Value>
                     </rim:ValueList>
                 </rim:Slot>
             </xsl:if>
         </rim:ExtrinsicObject>
-        <xsl:for-each select="$citationInformationNode//gmd:CI_Citation/gmd:citedResponsibleParty">
+        <xsl:for-each select="$citationInformationNode/gmd:citedResponsibleParty">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.) )"/>
             <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
                 <rim:Name>
@@ -1046,7 +1053,7 @@
         <xsl:param name="node"/>
         <xsl:choose>
             <xsl:when test="$node/gco:CharacterString">
-                <xsl:value-of select="translate(translate( $node/gco:CharacterString,' ',':' ), ',','_')"/>
+                <xsl:value-of select="translate(translate( $node/gco:CharacterString,' ','_' ), ',','_')"/>
             </xsl:when>
             <xsl:when test="$node/gmx:Anchor">
                 <xsl:value-of select="translate(translate( $node/gmx:Anchor,' ',':' ), ',','_')"/>
@@ -1066,4 +1073,19 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="createDescriptiveKeywordsClassificationIdByNodes">
+        <xsl:param name="classificationNodes"/>
+        <xsl:for-each select="$classificationNodes">
+            <xsl:variable name="keywordSchemeClassificationId" select="concat( $urnCimKeywordSchemeClassificationIDPrefix, generate-id(.) )"/>
+            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{./@id}"/>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template name="createDescriptiveKeywordsClassificationIdBySchemes">
+        <xsl:param name="classificationSchemes"/>
+        <xsl:for-each select="$classificationSchemes//rim:ClassificationNode">
+            <xsl:variable name="keywordSchemeClassificationId" select="concat( @parent, ':' , generate-id(.) )"/>
+            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{./@id}"/>
+        </xsl:for-each>
+    </xsl:template>
 </xsl:stylesheet>
