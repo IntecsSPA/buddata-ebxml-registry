@@ -5,7 +5,7 @@
     <xsl:param name="metadataInformationId">urn:CIM:metadataInformationId:1</xsl:param>
 
     <xsl:include href="ISO19139toCIM_Include.xslt"/>
-    
+
     <xsl:variable name="resourceMetadataId" select="concat( 'urn:CIM:', $isoId, ':ResourceMetadata' )"/>
 
     <xsl:template match="gmd:MD_Metadata">
@@ -123,7 +123,7 @@
                         <xsl:with-param name="classifiedObjectId" select="$metadataInformationId"/>
                     </xsl:call-template>
                 </xsl:for-each>
-                
+
             </rim:ExtrinsicObject>
             <!-- Metadata Information Extrinsic Object  END -->
 
@@ -156,7 +156,7 @@
                 </xsl:call-template>
             </xsl:for-each>
             <!-- Resource Metadata EO Call Tempalate END -->
-            
+
             <!-- Parent Idenfier (Metadata Information EO) Call Template  START-->
             <xsl:variable name="parentIdentifier" select="gmd:parentIdentifier/gco:CharacterString"/>
             <xsl:if test="$parentIdentifier">
@@ -191,7 +191,7 @@
         <xsl:param name="descriptiveKeywordsClassificationSchemes"/>
         <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$resourceMetadataObjectType}">
             <xsl:call-template name="specifyTypeOfResourceMetadata"/>
-            
+
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevelName">
                 <xsl:call-template name="slot-hierarchyLevelName">
                     <xsl:with-param name="hierarchyLevelName" select="."/>
@@ -237,7 +237,7 @@
                     </rim:ValueList>
                 </rim:Slot>
             </xsl:for-each>
-            
+
             <xsl:if test="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
                 <xsl:variable name="url" select="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
                 <rim:Slot name="http://purl.org/dc/terms/references" slotType="xsd:URI">
@@ -254,7 +254,7 @@
                     <xsl:with-param name="dataset-id" select="$resourceMetadataId"/>
                 </xsl:call-template>
             </xsl:if>
-            
+
             <xsl:if test="gmd:MD_ServiceIdentification">
                 <xsl:call-template name="datametadata">
                     <xsl:with-param name="dataset-id" select="$resourceMetadataId"/>
@@ -311,8 +311,6 @@
             <wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $resourceMetadataId)}"/>
             <!--wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $metadataInformationId)}"/-->
         </wrs:ExtrinsicObject>
-
-        <xsl:call-template name="resourceConstraints-slot-rights"/>
 
         <xsl:for-each select="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report//gmd:result">
             <xsl:variable name="referenceSpecificationID" select="concat ( $urnCimReferenceSpecificationExtrinsicObjectIDPrefix, count(.) )"/>
@@ -406,45 +404,6 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template name="resourceConstraints-slot-rights">
-        <xsl:variable name="resourceMetadataIDforRights"/>
-        <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_SecurityConstraints">
-            <xsl:if test="gmd:otherConstraints/gco:CharacterString">
-                <xsl:variable name="securityConstraintsID" select="concat ( $urnCimSecurityConstraintsExtrinsicObjectIDPrefix, count(.) )"/>
-                <!--rim:ExtrinsicObject id="{$securityConstraintsID}" objectType="{$securityConstraintsObjectType}">
-
-                                </rim:ExtrinsicObject-->
-                                <!--rim:Slot name="{$rightsSlotName}" slotType="xsd:string">
-                                        <rim:ValueList>
-                                                <rim:Value>
-                                                        <xsl:value-of select="gmd:otherConstraints/gco:CharacterString"/>
-                                                </rim:Value>
-                                        </rim:ValueList>
-                                </rim:Slot-->
-            </xsl:if>
-        </xsl:for-each>
-        <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints">
-            <xsl:if test="gmd:otherConstraints/gco:CharacterString">
-                <xsl:variable name="legalConstraintsID" select="concat ( $urnCimLegalConstraintsExtrinsicObjectIDPrefix, count(.) )"/>
-                <!--rim:ExtrinsicObject id="{$legalConstraintsID}" objectType="{$legalConstraintsObjectType}">
-
-                             </rim:ExtrinsicObject-->
-                                <!--rim:Slot name="{$rightsSlotName}" slotType="xsd:string">
-                                        <rim:ValueList>
-                                                <rim:Value>
-                                                        <xsl:value-of select="gmd:otherConstraints/gco:CharacterString"/>
-                                                </rim:Value>
-                                        </rim:ValueList>
-                                </rim:Slot-->
-            </xsl:if>
-        </xsl:for-each>
-        <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:restrictions/gmd:MD_Constraints/gmd:useLimitation">
-            <xsl:if test="gmd:otherConstraints/gco:CharacterString">
-
-            </xsl:if>
-        </xsl:for-each>
-    </xsl:template>
-
     <xsl:template name="pointOfContact">
         <xsl:param name="pointOfContact-id"/>
         <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:pointOfContact">
@@ -498,62 +457,84 @@
 
     <xsl:template name="resourceConstraints">
         <xsl:param name="resourceConstraints-id"/>
-        <xsl:for-each select="gmd:MD_DataIdentification/gmd:resourceConstraints">
+        <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:resourceConstraints">
+
             <xsl:if test="gmd:MD_Constraints">
-                <xsl:call-template name="rights">
-                    <xsl:with-param name="rights-id" select="$resourceConstraints-id"/>
-                </xsl:call-template>
-            </xsl:if>
-            <xsl:if test="gmd:MD_LegalConstraints">
-                <xsl:call-template name="rights">
-                    <xsl:with-param name="rights-id" select="$resourceConstraints-id"/>
-                </xsl:call-template>
-                <xsl:if test="gmd:MD_LegalConstraints/gmd:useConstraints or gmd:MD_LegalConstraints/gmd:accessConstraints">
-                    <xsl:variable name="legalConstraintsId" select="concat( $urnCimLegalConstraintsExtrinsicObjectIDPrefix, generate-id(.))"/>
-                    <rim:ExtrinsicObject id="{$legalConstraintsId}" objectType="{$legalConstraintsObjectType}">
+                <xsl:if test="gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString">
+                    <xsl:variable name="rightsId" select="concat($urnCimRightsExtrinsicObjectIDPrefix, generate-id(.))"/>
+                    <rim:ExtrinsicObject id="{$rightsId}" objectType="{$rightsObjectType}">
+                        <rim:Slot name="{$abstractSlotName}" slotType="xsd:string">
+                            <rim:ValueList>
+                                <rim:Value>
+                                    <xsl:value-of select="gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString"/>
+                                </rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
                     </rim:ExtrinsicObject>
-                    <xsl:variable name="restrictionTypeClassificationId" select="concat($urnCimRestrictionTypeClassificationIDPrefix, generate-id(.))"/>
-                    <xsl:if test="gmd:MD_LegalConstraints/gmd:useConstraints">
-                        <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}" classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'use')}"/>
-                    </xsl:if>
-                    <xsl:if test="gmd:MD_LegalConstraints/gmd:accessConstraints">
-                        <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}" classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'access')}"/>
-                    </xsl:if>
-                    <xsl:variable name="restrictionCodeClassificationId" select="concat( $urnCimRestrictionCodeClassificationIDPrefix, generate-id(.))"/>
-                    <xsl:variable name="restrictionCode" select="gmd:MD_LegalConstraints/*/gmd:MD_RestrictionCode/@codeListValue"/>
-                    <rim:Classification id="{$restrictionCodeClassificationId}" classifiedObject="{$restrictionTypeClassificationId}" classificationNode="{concat($restrictionCodeClassificationSchemePrefix, $restrictionCode)}"/>
+                    <xsl:variable name="resourceConstraintsAssociationId" select="concat( $urnCimResourceConstraintsAssociationIDPrefix, generate-id(.))"/>
+                    <rim:Association id="{$resourceConstraintsAssociationId}" associationType="{$resourceConstraintsAssociationType}" sourceObject="{$resourceConstraints-id}" targetObject="{$rightsId}"/>
                 </xsl:if>
             </xsl:if>
-            <xsl:if test="gmd:MD_SecurityConstraints">
-                <xsl:call-template name="rights">
-                    <xsl:with-param name="rights-id" select="$resourceConstraints-id"/>
-                </xsl:call-template>
+
+            <xsl:if test="gmd:MD_LegalConstraints/*">
+                <xsl:variable name="legalConstraintsId" select="concat( $urnCimLegalConstraintsExtrinsicObjectIDPrefix, generate-id(.))"/>
+                <rim:ExtrinsicObject id="{$legalConstraintsId}" objectType="{$legalConstraintsObjectType}">
+                    <xsl:if test="gmd:MD_LegalConstraints/gmd:useLimitation/gco:CharacterString">
+                        <rim:Slot name="{$abstractSlotName}" slotType="xsd:string">
+                            <rim:ValueList>
+                                <rim:Value>
+                                    <xsl:value-of select="gmd:MD_LegalConstraints/gmd:useLimitation/gco:CharacterString"/>
+                                </rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                    </xsl:if>
+                    <xsl:if test="gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString">
+                        <rim:Slot name="{$rightsSlotName}" slotType="xsd:string">
+                            <rim:ValueList>
+                                <rim:Value>
+                                    <xsl:value-of select="gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString"/>
+                                </rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                    </xsl:if>
+                    <xsl:if test="gmd:MD_LegalConstraints/gmd:useConstraints or gmd:MD_LegalConstraints/gmd:accessConstraints">
+                        <xsl:variable name="restrictionTypeClassificationId" select="concat($urnCimRestrictionTypeClassificationIDPrefix, generate-id(.))"/>
+                        <xsl:if test="gmd:MD_LegalConstraints/gmd:useConstraints">
+                            <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}" classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'use')}"/>
+                        </xsl:if>
+                        <xsl:if test="gmd:MD_LegalConstraints/gmd:accessConstraints">
+                            <rim:Classification id="{$restrictionTypeClassificationId}" classifiedObject="{$legalConstraintsId}" classificationNode="{concat( $restrictionTypeClassificationSchemePrefix, 'access')}"/>
+                        </xsl:if>
+                        <xsl:variable name="restrictionCodeClassificationId" select="concat( $urnCimRestrictionCodeClassificationIDPrefix, generate-id(.))"/>
+                        <xsl:variable name="restrictionCode" select="gmd:MD_LegalConstraints/*/gmd:MD_RestrictionCode/@codeListValue"/>
+                        <rim:Classification id="{$restrictionCodeClassificationId}" classifiedObject="{$restrictionTypeClassificationId}" classificationNode="{concat($restrictionCodeClassificationSchemePrefix, $restrictionCode)}"/>
+                    </xsl:if>
+                </rim:ExtrinsicObject>
+                <xsl:variable name="resourceConstraintsAssociationId" select="concat( $urnCimResourceConstraintsAssociationIDPrefix, generate-id(.))"/>
+                <rim:Association id="{$resourceConstraintsAssociationId}" associationType="{$resourceConstraintsAssociationType}" sourceObject="{$resourceConstraints-id}" targetObject="{$legalConstraintsId}"/>
+            </xsl:if>
+
+            <xsl:if test="gmd:MD_SecurityConstraints/*">
                 <xsl:variable name="securityConstraintsId" select="concat( $urnCimSecurityConstraintsExtrinsicObjectIDPrefix, generate-id(.) )"/>
                 <rim:ExtrinsicObject id="{$securityConstraintsId}" objectType="{$securityConstraintsObjectType}">
+                    <xsl:if test="gmd:MD_SecurityConstraints/gmd:useLimitation/gco:CharacterString">
+                        <rim:Slot name="{$abstractSlotName}" slotType="xsd:string">
+                            <rim:ValueList>
+                                <rim:Value>
+                                    <xsl:value-of select="gmd:MD_SecurityConstraints/gmd:useLimitation/gco:CharacterString"/>
+                                </rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                    </xsl:if>
+                    <xsl:variable name="classificationCodeClassificationId" select="concat( $urnClassificationCodeClassificationIDPrefix, generate-id(.))"/>
+                    <xsl:variable name="classificationCode" select="gmd:MD_SecurityConstraints/gmd:classification/gmd:MD_ClassificationCode/@codeListValue"/>
+                    <rim:Classification id="{$classificationCodeClassificationId}" classifiedObject="{$securityConstraintsId}" classificationNode="{concat( $classificationCodeClassificationSchemePrefix, $classificationCode)}"/>
                 </rim:ExtrinsicObject>
-                <xsl:variable name="classificationCodeClassificationId" select="concat( $urnClassificationCodeClassificationIDPrefix, generate-id(.))"/>
-                <xsl:variable name="classificationCode" select="gmd:MD_SecurityConstraints/gmd:classification/gmd:MD_ClassificationCode/@codeListValue"/>
-                <rim:Classification id="{$classificationCodeClassificationId}" classifiedObject="{$securityConstraintsId}" classificationNode="{concat( $classificationCodeClassificationSchemePrefix, $classificationCode)}"/>
+                <xsl:variable name="resourceConstraintsAssociationId" select="concat( $urnCimResourceConstraintsAssociationIDPrefix, generate-id(.))"/>
+                <rim:Association id="{$resourceConstraintsAssociationId}" associationType="{$resourceConstraintsAssociationType}" sourceObject="{$resourceConstraints-id}" targetObject="{$securityConstraintsId}"/>
             </xsl:if>
-        </xsl:for-each>
-    </xsl:template>
 
-    <xsl:template name="rights">
-        <xsl:param name="rights-id"/>
-        <xsl:if test="gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString">
-            <xsl:variable name="rightsId" select="concat($urnCimRightsExtrinsicObjectIDPrefix, generate-id(.))"/>
-            <rim:ExtrinsicObject id="{$rightsId}" objectType="{$rightsObjectType}">
-                <rim:Slot name="{$abstractSlotName}" slotType="xsd:string">
-                    <rim:ValueList>
-                        <rim:Value>
-                            <xsl:value-of select="gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString"/>
-                        </rim:Value>
-                    </rim:ValueList>
-                </rim:Slot>
-            </rim:ExtrinsicObject>
-            <xsl:variable name="resourceConstraintsAssociationId" select="concat( $urnCimResourceConstraintsAssociationIDPrefix, generate-id(.))"/>
-            <rim:Association id="{$resourceConstraintsAssociationId}" associationType="{$resourceConstraintsAssociationType}" sourceObject="{$rights-id}" targetObject="{$rightsId}"/>
-        </xsl:if>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="specifyTypeOfResourceMetadata">
@@ -575,7 +556,7 @@
             <xsl:variable name="name" select="srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/>
             <rim:LocalizedString value="{$name}"/>
         </rim:Name>
-        
+
         <rim:Description>
             <xsl:variable name="abstract" select="srv:SV_ServiceIdentification/gmd:abstract/gco:CharacterString"/>
             <rim:LocalizedString value="{$abstract}"/>
@@ -783,7 +764,7 @@
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template name="slot-date-with-type">
         <xsl:param name="date"/>
         <xsl:param name="dateType"/>
