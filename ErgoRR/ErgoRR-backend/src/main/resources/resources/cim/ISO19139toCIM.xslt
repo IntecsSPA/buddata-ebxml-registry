@@ -374,10 +374,7 @@
     <xsl:template name="serviceoperation">
         <xsl:param name="servicemetadata-id"/>
         <xsl:for-each select="srv:SV_ServiceIdentification/srv:containsOperations">
-            <xsl:variable name="urnServiceOperationIDPrefix">
-                <xsl:text>urn:urn:ogc:def:CIM:</xsl:text>
-            </xsl:variable>
-            <xsl:variable name="serviceOperationId" select="concat( $urnServiceOperationIDPrefix, generate-id(.))"/>
+            <xsl:variable name="serviceOperationId" select="concat( $serviceOperationObjectType, ':', generate-id(.))"/>
             <rim:ExtrinsicObject id="{$serviceOperationId}" objectType="{$serviceOperationObjectType}">
                 <xsl:for-each select="srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage">
                     <xsl:variable name="url" select="gmd:URL"/>
@@ -397,10 +394,13 @@
                     <xsl:variable name="dcpListValue" select="srv:DCPList/@codeListValue"/>
                     <xsl:variable name="dcpListClassificationId" select="concat( $urnCimDCPListClassificationIDPrefix, generate-id(.))"/>
                     <xsl:if test="$dcpListValue='XML' or $dcpListValue='CORBA' or $dcpListValue='JAVA' or $dcpListValue='COM' or $dcpListValue='SQL' or $dcpListValue='WebServices' or $dcpListValue='SOAP' ">
-                        <rim:Classification id="{$dcpListClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $DCPListClassificationSchemePrefix, $dcpListValue)}"/>
+                        <rim:Classification id="{$dcpListClassificationId}" classifiedObject="{$serviceOperationId}" classificationNode="{concat( $DCPListClassificationSchemePrefix, $dcpListValue)}"/>
                     </xsl:if>
                 </xsl:for-each>
             </rim:ExtrinsicObject>
+            <xsl:variable name="containsOperationId" select="concat( $containsOperationAssociationType, ':', generate-id(.))"/>
+        <!-- Controllare se ci va la resource che linkata dal metadata-->
+        <rim:Association id="{$containsOperationId}" associationType="{$containsOperationAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$serviceOperationId}"/>
         </xsl:for-each>
     </xsl:template>
 
