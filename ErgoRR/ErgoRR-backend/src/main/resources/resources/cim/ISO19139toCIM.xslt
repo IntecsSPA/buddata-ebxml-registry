@@ -94,6 +94,170 @@
             </xsl:if>
             <!-- -End Keywords-->
 
+            <!-- Classification Services Handling START -->
+            <!-- References to chapter 8.4 "OGC service types" of document OGC 07-144r4 on CSW-ebRIM Basic Extension package-->
+            <xsl:variable name="servicesClassificationNodes">
+            <xsl:variable name="serviceType" select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
+                <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
+
+                    <xsl:choose>
+
+                        <xsl:when test="$serviceType = 'WFS' ">
+                            <xsl:variable name="serviceTypeVersion">
+                                <xsl:choose>
+                                    <xsl:when test="string-length(.) > 0">
+                                        <xsl:value-of select="."></xsl:value-of>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select=" '1.1' "></xsl:value-of>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureAccess" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:WebFeatureService', $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat('OGC Web Feature Access Service version ', $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:when>
+
+                        <xsl:when test="$serviceType = 'WMS' ">
+                            <xsl:variable name="serviceTypeVersion">
+                                <xsl:choose>
+                                    <xsl:when test="string-length(.) > 0">
+                                        <xsl:value-of select="."></xsl:value-of>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select=" '1.3' "></xsl:value-of>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:MapAccess" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:WebMapService', $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat('OGC Web Map Access Service version ', $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:when>
+
+                        <xsl:when test="$serviceType = 'WCS' ">
+                            <xsl:variable name="serviceTypeVersion">
+                                <xsl:choose>
+                                    <xsl:when test="string-length(.) > 0">
+                                        <xsl:value-of select="."></xsl:value-of>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select=" '1.1.2' "></xsl:value-of>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CoverageAccess" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:WebCoverageService', $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat('OGC Web Coverage Access Service version ', $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:when>
+
+                        <xsl:when test="$serviceType = 'CAT' ">
+                            <xsl:variable name="serviceTypeVersion">
+                                <xsl:choose>
+                                    <xsl:when test="string-length(.) > 0">
+                                        <xsl:value-of select="."></xsl:value-of>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select=" '2.0.2' "></xsl:value-of>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Catalogue" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:CatalogueService', $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat('OGC Web Catalogue Service version ', $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:when>
+
+                        <xsl:when test="$serviceType = 'CSW-ebRIM' ">
+                            <xsl:variable name="serviceTypeVersion">
+                                <xsl:choose>
+                                    <xsl:when test="string-length(.) > 0">
+                                        <xsl:value-of select="."></xsl:value-of>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select=" '1.0.0' "></xsl:value-of>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CatalogueService:2.0.2" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM', $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat('OGC CSW-ebRIM Catalogue Service version ', $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:when>
+
+                        <xsl:when test="$serviceType = 'WPS' ">
+                            <xsl:variable name="serviceTypeVersion">
+                                <xsl:choose>
+                                    <xsl:when test="string-length(.) > 0">
+                                        <xsl:value-of select="."></xsl:value-of>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select=" '1.0.0' "></xsl:value-of>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:WebProcessingService', $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat('OGC Web Processing Service version ', $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:when>
+
+                        <xsl:otherwise>
+                            <xsl:variable name="serviceTypeVersion" select="."/>
+                            <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', $serviceTypeVersion)"/>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{concat('urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services', ':', $serviceType)}" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services', ':', $serviceType, $serviceTypeVersionSuffix)}">
+                                <rim:Name>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
+                                </rim:Name>
+                                <rim:Description>
+                                    <rim:LocalizedString xml:lang="en" value="{concat($serviceType, ' version ' , $serviceTypeVersion)}"/>
+                                </rim:Description>
+                            </rim:ClassificationNode>
+                        </xsl:otherwise>
+
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:variable>
+
+
+            <xsl:if test="$servicesClassificationNodes">
+                <xsl:copy-of select="$servicesClassificationNodes"/>
+            </xsl:if>
+            <!-- Classification Services Handling END -->
+
+
             <!-- Metadata Information Extrinsic Object  START -->
             <rim:ExtrinsicObject id="{$metadataInformationId}" objectType="{$metadataInformationObjectType}">
                 <!-- 	From fileIdentifier to <<slot>> identifier -->
@@ -153,6 +317,7 @@
                     <xsl:with-param name="metadadataEOIdentifier" select="$metadataInformationId"/>
                     <xsl:with-param name="descriptiveKeywordsClassificationNodes" select="$descriptiveKeywordsClassificationNodes"/>
                     <xsl:with-param name="descriptiveKeywordsClassificationSchemes" select="$descriptiveKeywordsClassificationSchemes"/>
+                    <xsl:with-param name="servicesClassificationNodes" select="$servicesClassificationNodes"/>
                 </xsl:call-template>
             </xsl:for-each>
             <!-- Resource Metadata EO Call Tempalate END -->
@@ -189,6 +354,8 @@
         <xsl:param name="metadadataEOIdentifier"/>
         <xsl:param name="descriptiveKeywordsClassificationNodes"/>
         <xsl:param name="descriptiveKeywordsClassificationSchemes"/>
+        <xsl:param name="servicesClassificationNodes"/>
+
         <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$resourceMetadataObjectType}">
             <xsl:call-template name="specifyTypeOfResourceMetadata"/>
 
@@ -264,6 +431,7 @@
             <xsl:if test="srv:SV_ServiceIdentification">
                 <xsl:call-template name="servicemetadata">
                     <xsl:with-param name="servicemetadata-id" select="$resourceMetadataId"/>
+                    <xsl:with-param name="servicesClassificationNodes" select="$servicesClassificationNodes"/>
                 </xsl:call-template>
             </xsl:if>
 
@@ -399,8 +567,8 @@
                 </xsl:for-each>
             </rim:ExtrinsicObject>
             <xsl:variable name="containsOperationId" select="concat( $containsOperationAssociationType, ':', generate-id(.))"/>
-        <!-- Controllare se ci va la resource che linkata dal metadata-->
-        <rim:Association id="{$containsOperationId}" associationType="{$containsOperationAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$serviceOperationId}"/>
+            <!-- Controllare se ci va la resource che linkata dal metadata-->
+            <rim:Association id="{$containsOperationId}" associationType="{$containsOperationAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$serviceOperationId}"/>
         </xsl:for-each>
     </xsl:template>
 
@@ -551,6 +719,7 @@
 
     <xsl:template name="servicemetadata">
         <xsl:param name="servicemetadata-id"/>
+        <xsl:param name="servicesClassificationNodes"/>
 
         <rim:Name>
             <xsl:variable name="name" select="srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/>
@@ -562,39 +731,9 @@
             <rim:LocalizedString value="{$abstract}"/>
         </rim:Description>
 
-        <xsl:variable name="serviceType" select="srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
-        <xsl:variable name="serviceTypeVersion" select="srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString"/>
-        <xsl:variable name="serviceTypeVersionSuffix">
-            <xsl:if test="string-length($serviceTypeVersion) > 0">
-                <xsl:value-of select="concat(':', $serviceTypeVersion)"/>
-            </xsl:if>
-        </xsl:variable>
-        <xsl:variable name="servicesClassificationId" select="concat( $urnCimServicesClassificationIDPrefix, generate-id(.))"/>
-        <xsl:choose>
-            <!-- References to chapter 8.4 "OGC service types" of document OGC 07-144r4 on CSW-ebRIM Basic Extension package-->
-            <xsl:when test="$serviceType = 'WFS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebFeatureService' , $serviceTypeVersionSuffix)}"/>
-            </xsl:when>
-            <xsl:when test="$serviceType = 'WMS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebMapService' , $serviceTypeVersionSuffix)}"/>
-            </xsl:when>
-            <xsl:when test="$serviceType = 'WCS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebCoverageService' , $serviceTypeVersionSuffix)}"/>
-            </xsl:when>
-            <xsl:when test="$serviceType = 'CSW'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService' , $serviceTypeVersionSuffix)}"/>
-            </xsl:when>
-            <xsl:when test="$serviceType = 'CSW-ebRIM'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM', $serviceTypeVersionSuffix)}"/>
-            </xsl:when>
-            <!-- The following entry is an addition to the OGC services types listed in OGC 07-144r4 -->
-            <xsl:when test="$serviceType = 'WPS'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:WebProcessingService' , $serviceTypeVersionSuffix)}"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( $servicesClassificationSchemePrefix, $serviceType, $serviceTypeVersionSuffix)}"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="createServicesClassificationId">
+            <xsl:with-param name="classificationNodes" select="$servicesClassificationNodes"/>
+        </xsl:call-template>
 
         <xsl:variable name="couplingTypeClassificationId" select="concat( $urnCimCouplingTypeClassificationIDPrefix, generate-id(.))"/>
         <xsl:variable name="couplingType" select="srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType/@codeListValue"/>
@@ -1069,4 +1208,14 @@
             <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{./@id}"/>
         </xsl:for-each>
     </xsl:template>
+
+
+    <xsl:template name="createServicesClassificationId">
+        <xsl:param name="classificationNodes"/>
+        <xsl:for-each select="$classificationNodes">
+            <xsl:variable name="servicesClassificationId" select="concat( $urnCimServicesClassificationIDPrefix, generate-id(.))"/>
+            <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{./@id}"/>
+        </xsl:for-each>
+    </xsl:template>
+
 </xsl:stylesheet>
