@@ -18,7 +18,7 @@
             <xsl:variable name="descriptiveKeywordsClassificationNodes">
                 <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
                     <xsl:if test="not(gmd:MD_Keywords/gmd:thesaurusName/*)">
-                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
+                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword/gco:CharacterString">
                             <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordSchemeClassificationScheme}" code="{.}" id="{concat( $keywordSchemeClassificationSchemePrefix, . )}">
                                 <rim:Name>
                                     <rim:LocalizedString xml:lang="en" value="{.}"/>
@@ -67,7 +67,7 @@
                                 </rim:Description>
                             </xsl:if>
                             <xsl:variable name="urnCimKeywordThesaurusSchemeClassificationIDPrefix" select="concat( $cimIDPrefix , 'Classification:KeywordThesaurusScheme:')"/>
-                            <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
+                            <xsl:for-each select="gmd:MD_Keywords/gmd:keyword/gco:CharacterString">
                                 <xsl:variable name="keywordThesaurusSchemeClassificationId" select="concat( $urnCimKeywordThesaurusSchemeClassificationIDPrefix, generate-id(.) )"/>
                                 <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordThesaurusSchemeClassificationScheme}" code="{.}" id="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}">
                                     <rim:Name>
@@ -585,7 +585,7 @@
                 <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService' , $serviceTypeVersionSuffix)}"/>
             </xsl:when>
             <xsl:when test="$serviceType = 'CSW-ebRIM'">
-                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM, $serviceTypeVersionSuffix)}"/>
+                <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$servicemetadata-id}" classificationNode="{concat( 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM', $serviceTypeVersionSuffix)}"/>
             </xsl:when>
             <!-- The following entry is an addition to the OGC services types listed in OGC 07-144r4 -->
             <xsl:when test="$serviceType = 'WPS'">
