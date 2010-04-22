@@ -1105,14 +1105,6 @@
         <xsl:param name="citedItemEOId"/>
         <xsl:variable name="citedItemId" select="$citedItemEOId"/>
         <rim:ExtrinsicObject id="{$citedItemId}" objectType="{$citedItemObjectType}">
-            <rim:Name>
-                <xsl:variable name="nameK">
-                    <xsl:call-template name="getNodeContent">
-                        <xsl:with-param name="node" select="$citationInformationNode/gmd:title"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <rim:LocalizedString value="{$nameK}"/>
-            </rim:Name>
             <xsl:if test="$citationInformationNode/gmd:alternateTitle">
                 <xsl:call-template name="slot-title">
                     <xsl:with-param name="title" select="$citationInformationNode/gmd:alternateTitle"/>
@@ -1141,6 +1133,14 @@
                     </rim:ValueList>
                 </rim:Slot>
             </xsl:if>
+            <rim:Name>
+                <xsl:variable name="nameK">
+                    <xsl:call-template name="getNodeContent">
+                        <xsl:with-param name="node" select="$citationInformationNode/gmd:title"/>
+                    </xsl:call-template>
+                </xsl:variable>
+                <rim:LocalizedString value="{$nameK}"/>
+            </rim:Name>
         </rim:ExtrinsicObject>
         <xsl:for-each select="$citationInformationNode/gmd:citedResponsibleParty">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.) )"/>
@@ -1195,9 +1195,9 @@
 
     <xsl:template name="createDescriptiveKeywordsClassificationIdByNodes">
         <xsl:param name="classificationNodes"/>
-        <xsl:for-each select="$classificationNodes">
+        <xsl:for-each select="$classificationNodes//@id">
             <xsl:variable name="keywordSchemeClassificationId" select="concat( $urnCimKeywordSchemeClassificationIDPrefix, generate-id(.) )"/>
-            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{./@id}"/>
+            <rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{.}"/>
         </xsl:for-each>
     </xsl:template>
 
@@ -1212,9 +1212,9 @@
 
     <xsl:template name="createServicesClassificationId">
         <xsl:param name="classificationNodes"/>
-        <xsl:for-each select="$classificationNodes">
+        <xsl:for-each select="$classificationNodes//@id">
             <xsl:variable name="servicesClassificationId" select="concat( $urnCimServicesClassificationIDPrefix, generate-id(.))"/>
-            <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{./@id}"/>
+            <rim:Classification id="{$servicesClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{.}"/>
         </xsl:for-each>
     </xsl:template>
 
