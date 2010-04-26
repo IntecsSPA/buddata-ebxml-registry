@@ -515,6 +515,12 @@
             </xsl:call-template>
         </xsl:if>
 
+        <xsl:if test="srv:SV_ServiceIdentification">
+            <xsl:call-template name="operatesOn">
+                <xsl:with-param name="servicemetadata-id" select="$resourceMetadataId"/>
+            </xsl:call-template>
+        </xsl:if>
+
         <xsl:call-template name="resourceConstraints">
             <xsl:with-param name="resourceConstraints-id" select="$resourceMetadataId"/>
         </xsl:call-template>
@@ -569,6 +575,20 @@
             <xsl:variable name="containsOperationId" select="concat( $containsOperationAssociationType, ':', generate-id(.))"/>
             <!-- Controllare se ci va la resource che linkata dal metadata-->
             <rim:Association id="{$containsOperationId}" associationType="{$containsOperationAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$serviceOperationId}"/>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template name="operatesOn">
+        <xsl:param name="servicemetadata-id"/>
+        <xsl:for-each select="srv:SV_ServiceIdentification/srv:operatesOn">
+            <xsl:variable name="identifier" select="substring-after(@xlink:href, '#')"/>
+            <xsl:if test="not(empty($identifier))">
+                <xsl:variable name="resourceMetadataId" select="concat( 'urn:CIM:', $identifier, ':ResourceMetadata' )"/>
+                <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$dataMetadataObjectType}"/>
+                <xsl:variable name="operatesOnId" select="concat( $operatesOnAssociationType, ':', generate-id(.))"/>
+                <!-- Controllare se ci va la resource che linkata dal metadata-->
+                <rim:Association id="{$operatesOnId}" associationType="{$operatesOnAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$resourceMetadataId}"/>
+            </xsl:if>
         </xsl:for-each>
     </xsl:template>
 
