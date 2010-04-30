@@ -284,7 +284,7 @@
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'OperatesOn' )"/>
     </xsl:variable>
 
-    <xsl:variable name="specificationOnAssociationType">
+    <xsl:variable name="specificationAssociationType">
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'Specification' )"/>
     </xsl:variable>
 

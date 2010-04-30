@@ -507,6 +507,8 @@
                     </rim:Slot>
                 </xsl:if>
             </rim:ExtrinsicObject>
+            <xsl:variable name="specificationAssociationTypeId" select="concat( $specificationAssociationType, ':' , generate-id(.))"/>
+        <rim:Association id="{$specificationAssociationTypeId}" associationType="{$specificationAssociationType}" sourceObject="{$resourceMetadataId}" targetObject="{$referenceSpecificationID}"/>
         </xsl:for-each>
 
         <xsl:if test="srv:SV_ServiceIdentification">
