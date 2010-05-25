@@ -16,7 +16,7 @@
 
             <!-- Keywords -->
             <xsl:variable name="descriptiveKeywordsClassificationNodes">
-                <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
+                <xsl:for-each select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
                     <xsl:if test="not(gmd:MD_Keywords/gmd:thesaurusName/*)">
                         <xsl:for-each select="gmd:MD_Keywords/gmd:keyword/gco:CharacterString">
                             <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordSchemeClassificationScheme}" code="{.}" id="{concat( $keywordSchemeClassificationSchemePrefix, . )}">
@@ -37,7 +37,7 @@
             </xsl:if>
 
             <xsl:variable name="descriptiveKeywordsClassificationSchemes">
-                <xsl:for-each select="gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
+                <xsl:for-each select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
                     <xsl:if test="gmd:MD_Keywords/gmd:thesaurusName">
                         <!-- gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title     thesaurusIdentifier-->
                         <xsl:variable name="thesaurusIdentifier">
@@ -401,13 +401,13 @@
                 </xsl:call-template>
             </xsl:for-each>
             <!-- Management of CITATION START -->
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:alternateTitle">
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:alternateTitle">
                 <xsl:variable name="alternateTitle" select="gco:CharacterString"/>
                 <xsl:call-template name="slot-title">
                     <xsl:with-param name="title" select="$alternateTitle"/>
                 </xsl:call-template>
             </xsl:for-each>
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:date">
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:date">
                 <xsl:call-template name="slot-date-with-type">
                     <xsl:with-param name="date" select="gmd:CI_Date/gmd:date"/>
                     <xsl:with-param name="dateType" select="gmd:CI_Date/gmd:dateType"/>
@@ -504,7 +504,7 @@
                 <xsl:with-param name="classificationSchemes" select="$descriptiveKeywordsClassificationSchemes"/>
             </xsl:call-template>
             <!--  ................................................................................................................... -->
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:descriptiveKeywords">
+            <xsl:for-each select="/gmd:MD_Metadata/gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
                 <xsl:if test="gmd:MD_Keywords/gmd:type">
                     <xsl:variable name="keywordType" select="gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode/@codeListValue"/>
                     <xsl:variable name="keywordTypeClassificationId" select="concat( $urnCimKeywordTypeClassificationIDPrefix, generate-id(.) )"/>
@@ -632,7 +632,7 @@
 
     <xsl:template name="pointOfContact">
         <xsl:param name="pointOfContact-id"/>
-        <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:pointOfContact">
+        <xsl:for-each select="*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:pointOfContact">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.) )"/>
             <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
                 <rim:Name>
@@ -653,7 +653,7 @@
 
     <xsl:template name="citedResponsibleParty">
         <xsl:param name="citedResponsibleParty-id"/>
-        <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty">
+        <xsl:for-each select="*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty">
             <xsl:variable name="organizationId" select="concat( $urnCimOrganizationIDPrefix, generate-id(.))"/>
             <rim:Organization id="{$organizationId}" objectType="{$organizationObjectType}">
                 <rim:Name>
@@ -683,7 +683,7 @@
 
     <xsl:template name="resourceConstraints">
         <xsl:param name="resourceConstraints-id"/>
-        <xsl:for-each select="*[name() = 'srv:SV_ServiceIdentification' or name() = 'gmd:MD_DataIdentification' ]/gmd:resourceConstraints">
+        <xsl:for-each select="*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:resourceConstraints">
 
             <xsl:if test="gmd:MD_Constraints">
                 <xsl:if test="gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString">
