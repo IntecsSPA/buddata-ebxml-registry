@@ -664,7 +664,7 @@
             <xsl:variable name="citedResponsiblePartyAssociationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.) )"/>
             <rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$citedResponsibleParty-id}" targetObject="{$organizationId}">
                 <xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
-                <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyAssociationIDPrefix, generate-id(.))"/>
+                <xsl:variable name="citedResponsiblePartyAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyClassificationIDPrefix, generate-id(.))"/>
                 <xsl:if test="$role = 'pointOfContact'">
                     <rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
                 </xsl:if>
