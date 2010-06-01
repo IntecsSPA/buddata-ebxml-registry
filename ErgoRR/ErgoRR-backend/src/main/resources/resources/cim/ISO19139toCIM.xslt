@@ -871,31 +871,28 @@
             <xsl:for-each select="gmd:EX_Extent/gmd:temporalElement">
                 <rim:Slot name="{$temporalSlotName}" slotType="{$dateTimeSlotType}">
                     <rim:ValueList>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimeInstant">
+                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() = 'TimeInstant']">
                             <rim:Value>
-                                <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimeInstant/gml32:timePosition"/>
+                                <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
                             </rim:Value>
                         </xsl:if>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod">
+                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']">
                             <rim:Value>
-                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:begin/gml32:TimeInstant/gml32:timePosition">
-                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:begin/gml32:TimeInstant/gml32:timePosition"/>
+                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='begin']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']">
+                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='begin']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
                                 </xsl:if>
-                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:beginPosition">
-                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:beginPosition"/>
+                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='beginPosition']">
+                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='beginPosition']"/>
                                 </xsl:if>
                             </rim:Value>
                             <rim:Value>
-                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:end/gml32:TimeInstant/gml32:timePosition">
-                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml:end/gml32:TimeInstant/gml32:timePosition"/>
+                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='end']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']">
+                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='end']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
                                 </xsl:if>
-                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:endPosition">
-                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/gml32:TimePeriod/gml32:endPosition"/>
+                                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='endPosition']">
+                                    <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='endPosition']"/>
                                 </xsl:if>
                             </rim:Value>
-                        </xsl:if>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeEdge">
-                            <!-- Not yet Implemented-->
                         </xsl:if>
                         <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeEdge">
                             <!-- Not yet Implemented-->
