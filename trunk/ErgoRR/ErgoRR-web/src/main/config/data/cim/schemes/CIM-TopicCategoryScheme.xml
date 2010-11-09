@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="farming"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:farming">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:farming">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="farming"/>
           </rim:Name>
@@ -30,9 +29,9 @@
        
         <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="biota"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:biota">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:biota">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="biota"/>
           </rim:Name>
@@ -44,9 +43,9 @@
        
         <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="boundaries"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:boundaries">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:boundaries">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="boundaries"/>
           </rim:Name>
@@ -58,9 +57,9 @@
        
    <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="climatologyMeteorologyAtmosphere"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:climatologyMeteorologyAtmosphere">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:climatologyMeteorologyAtmosphere">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="climatologyMeteorologyAtmosphere"/>
           </rim:Name>
@@ -72,9 +71,9 @@
    
       <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="economy"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:economy">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:economy">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="economy"/>
           </rim:Name>
@@ -86,9 +85,9 @@
    
          <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="elevation"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:elevation">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:elevation">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="elevation"/>
           </rim:Name>
@@ -100,9 +99,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="environment"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:environment">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:environment">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="environment"/>
           </rim:Name>
@@ -114,9 +113,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="geoscientificInformation"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:geoscientificInformation">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:geoscientificInformation">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="geoscientificInformation"/>
           </rim:Name>
@@ -128,9 +127,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="health"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:health">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:health">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="health"/>
           </rim:Name>
@@ -142,9 +141,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="imageryBaseMapsEarthCover"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:imageryBaseMapsEarthCover">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:imageryBaseMapsEarthCover">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="imageryBaseMapsEarthCover"/>
           </rim:Name>
@@ -156,9 +155,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="intelligenceMilitary"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:intelligenceMilitary">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:intelligenceMilitary">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="intelligenceMilitary"/>
           </rim:Name>
@@ -170,9 +169,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="inlandWaters"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:inlandWaters">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:inlandWaters">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="inlandWaters"/>
           </rim:Name>
@@ -184,9 +183,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="location"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:location">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:location">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="location"/>
           </rim:Name>
@@ -198,9 +197,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="oceans"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:oceans">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:oceans">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="oceans"/>
           </rim:Name>
@@ -212,9 +211,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="planningCadastre"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:planningCadastre">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:planningCadastre">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="planningCadastre"/>
           </rim:Name>
@@ -226,9 +225,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="society"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:society">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:society">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="society"/>
           </rim:Name>
@@ -240,9 +239,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="structure"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:structure">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:structure">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="structure"/>
           </rim:Name>
@@ -254,9 +253,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="transportation"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:transportation">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:transportation">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="transportation"/>
           </rim:Name>
@@ -268,9 +267,9 @@
    
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:TopicCategory" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory" 
          code="utilitiesCommunication"
-         id="urn:ogc:def:ebRIM-ClassificationNode:TopicCategory:utilitiesCommunication">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::TopicCategory:utilitiesCommunication">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="utilitiesCommunication"/>
           </rim:Name>

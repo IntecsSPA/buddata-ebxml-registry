@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:DCPList"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:DCPList" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
          code="XML"
-         id="urn:ogc:def:ebRIM-ClassificationNode:DCPList:XML">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:XML">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="XML"/>
           </rim:Name>
@@ -30,9 +29,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:DCPList" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
          code="CORBA"
-         id="urn:ogc:def:ebRIM-ClassificationNode:DCPList:CORBA">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:CORBA">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="CORBA"/>
           </rim:Name>
@@ -44,9 +43,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:DCPList" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
          code="JAVA"
-         id="urn:ogc:def:ebRIM-ClassificationNode:DCPList:JAVA">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:JAVA">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="JAVA"/>
           </rim:Name>
@@ -58,9 +57,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:DCPList" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
          code="COM"
-         id="urn:ogc:def:ebRIM-ClassificationNode:DCPList:COM">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:COM">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="COM"/>
           </rim:Name>
@@ -72,9 +71,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:DCPList" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
          code="SQL"
-         id="urn:ogc:def:ebRIM-ClassificationNode:DCPList:SQL">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:SQL">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="SQL"/>
           </rim:Name>
@@ -83,20 +82,22 @@
           </rim:Description>
           
        </rim:ClassificationNode>
-       
-       <!-- CHANGED rim:ClassificationNode
+
+
+       <!-- INTECS. id and rim:LocalizedString changed :SQL to WebServices-->
+       <rim:ClassificationNode
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:DCPList" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
          code="SQL"
-         id="urn:ogc:def:ebRIM-ClassificationNode:DCPList:SQL">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:WebServices">
           <rim:Name>
-            <rim:LocalizedString xml:lang="en" value="SQL"/>
+            <rim:LocalizedString xml:lang="en" value="WebServices"/>
           </rim:Name>
           <rim:Description>
             <rim:LocalizedString xml:lang="en" value="web service-based Distributed Computing Platform"/>
           </rim:Description>
           
-       </rim:ClassificationNode-->
+       </rim:ClassificationNode>
        
   
 </rim:ClassificationScheme>

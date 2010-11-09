@@ -36,7 +36,6 @@ public class TranslatorFactory {
     private static Logger logger = Logger.getLogger(TranslatorFactory.class.getName());
     private static Properties transProps;
 
-
     static {
         transProps = new Properties();
         try {
@@ -79,6 +78,34 @@ public class TranslatorFactory {
         } else {
             String err = "Could not find translator for namespace: " + jaxbEl.getName().getNamespaceURI();
             logger.log(Level.WARNING, err);
+            throw new TranslationException(err);
+        }
+    }
+
+    public static Translator getInstance(Object object, String objType) throws TranslationException {
+        String nsWithoutHttpPrefix = CommonFunctions.removeHttpPrefix(objType);
+        nsWithoutHttpPrefix = nsWithoutHttpPrefix.replaceAll(":", "_");
+        String className = transProps.getProperty(nsWithoutHttpPrefix);
+
+        if (className != null) {
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.info("Found translator class: " + className + " for ns: " + objType);
+            }
+
+            try {
+                Class clazz = Class.forName(className);
+                Translator translator = (Translator) clazz.newInstance();
+                translator.setObject(object);
+                return translator;
+            } catch (Exception ex) {
+                String err = "Could not invoke translator for namespace: " + objType;
+                logger.log(Level.SEVERE, err, ex);
+                throw new TranslationException(err, ex);
+            }
+        } else {
+            String err = "Could not find translator for namespace: " + objType;
+            logger.log(Level.SEVERE, err);
             throw new TranslationException(err);
         }
     }

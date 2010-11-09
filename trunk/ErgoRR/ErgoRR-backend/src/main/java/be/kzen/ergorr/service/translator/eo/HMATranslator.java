@@ -95,11 +95,10 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         regPkg.setDescription(RIMUtil.createString("Provides Earth Observation Products extensions to the Basic package of the CSW-ebRIM catalogue profile."));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setObject(T obj) {
-        this.eo = obj;
+    public void setObject(Object obj) throws JAXBException {
+        JAXBElement remoteXmlEl = null;
+        remoteXmlEl = (JAXBElement) JAXBUtil.getInstance().unmarshall((String) obj);
+        this.eo = (T) remoteXmlEl.getValue();
     }
 
     /**
@@ -259,7 +258,7 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         assoEl = OFactory.rim.createAssociation(asso);
         regObjList.getIdentifiable().add(assoEl);
         associateToPackage(asso);
-        
+
         return regObjList;
     }
 

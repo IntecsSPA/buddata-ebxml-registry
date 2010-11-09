@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="copyright"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:copyright">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:copyright">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="copyright"/>
           </rim:Name>
@@ -30,9 +29,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="patent"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:patent">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:patent">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="patent"/>
           </rim:Name>
@@ -44,9 +43,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="patentPending"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:patentPending">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:patentPending">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="patent Pending"/>
           </rim:Name>
@@ -58,9 +57,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="trademark"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:trademark">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:trademark">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="trademark"/>
           </rim:Name>
@@ -72,9 +71,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="license"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:license">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:license">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="license"/>
           </rim:Name>
@@ -86,9 +85,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="intellectualPropertyRights"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:intellectualPropertyRights">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:intellectualPropertyRights">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="intellectual Property Rights"/>
           </rim:Name>
@@ -100,9 +99,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="restricted"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:restricted">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:restricted">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="restricted"/>
           </rim:Name>
@@ -114,9 +113,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:RestrictionCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode" 
          code="otherRestrictions"
-         id="urn:ogc:def:ebRIM-ClassificationNode:RestrictionCode:otherRestrictions">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::RestrictionCode:otherRestrictions">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="other Restrictions"/>
           </rim:Name>
