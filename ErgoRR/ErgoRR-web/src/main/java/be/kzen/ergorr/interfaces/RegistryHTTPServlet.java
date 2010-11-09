@@ -81,14 +81,21 @@ import org.w3c.dom.Document;
 public class RegistryHTTPServlet extends HttpServlet {
 
     private static Logger logger = Logger.getLogger(RegistryHTTPServlet.class.getName());
-    private static final String SERVICE_NAME = "CSW-ebRIM";
-    private static final String SERVICE_VERSION = "1.0.1";
+    // The service parameter of the request shall be equal to:
+    // - "CSW-ebRIM" for the GetCapabilities and GetRepositoryItem operations;
+    // - "CSW" for the GetRecordById operation.
+    private static final String EBRIM_SERVICE_NAME = "CSW-ebRIM";
+    private static final String CSW_SERVICE_NAME = "CSW";
     private static final String PARAM_SERVICE = "service";
     private static final String PARAM_VERSION = "version";
+    // The version parameter of the request shall be:
+    // - empty for the GetCapabilities and GetRepositoryItem operations;
+    // - "2.0.2"  for the GetRecordById operation.
+    private static final String VERSION_NAME = "2.0.2";
     private static final String PARAM_ELEMENT_SET_NAME = "ElementSetName";
     private static final String PARAM_OUTPUT_FORMAT = "outputFormat";
     private static final String PARAM_REQUEST = "request";
-    private static final String PARAM_ID = "id";
+    private static final String PARAM_ID = "Id";
     private static final String OP_GET_CAPABILITIES = "GetCapabilities";
     private static final String OP_GET_RECORD_BY_ID = "GetRecordById";
     private static final String OP_GET_REPOSITORY_ITEM = "GetRepositoryItem";
@@ -99,13 +106,15 @@ public class RegistryHTTPServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String serviceParameter, versionParameter;
-
+        String serviceParameter;
+        String versionParameter = null;
         try {
             serviceParameter = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(), PARAM_SERVICE));
             versionParameter = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(), PARAM_VERSION));
 
-            if (serviceParameter.equals(SERVICE_NAME) && versionParameter.equals(SERVICE_VERSION)) {
+            if (serviceParameter.equals(EBRIM_SERVICE_NAME) && (versionParameter == null)) {
+                processGetRequest(request, response);
+            } else if (serviceParameter.equals(CSW_SERVICE_NAME) && versionParameter.equals(VERSION_NAME)) {
                 processGetRequest(request, response);
             } else {
                 if (logger.isLoggable(Level.INFO)) {
@@ -212,7 +221,7 @@ public class RegistryHTTPServlet extends HttpServlet {
 
         try {
             GetRecordsResponseType response = qm.query();
-            
+
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "Request processed in " + sw.getDurationAsMillis() + " milliseconds");
             }
@@ -508,12 +517,12 @@ public class RegistryHTTPServlet extends HttpServlet {
         String elementSetNameParam = request.getParameter(PARAM_ELEMENT_SET_NAME);
         if (elementSetNameParam == null) {
             elementSetNameParam = ElementSetType.SUMMARY.value();
-        } else if ((elementSetNameParam.equals(ElementSetType.BRIEF.value()) ||
-                elementSetNameParam.equals(ElementSetType.SUMMARY.value()) ||
-                elementSetNameParam.equals(ElementSetType.FULL.value())) == false) {
+        } else if ((elementSetNameParam.equals(ElementSetType.BRIEF.value())
+                || elementSetNameParam.equals(ElementSetType.SUMMARY.value())
+                || elementSetNameParam.equals(ElementSetType.FULL.value())) == false) {
 
             String err = "User did not provide a valid ElementSetName: " + elementSetNameParam;
-            
+
             if (logger.isLoggable(Level.INFO)) {
                 logger.info(err);
             }

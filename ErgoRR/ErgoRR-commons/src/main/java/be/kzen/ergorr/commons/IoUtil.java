@@ -96,6 +96,19 @@ public class IoUtil {
         return sw.toString();
     }
 
+        /**
+     * Read stream {@code input} as String with the given encoding.
+     *
+     * @param input Stream to read from.
+     * @return Data of stream.
+     * @throws IOException
+     */
+    public static String toString(InputStream input) throws IOException {
+        StringWriter sw = new StringWriter();
+        copy(input, sw);
+        return sw.toString();
+    }
+
     /**
      * Copy an input stream {@code input} to an output stream {@code output}.
      *

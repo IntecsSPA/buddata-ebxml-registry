@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:KeywordType"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:KeywordType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType" 
          code="discipline"
-         id="urn:ogc:def:ebRIM-ClassificationNode:KeywordType:discipline">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType:discipline">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="discipline"/>
           </rim:Name>
@@ -30,9 +29,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:KeywordType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType" 
          code="place"
-         id="urn:ogc:def:ebRIM-ClassificationNode:KeywordType:place">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType:place">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="place"/>
           </rim:Name>
@@ -44,9 +43,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:KeywordType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType" 
          code="stratum"
-         id="urn:ogc:def:ebRIM-ClassificationNode:KeywordType:stratum">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType:stratum">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="stratum"/>
           </rim:Name>
@@ -58,9 +57,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:KeywordType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType" 
          code="temporal"
-         id="urn:ogc:def:ebRIM-ClassificationNode:KeywordType:temporal">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType:temporal">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="temporal"/>
           </rim:Name>
@@ -72,9 +71,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:KeywordType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType" 
          code="theme"
-         id="urn:ogc:def:ebRIM-ClassificationNode:KeywordType:theme">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::KeywordType:theme">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="theme"/>
           </rim:Name>

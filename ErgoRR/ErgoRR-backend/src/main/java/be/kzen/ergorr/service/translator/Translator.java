@@ -18,7 +18,10 @@
  */
 package be.kzen.ergorr.service.translator;
 
+import be.kzen.ergorr.exceptions.ServiceException;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
+import java.io.IOException;
+import javax.xml.bind.JAXBException;
 
 /**
  * Any RIM translator must implement this interface.
@@ -31,8 +34,8 @@ public interface Translator<T> {
      *
      * @param obj Object to translate.
      */
-    public void setObject(T obj);
-
+    //public void setObject(T obj);
+    public void setObject(Object obj) throws JAXBException,ServiceException,IOException;
     /**
      * Perform the translation.
      *
