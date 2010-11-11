@@ -1,0 +1,17 @@
+	<langpack>
+		<str id="CheckedHelloPanel.headline" txt="ErgoRR Installer" />
+		<str id="LicencePanel.headline.licence" txt="ErgoRR Installer: Licence Agreement" />
+		<str id="HTMLInfoPanel.headline.prereq" txt="ErgoRR Installer: Prerequisites" />
+		<str id="UserInputPanel.headline.basic" txt="ErgoRR Installer: Basic settings" />
+		<str id="UserInputPanel.headline.advanced" txt="ErgoRR Installer: Advanced settings" />
+		<str id="UserInputPanel.headline.serviceProvider" txt="ErgoRR Installer: Service Provider" />
+		<str id="UserInputPanel.headline.standAloneProperties" txt="ErgoRR Installer: Stand-alone properties" />
+		<str id="UserInputPanel.headline.existingTomcatProperties" txt="ErgoRR Installer: Tomcat deploy" />
+		<str id="UserInputPanel.headline.bundledTomcatProperties" txt="ErgoRR Installer: Tomcat configuration" />
+		<str id="UserInputPanel.headline.db" txt="ErgoRR Installer: Database settings" />
+		<str id="UserInputPanel.headline.dbConfirmation" txt="ErgoRR Installer: Database confirmation" />
+		<str id="PacksPanel.headline" txt="ErgoRR Installer: Installation packages" />
+		<str id="InstallPanel.headline" txt="ErgoRR Installer: Installation progress" />
+		<str id="HTMLInfoPanel.headline.existingTomcatInfo" txt="ErgoRR Installer: Tomcat information" />
+		<str id="SimpleFinishPanel.headline" txt="ErgoRR Installer: Done!" />
+	</langpack>
