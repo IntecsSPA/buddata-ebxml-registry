@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+    <rim:ClassificationNode code="ObjectDefinition" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:kzen:ObjectType:SlotDescription" id="urn:kzen:ObjectType:SlotDescription" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+        <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="ObjectDefinition"/>
+        </rim:Name>
+    </rim:ClassificationNode>
+    <rim:ExtrinsicObject id="urn:x-ogc:specification:csw-ebrim:ObjectType:BasicPackage:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+        <rim:Slot name="http://purl.org/dc/elements/1.1/contributor" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/spatial" slotType="geometry"/>
+        <rim:Slot name="http://purl.org/dc/terms/temporal" slotType="datetime"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/creator" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/date" slotType="datetime"/>
+        <rim:Slot name="http://purl.org/dc/terms/modified" slotType="datetime"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/language" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/rights" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/source" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/subject" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/coverage" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/format" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/type" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/identifier" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/conformsTo" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/references" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/elements/1.1/abstract" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/title" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/created" slotType="datetime"/>
+        <rim:Slot name="http://purl.org/dc/terms/issued" slotType="datetime"/>
+    </rim:ExtrinsicObject>
+</rim:RegistryObjectList>
