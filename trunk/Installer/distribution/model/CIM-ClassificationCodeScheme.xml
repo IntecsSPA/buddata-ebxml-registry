@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:ClassificationCode"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:ClassificationCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode" 
          code="unclassified"
-         id="urn:ogc:def:ebRIM-ClassificationNode:ClassificationCode:unclassified">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode:unclassified">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="unclassified"/>
           </rim:Name>
@@ -29,9 +28,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:ClassificationCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode" 
          code="restricted"
-         id="urn:ogc:def:ebRIM-ClassificationNode:ClassificationCode:restricted">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode:restricted">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="restricted"/>
           </rim:Name>
@@ -42,9 +41,9 @@
 
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:ClassificationCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode" 
          code="confidential"
-         id="urn:ogc:def:ebRIM-ClassificationNode:ClassificationCode:confidential">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode:confidential">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="confidential"/>
           </rim:Name>
@@ -55,9 +54,9 @@
 
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:ClassificationCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode" 
          code="secret"
-         id="urn:ogc:def:ebRIM-ClassificationNode:ClassificationCode:secret">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode:secret">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="secret"/>
           </rim:Name>
@@ -68,9 +67,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:ClassificationCode" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode" 
          code="topSecret"
-         id="urn:ogc:def:ebRIM-ClassificationNode:ClassificationCode:topSecret">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::ClassificationCode:topSecret">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="topSecret"/>
           </rim:Name>

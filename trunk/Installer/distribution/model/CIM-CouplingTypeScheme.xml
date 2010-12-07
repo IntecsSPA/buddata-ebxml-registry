@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:CouplingType"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CouplingType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType" 
          code="loose"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CouplingType:loose">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType:loose">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="loose"/>
           </rim:Name>
@@ -30,9 +29,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CouplingType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType" 
          code="mixed"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CouplingType:mixed">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType:mixed">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="mixed"/>
           </rim:Name>
@@ -44,9 +43,9 @@
       
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CouplingType" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType" 
          code="tight"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CouplingType:tight">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CouplingType:tight">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="tight"/>
           </rim:Name>

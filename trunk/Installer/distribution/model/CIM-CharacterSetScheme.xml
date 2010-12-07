@@ -2,8 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 ../../../xsd/wrs.xsd"
-  id="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet"
+  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -16,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="ucs2"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:ucs2">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:ucs2">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="ucs2"/>
           </rim:Name>
@@ -29,9 +28,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="ucs4"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:ucs4">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:ucs4">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="ucs4"/>
           </rim:Name>
@@ -42,9 +41,9 @@
 
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="utf7"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:utf7">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:utf7">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="utf7"/>
           </rim:Name>
@@ -55,9 +54,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="utf8"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:utf8">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:utf8">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="utf8"/>
           </rim:Name>
@@ -68,9 +67,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="utf16"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:utf16">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:utf16">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="utf16"/>
           </rim:Name>
@@ -81,9 +80,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part1"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part1">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part1">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part1"/>
           </rim:Name>
@@ -94,9 +93,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part2"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part2">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part2">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part2"/>
           </rim:Name>
@@ -107,9 +106,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part3"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part3">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part3">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part3"/>
           </rim:Name>
@@ -120,9 +119,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part4"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part4">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part4">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part4"/>
           </rim:Name>
@@ -133,9 +132,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part5"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part5">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part5">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part5"/>
           </rim:Name>
@@ -146,9 +145,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part6"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part6">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part6">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part6"/>
           </rim:Name>
@@ -159,9 +158,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part7"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part7">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part7">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part7"/>
           </rim:Name>
@@ -172,9 +171,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part8"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part8">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part8">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part8"/>
           </rim:Name>
@@ -185,9 +184,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part9"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part9">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part9">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part9"/>
           </rim:Name>
@@ -198,9 +197,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part10"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part10">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part10">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part10"/>
           </rim:Name>
@@ -211,9 +210,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part11"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part11">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part11">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part11"/>
           </rim:Name>
@@ -224,9 +223,9 @@
   
       <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part13"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part13">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part13">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part13"/>
           </rim:Name>
@@ -237,9 +236,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part14"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part14">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part14">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part14"/>
           </rim:Name>
@@ -250,9 +249,9 @@
   
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part15"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part15">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part15">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part15"/>
           </rim:Name>
@@ -263,9 +262,9 @@
   
       <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="8859part16"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:8859part16">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:8859part16">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="8859part16"/>
           </rim:Name>
@@ -276,9 +275,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="jis"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:jis">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:jis">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="jis"/>
           </rim:Name>
@@ -289,9 +288,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="shiftJIS"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:shiftJIS">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:shiftJIS">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="shiftJIS"/>
           </rim:Name>
@@ -302,9 +301,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="eucJP"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:eucJP">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:eucJP">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="eucJP"/>
           </rim:Name>
@@ -315,9 +314,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="usAscii"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:usAscii">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:usAscii">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="usAscii"/>
           </rim:Name>
@@ -328,9 +327,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="ebdcdic"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:ebdcdic">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:ebdcdic">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="ebdcdic"/>
           </rim:Name>
@@ -341,9 +340,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="eucKR"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:eucKR">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:eucKR">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="eucKR"/>
           </rim:Name>
@@ -354,9 +353,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="big5"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:big5">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:big5">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="big5"/>
           </rim:Name>
@@ -367,9 +366,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:ebRIM-ClassificationScheme:CharacterSet" 
+         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet" 
          code="GB2312"
-         id="urn:ogc:def:ebRIM-ClassificationNode:CharacterSet:GB2312">
+         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CharacterSet:GB2312">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="GB2312"/>
           </rim:Name>

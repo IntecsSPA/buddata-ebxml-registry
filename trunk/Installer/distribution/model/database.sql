@@ -1,5 +1,6 @@
 
 -- =================================================================================== TABLE
+DROP TABLE IF EXISTS t_property CASCADE;
 DROP TABLE IF EXISTS t_association CASCADE;
 DROP TABLE IF EXISTS t_auditableevent CASCADE;
 DROP TABLE IF EXISTS t_affectedobject CASCADE;
@@ -33,6 +34,11 @@ DROP TABLE IF EXISTS t_telephonenumber CASCADE;
 DROP TABLE IF EXISTS t_user CASCADE;
 DROP TABLE IF EXISTS t_person CASCADE;
 
+CREATE TABLE t_property (
+  key_                     VARCHAR(256) NOT NULL PRIMARY KEY,
+  value_                   VARCHAR(4096),
+  editable                 BOOLEAN NOT NULL DEFAULT false
+);
 
 CREATE TABLE t_association (
 --Identifiable Attributes
@@ -346,7 +352,7 @@ CREATE TABLE t_slot (
   name_                    VARCHAR(256) NOT NULL,
   slottype                 VARCHAR(256),
   spectype                 VARCHAR(3),
-  stringvalue              VARCHAR(4096),
+  stringvalue              VARCHAR(8192),
   boolvalue                BOOLEAN,
   datetimevalue            TIMESTAMP WITH TIME ZONE,
   doublevalue              DOUBLE PRECISION,
