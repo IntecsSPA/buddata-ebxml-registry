@@ -88,7 +88,7 @@
        <rim:ClassificationNode
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
          parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList" 
-         code="SQL"
+         code="WebServices"
          id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::DCPList:WebServices">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="WebServices"/>
