@@ -3,14 +3,15 @@
 	<!--Basis settings -->
 	<info>
 		<appname>ErgoRR</appname>
-		<appversion>Revision 349</appversion>
+		<appversion>version 2.0.0</appversion>
 		<authors>
 			<author email="" name="kZen Labs" />
+			<author email="" name="Intecs S.p.A." />
 		</authors>
 		<url>http://code.google.com/p/buddata-ebxml-registry/</url>
 		<javaversion>1.5</javaversion>
 		<requiresjdk>yes</requiresjdk>
-		<writeinstallationinformation>yes</writeinstallationinformation>
+		<writeinstallationinformation>no</writeinstallationinformation>
 		<run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7" />
 		<uninstaller write="no" />
 	</info>
@@ -73,10 +74,11 @@
 	<jar src="distribution/jsr250-api-1.0.jar" />
 	<jar src="distribution/postgis-1.3.3.jar" />
 	<jar src="distribution/postgresql-8.2-504.jdbc3.jar" />
+	<!-- <jar src="distribution/saxon-9.jar" /> -->
 	<jar src="distribution/saxpath-1.0-FCS.jar" />
-	<jar src="distribution/webservices-api-1.4.jar" />
-	<jar src="distribution/webservices-rt-1.4.jar" />
-	<jar src="distribution/webservices-tools-1.4.jar" />
+	<jar src="distribution/webservices-api-1.5.jar" />
+	<jar src="distribution/webservices-rt-1.5.jar" />
+	<jar src="distribution/webservices-tools-1.5.jar" />
 
 	<listeners>
 		<listener installer="be.kzen.ergorr.installer.izpack.event.LoadDBInstallListener" />
@@ -144,8 +146,8 @@
 
 			<file override="asktrue" src="distribution/postgresql-8.2-504.jdbc3.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/lib" />
 
-			<file override="asktrue" src="distribution/webservices-api-1.4.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
-			<file override="asktrue" src="distribution/webservices-rt-1.4.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
+			<file override="asktrue" src="distribution/webservices-api-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
+			<file override="asktrue" src="distribution/webservices-rt-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
 
 			<fileset dir="distribution/model" defaultexcludes="yes"
 				targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/defaults/model" />
@@ -191,8 +193,8 @@
 			<file override="asktrue" src="distribution/postgresql-8.2-504.jdbc3.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/lib/" />
 
 
-			<file override="asktrue" src="distribution/webservices-api-1.4.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
-			<file override="asktrue" src="distribution/webservices-rt-1.4.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
+			<file override="asktrue" src="distribution/webservices-api-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
+			<file override="asktrue" src="distribution/webservices-rt-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/" />
 
 			<fileset dir="distribution/model" defaultexcludes="yes"
 				targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/defaults/model" />
