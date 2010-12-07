@@ -63,20 +63,33 @@ public class LoadDBInstallListener extends SimpleInstallerListener {
 	private static final String[] DEFAULT_SQL_FILES = { "database.sql" };
 
 	private static final String[] DEFAULT_XML_FILES = {
-			"rim-objecttype-scheme.xml", "rim-datatype-scheme.xml",
-			"rim-associationtype-scheme.xml", "rim-querylanguage-scheme.xml",
-			"ergo.xml", "OGC-root-package.xml", "eo-rim-model.xml",
-			"eo-slot-init.xml", "ISO19119-Services-Scheme.xml",
-			"UNSD-Regions-Scheme.xml", "Basic-Package.xml",
-			"basic-package-slot-init.xml", "CIM-CharacterSetScheme.xml",
+			"rim-objecttype-scheme.xml",
+                        "rim-datatype-scheme.xml",
+			"rim-associationtype-scheme.xml",
+                        "rim-querylanguage-scheme.xml",
+			"ergo.xml", 
+                        "OGC-root-package.xml",
+                        "eo-rim-model.xml",
+			"eo-slot-init.xml",
+                        "ISO19119-Services-Scheme.xml",
+			"UNSD-Regions-Scheme.xml",
+                        "Basic-Package.xml",
+			"basic-package-slot-init.xml",
+                        "CIM-CharacterSetScheme.xml",
 			"CIM-CitedResponsiblePartyScheme.xml",
-			"CIM-ClassificationCodeScheme.xml", "CIM-CouplingTypeScheme.xml",
-			"CIM-DCPListScheme.xml", "CIM-FormatNameAndVersionScheme.xml",
-			"CIM-KeywordScheme.xml", "CIM-KeywordTypeScheme.xml",
+			"CIM-ClassificationCodeScheme.xml",
+                        "CIM-CouplingTypeScheme.xml",
+			"CIM-DCPListScheme.xml",
+                        "CIM-FormatNameAndVersionScheme.xml",
+			"CIM-KeywordScheme.xml",
+                        "CIM-KeywordTypeScheme.xml",
 			"CIM-MetadataStandardNameAndVersionScheme.xml",
-			"CIM-RestrictionCodeScheme.xml", "CIM-RestrictionTypeScheme.xml",
+			"CIM-RestrictionCodeScheme.xml", 
+                        "CIM-RestrictionTypeScheme.xml",
 			"CIM-SpatialRepresentationScheme.xml",
-			"CIM-TopicCategoryScheme.xml", "CIM-Package.xml" };
+			"CIM-TopicCategoryScheme.xml", 
+                        "CIM-Package.xml",
+                        "cim-package-slot-init.xml" };
 
 	private String dbUrl;
 	private String dbName;
