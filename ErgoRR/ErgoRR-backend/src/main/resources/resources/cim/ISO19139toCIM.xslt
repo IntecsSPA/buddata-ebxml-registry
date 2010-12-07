@@ -512,7 +512,7 @@
                 </xsl:if>
             </xsl:for-each>
             <!--xsl:variable name="idRepo" select="translate( $metadataInformationId, ':', '_' )"/-->
-            <wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $resourceMetadataId)}"/>
+            <wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;Id=', $resourceMetadataId)}"/>
             <!--wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;version=2.0.2&amp;id=', $metadataInformationId)}"/-->
         </wrs:ExtrinsicObject>
 
