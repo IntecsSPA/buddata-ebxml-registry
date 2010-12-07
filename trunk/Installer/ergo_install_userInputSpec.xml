@@ -4,6 +4,9 @@
 		<field type="text" variable="ERGO_DEPLOY_NAME">
 			<spec set="ergorr" size="25" txt="Deploy/database name" />
 		</field>
+		<field type="text" variable="ERGO_APPSERVER_URL">
+			<spec set="" size="25" txt="Insert host:port" />
+		</field>
 		<field align="left" type="dir" variable="ERGO_REPO_PATH">
 			<spec set="" size="25" txt="Repository path" mustExist="false"
 				create="true" />
