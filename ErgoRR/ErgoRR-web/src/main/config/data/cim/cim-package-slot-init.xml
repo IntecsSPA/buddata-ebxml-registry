@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
-
-    <rim:ExtrinsicObject id="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::ReferenceSpecification:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
-        <rim:Slot name="Conformance" slotType="string"/>
-        
-    </rim:ExtrinsicObject>
-</rim:RegistryObjectList>
