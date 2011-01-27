@@ -548,6 +548,13 @@ public class SqlPersistence {
      * @throws SQLException
      */
     private Connection createConnection() throws SQLException {
+
+        if (requestContext == null) {
+            logger.fine("----------------------" + "requestContext is null");
+            logger.fine("Creating a new requestContext");
+            requestContext = new RequestContext();
+        }
+
         DbConnectionParams connParams = (DbConnectionParams) requestContext.getParam(InternalConstants.DB_CONNECTION_PARAMS);
 
         if (connParams == null) {
@@ -575,8 +582,8 @@ public class SqlPersistence {
         boolean loaded = false;
 
         try {
-            String dataSourceName = CommonProperties.getInstance().get("db.datasource") +
-                    CommonProperties.getInstance().get("deployName");
+            String dataSourceName = CommonProperties.getInstance().get("db.datasource")
+                    + CommonProperties.getInstance().get("deployName");
             dataSource = (DataSource) new InitialContext().lookup(dataSourceName);
             loaded = true;
         } catch (Exception ex) {
