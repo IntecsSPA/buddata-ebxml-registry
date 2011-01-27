@@ -43,9 +43,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>saxon</groupId>
+            <groupId>net.sf.saxon</groupId>
             <artifactId>saxon</artifactId>
-            <version>9</version>
+            <version>9.2.0</version>
         </dependency>
     </dependencies>
 
