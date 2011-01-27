@@ -60,7 +60,7 @@
 		<repository>
 			<id>saxon4maven</id>
 			<name>Saxon Repository for Maven 2</name>
-			<url>http://www.eviware.com/repository/maven2/</url>
+			<url>http://ir.dcs.gla.ac.uk/~bpiwowar/maven/</url>
 		</repository>
 	</repositories>
 
