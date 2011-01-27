@@ -80,7 +80,8 @@ public class HarvestService {
         HarvestResponseType response = null;
         RegistryObjectListType regObjList = null;
         SaxonDocument sx = null;
-        String objectType = request.getResourceType();
+        String objectType = null;
+        // objectType = request.getResourceType();
         try {
             xmlLocaltion = new URL(request.getSource());
         } catch (MalformedURLException ex) {
