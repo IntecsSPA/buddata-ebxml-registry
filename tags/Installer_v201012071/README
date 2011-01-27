@@ -1,0 +1,6 @@
+Build instructions:
+
+1) Install IzPack from the jar (java -jar blabla.jar)
+2) Update the build script to point to your izpack installation
+3) Update any of the files in the distribution directory that may need updating. Careful, some of them contain variables that will be parsed by IzPack.
+4) Execute the build script
