@@ -1,7 +1,6 @@
 Prerequisites
 
-1. JDK 1.5.x
-   Please note that JDK 1.6 is currently not supported.
+1. JDK 1.6.x
    Make sure that you have set the JAVA_HOME environment variable.
 
 2. Apache Tomcat 5.5+ (Optional)
