@@ -187,14 +187,9 @@ public class RESTServlet extends HttpServlet {
      * @return
      */
     private File getPropertiesFile() {
-        String sysPropPath = System.getProperty("ergorr.common.properties");
-
-        if (sysPropPath == null) {
+       
             return new File(this.getClass().getClassLoader().getResource("ergorr.properties").getFile());
-        } else {
-            return new File(sysPropPath);
-
-        }
+      
     }
 
     /**
@@ -204,6 +199,7 @@ public class RESTServlet extends HttpServlet {
      * @return True or False depending of the user authorization.
      */
     private boolean authenticateUser(HttpServletRequest request) {
+        
         return true;
     }
 }
