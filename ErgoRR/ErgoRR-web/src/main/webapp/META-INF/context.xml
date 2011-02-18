@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/${deployName}"/>
+<!--Context antiJARLocking="true" path="/${deployName}"/-->
+<Context antiJARLocking="true" path="/ErgoUI">
+  
+        <!--<Resource auth="Container"
+        description="ErgoRR User database that can be updated and saved"
+        factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+        name="UserDatabase/pippo"
+        pathname="/ErgoUI/WEB-INF/ergoRRGUIUsers.xml"
+        type="org.apache.catalina.UserDatabase"/>
+  
+    <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+    resourceName="UserDatabase/pippo"/>-->
+
+</Context>

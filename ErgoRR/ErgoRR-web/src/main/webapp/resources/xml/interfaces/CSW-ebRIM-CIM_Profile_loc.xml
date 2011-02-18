@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient" localization="yes" pathLocalization="resources/xml/localization/userCIMCatalogueClient/">
+    <section name="labelSectionEOBasic">
+        <group label="AreaOfInterestLabel">
+            <input type="bbox" name="aoibbox" id="aoibbox" label="EnvelopeLabel" optional="true" format="W,S,E,N" decimalPrecision="5" decimalSeparator="." size="10" map="userCIMClient.map"></input>
+        </group>
+        <group label="TemporalRange4">
+           <input type="rangedate" name="rangeDate4" id="rangeDate4" optional="true" labelStart="From" labelEnd="To" format="Y-m-d"></input>
+        </group>
+        <!--group label="">
+            <input type="text" name="collectionId" label="Collection" id="collectionId" optional="false" value="ESA.EECF.ENVISAT_ASA_GMI_1S" size="30" grow="true"/>
+        </group>
+        <group label="Spatial Coverage">
+            <input type="bbox" name="bbox" id="bbox" label="Envelope" optional="false" format="W,S,E,N" decimalPrecision="5" decimalSeparator="." size="10"></input>
+        </group>
+        <group label="Temporal Coverage">
+            <input type="rangedate" name="rangeDate" id="rangeDate" optional="false" labelStart="From" labelEnd="To" format="Y-m-d"></input>       
+        </group>
+        <group label="Presentation">
+            <input type="combo" name="presentation" hideLabel="true" size="15" id="presentation" optional="false" store="VALUES" storeFields="['value']"
+            storeData="[['hits'],['brief'],['full'],['browse'],['summary']]">  
+          </input>
+          <input type="numeric" name="iteratorSize" label="Retrieve" id="iteratorSize" optional="false" value="10" size="5"/>
+          <input type="numeric" name="cursor" label="Starting from" id="cursor" optional="false" value="1" size="5"/>
+        </group-->
+    </section>
+    <section name="labelSectionEOATM">
+        <group label="TemporalRange3">
+           <input type="rangedate" name="rangeDate3" id="rangeDate3" optional="true" labelStart="From" labelEnd="To" format="Y-m-d"></input>
+        </group>
+        <!--group label="Platform">
+            <input type="combo" name="platfSNm" label="Short Name" size="15" id="platfSNm" optional="false" store="VALUES" storeFields="['value']"
+            storeData="[['Envisat'],['ERS'],['JERS'],['LANDSAT'],['MOS-1B'],['Nimbus'],['NOAA'],['SeaStar'],['IRS-P3'],['AQUA'],['TERRA'],['SPOT'],['ALOS'],['PROBA']]">  
+          </input> 
+          <input type="text" name="collectionId" label="Serial Number" id="TesatcollectionId" optional="false" value="" size="5"/>
+        </group>
+        <group label="">
+            <input type="percentage" id="cloudCovePerc" name="cloudCovePerc" label="Cloud Cover" decimalPrecision="2" decimalSeparator="." optional="true" NotValidValueMessage="The Percentage is between 0 and 100. The Decimal Separator is '.'"></input> 
+        </group-->
+    </section>
+    <section name="labelSectionEOOPT">
+        <group label="TemporalRange2">
+           <input type="rangedate" name="rangeDate2" id="rangeDate2" optional="true" labelStart="From" labelEnd="To" format="Y-m-d"></input>
+        </group>
+        <!--group label="Platform">
+            <input type="combo" name="platfSNm" label="Short Name" size="15" id="platfSNm" optional="false" store="VALUES" storeFields="['value']"
+            storeData="[['Envisat'],['ERS'],['JERS'],['LANDSAT'],['MOS-1B'],['Nimbus'],['NOAA'],['SeaStar'],['IRS-P3'],['AQUA'],['TERRA'],['SPOT'],['ALOS'],['PROBA']]">
+          </input>
+          <input type="text" name="collectionId" label="Serial Number" id="TesatcollectionId" optional="false" value="" size="5"/>
+        </group>
+        <group label="">
+            <input type="percentage" id="cloudCovePerc" name="cloudCovePerc" label="Cloud Cover" decimalPrecision="2" decimalSeparator="." optional="true" NotValidValueMessage="The Percentage is between 0 and 100. The Decimal Separator is '.'"></input>
+        </group-->
+    </section>
+    <section name="labelSectionEOSAR">
+        <group label="TemporalRange1">
+           <input type="rangedate" name="rangeDate1" id="rangeDate1" optional="true" labelStart="From" labelEnd="To" format="Y-m-d"></input>
+        </group>
+        <!--group label="Platform">
+            <input type="combo" name="platfSNm" label="Short Name" size="15" id="platfSNm" optional="false" store="VALUES" storeFields="['value']"
+            storeData="[['Envisat'],['ERS'],['JERS'],['LANDSAT'],['MOS-1B'],['Nimbus'],['NOAA'],['SeaStar'],['IRS-P3'],['AQUA'],['TERRA'],['SPOT'],['ALOS'],['PROBA']]">
+          </input>
+          <input type="text" name="collectionId" label="Serial Number" id="TesatcollectionId" optional="false" value="" size="5"/>
+        </group>
+        <group label="">
+            <input type="percentage" id="cloudCovePerc" name="cloudCovePerc" label="Cloud Cover" decimalPrecision="2" decimalSeparator="." optional="true" NotValidValueMessage="The Percentage is between 0 and 100. The Decimal Separator is '.'"></input>
+        </group-->
+    </section>
+    <!--section name="Protocol Parameters Test">
+        <group label="Soap Parameters">
+            <input type="text" name="ServiceUrl" label="Catalogue Url" id="ServiceUrl" optional="false" value="http://hrt-11.pisa.intecs.it/ergorr/webservice" grow="true"/>
+            <input type="text" name="ServiceUrl" label="Catalogue Url" id="ServiceUrl" optional="false" value="http://192.168.24.84:8084/ToolboxSecurity/services/ClientSecurityWrapper/SecuredEBRR" grow="true"/>
+            <input type="text" name="catalogueOperation" label="Operation" id="catalogueOperation" disabled="true" optional="false" value="http://earth.esa.int/SOAP/searchRequest"/>
+            <input type="combo" name="soapVersion" label="SOAP Version" size="16" id="soapVersion" optional="true" store="VALUES" storeFields="['value']"
+            storeData="[['1.1'],['1.2']]"/>  
+            
+        </group>
+         <group label="Autentication">
+           <input type="checkbox" name="Security" label="Enable Security" id="Security" optional="false" enableInputList="2-UserAutentication,2-PasswordAutentication" formObjectInstanceName="formsCatInterfObject"/>
+           <input type="text" name="UserAutentication" id="UserAutentication" label="User" size="20" optional="true" value="" disabled="true"/>
+           <input type="password" name="PasswordAutentication" id="PasswordAutentication" label="Password" size="20" optional="true" value="" disabled="true"/>
+
+            <input type="text" name="Protocol" id="Protocol" hidden="true" hideLabel="true" optional="false" value="SOAP"/>
+            <input type="text" name="outputFormat" id="outputFormat" hidden="true" hideLabel="true" optional="false" value="JSON"/>
+            <input type="text" name="outputMod" id="outputMod" hidden="true" hideLabel="true" optional="false" value="REFERENCE"/>
+            <input type="text" name="XSLRequest" id="XSLRequest" hidden="true" hideLabel="true" optional="false" value="resources/xsl/CSW-ebRIM-EO_Profile-06-131r6/searchMessageTransformer.xsl"/>
+            <input type="text" name="XSLResponse" id="XSLResponse" hidden="true" hideLabel="true" optional="false" value="resources/xsl/CSW-ebRIM-EO_Profile-06-131r6/searchOutputNormalize.xsl"/>
+            <input type="text" name="SoapAction" id="SoapAction" hidden="true" hideLabel="true" optional="false" value="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords"/>
+            <input type="text" name="LogFolder" id="LogFolder" hidden="true" hideLabel="true" optional="false" value="CSW-ebRIM-EO_Profile-06-131r6"/>
+
+        </group>
+    </section-->
+    <!--requestInformations>
+        <buttons>
+            <button name="resetButton" id="resetButton" label="Reset" iconImage="" onclick="tbxCat.Reset"/>
+            <button name="filterButton" id="filterButton" label="Send Request" iconImage="" onclick="tbxCat.SendCatalogueRequest"/>
+        </buttons>  
+    </requestInformations-->
+    <!--outputInformations>
+        <for format=json  rootStore is mandatory *****  for format=xml recordRow is mandatory , totalRecordRow and idRow are optional>
+        <template container="grid" format="json" rootStore="response.retrievedData" totalRecordRow="" idRow="" recordRow="Metadata"
+            attributeNamesStore="acquisitionDate,productType,beginPosition,processorVersion,lastOrbitNumber,multiExtentOf,endPosition,parentIdentifier,acquisitionType,orbitNumber,status,acquisitionStation,fileName_QUICKLOOK,fileName_THUMBNAIL"
+            attributeTitlesStore="acquisitionDate,productType,beginPosition,processorVersion,lastOrbitNumber,multiExtentOf,endPosition,parentIdentifier,acquisitionType,orbitNumber,status,acquisitionStation,quicklook,thumbnail">
+            <gridAttrbutes value="parentIdentifier,productType,beginPosition,endPosition,status,acquisitionStation" sortable="true" widthCols="200"></gridAttrbutes>
+            <gridAttrbutes value="MdContactRpOrgName,MdContactRole,AcquisitionDateTime,IdentCode,Platform,InstShNm,SatDomOrbit,SatDomOrbitDirection,SatDomRefSysFrame,SatDomRefSysTrack,SatDomSwathId,SatDomPassCoverageStart,SatDomPassCoverageStop,ProductIdentifier,IdAbs,IdStatus,TempEleExTempBeginEndBegin,TempEleExTempBeginEndEnd,DataExtGeoEleCoordinates,DataExtGeoEleCenterCoordinates" sortable="true" widthCols="40"></gridAttrbutes>
+            <tempalteHtml value=""></tempalteHtml>
+            <onloadOperations>
+                <onloadOperation type="render" id="renderPoligon" geometry="polygon" attributeGeometry="multiExtentOf" layerOpacity="0.2" layerGraphicOpacity="1" mapObjcetName="map" style="" posList="lat lon" posListDimension="2" layerName="CSWEbrim">
+                </onloadOperation>
+            </onloadOperations>
+            <templateOperations>
+                <templateOperation type="details" id="details" attributes="acquisitionDate,productType,beginPosition,processorVersion,lastOrbitNumber,multiExtentOf,endPosition,parentIdentifier,acquisitionType,orbitNumber,status,acquisitionStation,quicklook,thumbnail"
+                imageButton="style/img/details.png" container="window" idAttribute="ProductIdentifier" labelButton="Details" 
+                htmlDetailsLine="&lt;tr width=\'100%\'&gt;&lt;td BGCOLOR=\'#325e8f\'&gt;&lt;b style=\'color: #ffffff;\'&gt;{$attributeName}: &lt;/b&gt;&lt;/td&gt;&lt;td BGCOLOR=\'#a9c6e2\'&gt; {$attributeValue}&lt;/td&gt;&lt;/tr&gt;" 
+                htmlLayoutStart="&lt;table width=\'100%\'&gt;" htmlLayoutEnd="&lt;/table&gt;" imageDimMin="25" imageDimMax="50" winWidth="screen.width*0.4" winHeight="screen.height*0.7" label="" dimMin="" dimMax="">
+                    <group htmlStart="" htmlEnd="" htmlLine="&lt;tr width=\'100%\'&gt;&lt;td BGCOLOR=\'#325e8f\'&gt;&lt;b style=\'color: #ffffff;\'&gt;QuickLook Image: &lt;/b&gt;&lt;/td&gt;&lt;td BGCOLOR=\'#a9c6e2\'&gt;&lt;img src=\'{$attributeValue}\'&gt;&lt;/img&gt;&lt;/td&gt;&lt;/tr&gt;" attributes="quicklook"></group>
+                </templateOperation>
+                <templateOperation type="select" id="select" geometry="polygon" attributeGeometry="multiExtentOf" layerOpacity="0.2"
+                layerGraphicOpacity="1" layerTitle="CSWEbrim_Selection" mapObjcetName="map"
+                style="{fillColor: '#FF0000', 
+                      fillOpacity: 0.4, 
+                      strokeColor: '#FFFFFF',
+                      strokeOpacity: 1,
+                      strokeWidth: 1}" posList="lat lon" posListDimension="2" layerName="CSWEbrim" mapLayerName="selectionLayer"
+                imageButton="style/img/zoomTo.png" labelButton="Select Result" imageDimMin="25" imageDimMax="50" label="" dimMin="" dimMax="">
+                </templateOperation>
+                <templateOperation type="viewImage" id="viewImage" bgColor="#99bbe8" labelImage="thumbnail" attribute="thumbnail" maxheight="190" position="right"/>
+            </templateOperations>
+            <templateError type="window" >
+            </templateError>
+        </template>
+    </outputInformations-->
+</inputInterface>

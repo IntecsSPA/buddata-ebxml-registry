@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<Localization xmlns="http://gisClient.pisa.intecs.it/localization">
+
+    <!-- ERGORR UI Manager ** START-->
+    <labelFirebugWarning>Firebug Warning</labelFirebugWarning>
+    <labelFirebugMessage>Firebug is known to cause performance issues with the ErgoRR UI Application.</labelFirebugMessage>
+
+    <labelControlPanelConfiguration>Configuration</labelControlPanelConfiguration>
+    <labelControlPanelAbout>About</labelControlPanelAbout>
+    <labelControlPanelClient>Catalogue Clients</labelControlPanelClient>
+    <labelEOClientUser>Earth Observation (EO) Client</labelEOClientUser>
+    <labelCIMClientUser>Cataloguing of ISO Metadata (CIM) Client</labelCIMClientUser>
+    <labelConfigurationMisc>Misc</labelConfigurationMisc>
+    <labelConfigurationDatabase>Database</labelConfigurationDatabase>
+    <labelConfigurationSecurity>Security</labelConfigurationSecurity>
+    <!-- ERGORR UI Manager ** END-->
+</Localization>
