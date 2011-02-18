@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ROLES: admin,user
+
+CONFIG: xml file
+-->
+<tomcat-users>
+ 
+ <user password="ergo" roles="ergorradmin" username="ergo"/>
+
+ <!--user password="user" roles="user" username="user"/-->
+
+</tomcat-users>
+

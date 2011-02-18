@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : Eng.xml
+    Created on : 19 febbraio 2009, 17.57
+    Author     : Andrea Marongiu
+    Description:
+        Purpose of the document follows.
+-->
+
+<Localization xmlns="http://gisClient.pisa.intecs.it/localization">
+    <applicationName>Toolbox Manager</applicationName>
+    <loginButton>Entra</loginButton>
+    <labelUser>Utente</labelUser>
+    <labelPassword>Password</labelPassword>
+    <groupLogin>Autenticazione Utente</groupLogin>
+</Localization>

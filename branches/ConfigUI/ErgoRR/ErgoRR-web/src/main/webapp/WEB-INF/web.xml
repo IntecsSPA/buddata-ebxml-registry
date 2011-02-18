@@ -5,6 +5,7 @@
     <listener>
         <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
     </listener>
+    
     <servlet>
         <servlet-name>http-csw</servlet-name>
         <display-name>http-csw</display-name>
@@ -19,6 +20,14 @@
         <servlet-class>be.kzen.ergorr.interfaces.RESTServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ProxyRedirect</servlet-name>
+        <servlet-class>it.intecs.pisa.proxy.ProxyRedirect</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetResource</servlet-name>
+        <servlet-class>it.intecs.pisa.erogorr.ui.GetResource</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>rest</servlet-name>
         <url-pattern>/config</url-pattern>
@@ -27,7 +36,6 @@
         <servlet-name>rest</servlet-name>
         <url-pattern>/authenticate</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ebXMLRegistrySOAPService</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
@@ -83,7 +91,59 @@
         <servlet-name>webservice</servlet-name>
         <url-pattern>/webservice</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProxyRedirect</servlet-name>
+        <url-pattern>/ProxyRedirect</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetResource</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
+
+   <!--security-constraint>
+        <web-resource-collection>
+          <web-resource-name>Ergorr Panels Admin</web-resource-name>
+          <url-pattern>/rest/panels/admin</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+          <role-name>ergomanager</role-name>
+        </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+        <web-resource-collection>
+          <web-resource-name>Ergorr Panels User</web-resource-name>
+          <url-pattern>/rest/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+          <role-name>ergouser</role-name>
+        </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name></realm-name>
+    
+
+  </login-config>
+
+  <security-role>
+  <description>
+    Ergo Manager Application
+  </description>
+  <role-name>ergomanager</role-name>
+</security-role>
+
+<security-role>
+  <description>
+    Ergo User Application
+  </description>
+  <role-name>ergouser</role-name>
+</security-role-->
+
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
+    
 </web-app>
