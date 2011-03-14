@@ -4,7 +4,7 @@
  document.getElementById("workspacePanel_div").innerHTML="";
  ergoRRUIManager.loginWindow.close();
 
- var loc= new localization(ergoRRUIManager.localizationPath+gcManager.lang+".xml");
+ var loc= new localization(ergoRRUIManager.localizationPath+interfacesManager.lang+".xml");
 
  administrativeArea=new CatalogueConfiguration();
  var accordionPanel=Ext.getCmp('accordionMainMenuPanel');
@@ -35,22 +35,21 @@
                                         text: ergoRRUIManager.loc.getLocalMessage('labelConfigurationDatabase'),
                                         type: 'ConfigurationDatabase',
                                         leaf: true
-                                    },{
+                                    }/*,{
                                         text: ergoRRUIManager.loc.getLocalMessage('labelConfigurationSecurity'),
                                         type: 'ConfigurationSecurity',
                                         leaf: true
-                                    }
+                                    }*/
                                    ]
                                 }),
                                 listeners: {
                                     click: function(n) {
-                                        var myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+                                       /* var myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
                                                      {
-                                                       msg:"Please wait..."/*,
-                                                       msgCls: "mask-workspace-loading"*/
+                                                       msg:"Please wait..."
                                                      }
                                         );
-                                        myMask.show();
+                                        myMask.show();*/
                                         ergoRRUIManager.workspacePanel.cleanPanel();
                                         switch (n.attributes.type){
                                             case 'ConfigurationMisc':
@@ -68,7 +67,7 @@
 
                                         }
                                        ergoRRUIManager.workspacePanel.doLayout();
-                                       myMask.hide();
+                                      // myMask.hide();
                                     }
                                 }
                         })
@@ -200,13 +199,13 @@
                 },
                 {
                     // html: "Ext.example.shortBogusMarkup",
-                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelAbout'),
+                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogging'),
                     autoScroll:true,
                     border:false,
                     listeners: {
                         "expand": function(){
 
-                           var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+                          var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
                                     {
                                         msg:"Please wait..."/*,
                                         msgCls: "mask-workspace-loading"*/
@@ -214,9 +213,84 @@
                           );
                            myMask.show();
                            ergoRRUIManager.workspacePanel.cleanPanel();
+                           var panelHeight=Ext.getCmp("workspaceCataloguePanel").getHeight()-2;
+                           new Ext.Panel({
+                              renderTo: ergoRRUIManager.workspacePanelDIV,
+                              height: panelHeight,
+                            
+                             frameId: "catalogueLog_frame",
+                             listeners: {
+                                          "resize" : function(){
+                                                             /*var panelHeight=Ext.getCmp("workspacePanel").getHeight()-2;
+                                                             document.getElementById(frameId).setAttribute('height', panelHeight);
+                                                             this.doLayout();*/
+                                           }
+                                         },
+                                        html: "<div id='catalogueLog_frameID'></div><iframe src='logTest.html' name='catalogueLog_frame' id='catalogueLog_frame' scrolling='yes' width='100%' height='100%' marginwidth='0' marginheight='0'></iframe>"
+                            }).show();
+                          // document.getElementById(ergoRRUIManager.workspacePanelDIV).innerHTML=aboutPage;
+                           myMask.hide();
+                        }
+                },
+                iconCls:'nav'
+              },{
+                  title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogout'),
+                  autoScroll:true,
+                  border:false,
+                  listeners: {
+                        "expand": function(){
+
+                           var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+                                    {
+                                        msg:"Please wait..."
+                                    }
+                          );
+                           myMask.show();
+                           ergoRRUIManager.workspacePanel.cleanPanel();
+                           var logoutSection=this;
+                           Ext.Msg.show({
+                               
+                               title:ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogout'),
+                               msg: ergoRRUIManager.loc.getLocalMessage('LogoutMessage'),
+                               buttons: Ext.Msg.YESNO,
+                               logoutSection: logoutSection,
+                               fn: function(btn){
+                                   if(btn == 'yes')
+                                       window.location.reload();
+                                   else{
+                                      ergoRRUIManager.workspacePanel.cleanPanel(); 
+                                      logoutSection.collapse(false);
+                                   }   
+                               },
+                               animEl: 'elId',
+                               icon: Ext.MessageBox.INFO
+                          });
+
+                           
+                           myMask.hide();
+                        }
+                },
+                iconCls:'nav'
+              },{
+                    // html: "Ext.example.shortBogusMarkup",
+                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelAbout'),
+                    autoScroll:true,
+                    border:false,
+                    html: aboutPage,
+                    listeners: {
+                        "expand": function(){
+
+                           /*var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+                                    {
+                                        msg:"Please wait..."/*,
+                                        msgCls: "mask-workspace-loading"
+                                    }
+                          );
+                           myMask.show();
+                           ergoRRUIManager.workspacePanel.cleanPanel();
 
                            document.getElementById(ergoRRUIManager.workspacePanelDIV).innerHTML=aboutPage;
-                           myMask.hide();
+                           myMask.hide();*/
                         }
                 },
                 iconCls:'nav'
