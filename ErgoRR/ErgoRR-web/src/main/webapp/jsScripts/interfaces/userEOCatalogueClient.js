@@ -80,7 +80,7 @@ UserEOCatalogueClient=function(){
                                            },
 
                                            "beforerender": function(){
-                                                var loc=new localization(this.locPath+gcManager.lang+".xml");
+                                                var loc=new localization(this.locPath+interfacesManager.lang+".xml");
                                                 this.setTitle(loc.getLocalMessage('CatalogueSearchResultsTitle'));
                                                 this.doLayout();
 
@@ -158,7 +158,7 @@ UserEOCatalogueClient=function(){
                         var resultsPanel=Ext.getCmp('userEOCatalogueResults');
                         resultsPanel.setHeight((worspacePortal.getInnerHeight()/100)*20);
 
-                        var loc=new localization(this.locPath+gcManager.lang+".xml");
+                        var loc=new localization(this.locPath+interfacesManager.lang+".xml");
                         this.searchTabResults.items.items[0].title=loc.getLocalMessage('CatalogueResultTab');
 
                         resultsPanel.add(this.searchTabResults);
@@ -226,7 +226,7 @@ UserEOCatalogueClient=function(){
                         
                         /*Search Interfaces Rendering -- Start*/
                          this.formInterface=createPanelExjFormByXml(
-                         this.xmlInterface, gcManager.lang);
+                         this.xmlInterface, interfacesManager.lang);
                         this.formInterface.formsPanel.render(document.getElementById("userEOCatalogueInterface"));
                         this.formInterface.render();
      }

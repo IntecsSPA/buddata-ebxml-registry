@@ -7,7 +7,7 @@
 CatalogueConfiguration=function(){
 
 
-this.loc=new localization('resources/xml/localization/catalogueConfiguration/'+gcManager.lang+".xml");
+this.loc=new localization('resources/xml/localization/catalogueConfiguration/'+interfacesManager.lang+".xml");
 
 this.configurationRestUrl="config";
 
@@ -100,6 +100,7 @@ this.miscHTMLHelp=
                     //title: 'Misc',
                     iconCls: 'x-icon-templates',
                     //tabTip: 'Edit configuration',
+                    
                     style: 'padding: 10px;',
                     id: 'CatalogueConfigurationMiscPortal',
                     border: false,
@@ -277,13 +278,13 @@ this.databaseConfigurationPortal={
                                     reloadDatabase();
                                 }
                             },
-                            {
+                           /* {
                                 text: this.loc.getLocalMessage('applyButton'),
                                 id: 'dbSubmitButton',
                                 handler: function(){
                                     submitDatabase();
                                 }
-                            }
+                            }*/
                         ],
                         items: [{
                                     xtype: 'numberfield',
@@ -339,7 +340,7 @@ this.databaseConfigurationPortal={
 
 
 
-   this.securityConfigurationPortal={
+  /* this.securityConfigurationPortal={
                 iconCls: 'x-icon-templates',
                 style: 'padding: 10px;',
                 id: 'CatalogueConfigurationSecurityPortal',
@@ -428,7 +429,7 @@ this.databaseConfigurationPortal={
                     }]
                 }]
 
-            };
+            };*/
 
 
    this.reloadMisc=function(){
