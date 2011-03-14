@@ -223,12 +223,12 @@
         if(docWrite) {
             var allScriptTags = new Array(jsfiles.length);
         }
-        var host = /*OpenLayers._getScriptLocation()*/ interfacesManager.getOLpath()+ "lib/";    
-   
+        var host = OpenLayers._getScriptLocation() /*interfacesManager.getOLpath()*/+ "lib/";    
+       
         for (var i = 0; i < jsfiles.length; i++) {
             
-           
-            if (docWrite) {
+         //  $.getScript(host + jsfiles[i], null);  
+           if (docWrite) {
                 allScriptTags[i] = "<script src='" + host + jsfiles[i] +
                                    "'></script>"; 
             } else {
