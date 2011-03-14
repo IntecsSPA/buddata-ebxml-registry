@@ -192,10 +192,10 @@ GisClientManager= function(lang, gisClientLibPath, proxyUrl, utilsUrl) {
                     gcManager.loadScript("import/ext/ext-all.js",
                        /*Util Import*/
                         function(){
-                             gcManager.extExtensionImport();
+                           /*  gcManager.extExtensionImport();
                              gcManager.utilImport();
                              gcManager.gisImport();
-                             gcManager.extInterfaceImport();
+                             gcManager.extInterfaceImport();*/
                           }
                     );
                  }

@@ -223,8 +223,11 @@
         if(docWrite) {
             var allScriptTags = new Array(jsfiles.length);
         }
-        var host = OpenLayers._getScriptLocation() + "lib/";    
+        var host = /*OpenLayers._getScriptLocation()*/ interfacesManager.getOLpath()+ "lib/";    
+   
         for (var i = 0; i < jsfiles.length; i++) {
+            
+           
             if (docWrite) {
                 allScriptTags[i] = "<script src='" + host + jsfiles[i] +
                                    "'></script>"; 
@@ -237,7 +240,7 @@
                 h.appendChild(s);
             }
         }
-        if (docWrite) {
+         if (docWrite) {
             document.write(allScriptTags.join(""));
         }
     }
