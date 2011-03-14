@@ -4,88 +4,20 @@
  document.getElementById("workspacePanel_div").innerHTML="";
  ergoRRUIManager.loginWindow.close();
 
- var loc= new localization(ergoRRUIManager.localizationPath+gcManager.lang+".xml");
+ var loc= new localization(ergoRRUIManager.localizationPath+interfacesManager.lang+".xml");
 
  administrativeArea=new CatalogueConfiguration();
  var accordionPanel=Ext.getCmp('accordionMainMenuPanel');
 
 
            var munuAccordion= [
-                {
-                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelConfiguration'),
-                    border:false,
-                    autoScroll:true,
-                    items:[
-                        new Ext.tree.TreePanel({
-                             animate:true,
-                             enableDD:false,
-                             containerScroll: true,
-                             rootVisible:false,
-                             split:true,
-                             autoScroll:true,
-                             //tbar: tb,
-                             loader: new Ext.tree.TreeLoader(),
-                                root: new Ext.tree.AsyncTreeNode({
-                                    expanded: true,
-                                    children: [{
-                                        text: ergoRRUIManager.loc.getLocalMessage('labelConfigurationMisc'),
-                                        type: 'ConfigurationMisc',
-                                        leaf: true
-                                    }, {
-                                        text: ergoRRUIManager.loc.getLocalMessage('labelConfigurationDatabase'),
-                                        type: 'ConfigurationDatabase',
-                                        leaf: true
-                                    },{
-                                        text: ergoRRUIManager.loc.getLocalMessage('labelConfigurationSecurity'),
-                                        type: 'ConfigurationSecurity',
-                                        leaf: true
-                                    }
-                                   ]
-                                }),
-                                listeners: {
-                                    click: function(n) {
-                                        var myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
-                                                     {
-                                                       msg:"Please wait..."/*,
-                                                       msgCls: "mask-workspace-loading"*/
-                                                     }
-                                        );
-                                        myMask.show();
-                                        ergoRRUIManager.workspacePanel.cleanPanel();
-                                        switch (n.attributes.type){
-                                            case 'ConfigurationMisc':
-                                                 ergoRRUIManager.workspacePanel.add(administrativeArea.miscConfigurationPortal);
-                                                break;
-                                            case 'ConfigurationDatabase':
-                                                  ergoRRUIManager.workspacePanel.add(administrativeArea.databaseConfigurationPortal);
-                                              break;
-                                            case 'ConfigurationSecurity':
-                                                 ergoRRUIManager.workspacePanel.add(administrativeArea.securityConfigurationPortal);
-
-                                              break;
-
-                                        }
-                                       ergoRRUIManager.workspacePanel.doLayout();
-                                       myMask.hide();
-                                    }
-                                }
-                        })
-
-                    ],
-                    iconCls:'settings'
-
-                },
+                
                 {
                     title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelClient'),
-                  //  html: "Ext.example.shortBogusMarkup",
                     border:false,
                     autoScroll:true,
                     listeners: {
                         "expand": function(){
-
-                           /*ergoRRUIManager.workspacePanel.insertLoadingPanel();
-                           document.getElementById(ergoRRUIManager.workspacePanelDIV).innerHTML=aboutPage;
-                           var wP=Ext.getCmp('ClientPortal');*/
 
                         }
                     },
@@ -114,10 +46,9 @@
                                 listeners: {
                                     click: function(n) {
                                         var myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
-                                                                {
-                                                                    msg:"Please wait..."/*,
-                                                                    msgCls: "mask-workspace-loading"*/
-                                                                }
+                                                          {
+                                                            msg:"Please wait..."
+                                                          }
                                                       );
                                         myMask.show();
                                         var portalPanel=null;
@@ -197,11 +128,10 @@
                     iconCls:'settings'
                 },
                 {
-                    // html: "Ext.example.shortBogusMarkup",
-                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelAbout'),
-                    autoScroll:true,
-                    border:false,
-                    listeners: {
+                  title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelAbout'),
+                  autoScroll:true,
+                  border:false,
+                  listeners: {
                         "expand": function(){
 
                            var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
@@ -214,6 +144,44 @@
                            ergoRRUIManager.workspacePanel.cleanPanel();
 
                            document.getElementById(ergoRRUIManager.workspacePanelDIV).innerHTML=aboutPage;
+                           myMask.hide();
+                        }
+                },
+                iconCls:'nav'
+              },{
+                  title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogout'),
+                  autoScroll:true,
+                  border:false,
+                  listeners: {
+                        "expand": function(){
+
+                           var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+                                    {
+                                        msg:"Please wait..."
+                                    }
+                          );
+                           myMask.show();
+                           ergoRRUIManager.workspacePanel.cleanPanel();
+                           var logoutSection=this;
+                           Ext.Msg.show({
+                               
+                               title:ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogout'),
+                               msg: ergoRRUIManager.loc.getLocalMessage('LogoutMessage'),
+                               buttons: Ext.Msg.YESNO,
+                               logoutSection: logoutSection,
+                               fn: function(btn){
+                                   if(btn == 'yes')
+                                       window.location.reload();
+                                   else{
+                                      ergoRRUIManager.workspacePanel.cleanPanel(); 
+                                      logoutSection.collapse(false);
+                                   }   
+                               },
+                               animEl: 'elId',
+                               icon: Ext.MessageBox.INFO
+                          });
+
+                           
                            myMask.hide();
                         }
                 },
@@ -238,19 +206,6 @@
 
 
 
-         /* var cP=Ext.getCmp('ClientPortal');
-
-          cP.add(userEOClient.westPanel);
-          cP.add(userEOClient.mapTool);
-
-          setTimeout('userEOClient.render();', 2000);*/
-
-         // userEOClient.render("eoUserClient_div");
-
-           /*if(formValuesImport.zipServices.uploadID){
-
-               var loading=new Object();
-               loading.message="Please Wait ...";
-               loading.title="Import Services";*/
+         
 
 
