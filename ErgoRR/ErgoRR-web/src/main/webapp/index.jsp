@@ -5,14 +5,25 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>kZen ErgoRR</title>
+        <title>ErgoRR</title>
 
-        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/utils/XmlDoc.js"></script>
-        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/utils/manager.js"></script>
-        <link rel="stylesheet" type="text/css" href="resources/css/ergoRRUIManager.css" />
+        <!-- ************ XMLInterfaces Import *************-->
+        <!-- Load jquery -->
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/jquery.js"></script>
+        
+        <!-- Load Extjs for IE -->
+      <!--  <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/ext/ext-all.js"></script>-->
+       <!-- <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/jquery.js"></script>-->
+        
+        <!-- ***********************************************-->    
+    
+        <!-- ************ Load XMLInterfaces **************-->
+            <script type="text/javascript" src="jsScripts/import/xmlInterfaces/interfacesManager.js"></script>
+        <!-- **********************************************-->
 
      
-
+        <link rel="stylesheet" type="text/css" href="resources/css/ergoRRUIManager.css" />
         <style type="text/css">
             body {margin:0px;padding:0px;font-size:small}
             div.header {padding:8px 8px 0px 8px;background-color:#666;color:#FFF;border-bottom:8px solid #4280b3;}
