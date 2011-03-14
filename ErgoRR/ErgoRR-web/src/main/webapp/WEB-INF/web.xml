@@ -97,7 +97,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetResource</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
+        <url-pattern>/rest/resources/*</url-pattern>
     </servlet-mapping>
 
 
