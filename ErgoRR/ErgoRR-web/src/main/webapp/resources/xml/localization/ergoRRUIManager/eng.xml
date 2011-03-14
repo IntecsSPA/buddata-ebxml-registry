@@ -9,6 +9,8 @@
 
     <labelControlPanelConfiguration>Configuration</labelControlPanelConfiguration>
     <labelControlPanelAbout>About</labelControlPanelAbout>
+    <labelControlPanelLogout>Logout</labelControlPanelLogout>
+    <labelControlPanelLogging>Catalogue Log</labelControlPanelLogging>
     <labelControlPanelClient>Catalogue Clients</labelControlPanelClient>
     <labelEOClientUser>Earth Observation (EO) Client</labelEOClientUser>
     <labelCIMClientUser>Cataloguing of ISO Metadata (CIM) Client</labelCIMClientUser>
@@ -16,4 +18,6 @@
     <labelConfigurationDatabase>Database</labelConfigurationDatabase>
     <labelConfigurationSecurity>Security</labelConfigurationSecurity>
     <!-- ERGORR UI Manager ** END-->
+    
+    <LogoutMessage>Are you sure you want to quit?</LogoutMessage>
 </Localization>
