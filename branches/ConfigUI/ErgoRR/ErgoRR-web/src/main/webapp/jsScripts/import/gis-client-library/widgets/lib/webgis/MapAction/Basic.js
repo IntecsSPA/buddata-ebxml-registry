@@ -309,7 +309,7 @@ WebGIS.MapAction.Scale = function(config) {
     if(config.windowPosition)
        winPos=config.windowPosition;
   
-    var formsObject=createPanelExjFormByXml(gcManager.gisClientLibPath+"/widgets/lib/webgis/resources/xml/ScaleConfigurationPanel.xml");
+    var formsObject=createPanelExjFormByXml(interfacesManager.gisClientLibPath+"/widgets/lib/webgis/resources/xml/ScaleConfigurationPanel.xml");
     var setScalePanel= new Ext.Panel({ title: 'Set Scale', border: false, bodyStyle : {background: backColor}, items: {xtype: 'webgis-scalelist', map: config.map}});
     
     if(config.backgroundColor)
