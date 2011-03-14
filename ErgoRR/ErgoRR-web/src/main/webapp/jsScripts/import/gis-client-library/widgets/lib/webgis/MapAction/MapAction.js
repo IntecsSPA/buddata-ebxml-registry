@@ -11,6 +11,8 @@
  */
  
 
+Ext.namespace('WebGIS');
+
 
 Ext.QuickTips.init();
 
