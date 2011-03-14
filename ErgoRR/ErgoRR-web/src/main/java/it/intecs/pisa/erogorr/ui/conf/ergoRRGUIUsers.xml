@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ROLES: admin,user
+
+CONFIG: xml file
+-->
+<ergoRRUI-users>
+ 
+ <user password="admin" roles="admin" username="admin"/>
+
+ <user password="user" roles="user" username="user"/>
+
+</ergoRRUI-users>
