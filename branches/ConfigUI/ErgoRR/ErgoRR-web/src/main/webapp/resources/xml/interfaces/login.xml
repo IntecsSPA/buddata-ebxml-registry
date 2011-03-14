@@ -11,7 +11,6 @@
     <requestInformations backgroundColor="#c4c2bd">
         <buttons>
             <button name="loginButton" id="loginButton" label="loginButton" iconImage="" onclick="ergoRRUIManager.loginInterface.onLogin"/>
-            <!--button name="resetLoginButton" id="resetLoginButton" label="Reset" iconImage="" onclick="xmlInt.Reset"/-->
         </buttons>    
     </requestInformations>
 </inputInterface>
