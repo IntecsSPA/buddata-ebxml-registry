@@ -1478,7 +1478,9 @@ function getOutputMangerByElement(outputInformationElement){
         cm: null,
         colMod: null
   };
+  alert("qui: " +outputInformationElement);
   var templateElement= new XmlElement(outputInformationElement).selectNodes("gis:template");
+  alert(templateElement);
   var templateContainer=templateElement[0].getAttribute("container");
   var templateFormat=templateElement[0].getAttribute("format");
   var rootStore=templateElement[0].getAttribute("rootStore");

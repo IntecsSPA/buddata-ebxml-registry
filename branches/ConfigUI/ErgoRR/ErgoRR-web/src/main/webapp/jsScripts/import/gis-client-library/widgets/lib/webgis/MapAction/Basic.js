@@ -10,7 +10,7 @@
  * @fileoverview Basic map tools implemented as WebGIS.MapAction classes
  */
 
-Ext.namespace('WebGIS', 'WebGIS.MapAction');
+//Ext.namespace('WebGIS', 'WebGIS.MapAction');
 
 /**
  * @class Activates interactive zoom in box on map
@@ -68,6 +68,7 @@ Ext.extend(WebGIS.MapAction.ZoomIn, WebGIS.MapAction, { });
  * @extends WebGIS.MapAction
  * @param {String} config WebGIS.MapAction config options
  */
+
 WebGIS.MapAction.ZoomOut = function(config) {
     config.iconCls = 'webgis-mapaction-zoomout';
     config.handler = function() {

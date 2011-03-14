@@ -50,15 +50,7 @@ InterfacesManager= function(lang, xmlClientLibPath, proxyUrl, utilsUrl) {
 
 
 
- this.loadGlobalScript= function(url){
-            /*if(!document.getElementById(url)){
-                var script=document.createElement('script');
-                script.defer=false;script.type="text/javascript";
-                script.src=url;
-                script.id=url;
-                document.getElementsByTagName('head')[0].appendChild(script);
-                this.loadScripts.push(script);
-            }*/
+ this.loadGlobalScript= function(url){ 
      $.getScript(url, null);        
 };
 
@@ -133,16 +125,7 @@ this.loadGisCSS= function(url){
                         function(){
                              interfacesManager.extExtensionImport();
                              interfacesManager.utilImport();
-                              if(interfacesManager.gisClientLibPath!=""){
-                                  Ext.namespace('WebGIS');
-                                  Ext.namespace('WebGIS', 'WebGIS.Control');
-                                  Ext.namespace('WebGIS', 'WebGIS.Control.Toc');
-                                  Ext.namespace('WebGIS', 'WebGIS.Control.ScaleList');
-                                  
-                                  
-                                  /*GIS Import*/
-                                  interfacesManager.gisImport();
-                              }
+                              
                                 
                              interfacesManager.extInterfaceImport();
                           }
@@ -168,25 +151,32 @@ this.loadGisCSS= function(url){
 
  this.gisImport= function(){  
     /*OpenLayers Import -- START*/
-     this.loadGisScript("import/OpenLayers/lib/OpenLayers.js", function(){
-         interfacesManager.loadGisScript("widgets/lib/openlayers/Control/ScaleBar.js");
+    // this.loadGisScript("import/OpenLayers/lib/OpenLayers.js", function(){
+      
+        
+        interfacesManager.loadGisScript("widgets/lib/openlayers/Control/ScaleBar.js");
         interfacesManager.loadGisScript("widgets/lib/openlayers/Control/SetBox.js");
         interfacesManager.loadGisScript("widgets/lib/openlayers/Format/XMLKeyValue.js");
-        interfacesManager.loadGisScript("widgets/style/locale/en"/*+this.lang*/+".js");
+        
         /*WebGis Import -- START*/
        interfacesManager.loadGisCSS("widgets/style/css/webgis.css");
        
-       interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/MapAction.js", function(){
-         interfacesManager.loadGisScript("widgets/lib/webgis/Control/Toc.js");
+        interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/MapAction.js", function(){
+          interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/Basic.js"); 
+          
+          interfacesManager.loadGisScript("widgets/style/locale/en.js");
+          interfacesManager.loadGisScript("widgets/lib/webgis/Control/Toc.js");
          interfacesManager.loadGisScript("widgets/lib/webgis/Control/ScaleList.js");
-         interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/Basic.js");
+         
          interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/Editor.js");
          interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/Measure.js");
          interfacesManager.loadGisScript("widgets/lib/webgis/MapAction/Identify.js");
-     });
+        });
+        
+  
      
     /*WebGis Import -- END*/
-     });
+    // });
      this.loadGisCSS("widgets/style/css/scalebar-thin.css");
     /*OpenLayers Import -- END*/
     
@@ -235,8 +225,12 @@ this.loadGisCSS= function(url){
             /*Localization util*/
             interfacesManager.loadScript("widgets/utils/localization.js", function(){ 
          
-                  setTimeout("interfacesManager.initFun();", 1000);
-  
+                $(document).ready(interfacesManager.initFun());//  setTimeout("interfacesManager.initFun();", 5000);
+                if(interfacesManager.gisClientLibPath!=""){
+                    /*GIS Import*/
+                  $(document).ready(interfacesManager.gisImport());
+                }
+                
             }
             );})
         });
