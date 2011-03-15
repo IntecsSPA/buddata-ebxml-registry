@@ -71,7 +71,7 @@ HarvestFromURLInterface=function(serviceName){
                }
                
                var onSubmit=sendXmlHttpRequestTimeOut("GET",
-                     "manager?cmd=ebRRHarvest&serviceName="+this.serviceName+"&source="+formValuesImport.metadataURL+"&resourceType=",
+                     "rest/harvest/fromURL?source="+formValuesImport.metadataURL,
                      true, null, 800000, importServiceFunc, importServiceTimeOut,null,
                      loading, null);
            }
