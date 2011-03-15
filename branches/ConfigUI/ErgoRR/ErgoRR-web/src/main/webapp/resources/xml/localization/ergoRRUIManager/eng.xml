@@ -12,6 +12,9 @@
     <labelControlPanelLogout>Logout</labelControlPanelLogout>
     <labelControlPanelLogging>Catalogue Log</labelControlPanelLogging>
     <labelControlPanelClient>Catalogue Clients</labelControlPanelClient>
+    <labelControlPanelHarvest>Harvest</labelControlPanelHarvest>
+    <labelHarvestFromFile>Harvest from Local Disk</labelHarvestFromFile>
+    <labelHarvestFromURL>Harvest from URL</labelHarvestFromURL>
     <labelEOClientUser>Earth Observation (EO) Client</labelEOClientUser>
     <labelCIMClientUser>Cataloguing of ISO Metadata (CIM) Client</labelCIMClientUser>
     <labelConfigurationMisc>Misc</labelConfigurationMisc>

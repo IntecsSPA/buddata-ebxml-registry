@@ -10,6 +10,9 @@ interfacesManager.loadGlobalScript("jsScripts/interfaces/userEOCatalogueClient.j
 
 interfacesManager.loadGlobalScript("jsScripts/interfaces/userCIMCatalogueClient.js");
 
+interfacesManager.loadGlobalScript("jsScripts/interfaces/harvestFromFile.js");
+
+interfacesManager.loadGlobalScript("jsScripts/interfaces/harvestFromURL.js");
 
 
 
@@ -33,9 +36,9 @@ ergoRRUIManager = {
     "<br/><br/>"+
     "<b>License:</b>"+
     "General Public License version 3 (GPL3)"+
-    "<br> "+
-    "You can configure this ebRR instance through the Graphical interface. Click <a href=\"#\" onclick=\"javascript:ergoRRUIManager.showLogin()\">here</a> for accessing it."+
-    "</div>",
+    "<br> ",//+
+ /*   "You can configure this ebRR instance through the Graphical interface. Click <a href=\"#\" onclick=\"javascript:ergoRRUIManager.showLogin()\">here</a> for accessing it."+
+    "</div>",*/
     loginWindow: null,
     loginInterface: null,
     
@@ -143,7 +146,9 @@ ergoRRUIManager = {
 
         ergoRRUIManager.westPanel.hide();
 
-        document.getElementById("workspacePanel_div").innerHTML=ergoRRUIManager.bodyInfo;
+        //document.getElementById("workspacePanel_div").innerHTML=ergoRRUIManager.bodyInfo;
+        
+        ergoRRUIManager.showLogin();
         
         var firebugWarning = function () {
             var cp = new Ext.state.CookieProvider();
@@ -186,8 +191,10 @@ ergoRRUIManager = {
             border: false,
             animCollapse : true,
             autoScroll : true,
-            resizable : true,
-            collapsible: true,
+            draggable : false,
+            closable: false,
+            resizable : false,
+            collapsible: false,
             layout: 'fit',
             width: BrowserDetect.getWidth(33),
             height : BrowserDetect.getHeight(38),
