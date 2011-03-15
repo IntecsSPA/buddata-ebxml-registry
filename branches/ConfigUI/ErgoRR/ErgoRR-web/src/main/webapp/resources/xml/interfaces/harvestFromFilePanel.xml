@@ -6,7 +6,7 @@
           <input type="file" name="metadataFile" hideLabel="false" id="metadataFile" colSpan="10"
            optional="true"
            size="300"
-           autoUploadURL="rest/gui/storeData"
+           autoUploadURL="rest/storedata"
            iconImage="upload-icon"
            blankText="Load Metadata File"
            label="Load Metadata Single/Zip File"
