@@ -34,7 +34,6 @@ HarvestFromFileInterface=function(serviceName){
     };
 
      this.onHarvest=function(){
-          alert("harvest");
           var formValuesImport=this.formInterface.getFormValues(false);
             
            if(formValuesImport.metadataFile.uploadID){
@@ -54,7 +53,7 @@ HarvestFromFileInterface=function(serviceName){
                               minWidth: screen.width/3,
                               animEl: 'elId',
                               fn: function(){
-                                window.location = 'tools.jsp?extVers=3&serviceName='+respObj.serviceName;
+//                                window.location = 'tools.jsp?extVers=3&serviceName='+respObj.serviceName;
                               },
                               icon: Ext.MessageBox.ERROR
                         });
@@ -66,7 +65,7 @@ HarvestFromFileInterface=function(serviceName){
                               minWidth: screen.width/3,
                               animEl: 'elId',
                               fn: function(){
-                                window.location = 'tools.jsp?extVers=3&serviceName='+respObj.serviceName;
+//                                window.location = 'tools.jsp?extVers=3&serviceName='+respObj.serviceName;
                               },
                               icon: Ext.MessageBox.INFO
                         });
@@ -87,7 +86,7 @@ HarvestFromFileInterface=function(serviceName){
                }
 
                var onSubmit=sendXmlHttpRequestTimeOut("GET",
-                     "manager?cmd=ebRRHarvestFile&serviceName="+this.serviceName+"&id="+formValuesImport.metadataFile.uploadID,
+                     "rest/harvest/fromFile?id="+formValuesImport.metadataFile.uploadID,
                      true, null, 800000, importServiceFunc, importServiceTimeOut,null,
                      loading, null);
            }
