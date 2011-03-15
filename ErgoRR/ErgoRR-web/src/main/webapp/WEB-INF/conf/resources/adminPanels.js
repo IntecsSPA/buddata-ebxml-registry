@@ -197,6 +197,99 @@
                     ],
                     iconCls:'settings'
                 },
+                  
+                
+                {
+                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelHarvest'),
+                    border:false,
+                    autoScroll:true,
+                    listeners: {
+                        "expand": function(){
+                        }
+                    },
+                    items:[
+                        new Ext.tree.TreePanel({
+                             animate:true,
+                             enableDD:false,
+                             containerScroll: true,
+                             rootVisible:false,
+                             split:true,
+                             autoScroll:true,
+                             //tbar: tb,
+                             loader: new Ext.tree.TreeLoader(),
+                                root: new Ext.tree.AsyncTreeNode({
+                                    expanded: true,
+                                    children: [{
+                                        text: ergoRRUIManager.loc.getLocalMessage('labelHarvestFromFile'),
+                                        type: 'HarvestFromFile',
+                                        leaf: true
+                                    }, {
+                                        text: ergoRRUIManager.loc.getLocalMessage('labelHarvestFromURL'),
+                                        type: 'HarvestFormURL',
+                                        leaf: true
+                                    }]
+                                }),
+                                listeners: {
+                                    click: function(n) {
+                                        var myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+                                                                {
+                                                                    msg:"Please wait..."/*,
+                                                                    msgCls: "mask-workspace-loading"*/
+                                                                }
+                                                      );
+                                        myMask.show();
+                                        var interfacePanel=null;
+                                        switch (n.attributes.type){
+                                            case 'HarvestFromFile':
+                                                    harvestFromFile= new HarvestFromFileInterface();
+                                                    ergoRRUIManager.workspacePanel.cleanPanel();
+                                                    
+                                                    interfacePanel=new Ext.Panel({
+                                                        title: ergoRRUIManager.loc.getLocalMessage('labelHarvestFromFile'),
+                                                        id: "harvestFromFilePanel",
+                                                        bodyStyle : {background: "#e4e7e7"},
+                                                        html: "<div id='HarvestFromFileSystemDiv'/>"
+                                                    
+
+                                                    });
+                                                   ergoRRUIManager.workspacePanel.add(interfacePanel);
+                                                   ergoRRUIManager.workspacePanel.doLayout();
+                                                   harvestFromFile.render("HarvestFromFileSystemDiv");
+                                                break;
+                                            case 'HarvestFormURL':
+                                                  harvestFromURL= new HarvestFromURLInterface();
+                                                    ergoRRUIManager.workspacePanel.cleanPanel();
+                                                    
+                                                    interfacePanel=new Ext.Panel({
+                                                        title: ergoRRUIManager.loc.getLocalMessage('labelHarvestFromURL'),
+                                                        id: "harvestFromURLPanel",
+                                                        bodyStyle : {background: "#e4e7e7"},
+                                                        html: "<div id='HarvestFromURLDiv'/>"
+                                                    
+
+                                                    });
+                                                   ergoRRUIManager.workspacePanel.add(interfacePanel);
+                                                   ergoRRUIManager.workspacePanel.doLayout();
+                                                   harvestFromURL.render("HarvestFromURLDiv");
+                                              break;
+
+                                        }
+                                      myMask.hide();
+                                    }
+                                }
+                        })
+
+                    ],
+                    iconCls:'settings'
+                },
+                
+                
+                
+                
+                
+                
+                
+                
                 {
                     // html: "Ext.example.shortBogusMarkup",
                     title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogging'),

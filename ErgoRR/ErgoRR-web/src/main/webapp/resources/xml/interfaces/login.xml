@@ -8,7 +8,7 @@
             <input id="messageLabel" name="messageLabel" type="label" value=""/>
         </group>
     </section>
-    <requestInformations backgroundColor="#c4c2bd">
+    <requestInformations backgroundColor="#dfe8f6">
         <buttons>
             <button name="loginButton" id="loginButton" label="loginButton" iconImage="" onclick="ergoRRUIManager.loginInterface.onLogin"/>
         </buttons>    

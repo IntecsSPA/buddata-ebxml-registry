@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient">
+    <section name="TOOLBOX Harvest from filesystem" cols="10">
+        <group label="Select the services:">
+          <input type="file" name="metadataFile" hideLabel="false" id="metadataFile" colSpan="10"
+           optional="true"
+           size="300"
+           autoUploadURL="rest/gui/storeData"
+           iconImage="upload-icon"
+           blankText="Load Metadata File"
+           label="Load Metadata Single/Zip File"
+           iconWait="images/loaderFile.gif"
+           iconFailure="images/fail.png"
+           iconSuccess="images/success.png"
+           submitLabel="Harvest"
+           onSuccessMethod="harvestFromFile.updateCount"
+           />
+         </group>
+        
+    </section>
+
+    <requestInformations>
+        <buttons>
+            <button name="harvestFromFileButton" id="harvestFromFileButton" label="Harvest" iconImage="" onclick="harvestFromFile.onHarvest"/>
+        </buttons>
+    </requestInformations>
+</inputInterface>

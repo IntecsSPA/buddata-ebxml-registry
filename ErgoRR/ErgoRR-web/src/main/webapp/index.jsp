@@ -11,16 +11,17 @@
         <!-- Load jquery -->
         <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/jquery.js"></script>
         
-        <!-- Load Extjs for IE -->
-      <!--  <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/ext/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/ext/ext-all.js"></script>-->
-       <!-- <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/jquery.js"></script>-->
         
+        <!-- ************ Load XMLInterfaces **************-->
+           <script type="text/javascript" src="jsScripts/import/xmlInterfaces/interfacesManager.js"></script>
+        <!-- **********************************************-->
+        
+        <!-- Load GIS Ext -->
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/import/OpenLayers/lib/OpenLayers.js"></script>
+
         <!-- ***********************************************-->    
     
-        <!-- ************ Load XMLInterfaces **************-->
-            <script type="text/javascript" src="jsScripts/import/xmlInterfaces/interfacesManager.js"></script>
-        <!-- **********************************************-->
+       
 
      
         <link rel="stylesheet" type="text/css" href="resources/css/ergoRRUIManager.css" />
@@ -67,6 +68,10 @@
                 position:absolute;
                 left:23%;
                 top:160%;
+            }
+            
+            .upload-icon {
+                background: url('resources/images/image_add.png') no-repeat 0 0 !important;
             }
         </style>
         <script language="Javascript" type="text/javascript">
