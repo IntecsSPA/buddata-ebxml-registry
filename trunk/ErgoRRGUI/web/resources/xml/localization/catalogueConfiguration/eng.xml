@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Localization xmlns="http://gisClient.pisa.intecs.it/localization">
+
+    <!-- Catalogue Configuration Interface ** START-->
+
+            <!-- Catalogue Configuration Misc Portal ** START-->
+                <miscTitlePanel>Misc</miscTitlePanel>
+                <reloadButton>Reload</reloadButton>
+                <applyButton>Apply</applyButton>
+                <repositoryGroup>Repository</repositoryGroup>
+                <repositoryHomeLabel>Repository home folder</repositoryHomeLabel>
+                <serviceProviderGroup>Service Provider</serviceProviderGroup>
+                <nameLabel>Name</nameLabel>
+                <webSiteLabel>Web Site</webSiteLabel>
+                <concactNameLabel>Contact name</concactNameLabel>
+                <concactPositionLabel>Contact position</concactPositionLabel>
+                <concactPhoneNumberLabel>Contact phone number</concactPhoneNumberLabel>
+                <deliveryPointAddressLabel>Delivery point address</deliveryPointAddressLabel>
+                <deliveryPointCityLabel>Delivery point city</deliveryPointCityLabel>
+                <deliveryPointAdminAreaLabel>Delivery point administrative area</deliveryPointAdminAreaLabel>
+                <deliveryPointPostalCodeLabel>Delivery point postal code</deliveryPointPostalCodeLabel>
+                <deliveryPointCountryLabel>Delivery point Country</deliveryPointCountryLabel>
+                <concactPointEmailLabel>Contact point email address</concactPointEmailLabel>
+                <concactPersonHOFLabel>Contact person hours of service</concactPersonHOFLabel>
+                <concactInstructionsLabel>Contact instructions</concactInstructionsLabel>
+                <concactPersonRoleLabel>Contact person role</concactPersonRoleLabel>
+                <encodingLabel>Encoding</encodingLabel>
+                <encodingGroup>Encoding</encodingGroup>
+                <languageLabel>Language</languageLabel>
+                <exSoapMessagesLabel>Return exceptions in SOAP messages</exSoapMessagesLabel>
+                <soapGroup>SOAP</soapGroup>
+                 <repositoryHomeDescription>
+                    Repository root directory where tomcat user has read and write access.
+                    The application will automatically append the 'deployName' property (see ergorr.properties file customized before deploying the catalogue) to this path.
+                    So if you have multiple instance of the registry then it will place the repository items of different instances in seperate subfolders.
+                 </repositoryHomeDescription>
+                 <serviceProviderNameDescription>Name of the provider hosting this catalogue</serviceProviderNameDescription>
+                 <serviceProviderwebSiteDescription>URL of the website of the Service Provider</serviceProviderwebSiteDescription>
+                 <concatNameDescription>Name of the contact person.</concatNameDescription>
+                 <concatPositionDescription>Position of the contact person.</concatPositionDescription>
+                 <concatPhoneNumberDescription>Phone number of the contact person.</concatPhoneNumberDescription>
+                 <deliveryPointAddressDescription>Address of the deivery point (Road only).</deliveryPointAddressDescription>
+                 <deliveryPointCityDescription>City of the deivery point.</deliveryPointCityDescription>
+                 <deliveryPointAADescription>Administrative area of the deivery point.</deliveryPointAADescription>
+                 <deliveryPointPPDescription>Postal code of the deivery point.</deliveryPointPPDescription>
+                 <deliveryPointCountryDescription>Country of the deivery point.</deliveryPointCountryDescription>
+                 <concatPersonEmailDescription>Email address of the contact person.</concatPersonEmailDescription>
+                 <concatPersonHSDescription>Hours of service of the contact person.</concatPersonHSDescription>
+                 <concatInstructionsDescription>Specific instructions for contacting catalogue responsible persons.</concatInstructionsDescription>
+                 <concatPRDescription>Role of the contact person.</concatPRDescription>
+                 <encodingDescription>Encoding used for SOAP messages exchange.</encodingDescription>
+                 <languageDescription>Language for RIM names and descriptions.</languageDescription>
+                 <exSoapMessagesDescription>If checked ebRR will returns a detailed description of exceptions in SOAP messages.</exSoapMessagesDescription>  
+            <!-- Catalogue Configuration Misc Portal ** END-->
+
+            <helpTitlePanel>Help</helpTitlePanel>
+            
+            <!-- Catalogue Configuration Database Portal ** START-->
+                <databaseTitlePanel>Database</databaseTitlePanel>
+                <maxRecordsLabel>Max records to return</maxRecordsLabel>
+                <defaultSrsIDLabel>default Srs Id</defaultSrsIDLabel>
+                <defaultSrsNameLabel>default Srs Name</defaultSrsNameLabel>
+                <resultDepthLabel>Result depth</resultDepthLabel>
+                <simplifyModelLabel>Simplify model</simplifyModelLabel>
+                <loadPMLabel>Load package members</loadPMLabel>
+                <loadClassificationNodesLabel>Load nested classification nodes</loadClassificationNodesLabel>
+                <returnResultsCountLabel>Return results count</returnResultsCountLabel>
+                <maxRecordsDescription>
+                    This fields allows to set the maximum number of records to be returned
+                    by the catalogue. This value is checked against the maxRecords field in
+                    GetRecords operations and the lowest one is used effectively.
+                </maxRecordsDescription>
+                <defaultSrsIDDescription>Provide description.</defaultSrsIDDescription>
+                <defaultSrsNameDescription>Provide description.</defaultSrsNameDescription>
+                <resultDepthDescription>The depth of the relationships in a response.</resultDepthDescription>
+                <simplifyModelDescription>
+                    Great for performance improvement. usually the elements such as Slot,
+                    ExternalIdentifier, Classification, Name, Description, VersionInfo of
+                    objects such as Associations, Classifications and ExternalIdentifiers are
+                    never used (although allowed in the specification). If checked, this setting
+                    will cause the persistence layer to skip those queries for those elements for
+                    the certain objects.
+                </simplifyModelDescription>
+                <loadPMLabelDescription>If checked also loads the member objects of a RegistryPackage.</loadPMLabelDescription>
+                <loadClassificationNodesDescription>
+                    If set to 'true', loads child ClassificationNodes of ClassificationSchemes and ClassificationNodes.
+                </loadClassificationNodesDescription>
+                <returnResultsCountDescription>
+                     If not checked, good for performance as the implementation doesn't have to make
+                    a seperate query for counting. The downside is that the client will not be able to
+                    get the total result count to do things like pagination. An alternative for the
+                    client can be to fetch (requestedObjectSize + 1) to know if there is atleast one more page.
+                    NOTE: this has to be implemented yet and has to effect at the moment.
+                </returnResultsCountDescription>
+            <!-- Catalogue Configuration Database Portal ** END-->
+
+
+
+            <!-- Catalogue Configuration Security Portal ** START-->
+            <securityTitlePanel>Security</securityTitlePanel>
+            <enableSecurityGroup>Enable Security</enableSecurityGroup>
+            <enableSecurityLabel>Enable security</enableSecurityLabel>
+            <keyStoreGroup>Keystore</keyStoreGroup>
+            <keyStorePathLabel>Path</keyStorePathLabel>
+            <keyStorePasswordLabel>Password</keyStorePasswordLabel>
+            <certificateAliasLabel>Certificate alias</certificateAliasLabel>
+            <certificatePasswordLabel>Certificate password</certificatePasswordLabel>
+            <truststoreGroup>Truststore</truststoreGroup>
+            <trustStorePathLabel>Path</trustStorePathLabel>
+            <trustStorePasswordLabel>Password</trustStorePasswordLabel>
+
+
+            <enableSecurityDescription>Provide description.</enableSecurityDescription>
+            <keyStorePathDescription>Provide description.</keyStorePathDescription>
+            <keyStorePasswordDescription>Provide description.</keyStorePasswordDescription>
+            <certificateAliasDescription>Provide description.</certificateAliasDescription>
+            <certificatePasswordDescription>Provide description.</certificatePasswordDescription>
+            <trustStorePathDescription>Provide description.</trustStorePathDescription>
+            <trustStorePasswordDescription>Provide description.</trustStorePasswordDescription>
+
+            
+            <!-- Catalogue Configuration Security Portal ** End-->
+
+
+
+    <!-- Catalogue Configuration Interface ** END-->
+
+
+</Localization>

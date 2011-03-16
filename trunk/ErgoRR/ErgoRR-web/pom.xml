@@ -45,6 +45,11 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.3.1</version>
@@ -61,6 +66,7 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <plugin>
@@ -109,7 +115,7 @@
                                 </condition>
 
                                 <copy file="${project.basedir}/src/main/config/wsdl/${wsdlFileName}"
-                                        tofile="${project.build.directory}/${deployName}/WEB-INF/wsdl/CSW-service.wsdl"/>
+                                      tofile="${project.build.directory}/${deployName}/WEB-INF/wsdl/CSW-service.wsdl"/>
 
                                 <copy file="${project.parent.basedir}/conf/ergorr.properties" todir="${project.build.directory}/classes"/>
                                 <copy file="./src/main/config/template-datasource.xml" tofile="${project.build.directory}/${deployName}.xml"/>
@@ -128,4 +134,8 @@
         </plugins>
         <finalName>${deployName}</finalName>
     </build>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+    </properties>
 </project>
+

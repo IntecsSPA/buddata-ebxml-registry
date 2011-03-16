@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  -->
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient" localization="yes" pathLocalization="resources/xml/localization/">
+    <section name="Toolbox Manager Authentication" cols="1">
+        <group label="groupLogin">
+            <input id="user" name="user" type="text" label="labelUser"/>
+            <input id="password" name="password" type="password" label="labelPassword"/>
+            <input id="messageLabel" name="messageLabel" type="label" value=""/>
+        </group>
+    </section>
+    <requestInformations backgroundColor="#dfe8f6">
+        <buttons>
+            <button name="loginButton" id="loginButton" label="loginButton" iconImage="" onclick="ergoRRUIManager.loginInterface.onLogin"/>
+        </buttons>    
+    </requestInformations>
+</inputInterface>
