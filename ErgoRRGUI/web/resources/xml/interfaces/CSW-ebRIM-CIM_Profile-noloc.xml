@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : eoliSearch2.6Interface.xml
+    Created on : 19 giugno 2008, 17.31
+    Author     : Intecs
+    Description:
+        Purpose of the document follows.
+-->
+
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient">
+    <section name="Basic Test">
+        <group label="">
+            <input type="text" name="freeText" label="Free Text" id="freeText" optional="false" value="" size="30"/>
+        </group>
+        <group label="Spatial Coverage">
+            <input type="bbox" name="bbox" id="bbox" label="Envelope" optional="false" format="W,S,E,N" decimalPrecision="5" decimalSeparator="." size="10"></input>
+        </group>
+        <group label="Temporal Coverage">
+            <input type="rangedate" name="rangeDate" id="rangeDate" optional="false" labelStart="From" labelEnd="To" format="Y-m-d"></input>       
+        </group>
+        <!-- ['hits'],,['browse'],['summary'] -->
+        <group label="Presentation">
+            <input type="combo" name="presentation" hideLabel="true" size="15" id="presentation" optional="false" store="VALUES" storeFields="['value']"
+            storeData="[['brief'],['full']]">  
+          </input>
+          <input type="numeric" name="iteratorSize" label="Retrieve" id="iteratorSize" optional="false" value="10" size="5"/>
+          <input type="numeric" name="cursor" label="Starting from" id="cursor" optional="false" value="1" size="5"/>
+        </group>
+    </section>
+    <!--<section name="Advanced Test">
+        <group label="Platform">
+            <input type="combo" name="platfSNm" label="Short Name" size="15" id="platfSNm" optional="false" store="VALUES" storeFields="['value']"
+            storeData="[['Envisat'],['ERS'],['JERS'],['LANDSAT'],['MOS-1B'],['Nimbus'],['NOAA'],['SeaStar'],['IRS-P3'],['AQUA'],['TERRA'],['SPOT'],['ALOS'],['PROBA']]">  
+          </input> 
+          <input type="text" name="collectionId" label="Serial Number" id="TesatcollectionId" optional="false" value="" size="5"/>
+        </group>
+        <group label="">
+            <input type="percentage" id="cloudCovePerc" name="cloudCovePerc" label="Cloud Cover" decimalPrecision="2" decimalSeparator="." optional="true" NotValidValueMessage="The Percentage is between 0 and 100. The Decimal Separator is '.'"></input> 
+        </group>
+    </section>-->
+    <section name="Protocol Parameters Test">
+        <group label="Soap Parameters">
+            <input type="text" name="ServiceUrl" label="Catalogue Url" id="ServiceUrl" optional="false" value="http://genesis.pisa.intecs.it:8080/ergorrcim/webservice" grow="true"/>
+            <input type="combo" name="soapVersion" label="SOAP Version" size="16" id="soapVersion" optional="true" store="VALUES" storeFields="['value']"
+            storeData="[['1.1'],['1.2']]"/>  
+            
+        </group>
+         <group label="Autentication">
+           <input type="checkbox" name="Security" label="Enable Security" id="Security" optional="false" enableInputList="2-UserAutentication,2-PasswordAutentication" formObjectInstanceName="formsCatInterfObject"/>
+           <input type="text" name="UserAutentication" id="UserAutentication" label="User" size="20" optional="true" value="" disabled="true"/>
+           <input type="password" name="PasswordAutentication" id="PasswordAutentication" label="Password" size="20" optional="true" value="" disabled="true"/>
+            <input type="text" name="Protocol" id="Protocol" hidden="true" hideLabel="true" optional="false" value="SOAP"/>
+            <input type="text" name="outputFormat" id="outputFormat" hidden="true" hideLabel="true" optional="false" value="JSON"/>
+            <input type="text" name="outputMod" id="outputMod" hidden="true" hideLabel="true" optional="false" value="REFERENCE"/>
+            <input type="text" name="XSLRequest" id="XSLRequest" hidden="true" hideLabel="true" optional="false" value="resources/xsl/CSW-ebRIM-CIM_Profile-07-038r3_0_1_11/searchMessageTransformer.xsl"/>
+            <input type="text" name="XSLResponse" id="XSLResponse" hidden="true" hideLabel="true" optional="false" value="resources/xsl/CSW-ebRIM-CIM_Profile-07-038r3_0_1_11/searchOutputNormalize.xsl"/>
+            <input type="text" name="SoapAction" id="SoapAction" hidden="true" hideLabel="true" optional="false" value="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords"/>
+            <input type="text" name="LogFolder" id="LogFolder" hidden="true" hideLabel="true" optional="false" value="/CSW-ebRIM-CIM_Profile-07-038r3_0_1_11"/>
+        </group>
+    </section>
+    <requestInformations>
+        <buttons>
+            <button name="resetButton" id="resetButton" label="Reset" iconImage="" onclick="tbxCat.Reset"/>
+            <button name="filterButton" id="filterButton" label="Send Request" iconImage="" onclick="tbxCat.SendCatalogueRequest"/>
+        </buttons>  
+    </requestInformations>
+    <outputInformations>
+        <!--for format=json  rootStore is mandatory *****  for format=xml recordRow is mandatory , totalRecordRow and idRow are optional-->
+        <template container="grid" format="json" rootStore="response.retrievedData" totalRecordRow="" idRow="" recordRow="Metadata"
+            attributeNamesStore="resourceMetadataId,name,description,spatial,metadataURL"
+            attributeTitlesStore="resourceMetadataId,name,description,spatial,metadataURL">
+            <gridAttrbutes value="resourceMetadataId,name,description" sortable="true" widthCols="200"></gridAttrbutes>
+            <tempalteHtml value=""></tempalteHtml>
+            <onloadOperations>
+                <onloadOperation type="render" id="renderPoligon" geometry="polygon" attributeGeometry="spatial" layerOpacity="0.2" layerGraphicOpacity="1" mapObjcetName="map" style="" formatPoint="lat,lon" pointSeparator=" " layerName="CSW-CIM-Ebrim">
+                </onloadOperation>
+            </onloadOperations>
+            <templateOperations>
+                <!--<templateOperation type="details" id="details" attributes="acquisitionDate,productType,beginPosition,processorVersion,lastOrbitNumber,multiExtentOf,endPosition,parentIdentifier,acquisitionType,orbitNumber,status,acquisitionStation,quicklook,thumbnail"
+                imageButton="style/img/details.png" container="window" idAttribute="ProductIdentifier" labelButton="Details" 
+                htmlDetailsLine="&lt;tr width=\'100%\'&gt;&lt;td BGCOLOR=\'#325e8f\'&gt;&lt;b style=\'color: #ffffff;\'&gt;{$attributeName}: &lt;/b&gt;&lt;/td&gt;&lt;td BGCOLOR=\'#a9c6e2\'&gt; {$attributeValue}&lt;/td&gt;&lt;/tr&gt;" 
+                htmlLayoutStart="&lt;table width=\'100%\'&gt;" htmlLayoutEnd="&lt;/table&gt;" imageDimMin="25" imageDimMax="50" winWidth="screen.width*0.4" winHeight="screen.height*0.7" label="" dimMin="" dimMax="">
+                   
+                </templateOperation>-->
+                <templateOperation type="getRequestPopup" id="requestPopup" imageButton="style/img/details.png"  urlAttribute="metadataURL"
+                xslResponse="resources/xsl/CSW-ebRIM-CIM_Profile-07-038r3_0_1_11/isoXML2HTML.xslt" labelButton="Details" idAttribute="resourceMetadataId"
+                 imageDimMin="25" imageDimMax="50" winWidth="screen.width*0.39" winHeight="screen.height*0.62" label="" dimMin="" dimMax="">
+                </templateOperation>
+                <templateOperation type="select" id="select" geometry="polygon" attributeGeometry="spatial" layerOpacity="0.2"
+                layerGraphicOpacity="1" layerTitle="CSWEbrim_Selection" mapObjcetName="map"
+                style="{fillColor: '#FF0000', 
+                      fillOpacity: 0.4, 
+                      strokeColor: '#FFFFFF',
+                      strokeOpacity: 1,
+                      strokeWidth: 1}" formatPoint="lat,lon" pointSeparator=" " layerName="CSW-CIM-Ebrim-Selection" mapLayerName="selectionLayer"
+                imageButton="style/img/zoomTo.png" labelButton="Select Result" imageDimMin="25" imageDimMax="50" label="" dimMin="" dimMax="">
+                </templateOperation>
+               <!-- <templateOperation type="viewImage" id="viewImage" bgColor="#99bbe8" labelImage="thumbnail" attribute="thumbnail" maxheight="190" position="right"/> -->
+            </templateOperations>
+            <templateError type="window" >
+            </templateError>
+        </template>
+    </outputInformations>    
+</inputInterface>

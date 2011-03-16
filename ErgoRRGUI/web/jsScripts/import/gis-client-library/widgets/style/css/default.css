@@ -1,0 +1,31 @@
+
+
+
+.olControlSelectionToolbar .olControlNavigationItemActive { 
+  background-image: url("img/PanEnable.png");
+  background-repeat: no-repeat;
+}
+.olControlSelectionToolbar .olControlNavigationItemInactive { 
+  background-image: url("img/PanDisable.png");
+  background-repeat: no-repeat;
+}
+.olControlSelectionToolbar .olControlZoomBoxItemActive { 
+  background-image: url("img/ZoomInEnable.png");
+  background-repeat: no-repeat;
+}
+.olControlSelectionToolbar .olControlZoomBoxItemInactive { 
+  background-image: url("img/ZoomInDisable.png");
+  background-repeat: no-repeat;
+}
+.olControlSelectionToolbar .olControlSelectWMSItemActive { 
+  background-image: url("img/SetAoiEnable.png");
+  background-repeat: no-repeat;
+
+}
+.olControlSelectionToolbar .olControlSelectWMSItemInactive { 
+  background-image: url("img/SetAoiDisable.png");
+  background-repeat: no-repeat;
+}
+
+
+

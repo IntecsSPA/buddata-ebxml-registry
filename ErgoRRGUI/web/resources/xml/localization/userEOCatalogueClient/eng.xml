@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<Localization xmlns="http://gisClient.pisa.intecs.it/localization">
+
+    <!-- EO User Interface ** START-->
+    <labelSectionEOBasic>Basic</labelSectionEOBasic>
+    <labelSectionEOATM>ATM</labelSectionEOATM>
+    <labelSectionEOOPT>OPT</labelSectionEOOPT>
+    <labelSectionEOSAR>SAR</labelSectionEOSAR>
+    <TemporalRange4>TemporalRange4</TemporalRange4>
+    <TemporalRange3>TemporalRange3</TemporalRange3>
+    <TemporalRange2>TemporalRange2</TemporalRange2>
+    <TemporalRange1>TemporalRange1</TemporalRange1>
+    <From>TEST</From>
+    <To>TEST2</To>
+
+    <AreaOfInterestLabel>Area of Interest</AreaOfInterestLabel>
+    <EnvelopeLabel>Envelope</EnvelopeLabel>
+
+    <CatalogueSearchResultsTitle>Catalogue Search Results</CatalogueSearchResultsTitle>
+    <CatalogueResultTab>Catalogue Result</CatalogueResultTab>
+    <!-- EO User Interface ** END-->
+</Localization>

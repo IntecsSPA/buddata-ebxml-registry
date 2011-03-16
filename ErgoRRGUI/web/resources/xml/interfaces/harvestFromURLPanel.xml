@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient">
+    <section name="TOOLBOX Harvest from URL" cols="10">
+        <group label="Insert Metadata URL:">
+            <input type="text" name="metadataURL" id="metadataURL" label="URL" value="http://" size="30"/>
+        </group>
+    </section>
+
+    <requestInformations>
+        <buttons>
+            <button name="harvestFromURLButton" id="harvestFromURLButton" label="Harvest" iconImage="" onclick="harvestFromURL.onHarvest"/>
+        </buttons>
+    </requestInformations>
+</inputInterface>

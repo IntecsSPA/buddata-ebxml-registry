@@ -1,0 +1,137 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!doctype html>
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+        
+        <link rel="stylesheet" type="text/css" href="jsScripts/import/xmlInterfaces/import/ext/resources/css/ext-all.css" />
+
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/widgets/utils/browserDetect.js"></script>
+
+        
+        <script src="jsScripts/import/gis-client-library/import/OpenLayers/lib/OpenLayers.js"></script>
+        
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/ext/ext-all.js"></script>
+        
+        
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/sarissa/sarissa-compressed.js"></script>
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/import/sarissa/sarissa_ieemu_xpath-compressed.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="jsScripts/import/gis-client-library/widgets/style/css/webgis.css" />
+        
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/widgets/utils/general.js"></script>
+        <script type="text/javascript" src="jsScripts/import/xmlInterfaces/widgets/utils/xmlDoc.js"></script>
+
+
+        
+        
+        
+        <script type="text/javascript" src="jsScripts/interfaces/EOCatalogueClient.js"></script>
+        <link rel="stylesheet" type="text/css" href="resources/css/catalogues.css" />
+        
+        
+        
+          <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/ext/ExtFormType.js"></script>
+          <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/ext/ExtFormUtils.js"></script>
+          <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/ext/ExtFormLayout.js"></script>
+          <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/ext/RowExpander.js"></script>
+          
+          
+         <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/MapAction/MapAction.js"></script>
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/MapAction/Basic.js"></script>
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Control/Identify.js"></script>
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/Control/Toc.js"></script>
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/Control/ScaleList.js"></script>
+        
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/MapAction/Editor.js"></script>
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/MapAction/Measure.js"></script>
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/lib/webgis/MapAction/Identify.js"></script>
+        
+        <script type="text/javascript" src="jsScripts/import/gis-client-library/widgets/style/locale/en.js"></script>
+          
+          
+       
+         <!-- Widget SelectionTool import -->
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Control/SetBox.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Control/SelectWMS.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Control/RemoveSelectWMS.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Control/SelectionToolbar.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Filter/GeoSpatial.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Format/XMLKeyValue.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Format/FILTER.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Format/FILTERShort.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/Format/SLDShort.js"></script>
+            <script src="jsScripts/import/gis-client-library/widgets/lib/openlayers/SLDWMS.js"></script>
+            
+    <!-- Widget SelectionTool End Import -->
+    
+    <style type="text/css">
+            body {margin:0px;padding:0px;font-size:small}
+            div.header {padding:8px 8px 0px 8px;background-color:#666;color:#FFF;border-bottom:8px solid #4280b3;}
+            div.content {padding:8px;}
+            #loading-mask{
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        z-index:20000;
+        background-color:white;
+    }
+            #loading{
+                position:absolute;
+                left:42%;
+                top:40%;
+                padding:2px;
+                z-index:20001;
+                height:auto;
+            }
+            #loading a {
+                color:#225588;
+            }
+            #loading .loading-indicator{
+                background:white;
+                color:#444;
+                font:bold 13px tahoma,arial,helvetica;
+                padding:10px;
+                margin:0;
+                height:auto;
+            }
+            #loading-icon {
+                font: normal 10px arial,tahoma,sans-serif;
+                position:absolute;
+                left:38%;
+                top:75%;
+            }
+            #loading-msg {
+                font: normal 10px arial,tahoma,sans-serif;
+                position:absolute;
+                left:23%;
+                top:160%;
+            }
+            
+            .upload-icon {
+                background: url('resources/images/image_add.png') no-repeat 0 0 !important;
+            }
+        </style>
+  </head>
+  
+  <body>
+      
+      
+     
+        
+       <!-- <div id="loading-mask" style=""></div>
+        <div id="loading">
+            <div class="loading-indicator">ebXML ErgoRR EOP Client<br /><span id="loading-msg">Loading... Please Wait...</span><span id="loading-icon"><img src="resources/images/init_Load.gif"/></span></div>
+        </div>
+        <div id="workspace"></div>-->
+  </body>
+</html>
