@@ -1,4 +1,4 @@
-//sdfsdfsdfsdfsdfsdf
+
 
 
 
@@ -94,52 +94,34 @@ OpenLayers.Format.XMLKeyValue = OpenLayers.Class(OpenLayers.Format.XML, {
                         for(var u=0;u<tempform.length;u++)
                             switch(tempform[u].type) {
                                 case "text":
-                                     // alert(keyValue.formValues[tempform[u].id]);
                                       if(keyValue.formValues[tempform[u].id]){  
                                        
                                         this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
                                       }  
                                       break; 
                                 case "numeric":
-                                     // alert(keyValue.formValues[tempform[u].id]);
-                                      if(keyValue.formValues[tempform[u].id]){  
+                                      if(keyValue.formValues[tempform[u].id] || keyValue.formValues[tempform[u].id]== 0){  
                                        
-                                        this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
+                                        this.writeNode(root, tempform[u].id, ""+keyValue.formValues[tempform[u].id]);
                                       }  
                                       break;  
                                 case "textarea":
                                       if(keyValue.formValues[tempform[u].id]){  
                                         this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
                                       }  
-                                      break;
-                                case "editarea":
-                                      if(keyValue.formValues[tempform[u].id]){
-                                        this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
-                                      }
-                                      break;
+                                      break;      
                                 case "checkbox":
-                                      //alert(keyValue.formValues[tempform[u].id]);
                                       if(keyValue.formValues[tempform[u].id]){  
                                        
                                         this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
                                       }  
-                                      break;
-                                case "radiogroup":
-                                  
-                                      //alert(keyValue.formValues[tempform[u].id]);
-                                      if(keyValue.formValues[tempform[u].id]){
-
-                                        this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
-                                      }
-                                      break;
+                                      break;      
                                 case "combo":
-                                      //alert(keyValue.formValues[tempform[u].id]);
                                       if(keyValue.formValues[tempform[u].id]){
                                         this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
                                       }  
                                       break;
                                 case "bbox":
-                                      //alert(keyValue.formValues[tempform[u].id]);
                                       if(keyValue.formValues[tempform[u].id]){
                                         this.writeNode(root, tempform[u].id, keyValue.formValues[tempform[u].id]);
                                       }  
@@ -150,27 +132,19 @@ OpenLayers.Format.XMLKeyValue = OpenLayers.Class(OpenLayers.Format.XML, {
                                       }  
                                       break;
                                 case "numericRange":
+                                 
                                       if(keyValue.formValues[tempform[u].id]){
-                                        this.writeNode(root, tempform[u].id+"MinValue", keyValue.formValues[tempform[u].id].minValue);
-                                        this.writeNode(root, tempform[u].id+"MaxValue", keyValue.formValues[tempform[u].id].maxValue);
+                                        this.writeNode(root, tempform[u].id+"MinValue", ""+keyValue.formValues[tempform[u].id].minValue);
+                                        this.writeNode(root, tempform[u].id+"MaxValue", ""+keyValue.formValues[tempform[u].id].maxValue);
                                       }
                                       break;
                                 case "rangedate":
-                                      //alert(keyValue.formValues[tempform[u].id]);
                                       if(keyValue.formValues[tempform[u].id]){
                                         this.writeNode(root, tempform[u].id+"StartDate", keyValue.formValues[tempform[u].id].startDate);
                                         this.writeNode(root, tempform[u].id+"EndDate", keyValue.formValues[tempform[u].id].endDate);
                                       }  
                                       break;
-                                case "file":
-                                      if(keyValue.formValues[tempform[u].id]){
-                                        this.writeNode(root, tempform[u].id+"FileName", keyValue.formValues[tempform[u].id].fileName);
-                                        if(keyValue.formValues[tempform[u].id].uploadID)
-                                            this.writeNode(root, tempform[u].id+"UploadID", keyValue.formValues[tempform[u].id].uploadID);
-                                      }
-                                      break;
                                 case "rangetime":
-                                      //alert(keyValue.formValues[tempform[u].id]);
                                       if(keyValue.formValues[tempform[u].id]){
                                         this.writeNode(root, tempform[u].id+"StartTime", keyValue.formValues[tempform[u].id].startTime);
                                         this.writeNode(root, tempform[u].id+"EndTime", keyValue.formValues[tempform[u].id].endTime);

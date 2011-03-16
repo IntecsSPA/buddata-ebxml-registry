@@ -13,6 +13,9 @@ LoginInterface=function(){
      this.xmlInterface="resources/xml/interfaces/login.xml";
 
      this.formInterface=new Object();
+     
+     this.user="";
+     this.password="";
 
      this.init=function(){
        this.formInterface=createPanelExjFormByXml(this.xmlInterface, interfacesManager.lang);
@@ -48,6 +51,9 @@ LoginInterface=function(){
         
            /*document.cookie = "JSESSIONID" + "=" +
             "; expires=Thu, 01-Jan-70 00:00:01 GMT";*/
+            
+           this.user= loginValues['user'];
+           this.password=loginValues['password'];
  
            var onSubmit=sendAuthenticationXmlHttpRequestTimeOut("GET",
                      "rest/resources/panels",

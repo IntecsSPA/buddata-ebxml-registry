@@ -204,6 +204,31 @@ ergoRRUIManager = {
         ergoRRUIManager.loginWindow.show();
         ergoRRUIManager.spot.show('loginWin');
         ergoRRUIManager.loginInterface.render("loginDIV");
+    },
+    
+    getCatalogueClient: function (profile){
+   
+        var clientHtml="";
+        var getCatalogClientMethod=function(response){
+            clientHtml=response;
+        };
+                           
+       var getCatalogClientTimeOut=function(){
+                               
+       };
+                           
+       var getCatalogClientError=function(){
+                               
+       };
+                           
+       sendAuthenticationXmlHttpRequestTimeOut("GET",
+            "rest/resources/catalogueClient/"+profile,
+            false, null,ergoRRUIManager.loginInterface.user,
+            ergoRRUIManager.loginInterface.password, 800000, 
+            getCatalogClientMethod, getCatalogClientTimeOut,null,
+            null, getCatalogClientError);
+        
+       return clientHtml; 
     }
   
 };
