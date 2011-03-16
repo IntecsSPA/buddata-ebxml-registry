@@ -14,7 +14,8 @@
             <input type="text" name="collectionId" label="Collection" id="collectionId" optional="false" value="ESA.EECF.ENVISAT_ASA_GMI_1S" size="30" grow="true"/>
         </group>
         <group label="Spatial Coverage">
-            <input type="bbox" name="bbox" id="bbox" label="Envelope" optional="true" format="W,S,E,N" decimalPrecision="5" decimalSeparator="." size="10" map="userEOClient.map"></input>
+            
+            <input type="bbox" name="bbox" id="bbox" label="Envelope" optional="true" format="W,S,E,N" decimalPrecision="5" decimalSeparator="." size="10" map="eopCat.map"></input>
         </group>
         <group label="Temporal Coverage">
             <input type="rangedate" name="rangeDate" id="rangeDate" optional="true" labelStart="From" labelEnd="To" format="Y-m-d"></input>
@@ -65,7 +66,7 @@
     <requestInformations>
         <buttons>
            <!-- <button name="resetButton" id="resetButton" label="Reset" iconImage="" onclick="tbxCat.Reset"/>-->
-            <button name="filterButton" id="filterButton" label="Send Request" iconImage="" onclick="userEOClient.sendEORequest"/>
+            <button name="filterButton" id="filterButton" label="Send Request" iconImage="" onclick="eopCat.SendCatalogueRequest"/>
         </buttons>  
     </requestInformations>
     <outputInformations>
@@ -77,7 +78,7 @@
             <!--gridAttrbutes value="MdContactRpOrgName,MdContactRole,AcquisitionDateTime,IdentCode,Platform,InstShNm,SatDomOrbit,SatDomOrbitDirection,SatDomRefSysFrame,SatDomRefSysTrack,SatDomSwathId,SatDomPassCoverageStart,SatDomPassCoverageStop,ProductIdentifier,IdAbs,IdStatus,TempEleExTempBeginEndBegin,TempEleExTempBeginEndEnd,DataExtGeoEleCoordinates,DataExtGeoEleCenterCoordinates" sortable="true" widthCols="40"></gridAttrbutes-->
             <tempalteHtml value=""></tempalteHtml>
             <onloadOperations>
-                <onloadOperation type="render" id="renderPoligon" geometry="polygon" attributeGeometry="multiExtentOf" layerOpacity="0.2" layerGraphicOpacity="1" mapObjcetName="userEOClient.map" style="" posList="lat lon" posListDimension="2" layerName="CSWEbrim">
+                <onloadOperation type="render" id="renderPoligon" geometry="polygon" attributeGeometry="multiExtentOf" layerOpacity="0.2" layerGraphicOpacity="1" mapObjcetName="eopCat.map" style="" posList="lat lon" posListDimension="2" layerName="CSWEbrim">
                 </onloadOperation>
             </onloadOperations>
             <templateOperations>
@@ -88,7 +89,7 @@
                     <group htmlStart="" htmlEnd="" htmlLine="&lt;tr width=\'100%\'&gt;&lt;td BGCOLOR=\'#325e8f\'&gt;&lt;b style=\'color: #ffffff;\'&gt;QuickLook Image: &lt;/b&gt;&lt;/td&gt;&lt;td BGCOLOR=\'#a9c6e2\'&gt;&lt;img src=\'{$attributeValue}\'&gt;&lt;/img&gt;&lt;/td&gt;&lt;/tr&gt;" attributes="quicklook"></group>
                 </templateOperation>
                 <templateOperation type="select" id="select" geometry="polygon" attributeGeometry="multiExtentOf" layerOpacity="0.2"
-                layerGraphicOpacity="1" layerTitle="CSWEbrim_Selection" mapObjcetName="userEOClient.map"
+                layerGraphicOpacity="1" layerTitle="CSWEbrim_Selection" mapObjcetName="eopCat.map"
                 style="{fillColor: '#FF0000', 
                       fillOpacity: 0.4, 
                       strokeColor: '#FFFFFF',
@@ -96,7 +97,7 @@
                       strokeWidth: 1}" posList="lat lon" posListDimension="2" layerName="CSWEbrim" mapLayerName="selectionLayer"
                 imageButton="styles/img/zoomTo.png" labelButton="Select Result" imageDimMin="25" imageDimMax="50" label="" dimMin="" dimMax="">
                 </templateOperation>
-                <templateOperation type="viewImage" id="viewImage" bgColor="#99bbe8" labelImage="thumbnail" attribute="thumbnail" maxheight="190" position="right"/>
+                <!--<templateOperation type="viewImage" id="viewImage" bgColor="#99bbe8" labelImage="thumbnail" attribute="thumbnail" maxheight="190" position="right"/>-->
             </templateOperations>
           
             <templateError type="window" >
