@@ -676,4 +676,38 @@ this.databaseConfigurationPortal={
 
 };
 
+function submitMisc()
+{
+    Ext.MessageBox.progress("Saving miscellaneous settings", "", "");
+    Ext.MessageBox.updateProgress(10, "Saving miscellaneous settings", "");
+
+    var json={'repository.root' : document.getElementById('repoDirField').value,
+                'serviceProvider.name' :  document.getElementById('spNameField').value,
+                'serviceProvider.contact.name' : document.getElementById('spContactNameField').value,
+                'serviceProvider.contact.position' : document.getElementById('spContactPositionField').value,
+                'serviceProvider.contact.phone' : document.getElementById('spContactPhoneField').value,
+                'serviceProvider.contact.address.deliveryPoint' : document.getElementById('spDeliveryPointField').value,
+                'serviceProvider.contact.address.city' : document.getElementById('spDeliveryCityField').value,
+                'serviceProvider.contact.address.administrativeArea' : document.getElementById('spAdministrativeAreaField').value,
+                'serviceProvider.contact.address.postalCode' : document.getElementById('spPostalCodeField').value,
+                'serviceProvider.contact.address.country' : document.getElementById('spCountryField').value,
+                'serviceProvider.contact.address.electronicMailAddress' : document.getElementById('spCpEmailField').value,
+                'serviceProvider.contact.hoursOfService' : document.getElementById('spCpHoursOfServiceField').value,
+                'serviceProvider.contact.contactInstructions' : document.getElementById('spContactInstructionsField').value,
+                'serviceProvider.role' : document.getElementById('spContactRoleField').value,
+                'encoding' : document.getElementById('encodingField').value,
+                'lang' : document.getElementById('langField').value,
+                'showExceptionsInSoap' : document.getElementById('soapExceptions').checked ? 'true':'false'};
+
+    var request=new XMLHttpRequest();
+
+    request.open("POST", 'config');
+    request.setRequestHeader('Accept','application/json');
+    request.setRequestHeader('Cache-Control','no-cache');
+
+    request.send(JSON.stringify(json));
+
+    Ext.MessageBox.updateProgress(100, "Saved", "");
+    Ext.MessageBox.hide();
+}
 

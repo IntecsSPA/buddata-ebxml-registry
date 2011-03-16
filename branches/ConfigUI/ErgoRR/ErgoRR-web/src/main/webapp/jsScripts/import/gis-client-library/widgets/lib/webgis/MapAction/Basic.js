@@ -10,7 +10,7 @@
  * @fileoverview Basic map tools implemented as WebGIS.MapAction classes
  */
 
-//Ext.namespace('WebGIS', 'WebGIS.MapAction');
+Ext.namespace('WebGIS', 'WebGIS.MapAction');
 
 /**
  * @class Activates interactive zoom in box on map
@@ -68,7 +68,6 @@ Ext.extend(WebGIS.MapAction.ZoomIn, WebGIS.MapAction, { });
  * @extends WebGIS.MapAction
  * @param {String} config WebGIS.MapAction config options
  */
-
 WebGIS.MapAction.ZoomOut = function(config) {
     config.iconCls = 'webgis-mapaction-zoomout';
     config.handler = function() {
@@ -295,28 +294,21 @@ WebGIS.MapAction.RemoveSelectionWMS = function(config) {
 Ext.extend(WebGIS.MapAction.RemoveSelectionWMS, WebGIS.MapAction, { });
 
 
-var scaleWindow=null;
+var scalewindow;
 WebGIS.MapAction.SetScaleParameters= function () {
     scaleWindow.SetScaleParameters();
 
 }
 WebGIS.MapAction.Scale = function(config) {
-    var backColor='#99bbe8';
-    var winPos={x:0, y:150};
+    // default config for this action, also used by button to make it toggle correctly
     config.iconCls = 'webgis-mapaction-scale';
     if(config.backgroundColor)
        backColor=config.backgroundColor;
-
-    if(config.windowPosition)
-       winPos=config.windowPosition;
-  
-    var formsObject=createPanelExjFormByXml(interfacesManager.gisClientLibPath+"/widgets/lib/webgis/resources/xml/ScaleConfigurationPanel.xml");
+    var formsObject=createPanelExjFormByXml(config.pathGisClient+"widgets/lib/webgis/resources/xml/ScaleConfigurationPanel.xml");
     var setScalePanel= new Ext.Panel({ title: 'Set Scale', border: false, bodyStyle : {background: backColor}, items: {xtype: 'webgis-scalelist', map: config.map}});
-    
+    var backColor='#99bbe8';
     if(config.backgroundColor)
        backColor=config.backgroundColor;
-    if(scaleWindow)
-       scaleWindow.destroy();
     scaleWindow = new Ext.Window({
 				title: 'Scales',
 				border: false,
@@ -351,19 +343,15 @@ WebGIS.MapAction.Scale = function(config) {
                                 }
 			})
 			scaleWindow.show();
-    
-    scaleWindow.setPosition(winPos.x,winPos.y);
+    scaleWindow.setPosition(0,150);
     formsObject.render();
     config.enableToggle = true;
     config.toggleGroup = 'WebGIS.MapAction';
     config.olcontrol = new OpenLayers.Control({
-                             posx:winPos.x,
-                             posy:winPos.y,
-
                              activate: function() {
                                      if(!scaleWindow.isVisible()){
                                          scaleWindow.show();
-                                         scaleWindow.setPosition(this.posx,this.posy);
+                                         scaleWindow.setPosition(0,150);
                                      }
 
                                      else

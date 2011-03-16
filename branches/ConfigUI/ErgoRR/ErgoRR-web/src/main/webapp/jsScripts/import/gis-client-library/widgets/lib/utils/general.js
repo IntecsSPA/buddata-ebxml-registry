@@ -39,10 +39,7 @@ function assignXMLHttpRequest() {
  var request=null;
  var timeOutEvent=null;
 // var xhrTimeout=null;
-function sendXmlHttpRequestTimeOut(requestMethod, requestUrl, requestAsync, 
-                                    requestBody, timeOutRequest, eventResponse,
-                                    eventTimeOut, headers, loading, eventError){
-    
+function sendXmlHttpRequestTimeOut(requestMethod, requestUrl, requestAsync, requestBody, timeOutRequest, eventResponse, eventTimeOut, headers, loading, eventError){
     request=assignXMLHttpRequest();
     //alert(requestAsync);
     if(request){
@@ -51,50 +48,6 @@ function sendXmlHttpRequestTimeOut(requestMethod, requestUrl, requestAsync,
            timeOutRequest=timeOutRequest*1000;
         var message;
         request.open(requestMethod, requestUrl, requestAsync);
-        request.setRequestHeader("connection", "close");
-        var headSplit;
-        if(headers){
-           for(var i=0;i<headers.length; i++){
-               headSplit=headers[i].split(",");
-               request.setRequestHeader(headSplit[0], headSplit[1]);
-           }
-        }
-        var xhrTimeout=setTimeout("request.abort();timeOutEvent.call();",timeOutRequest);
-        if(requestAsync){
-              request.onreadystatechange= function(){
-                     ajaxResponseManager(request,xhrTimeout,message,eventResponse,eventError);
-              };
-        }
-       
-        if(loading){
-           message=Ext.MessageBox.wait(loading.message,loading.title);
-           //String title, String msg, [String progressText] )
-         }
-         request.send(requestBody);
-         if(!requestAsync){
-             var result=ajaxResponseManager(request,xhrTimeout,message,eventResponse,eventError);
-             return result;
-         }
-         return null;
-    }else{
-
-       return null;
-    }
-}
-
-function sendAuthenticationXmlHttpRequestTimeOut(requestMethod, requestUrl, requestAsync,
-                                                requestBody, userName, password, timeOutRequest,
-                                                eventResponse, eventTimeOut, headers, loading, eventError){
-    request=assignXMLHttpRequest();
-    //alert(requestAsync);
-    if(request){
-        timeOutEvent=eventTimeOut;
-        if(timeOutRequest <1000)
-           timeOutRequest=timeOutRequest*1000;
-        var message;
-        request.open(requestMethod, requestUrl, requestAsync/*, userName, password*/);
-      //  request.setRequestHeader("ebrr-Authorization", "ebrr  "+userName+":"+password);
-        request.setRequestHeader("Authorization", "Basic "+Base64.encode(userName+":"+password));
         request.setRequestHeader("connection", "close");
         var headSplit;
         if(headers){
@@ -170,7 +123,7 @@ function ajaxResponseManager(request,xhrTimeout,message,eventResponse,eventError
 function pausecomp(millis){
 var date = new Date();
 var curDate = null;
-do {curDate = new Date();}
+do { curDate = new Date(); }
 while(curDate-date < millis);
 } 
     
@@ -315,28 +268,7 @@ function skip(){
   }
 
 
-function randomColor(){
-    //elabora un colore casuale e ne restituisce la stringa esadecimale
-    var rc=new Array(3);
-    for(var i=0;i<3;i++)
-        rc[i]=Math.floor(Math.random() * 255);
-    return HEX(rc);
-}
 
-
-function RGB(c){
-//restituisce la conversione esadecimale sotto forma di array di interi
-var r=new Array(3);
-if(c.charAt(0)=="#") c=c.substr(1,6); //elimina il cancelletto
-for(i=0;i<3;i++)
-r[i]=HexToDec(c.substr(i*2,2));
-return r;
-}
-
-function HEX(c){
-//riceve un vettore rgb in decimale e lo converte in stringa esadecimale
-return ("#" + DecToHex(c[0])+ DecToHex(c[1]) + DecToHex(c[2]));
-}
 Array.prototype.find =
   function(element) {
     var arr2str = this.toString();
@@ -382,8 +314,28 @@ function popupPlaseWait(url) {
    return newwindow;
 }
 
+function randomColor(){
+    //elabora un colore casuale e ne restituisce la stringa esadecimale
+    var rc=new Array(3);
+    for(var i=0;i<3;i++)
+        rc[i]=Math.floor(Math.random() * 255);
+    return HEX(rc);
+}
 
 
+function RGB(c){
+//restituisce la conversione esadecimale sotto forma di array di interi
+var r=new Array(3);
+if(c.charAt(0)=="#") c=c.substr(1,6); //elimina il cancelletto
+for(i=0;i<3;i++)
+r[i]=HexToDec(c.substr(i*2,2));
+return r;
+}
+
+function HEX(c){
+//riceve un vettore rgb in decimale e lo converte in stringa esadecimale
+return ("#" + DecToHex(c[0])+ DecToHex(c[1]) + DecToHex(c[2]));
+}
 
 
 function DecToHex(n){
@@ -397,3 +349,7 @@ function HexToDec(s){
 //converte da stringa esadecimale a numero decimale
 return parseInt(s,16);
 } 
+
+
+  
+  

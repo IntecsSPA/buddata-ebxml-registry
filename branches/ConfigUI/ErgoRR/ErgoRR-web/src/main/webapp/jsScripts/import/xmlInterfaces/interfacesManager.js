@@ -228,7 +228,7 @@ this.loadGisCSS= function(url){
                 $(document).ready(interfacesManager.initFun());//  setTimeout("interfacesManager.initFun();", 5000);
                 if(interfacesManager.gisClientLibPath!=""){
                     /*GIS Import*/
-                  $(document).ready(interfacesManager.gisImport());
+                 // $(document).ready(interfacesManager.gisImport());
                 }
                 
             }

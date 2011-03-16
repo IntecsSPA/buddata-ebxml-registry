@@ -6,18 +6,6 @@ var BrowserDetect = {
 			|| "an unknown version";
 		this.OS = this.searchString(this.dataOS) || "an unknown OS";
 	},
-        getWidth: function (perc){
-            if(perc)
-               return (window.innerWidth || document.body.clientWidth)/100*perc;
-            else
-               return (window.innerWidth || document.body.clientWidth);
-        },
-        getHeight: function (perc){
-            if(perc)
-                return ((window.innerHeight || document.body.clientHeight))/100*perc;
-            else
-                return ((window.innerHeight || document.body.clientHeight));
-        },
 	searchString: function (data) {
 		for (var i=0;i<data.length;i++)	{
 			var dataString = data[i].string;

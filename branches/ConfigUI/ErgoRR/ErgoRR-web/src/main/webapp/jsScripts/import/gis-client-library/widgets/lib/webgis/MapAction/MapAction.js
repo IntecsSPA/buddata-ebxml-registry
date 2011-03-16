@@ -10,9 +10,7 @@
  * @fileoverview WebGIS.MapAction base class implementation
  */
  
-
 Ext.namespace('WebGIS');
-
 
 Ext.QuickTips.init();
 

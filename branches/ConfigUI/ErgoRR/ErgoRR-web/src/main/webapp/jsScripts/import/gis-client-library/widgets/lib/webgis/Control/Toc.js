@@ -10,8 +10,7 @@
  * @fileoverview WebGIS.Control.Toc class
  */
 
-
-
+Ext.namespace('WebGIS', 'WebGIS.Control');
 
 /**
  * @class A TOC generated from layers in an OpenLayers.Map.

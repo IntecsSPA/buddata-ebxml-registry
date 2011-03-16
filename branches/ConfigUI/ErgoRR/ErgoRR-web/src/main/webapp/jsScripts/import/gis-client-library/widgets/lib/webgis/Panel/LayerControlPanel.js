@@ -204,7 +204,7 @@ function getFeatureInfo(url,layers,format,styles,srs,elementId,imageId){
                      statisticTitle="BITMASK: &nbsp;&nbsp;";
                      break;    
              }
-             element.innerHTML = "<table><tr bgcolor='#FFFFFF'><td colspan='2' align='center'><b>Query Information </b><td></tr><tr><td bgcolor='#FFFFFF'}>"+statisticTitle+"</td><td bgcolor='#FFFFFF'>"+ statisticValue+"</td></tr></table>";
+             element.innerHTML = "<table><tr bgcolor='#FFFFFF'><td colspan='2' align='center'><b>Query Informations </b><td></tr><tr><td bgcolor='#FFFFFF'}>"+statisticTitle+"</td><td bgcolor='#FFFFFF'>"+ statisticValue+"</td></tr></table>";
            }
         }
       }        
