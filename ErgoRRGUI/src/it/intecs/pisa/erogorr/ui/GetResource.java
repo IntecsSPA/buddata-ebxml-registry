@@ -5,6 +5,7 @@
 
 package it.intecs.pisa.erogorr.ui;
 
+import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,12 +23,15 @@ import java.text.SimpleDateFormat;
  *
  * @author Andrea Marongiu
  */
-public class GetResource extends HttpServlet {
+public class GetResource extends RestServlet {
 
     protected static final String REST_RESOURCE_PANELS = "/resources/panels";
     protected static final String REST_RESOURCE_LOG = "/resources/log";
     protected static final String REST_RESOURCE_EOP_CLIENT = "/resources/catalogueClient/eop";
     protected static final String REST_RESOURCE_CIM_CLIENT = "/resources/catalogueClient/cim";
+    protected static final String REST_RESOURCE_PROPERTIES = "/resources/properties"; 
+    
+    
     protected static final String USER_PANELS_RESOURCE = "userPanels.js";
     protected static final String ADMIN_PANELS_RESOURCE = "adminPanels.js";
     protected static final String CIM_CATALOGUE_CLIENT_RESOURCE = "cimCatalogue.html";
@@ -37,8 +41,10 @@ public class GetResource extends HttpServlet {
     protected static final String ERGORR_LOG_PREFIX = "ergorr.";
     protected static final String ERGORR_LOG_SUFIX = ".log";
     
-  
+    protected static final int LOG_ROWS = 500;
+    
 
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -50,29 +56,35 @@ public class GetResource extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String uri;
+        int logRows=0;
         File webInfResourceFolder=new File(getServletContext().getRealPath(WEBINF_RESOURCES_FOLDER));
         OutputStream out = response.getOutputStream();
         try {
             uri = request.getRequestURI();
             if (uri.endsWith(REST_RESOURCE_PANELS)) {
                 if(authenticate(request, "admin"))
-                    copy(new FileInputStream(new File(webInfResourceFolder, ADMIN_PANELS_RESOURCE)), out);
+                    IOUtil.copy(new FileInputStream(new File(webInfResourceFolder, ADMIN_PANELS_RESOURCE)), out);
                 else 
                 if (authenticate(request, "user"))
-                    copy(new FileInputStream(new File(webInfResourceFolder, USER_PANELS_RESOURCE)), out);
+                    IOUtil.copy(new FileInputStream(new File(webInfResourceFolder, USER_PANELS_RESOURCE)), out);
             }else
               if (uri.endsWith(REST_RESOURCE_LOG)) {
                 if(authenticate(request, "admin"))
-                    copy(new FileInputStream(new File(this.getLogFilePath())), out);
+                    logRows=this.getRowsNumber(new FileInputStream(new File(this.getLogFilePath())));
+                    this.copyLastRows(new FileInputStream(new File(this.getLogFilePath())), out, logRows, LOG_ROWS);
               }else
                   if (uri.endsWith(REST_RESOURCE_EOP_CLIENT)) {
                     if(authenticate(request, "admin") || authenticate(request, "user"))
-                        copy(new FileInputStream(new File(webInfResourceFolder, EOP_CATALOGUE_CLIENT_RESOURCE)), out);
+                        IOUtil.copy(new FileInputStream(new File(webInfResourceFolder, EOP_CATALOGUE_CLIENT_RESOURCE)), out);
                   }else
                       if (uri.endsWith(REST_RESOURCE_CIM_CLIENT)) {
                         if(authenticate(request, "admin") || authenticate(request, "user"))
-                            copy(new FileInputStream(new File(webInfResourceFolder, CIM_CATALOGUE_CLIENT_RESOURCE)), out);
-                      }    
+                            IOUtil.copy(new FileInputStream(new File(webInfResourceFolder, CIM_CATALOGUE_CLIENT_RESOURCE)), out);
+                      }else
+                          if (uri.endsWith(REST_RESOURCE_PROPERTIES)) {
+                            if(authenticate(request, "admin") || authenticate(request, "user"))
+                               IOUtil.copy(new FileInputStream(getPropertiesFile()), out);
+                          }    
             
             
         }catch (Exception ex){
@@ -138,6 +150,53 @@ public class GetResource extends HttpServlet {
         return new File(logDir,logFileName).getCanonicalPath();
     }
 
+    
+    private void copyLastRows (InputStream is, OutputStream out, int rowsNumber, int lastRowsNumber) throws IOException{
+       int firstRow=rowsNumber-lastRowsNumber;
+       if(firstRow <0)
+           firstRow=0;
+       try {
+        byte[] c = new byte[1024];
+        int count = 0;
+        int readChars = 0;
+        while ((readChars = is.read(c)) != -1) {
+            if(count >= firstRow)
+               out.write(c,0, readChars);
+            else{
+                for (int i = 0; i < readChars; ++i) {
+                    if (c[i] == '\n')
+                        ++count;
+                    if(count >= firstRow)
+                      out.write(c,i+1, readChars-(i+1));  
+                }
+            }    
+        }
+        } finally {
+            is.close();
+        }
+      }
+    
+    
+    private int getRowsNumber (InputStream is) throws IOException{
+    
+       try {
+        byte[] c = new byte[1024];
+        int count = 0;
+        int readChars = 0;
+        while ((readChars = is.read(c)) != -1) {
+            for (int i = 0; i < readChars; ++i) {
+                if (c[i] == '\n')
+                    ++count;
+            }
+        }
+         return count;
+        } finally {
+            is.close();
+        }
+      }
+    
+    
+    
     private boolean authenticate(HttpServletRequest request, String role) throws Exception{
        AuthenticationManager am= new AuthenticationManager();
        String [] roles= am.authenticateUser(request);
@@ -147,19 +206,5 @@ public class GetResource extends HttpServlet {
        return false;
     }
     
-    private static void copy(InputStream in, OutputStream out) throws IOException {
-        synchronized (in) {
-            synchronized (out) {
-
-                byte[] buffer = new byte[256];
-                while (true) {
-                    int bytesRead = in.read(buffer);
-                    if (bytesRead == -1) {
-                        break;
-                    }
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-        }
-    }
+    
 }

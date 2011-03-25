@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
 xmlns:gc="http://gisclient.pisa.intecs.it"
 xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
@@ -20,7 +20,7 @@ startPosition="1"
 maxRecords="20">
     <xsl:attribute name="startPosition"><xsl:value-of select="gc:cursor"/></xsl:attribute>
     <xsl:attribute name="maxRecords"><xsl:value-of select="gc:iteratorSize"/></xsl:attribute>
-    <csw:Query typeNames="rim:ExtrinsicObject rim:ExtrinsicObject_ACQPLAT rim:Association">
+    <csw:Query typeNames="rim:ExtrinsicObject rim:Association">
         <csw:ElementSetName typeNames="rim:ExtrinsicObject"><xsl:value-of select="gc:presentation"/></csw:ElementSetName>
         <csw:Constraint version="1.1.0">
             <ogc:Filter>
@@ -58,7 +58,7 @@ maxRecords="20">
                     <xsl:if test="gc:collectionId">
                         <ogc:PropertyIsEqualTo>
                             <ogc:PropertyName>/rim:ExtrinsicObject[@objectType='urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct']/rim:Slot[@name='urn:ogc:def:ebRIM-Slot:OGC-06-131:parentIdentifier']/rim:ValueList/rim:Value[1]</ogc:PropertyName>
-                            <ogc:Literal>urn:ogc:def:EOP:<xsl:value-of select="gc:collectionId"/></ogc:Literal>
+                            <ogc:Literal><xsl:value-of select="gc:collectionId"/></ogc:Literal>
                         </ogc:PropertyIsEqualTo>
                     </xsl:if>
 

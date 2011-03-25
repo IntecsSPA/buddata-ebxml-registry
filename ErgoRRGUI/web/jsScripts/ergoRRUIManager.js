@@ -36,9 +36,7 @@ ergoRRUIManager = {
     "<br/><br/>"+
     "<b>License:</b>"+
     "General Public License version 3 (GPL3)"+
-    "<br> ",//+
- /*   "You can configure this ebRR instance through the Graphical interface. Click <a href=\"#\" onclick=\"javascript:ergoRRUIManager.showLogin()\">here</a> for accessing it."+
-    "</div>",*/
+    "<br> ",
     loginWindow: null,
     loginInterface: null,
     
@@ -46,6 +44,7 @@ ergoRRUIManager = {
     localizationPath: "resources/xml/localization/ergoRRUIManager/",
     loc: null,
     spot :null,
+    myMask: null,
     bodyColor: '#eeeeee',
     init:function(){
         ergoRRUIManager.spot=new Ext.ux.Spotlight({
@@ -97,6 +96,8 @@ ergoRRUIManager = {
             },
             loadingPanelWorkspaceEl: 'workspace'
         });
+        
+       
 
 
         var accordionMainMenuPanel= new Ext.Panel({
@@ -145,8 +146,6 @@ ergoRRUIManager = {
         ergoRRUIManager.westPanel.toggleCollapse(false);
 
         ergoRRUIManager.westPanel.hide();
-
-        //document.getElementById("workspacePanel_div").innerHTML=ergoRRUIManager.bodyInfo;
         
         ergoRRUIManager.showLogin();
         
@@ -172,6 +171,12 @@ ergoRRUIManager = {
         }
 
         hideMask.defer(250);
+        
+         ergoRRUIManager.myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
+             {
+              msg:"Please wait..."
+             }
+        );
 
     },
     showLogin: function(){
@@ -204,6 +209,7 @@ ergoRRUIManager = {
         ergoRRUIManager.loginWindow.show();
         ergoRRUIManager.spot.show('loginWin');
         ergoRRUIManager.loginInterface.render("loginDIV");
+         var formKeyValue=new XMLKeyValue();
     },
     
     getCatalogueClient: function (profile){

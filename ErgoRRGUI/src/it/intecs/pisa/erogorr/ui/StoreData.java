@@ -11,6 +11,7 @@ package it.intecs.pisa.erogorr.ui;
 import com.google.gson.JsonObject;
 import http.utils.multipartrequest.MultipartRequest;
 import http.utils.multipartrequest.ServletMultipartRequest;
+import it.intecs.pisa.erogorr.ui.conf.ErgoRRGUIConfiguration;
 import it.intecs.pisa.util.DateUtil;
 import it.intecs.pisa.util.IOUtil;
 import it.intecs.pisa.util.json.JsonUtil;
@@ -31,6 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 public class StoreData extends HttpServlet {
 
     protected static final int MAX_READ_BYTES = 10000000;
+    
+    
+    
+    
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

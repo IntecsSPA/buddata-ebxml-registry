@@ -16,6 +16,7 @@
     <labelHarvestFromFile>Harvest from Local Disk</labelHarvestFromFile>
     <labelHarvestFromURL>Harvest from URL</labelHarvestFromURL>
     <labelEOClientUser>Earth Observation (EO) Client</labelEOClientUser>
+    <labelCatalogueCapabilities>Catalogue Capabilities</labelCatalogueCapabilities>
     <labelCIMClientUser>Cataloguing of ISO Metadata (CIM) Client</labelCIMClientUser>
     <labelConfigurationMisc>Misc</labelConfigurationMisc>
     <labelConfigurationDatabase>Database</labelConfigurationDatabase>
