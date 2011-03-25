@@ -11,7 +11,7 @@
 <inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient">
     <section name="Basic Test">
         <group label="">
-            <input type="text" name="collectionId" label="Collection" id="collectionId" optional="false" value="ESA.EECF.ENVISAT_ASA_GMI_1S" size="30" grow="true"/>
+            <input type="text" name="collectionId" label="Collection" id="collectionId" optional="false" value="urn:ogc:def:EOP:ESA.EECF.ENVISAT_ASA_GMI_1S" size="30" grow="true"/>
         </group>
         <group label="Spatial Coverage">
             
@@ -26,9 +26,18 @@
           </input>
           <input type="numeric" name="iteratorSize" label="Retrieve" id="iteratorSize" optional="true" value="10" size="5"/>
           <input type="numeric" name="cursor" label="Starting from" id="cursor" optional="true" value="1" size="5"/>
+          
+          <input type="text" name="ServiceUrl" hidden="true" label="Catalogue Url" id="ServiceUrl" optional="false" value="http://ergo.pisa.intecs.it/TOOLBOX/services/genTST"/>
+            <input type="text" name="Protocol" id="Protocol" hidden="true" hideLabel="true" optional="false" value="SOAP"/>
+            <input type="text" name="outputFormat" id="outputFormat" hidden="true" hideLabel="true" optional="false" value="JSON"/>
+            <input type="text" name="outputMod" id="outputMod" hidden="true" hideLabel="true" optional="false" value="REFERENCE"/>
+            <input type="text" name="XSLRequest" id="XSLRequest" hidden="true" hideLabel="true" optional="false" value="resources/xslt/eoProfile/searchMessageTransformer.xsl"/>
+            <input type="text" name="XSLResponse" id="XSLResponse" hidden="true" hideLabel="true" optional="false" value="resources/xslt/eoProfile/searchOutputNormalize.xsl"/>
+            <input type="text" name="SoapAction" id="SoapAction" hidden="true" hideLabel="true" optional="false" value="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords"/>
+            <input type="text" name="LogFolder" id="LogFolder" hidden="true" hideLabel="true" optional="false" value="/EOProfile"/>
         </group>
     </section>
-    <section name="Advanced Test">
+   <!-- <section name="Advanced Test">
         <group label="Platform">
             <input type="combo" name="platfSNm" label="Short Name" size="15" id="platfSNm" optional="true" store="VALUES" storeFields="['value']"
             storeData="[['Envisat'],['ERS'],['JERS'],['LANDSAT'],['MOS-1B'],['Nimbus'],['NOAA'],['SeaStar'],['IRS-P3'],['AQUA'],['TERRA'],['SPOT'],['ALOS'],['PROBA']]">  
@@ -38,12 +47,11 @@
         <group label="">
             <input type="percentage" id="cloudCovePerc" name="cloudCovePerc" label="Cloud Cover" decimalPrecision="2" decimalSeparator="." optional="true" NotValidValueMessage="The Percentage is between 0 and 100. The Decimal Separator is '.'"></input> 
         </group>
-    </section>
-    <section name="Protocol Parameters Test">
+    </section>-->
+    <!--<section name="Protocol Parameters Test">
         <group label="Soap Parameters">
-            <input type="text" name="ServiceUrl" label="Catalogue Url" id="ServiceUrl" optional="false" value="http://ergo.pisa.intecs.it/TOOLBOX/services/genTST" grow="true"/>
-            <!--input type="text" name="ServiceUrl" label="Catalogue Url" id="ServiceUrl" optional="false" value="http://192.168.24.84:8084/ToolboxSecurity/services/ClientSecurityWrapper/SecuredEBRR" grow="true"/-->
-            <!--input type="text" name="catalogueOperation" label="Operation" id="catalogueOperation" disabled="true" optional="false" value="http://earth.esa.int/SOAP/searchRequest"/-->
+            
+            
             <input type="combo" name="soapVersion" label="SOAP Version" size="16" id="soapVersion" optional="true" store="VALUES" storeFields="['value']"
             storeData="[['1.1'],['1.2']]"/>  
             
@@ -53,16 +61,10 @@
            <input type="text" name="UserAutentication" id="UserAutentication" label="User" size="20" optional="true" value="" disabled="true"/>
            <input type="password" name="PasswordAutentication" id="PasswordAutentication" label="Password" size="20" optional="true" value="" disabled="true"/>
 
-            <input type="text" name="Protocol" id="Protocol" hidden="true" hideLabel="true" optional="false" value="SOAP"/>
-            <input type="text" name="outputFormat" id="outputFormat" hidden="true" hideLabel="true" optional="false" value="JSON"/>
-            <input type="text" name="outputMod" id="outputMod" hidden="true" hideLabel="true" optional="false" value="REFERENCE"/>
-            <input type="text" name="XSLRequest" id="XSLRequest" hidden="true" hideLabel="true" optional="false" value="resources/xslt/eoProfile/searchMessageTransformer.xsl"/>
-            <input type="text" name="XSLResponse" id="XSLResponse" hidden="true" hideLabel="true" optional="false" value="resources/xslt/eoProfile/searchOutputNormalize.xsl"/>
-            <input type="text" name="SoapAction" id="SoapAction" hidden="true" hideLabel="true" optional="false" value="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords"/>
-            <input type="text" name="LogFolder" id="LogFolder" hidden="true" hideLabel="true" optional="false" value="EOProfile"/>
+            
 
         </group>
-    </section>
+    </section>-->
     <requestInformations>
         <buttons>
            <!-- <button name="resetButton" id="resetButton" label="Reset" iconImage="" onclick="tbxCat.Reset"/>-->

@@ -10,9 +10,9 @@
            iconImage="upload-icon"
            blankText="Load Metadata File"
            label="Load Metadata Single/Zip File"
-           iconWait="images/loaderFile.gif"
-           iconFailure="images/fail.png"
-           iconSuccess="images/success.png"
+           iconWait="styles/img/loaderFile.gif"
+           iconFailure="styles/img/fail.png"
+           iconSuccess="styles/img/success.png"
            submitLabel="Harvest"
            onSuccessMethod="harvestFromFile.updateCount"
            />

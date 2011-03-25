@@ -11,14 +11,13 @@
 
 
            var munuAccordion= [
-                
-                {
-                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelClient'),
+               {
+                title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelClient'),
+                 
                     border:false,
                     autoScroll:true,
                     listeners: {
                         "expand": function(){
-
                         }
                     },
                     items:[
@@ -29,11 +28,14 @@
                              rootVisible:false,
                              split:true,
                              autoScroll:true,
-                             //tbar: tb,
                              loader: new Ext.tree.TreeLoader(),
                                 root: new Ext.tree.AsyncTreeNode({
                                     expanded: true,
                                     children: [{
+                                        text: ergoRRUIManager.loc.getLocalMessage('labelCatalogueCapabilities'),
+                                        type: 'CatalogueCapabilities',
+                                        leaf: true
+                                    },{
                                         text: ergoRRUIManager.loc.getLocalMessage('labelEOClientUser'),
                                         type: 'EOClientUser',
                                         leaf: true
@@ -45,81 +47,49 @@
                                 }),
                                 listeners: {
                                     click: function(n) {
-                                        var myMask = new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
-                                                          {
-                                                            msg:"Please wait..."
-                                                          }
-                                                      );
-                                        myMask.show();
-                                        var portalPanel=null;
+                                        
+                                        ergoRRUIManager.myMask.show();
                                         switch (n.attributes.type){
+                                            case 'CatalogueCapabilities':
+                                                   ergoRRUIManager.workspacePanel.cleanPanel();
+                                                   var capabilitiesPath="httpservice?service=CSW-ebRIM&request=GetCapabilities";
+                                                   var capabilitiesPanel=new Ext.Panel({
+                                                        title: ergoRRUIManager.loc.getLocalMessage('labelCatalogueCapabilities'),
+                                                        id: "CatalogueCapabilities",
+                                                        bodyStyle : {background: "#e4e7e7"},
+                                                        html: "<iframe src='"+interfacesManager.properties.ergoRRURL+capabilitiesPath+"' name='"+n.attributes.type+"_frame' id='"+n.attributes.type+"_frame' scrolling='yes' width='100%' height='100%' marginwidth='0' marginheight='0'></iframe>"
+                                                    });
+                                                    ergoRRUIManager.workspacePanel.add(capabilitiesPanel);
+                                                    ergoRRUIManager.workspacePanel.doLayout();
+                                                break;
                                             case 'EOClientUser':
-                                                    userEOClient=new UserEOCatalogueClient();
-                                                    ergoRRUIManager.workspacePanel.cleanPanel();
-                                                    portalPanel=new Ext.ux.Portal({
-                                                    id: "clientEOUserPortal",
-                                                    margins:'35 5 5 0',
-
-                                                     items:[ {
-                                                               columnWidth:.33,
-                                                               id: "catalogueEOUserInterface",
-                                                               items:[userEOClient.westPanel],
-                                                               bodyStyle : {background: "#FF0000"}
-
-                                                             },
-                                                             {
-                                                               columnWidth:.67,
-                                                               id: "catalogueEOUserMap",
-                                                               items:[userEOClient.mapTool]
-                                                             },
-                                                             {
-                                                               columnWidth:1,
-                                                               id: "catalogueEOUserResults",
-                                                               items:[userEOClient.southPanel]
-                                                             }
-
-                                                           ]
-
-                                                });
-                                                   ergoRRUIManager.workspacePanel.add(portalPanel);
-                                                   ergoRRUIManager.workspacePanel.doLayout();
-                                                   userEOClient.render();
+                                                   ergoRRUIManager.workspacePanel.cleanPanel();
+                                                   var eoClientPanel=new Ext.Panel({
+                                                        title: ergoRRUIManager.loc.getLocalMessage('labelEOClientUser'),
+                                                        id: "harvestFromURLPanel",
+                                                        bodyStyle : {background: "#e4e7e7"},
+                                                        html: "<iframe src='javascript:parent.ergoRRUIManager.getCatalogueClient(\"eop\");' name='"+n.attributes.type+"_frame' id='"+n.attributes.type+"_frame' scrolling='no' width='100%' height='100%' marginwidth='0' marginheight='0'></iframe>"
+                                                    });
+                                                    ergoRRUIManager.workspacePanel.add(eoClientPanel);
+                                                    ergoRRUIManager.workspacePanel.doLayout();
+                                                    
+                                                 
                                                 break;
                                             case 'CIMClientUser':
-                                                  userCIMClient=new UserEOCatalogueClient();
                                                   ergoRRUIManager.workspacePanel.cleanPanel();
-                                                    portalPanel=new Ext.ux.Portal({
-                                                    id: "clientEOUserPortal",
-                                                    margins:'35 5 5 0',
+                                                   var cimClientPanel=new Ext.Panel({
+                                                        title: ergoRRUIManager.loc.getLocalMessage('labelCIMClientUser'),
+                                                        id: "harvestFromURLPanel",
+                                                        bodyStyle : {background: "#e4e7e7"},
+                                                        html: "<iframe src='javascript:parent.ergoRRUIManager.getCatalogueClient(\"cim\");' name='"+n.attributes.type+"_frame' id='"+n.attributes.type+"_frame' scrolling='no' width='100%' height='100%' marginwidth='0' marginheight='0'></iframe>"
 
-                                                     items:[ {
-                                                               columnWidth:.33,
-                                                               id: "catalogueEOUserInterface",
-                                                               items:[userCIMClient.westPanel],
-                                                               bodyStyle : {background: "#FF0000"}
-
-                                                             },
-                                                             {
-                                                               columnWidth:.67,
-                                                               id: "catalogueEOUserMap",
-                                                               items:[userCIMClient.mapTool]
-                                                             },
-                                                             {
-                                                               columnWidth:1,
-                                                               id: "catalogueEOUserResults",
-                                                               items:[userCIMClient.southPanel]
-                                                             }
-
-                                                           ]
-
-                                                });
-                                                   ergoRRUIManager.workspacePanel.add(portalPanel);
-                                                   ergoRRUIManager.workspacePanel.doLayout();
-                                                   userCIMClient.render();
+                                                    });
+                                                    ergoRRUIManager.workspacePanel.add(cimClientPanel);
+                                                    ergoRRUIManager.workspacePanel.doLayout();
                                               break;
 
                                         }
-                                      myMask.hide();
+                                      setTimeout("ergoRRUIManager.myMask.hide();",1000);
                                     }
                                 }
                         })
@@ -128,23 +98,14 @@
                     iconCls:'settings'
                 },
                 {
-                  title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelAbout'),
-                  autoScroll:true,
-                  border:false,
-                  listeners: {
+                    title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelAbout'),
+                    autoScroll:true,
+                    border:false,
+                    html: aboutPage,
+                    listeners: {
                         "expand": function(){
 
-                           var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
-                                    {
-                                        msg:"Please wait..."/*,
-                                        msgCls: "mask-workspace-loading"*/
-                                    }
-                          );
-                           myMask.show();
-                           ergoRRUIManager.workspacePanel.cleanPanel();
-
-                           document.getElementById(ergoRRUIManager.workspacePanelDIV).innerHTML=aboutPage;
-                           myMask.hide();
+                          
                         }
                 },
                 iconCls:'nav'

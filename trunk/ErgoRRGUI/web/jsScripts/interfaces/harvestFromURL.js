@@ -38,7 +38,7 @@ HarvestFromURLInterface=function(serviceName){
                               minWidth: screen.width/3,
                               animEl: 'elId',
                               fn: function(){
-                                window.location = 'tools.jsp?extVers=3&serviceName='+respObj.serviceName;
+                               
                               },
                               icon: Ext.MessageBox.ERROR
                         });
@@ -50,7 +50,7 @@ HarvestFromURLInterface=function(serviceName){
                               minWidth: screen.width/3,
                               animEl: 'elId',
                               fn: function(){
-                                window.location = 'tools.jsp?extVers=3&serviceName='+respObj.serviceName;
+                                
                               },
                               icon: Ext.MessageBox.INFO
                         });

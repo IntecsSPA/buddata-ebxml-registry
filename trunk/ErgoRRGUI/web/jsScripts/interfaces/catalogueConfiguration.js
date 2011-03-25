@@ -9,7 +9,7 @@ CatalogueConfiguration=function(){
 
 this.loc=new localization('resources/xml/localization/catalogueConfiguration/'+interfacesManager.lang+".xml");
 
-this.configurationRestUrl="ProxyRedirect?url=http://localhost:8081/ergorrtestui/config&outFormat=application/json";
+this.configurationRestUrl="ProxyRedirect?url="+interfacesManager.properties.ergoRRURL+"config&outFormat=application/json";
 
 this.miscHTMLHelp=
     "<h2>"+this.loc.getLocalMessage('repositoryHomeLabel')+"</h2>"+
@@ -358,7 +358,7 @@ this.databaseConfigurationPortal={
             if(request.status!=200){
                 Ext.MessageBox.updateProgress(100, "Loaded", "");
                 Ext.MessageBox.hide();
-
+                  
                 Ext.Msg.show({
                     title:'Error',
                     msg: 'An error occurred while reloading settings',
@@ -367,29 +367,42 @@ this.databaseConfigurationPortal={
                     icon: Ext.MessageBox.INFO
                 });}
             else {
-                var json = JSON.parse(request.responseText);
+                    Ext.MessageBox.updateProgress(100, "Loaded", "");
+                    Ext.MessageBox.hide();
+                if(request.responseText!=''){
+                
+                    var json = JSON.parse(request.responseText);
 
-                document.getElementById('repoDirField').value=json['repository.root'];
-                document.getElementById('spNameField').value=json['serviceProvider.name'];
-                document.getElementById('spSiteField').value=json['serviceProvider.site'];
-                document.getElementById('spContactNameField').value=json['serviceProvider.contact.name'];
-                document.getElementById('spContactPositionField').value=json['serviceProvider.contact.position'];
-                document.getElementById('spContactPhoneField').value=json['serviceProvider.contact.phone'];
-                document.getElementById('spDeliveryPointField').value=json['serviceProvider.contact.address.deliveryPoint'];
-                document.getElementById('spDeliveryCityField').value=json['serviceProvider.contact.address.city'];
-                document.getElementById('spAdministrativeAreaField').value=json['serviceProvider.contact.address.administrativeArea'];
-                document.getElementById('spPostalCodeField').value=json['serviceProvider.contact.address.postalCode'];
-                document.getElementById('spCountryField').value=json['serviceProvider.contact.address.country'];
-                document.getElementById('spCpEmailField').value=json['serviceProvider.contact.address.electronicMailAddress'];
-                document.getElementById('spCpHoursOfServiceField').value=json['serviceProvider.contact.hoursOfService'];
-                document.getElementById('spContactInstructionsField').value=json['serviceProvider.contact.contactInstructions'];
-                document.getElementById('spContactRoleField').value=json['serviceProvider.role'];
-                document.getElementById('encodingField').value=json['encoding'];
-                document.getElementById('langField').value=json['lang'];
-                document.getElementById('soapExceptions').checked=json['showExceptionsInSoap']=='true';
-
-                Ext.MessageBox.updateProgress(100, "Loaded", "");
-                Ext.MessageBox.hide();
+                    document.getElementById('repoDirField').value=json['repository.root'];
+                    document.getElementById('spNameField').value=json['serviceProvider.name'];
+                    document.getElementById('spSiteField').value=json['serviceProvider.site'];
+                    document.getElementById('spContactNameField').value=json['serviceProvider.contact.name'];
+                    document.getElementById('spContactPositionField').value=json['serviceProvider.contact.position'];
+                    document.getElementById('spContactPhoneField').value=json['serviceProvider.contact.phone'];
+                    document.getElementById('spDeliveryPointField').value=json['serviceProvider.contact.address.deliveryPoint'];
+                    document.getElementById('spDeliveryCityField').value=json['serviceProvider.contact.address.city'];
+                    document.getElementById('spAdministrativeAreaField').value=json['serviceProvider.contact.address.administrativeArea'];
+                    document.getElementById('spPostalCodeField').value=json['serviceProvider.contact.address.postalCode'];
+                    document.getElementById('spCountryField').value=json['serviceProvider.contact.address.country'];
+                    document.getElementById('spCpEmailField').value=json['serviceProvider.contact.address.electronicMailAddress'];
+                    document.getElementById('spCpHoursOfServiceField').value=json['serviceProvider.contact.hoursOfService'];
+                    document.getElementById('spContactInstructionsField').value=json['serviceProvider.contact.contactInstructions'];
+                    document.getElementById('spContactRoleField').value=json['serviceProvider.role'];
+                    document.getElementById('encodingField').value=json['encoding'];
+                    document.getElementById('langField').value=json['lang'];
+                    document.getElementById('soapExceptions').checked=json['showExceptionsInSoap']=='true';
+                }else{
+                    Ext.Msg.show({
+                    title:'Restart Catalogue ',
+                    msg: 'Please Wait',
+                    buttons: Ext.Msg.OK,
+                    animEl: 'elId',
+                    icon: Ext.MessageBox.WARNING
+                   });
+                    
+                }    
+                    
+                
             }
         }
     }
@@ -425,6 +438,32 @@ this.databaseConfigurationPortal={
     request.setRequestHeader('Cache-Control','no-cache');
 
     request.send(JSON.stringify(json));
+    
+    request.onreadystatechange= function() {
+            if(request.readyState == 4) {
+                if(request.status!=200){
+                    Ext.MessageBox.updateProgress(100, "Loaded", "");
+                    Ext.MessageBox.hide();
+
+                    Ext.Msg.show({
+                        title:'Error',
+                        msg: 'An error occurred while saving miscellaneous settings',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+                else {
+                    Ext.Msg.show({
+                            title:'Saved',
+                            msg: 'Miscellaneous settings Saved',
+                            buttons: Ext.Msg.OK,
+                            animEl: 'elId',
+                            icon: Ext.MessageBox.INFO
+                   });
+                }
+            }
+        }
 
     Ext.MessageBox.updateProgress(100, "Saved", "");
     Ext.MessageBox.hide();
@@ -451,6 +490,32 @@ this.databaseConfigurationPortal={
     request.setRequestHeader('Cache-Control','no-cache');
 
     request.send(JSON.stringify(json));
+    
+    equest.onreadystatechange= function() {
+            if(request.readyState == 4) {
+                if(request.status!=200){
+                    Ext.MessageBox.updateProgress(100, "Loaded", "");
+                    Ext.MessageBox.hide();
+
+                    Ext.Msg.show({
+                        title:'Error',
+                        msg: 'An error occurred while saving database settings',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+                else {
+                    Ext.Msg.show({
+                            title:'Saved',
+                            msg: 'Database settings Saved',
+                            buttons: Ext.Msg.OK,
+                            animEl: 'elId',
+                            icon: Ext.MessageBox.INFO
+                   });
+                }
+            }
+        }
 
     Ext.MessageBox.updateProgress(100, "Saved", "");
     Ext.MessageBox.hide();
@@ -480,23 +545,34 @@ this.databaseConfigurationPortal={
                             msg: 'An error occurred while reloading settings',
                             buttons: Ext.Msg.OK,
                             animEl: 'elId',
-                            icon: Ext.MessageBox.INFO
+                            icon: Ext.MessageBox.ERROR
                         });
                     }
                 else {
-                    var json = JSON.parse(request.responseText);
-
-                    document.getElementById('maxRecordsField').value=json['db.maxResponse'];
-                    document.getElementById('srsIdField').value=json['db.defaultSrsId'];
-                    document.getElementById('srsNameField').value=json['db.defaultSrsName'];
-                    document.getElementById('resultDepthField').value=json['db.resultDepth'];
-                    document.getElementById('simplifyModelField').checked=json['db.simplify.model']=='true';
-                    document.getElementById('loadPackageMembersField').checked=json['db.loadPackageMembers']=='true';
-                    document.getElementById('loadNestedClassificationNodesField').checked=json['db.loadNestedClassificationNodes']=='true';
-                    document.getElementById('returnResultCountField').checked=json['db.returnResultCount']=='true';
-
                     Ext.MessageBox.updateProgress(100, "Loaded", "");
                     Ext.MessageBox.hide();
+                    if(request.responseText!=''){
+                        var json = JSON.parse(request.responseText);
+                        document.getElementById('maxRecordsField').value=json['db.maxResponse'];
+                        document.getElementById('srsIdField').value=json['db.defaultSrsId'];
+                        document.getElementById('srsNameField').value=json['db.defaultSrsName'];
+                        document.getElementById('resultDepthField').value=json['db.resultDepth'];
+                        document.getElementById('simplifyModelField').checked=json['db.simplify.model']=='true';
+                        document.getElementById('loadPackageMembersField').checked=json['db.loadPackageMembers']=='true';
+                        document.getElementById('loadNestedClassificationNodesField').checked=json['db.loadNestedClassificationNodes']=='true';
+                        document.getElementById('returnResultCountField').checked=json['db.returnResultCount']=='true';
+                    }else{
+                        Ext.Msg.show({
+                        title:'Restart Catalogue ',
+                        msg: 'Please Wait',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        icon: Ext.MessageBox.WARNING
+                       });
+                    
+                    }    
+
+                    
                 }
             }
         }

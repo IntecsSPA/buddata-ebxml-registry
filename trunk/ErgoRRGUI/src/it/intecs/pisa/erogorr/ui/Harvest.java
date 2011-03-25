@@ -8,21 +8,9 @@ package it.intecs.pisa.erogorr.ui;
  *
  * @author simone
  */
-import com.google.gson.JsonObject;
-import it.intecs.pisa.util.DOMUtil;
-import it.intecs.pisa.util.DateUtil;
-import it.intecs.pisa.util.IOUtil;
-import it.intecs.pisa.util.json.JsonErrorObject;
-import it.intecs.pisa.util.json.JsonUtil;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import it.intecs.pisa.util.DOMUtil;
 import it.intecs.pisa.util.IOUtil;
 import java.io.File;
@@ -34,7 +22,6 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.TransformerFactory;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
@@ -46,8 +33,11 @@ import org.w3c.dom.Element;
  *
  * @author Massimiliano Fanciulli
  */
-public class Harvest extends HttpServlet {
+public class Harvest extends RestServlet {
 
+    protected static final String ERGORR_URL_PROPERTY = "ergoRRURL";
+    
+    
     protected static final String REST_HARVEST_FROM_FILE = "/fromFile";
     protected static final String REST_HARVEST_FROM_URL = "/fromURL";
     protected static final String ID_SOURCE = "source";
@@ -212,6 +202,9 @@ public class Harvest extends HttpServlet {
             }
             zipFile.close();
         }
+        if (harvestData.exists()) 
+            harvestData.delete();
+        
         OutputStream out = resp.getOutputStream();
         if (countMetadata == 0) {
             javascriptResponse = resp.encodeRedirectURL("An error occurred while harvesting data from disk.");
@@ -225,14 +218,14 @@ public class Harvest extends HttpServlet {
             javascriptResponse += " <br> See the log.";
         }
 
-//        responseMessage += "\"" + javascriptResponse + "\", serviceName :\"" + servicename + "\"}";
+       responseMessage += "\"" + javascriptResponse + "\"}";
         out.write(responseMessage.getBytes());
         out.close();
     }
 
     private boolean harvestDocument(String url, Document harvestDocument) throws Exception {
         DOMUtil util = null;
-        String harvestURL = url + SLASH + HTTP_SERVICE_BINDING;
+        String harvestURL = ergoRRConf.getProperty(ERGORR_URL_PROPERTY) + HTTP_SERVICE_BINDING;
         Document message;
         String filename = java.util.UUID.randomUUID().toString() + ".xml";
         String metadateNamespace = harvestDocument.getDocumentElement().getNamespaceURI();
@@ -266,28 +259,39 @@ public class Harvest extends HttpServlet {
     }
 
     private void hartvestFromURL(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
+        String responseMessage = "";
         OutputStream out = resp.getOutputStream();
         DOMUtil domutil = new DOMUtil();
-        String responseMessage = "";
         String javascriptResponse = "";
         Document harvestDoc = null;
-        String url = req.getRequestURI();
-        String metadataFileID = req.getParameter(ID_SOURCE);
+        Document harvestResponse = null;
+        String metadataURL = req.getParameter(ID_SOURCE);
         ZipFile zipFile = null;
         boolean harvestResult = false;
         boolean list = true;
         int countMetadata = 0;
         int listSize = 0;
+        
+        harvestDoc = getInputHarvestMessage(metadataURL, null);
         try {
-            harvestResult = this.harvestDocument(url, harvestDoc);
+             harvestResponse=this.invokeHarvest(ergoRRConf.getProperty(ERGORR_URL_PROPERTY) + HTTP_SERVICE_BINDING, harvestDoc);
         } catch (Exception ex) {
+            responseMessage = "{error : ";
             javascriptResponse = resp.encodeRedirectURL("An error occurred while harvesting data from disk.<br> See the log.");
             out.write(javascriptResponse.getBytes());
             out.close();
 
         }
-        out.write(javascriptResponse.getBytes());
+        
+        if (harvestResponse.getDocumentElement().getLocalName().equalsIgnoreCase(SERVICE_EXCEPTION_ELEMENT_NAME)) {
+            javascriptResponse = resp.encodeRedirectURL("An error occurred while harvesting data from disk.<br> See the log.");
+            responseMessage = "{error : ";
+        } else {
+            javascriptResponse = resp.encodeRedirectURL("Metadata harvested correctly");
+            responseMessage = "{info : ";
+        }
+        responseMessage += "\"" + javascriptResponse + "\"}";
+        out.write(responseMessage.getBytes());
         out.close();
     }
 
@@ -298,6 +302,11 @@ public class Harvest extends HttpServlet {
 
 
         method = new PostMethod(url);
+        
+        DOMUtil util = new DOMUtil();
+        String content = util.getDocumentAsString(harvestDocument);
+        ((PostMethod)method).setRequestBody(content);
+        
           // Execute the method.
           statusCode = client.executeMethod(method);
 
@@ -305,9 +314,7 @@ public class Harvest extends HttpServlet {
             System.err.println("Method failed: " + method.getStatusLine());
           }
 
-        DOMUtil util = new DOMUtil();
-        String content = util.getDocumentAsString(harvestDocument);
-        ((PostMethod)method).setRequestBody(content);
+        
 
        // Read the response body.
        Document responseBody = util.inputStreamToDocument(method.getResponseBodyAsStream());
@@ -339,7 +346,9 @@ public class Harvest extends HttpServlet {
         rootEl.appendChild(sourceEl);
 
         resourceTypeEl = message.createElement(RESOURCE_TYPE_ELEMENT_NAME);
+        if(resourceTypePrefix != null)
         resourceTypeEl.setTextContent(resourceTypePrefix + ":" + RESOURCE_TYPE_NAME);
+        
         resourceTypeEl.setAttribute("xmlns", CSW_NAMESPACE);
         rootEl.appendChild(resourceTypeEl);
         return message;

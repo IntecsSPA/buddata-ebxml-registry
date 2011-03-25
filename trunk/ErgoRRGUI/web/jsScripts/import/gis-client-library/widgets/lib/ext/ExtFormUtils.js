@@ -43,30 +43,10 @@ function createPanelExjFormByXml(xmlDocument,lang){
   forms= new Array();
   var fieldSetConfValues=new Array();
   var inputInterfaceXml;
-  if(BrowserDetect.browser == "Firefox"){
-    if(!(xmlDocument instanceof XMLDocument)){
-        inputInterfaceXml = Sarissa.getDomDocument();
-        inputInterfaceXml.async=false;
-        inputInterfaceXml.validateOnParse=false;
-        inputInterfaceXml.load(xmlDocument);
-        inputInterfaceXml.setProperty("SelectionLanguage","XPath");
-    }else
-        inputInterfaceXml=xmlDocument;
-  }else{
-     if(BrowserDetect.browser == "Explorer"){
-        if(!(xmlDocument instanceof ActiveXObject)){
-            inputInterfaceXml = Sarissa.getDomDocument();
-            inputInterfaceXml.async=false;
-            inputInterfaceXml.validateOnParse=false;
-            inputInterfaceXml.load(xmlDocument);
-            inputInterfaceXml.setProperty("SelectionLanguage","XPath");
-        }else
-           inputInterfaceXml=xmlDocument;
-     }
-    }
-  Sarissa.setXpathNamespaces(inputInterfaceXml,
-                       "xmlns:gis='http://gisClient.pisa.intecs.it/gisClient'"); 
   
+
+  inputInterfaceXml=new XmlDoc(xmlDocument,"xmlns:gis='http://gisClient.pisa.intecs.it/gisClient'");
+
 
  var loc=null;
  if(inputInterfaceXml.selectNodes("/gis:inputInterface")[0].getAttribute("localization")){
@@ -302,7 +282,7 @@ function createPanelExjFormByXml(xmlDocument,lang){
                       this.buttonPanel.destroy();
                    this.formsPanel.destroy(); 
                 },
-                render: function(){
+               /* render: function(){
                     var a,b;
                       if(this.formsArray.length > 1){
                         for(var i=0; i<this.formsArray.length;i++){
@@ -315,7 +295,7 @@ function createPanelExjFormByXml(xmlDocument,lang){
                       }else{
                           if(this.formsArray.length == 1){
                             this.formsArray[0].render(document.getElementById(this.tabElementsId[0]));
-                            //a=this.formsArray[0].getSize();
+                           
                          }
                          
                      
@@ -333,9 +313,67 @@ function createPanelExjFormByXml(xmlDocument,lang){
                             supportToolbars[u].toolbar.doLayout();
                           }
                       }
-                    //  toc2.update();
+                
                     }
                     
+                },*/
+                render: function(){
+                      var elementRend;
+                      var activeTabId=null;
+                      if(this.formsTab.activeTab)
+                         activeTabId=this.formsTab.activeTab;
+                      if(this.formsArray.length > 1){
+                        for(var i=0; i<this.formsArray.length;i++){
+                          this.formsTab.setActiveTab(i);
+
+                          elementRend=document.getElementById(this.tabElementsId[i]);
+                          
+                          if(elementRend)
+                              if(elementRend.innerHTML!=""){
+                                this.formsTab.setWidth(this.formsPanel.getWidth());
+                                this.formsTab.doLayout();
+                                this.formsArray[i].setWidth(this.formsPanel.getWidth());
+                                this.formsArray[i].doLayout();
+                              }else{
+                                this.formsArray[i].render(elementRend);
+                                this.formsArray[i].doLayout();
+                              }
+                          else return;
+              
+                        }
+                        if(activeTabId)
+                            this.formsTab.setActiveTab(activeTabId);
+                        else
+                            this.formsTab.setActiveTab(0);
+                      }else{
+                          elementRend=document.getElementById(this.tabElementsId[0]);
+                          if(elementRend)
+                              if(elementRend.innerHTML!="")
+                                  this.formsArray[0].doLayout();
+                              else{
+                                 this.formsArray[0].render(elementRend);
+
+                                 this.formsArray[0].doLayout();
+                             }
+                          else return;
+                   
+
+                      }
+                     
+                    for(var u=0;u<supportToolbars.length;u++){
+                      supportToolbars[u].toolbar.render(supportToolbars[u].id);
+
+                      for(var j=0; j<supportToolbars[u].buttons.length; j++){
+                          if(supportToolbars[u].toolbar.items.length < supportToolbars[u].buttons.length){
+                            var button=eval(supportToolbars[u].buttons[j]);
+                            supportToolbars[u].toolbar.add(button);
+                            supportToolbars[u].toolbar.doLayout();
+                          }
+                      }
+     
+                    }
+                    this.formsTab.doLayout();
+                    Ext.QuickTips.init();
                 },
                 resetFormValues: function(){
                    var xtypeArray=["textfield","combo","datefield","numberfield","checkbox"];
@@ -909,7 +947,7 @@ function createPanelExjFormByXml(xmlDocument,lang){
                                                   onload(outputPanel.store,outputManager);
                                               }
                                           });  
-
+                                           
                                           var outputPanel = new Ext.grid.GridPanel({
                                                   store: outputStore,
                                                   colModel: outputManager.colMod,
@@ -968,6 +1006,7 @@ function createPanelExjFormByXml(xmlDocument,lang){
                 },
                
                 executeonLoadOperations:function(store,outMan,layerName, style){
+                
                     var i;
                     if(!this.renderdVectors)
                        this.renderdVectors=new Object();
@@ -983,7 +1022,9 @@ function createPanelExjFormByXml(xmlDocument,lang){
                                       }
 
                                       for(i=0;i<store.getCount();i++){
-                                         this.comboFormOnladRenderdVector=outMan.onLoadOperations[z].actionOnLoad(store.getAt(i).data[outMan.onLoadOperations[z].attributeGeometry],'lat,lon',' ', store.getAt(i), layerName ,this.renderdVectors,this.comboFormOnladRenderdVector,style);
+                                 
+                                        // this.comboFormOnladRenderdVector=outMan.onLoadOperations[z].actionOnLoad(store.getAt(i).data[outMan.onLoadOperations[z].attributeGeometry],'lat,lon',' ', store.getAt(i), layerName ,this.renderdVectors,this.comboFormOnladRenderdVector,style);
+                                         outMan.onLoadOperations[z].actionOnLoad(store.getAt(i).data[outMan.onLoadOperations[z].attributeGeometry]);
                                       }
 
                                       break;
@@ -1000,7 +1041,7 @@ function createExjFormByElement(title, formDataElement, numCols, localizationObj
    var valuesControl=new Array(); 
    var groupFormElements;
   
-    groupFormElements= formDataElement.selectNodes("gis:group");
+    groupFormElements= new XmlElement(formDataElement).selectNodes("gis:group");
  
  
    var inputFormElements,optionInputElements,htmlContentElements;
@@ -1011,10 +1052,10 @@ function createExjFormByElement(title, formDataElement, numCols, localizationObj
    for(var u=0; u<groupFormElements.length;u++){
       inputArray = new Array();
       
-          inputFormElements= groupFormElements[u].selectNodes("gis:input");
+          inputFormElements= new XmlElement(groupFormElements[u]).selectNodes("gis:input");
       for(i=0; i<inputFormElements.length; i++){
           
-         optionInputElements =inputFormElements[i].selectNodes("gis:option");
+         optionInputElements =new XmlElement(inputFormElements[i]).selectNodes("gis:option");
          for(j=0; j<optionInputElements.length;j++){
                value=optionInputElements[j].getAttribute("value");
                label=optionInputElements[j].firstChild.nodeValue;
@@ -1026,7 +1067,7 @@ function createExjFormByElement(title, formDataElement, numCols, localizationObj
          }
          
        var htmlValue=null;  
-       htmlContentElements =inputFormElements[i].selectNodes("gis:htmlContent");
+       htmlContentElements =new XmlElement(inputFormElements[i]).selectNodes("gis:htmlContent");
        if(htmlContentElements.length > 0){
           if(htmlContentElements[0].getAttribute("type") == 'HTML')
             htmlValue=new XMLSerializer().serializeToString(htmlContentElements[0]);
@@ -1143,7 +1184,7 @@ function getOutputMangerByElement(outputInformationElement){
         plugins: null,
         colMod: null
   };  
-  var templateElement= outputInformationElement.selectNodes("gis:template");
+  var templateElement= new XmlElement(outputInformationElement).selectNodes("gis:template");
   var templateContainer=templateElement[0].getAttribute("container");
   var templateFormat=templateElement[0].getAttribute("format");
   var rootStore=templateElement[0].getAttribute("rootStore");
@@ -1165,14 +1206,14 @@ function getOutputMangerByElement(outputInformationElement){
   switch(templateContainer){
          case "grid":
                      outputManager.container="grid";
-                     var gridAttrbutesNode= templateElement[0].selectNodes("gis:gridAttrbutes");
+                     var gridAttrbutesNode= new XmlElement(templateElement[0]).selectNodes("gis:gridAttrbutes");
                      var gridAttrbutes=gridAttrbutesNode[0].getAttribute("value").split(",");
                      var widthCols=gridAttrbutesNode[0].getAttribute("widthCols");
                      var sortable=gridAttrbutesNode[0].getAttribute("sortable");
-                     var tempalteHtmlElement=templateElement[0].selectNodes("gis:tempalteHtml");
+                     var tempalteHtmlElement=new XmlElement(templateElement[0]).selectNodes("gis:tempalteHtml");
                      var generalHtmlTemplate=tempalteHtmlElement[0].getAttribute("value");
-                     var tempalteOperations= templateElement[0].selectNodes("gis:templateOperations/gis:templateOperation");
-                     var onloadOperations= templateElement[0].selectNodes("gis:onloadOperations/gis:onloadOperation");
+                     var tempalteOperations= new XmlElement(templateElement[0]).selectNodes("gis:templateOperations/gis:templateOperation");
+                     var onloadOperations= new XmlElement(templateElement[0]).selectNodes("gis:onloadOperations/gis:onloadOperation");
                      var onLoadOperationsObjects=new Array();
                      var columsGrid= new Array();
                      for(i=0; i<gridAttrbutes.length; i++){
@@ -1226,7 +1267,7 @@ function createHtmlTemplateOperation(templateOperationElement){
                      var htmlDetailsLine=templateOperationElement.getAttribute("htmlDetailsLine");
                      var layoutStart=templateOperationElement.getAttribute("htmlLayoutStart");
                      var layoutEnd=templateOperationElement.getAttribute("htmlLayoutEnd");
-                     var groups=templateOperationElement.selectNodes("gis:group");
+                     var groups=new XmlElement(templateOperationElement).selectNodes("gis:group");
                      var tempHtml, tempHtmlLine, tempAttributes, z;
                      var groupsHtml="";
                        
@@ -1286,7 +1327,7 @@ function createHtmlTemplateOperation(templateOperationElement){
                        htmlOperation="<img  title='"+labelButton+"' src='"+imageButton+"' onmouseout=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMin+"';this.height='"+imageDimMin+"';\""+ 
                        " onmouseover=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMax+"';this.height='"+imageDimMax+"';\" width='"+imageDimMin+"'  height='"+imageDimMin+"'"+
                        " onclick=\"javascript:"+showdetailsWindow+"\"/>"+
-                       "<img src='style/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
+                       "<img src='styles/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
                        
                     }
                     else{
@@ -1328,7 +1369,7 @@ function createHtmlTemplateOperation(templateOperationElement){
                        htmlOperation="<img  title='"+labelButton+"' src='"+imageButton+"' onmouseout=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMin+"';this.height='"+imageDimMin+"';\""+ 
                        " onmouseover=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMax+"';this.height='"+imageDimMax+"';\" width='"+imageDimMin+"'  height='"+imageDimMin+"'"+
                        " onclick=\"javascript:"+renderAndZoomFunction+"\"/>"+
-                       "<img src='style/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
+                       "<img src='styles/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
              
                     break;
          case "select":
@@ -1366,7 +1407,7 @@ function createHtmlTemplateOperation(templateOperationElement){
                        htmlOperation="<img  title='"+labelButton+"' src='"+imageButton+"' onmouseout=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMin+"';this.height='"+imageDimMin+"';\""+
                        " onmouseover=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMax+"';this.height='"+imageDimMax+"';\" width='"+imageDimMin+"'  height='"+imageDimMin+"'"+
                        " onclick=\"javascript:"+renderSelectFunction+"\"/>"+
-                       "<img src='style/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
+                       "<img src='styles/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
                     break;
          case "viewImage":
                       var labelImage=templateOperationElement.getAttribute("labelImage");
@@ -1404,10 +1445,11 @@ function createHtmlTemplateOperation(templateOperationElement){
                       getRequest="httpservice?request=GetRepositoryItem&service=CSW-ebRIM&version=2.0.2&id={"+idAttribute +"}";
 
 
-                     var showpopupWindow="var targetURL="+serviceURL+"+'"+getRequest+"&XSLResponse="+xslResponse+"'; "+
-                                  "var win = new Ext.Window({ "+
+                     var showpopupWindow="var targetURL="+serviceURL+"+'"+getRequest+"&XSLResponse="+xslResponse+"&outFormat=text/html'; "+
+                                  "\n var win = new Ext.Window({ "+
                                             "title: '({"+idAttribute +"}) Result Details', "+
                                             "border: false, "+
+                                            //"id:'requestPopUp',"+
                                             "animCollapse : true, "+
                                             "autoScroll : true, "+
                                             "maximizable: true, "+
@@ -1418,16 +1460,19 @@ function createHtmlTemplateOperation(templateOperationElement){
                                             "width: "+winWidth+", "+
                                             "height: "+winHeight+", "+
                                             "closeAction:'close', "+
+                                       //     "html: response,"+
                                             "autoLoad: {url: targetURL , scripts: true}"+
-                                  "}).show();";
+                                  "}).show(); ";
+                         
                               
                         htmlOperation="<img  title='"+labelButton+"' src='"+imageButton+"' onmouseout=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMin+"';this.height='"+imageDimMin+"';\""+
                        " onmouseover=\"javascript:this.src='"+imageButton+"';this.width='"+imageDimMax+"';this.height='"+imageDimMax+"';\" width='"+imageDimMin+"'  height='"+imageDimMin+"'"+
                        " onclick=\"javascript:"+showpopupWindow+"\"/>"+
-                       "<img src='style/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
+                       "<img src='styles/img/empty.png' width='1'  height='"+imageDimMax+"'/>";
 
                     break;
   }       
+   
     return(htmlOperation);              
     
 }
@@ -1435,7 +1480,6 @@ function createHtmlTemplateOperation(templateOperationElement){
 function createCodeOnLoadOperation(onLoadOperationElement){
     var onLoadOperation=null;
     var type=onLoadOperationElement.getAttribute("type");
-    
   switch(type){
          case "render":
                        onLoadOperation={
@@ -1454,7 +1498,7 @@ function createCodeOnLoadOperation(onLoadOperationElement){
                          layerName: onLoadOperationElement.getAttribute("layerName"),
                          //layerName:onLoadOperationElement.getAttribute("layerName"),
                          actionOnLoad: function(pointsString/*, format, separator*/){
-                           
+                           if(pointsString!=""){
                              var pointsArray;
                              var olPointsArray=new Array();
                              
@@ -1469,13 +1513,11 @@ function createCodeOnLoadOperation(onLoadOperationElement){
                                          tempLong=pointsArray[i+1];
                                        else
                                          tempLong=pointsArray[0];
-                                  //    alert(tempLat);
-                                    //  alert(tempLong);
+                                
                                        olPointsArray.push(new OpenLayers.Geometry.Point(tempLong,tempLat));
                                    }
                                  }
                               }else{
-                                  
                                  pointsArray=pointsString.split(this.pointSeparator);
                                  if(pointsArray.lenght==0)
                                     pointsArray[0]=pointsString;
@@ -1543,8 +1585,9 @@ function createCodeOnLoadOperation(onLoadOperationElement){
                              }else{
                                this.vectorLayer.addFeatures([feature]);  
                              }
-                                //alert("render");
+                     
                          }
+                       }  
                      }; 
                     
                      
@@ -1575,7 +1618,7 @@ function zoomTo (pointString, formatPoint, mapObjcetName, zoomfactor){
  *this.geometry --> geometry      this.vectorLayer --> vectorLayer   */
 function geometryrendering (pointsString, format, separator, geometry, vectorLayer, style, mapObjcetName, layerOptions, replace, posList, posListDimension){
  
-
+      
        var i,pointsArray;
        var olPointsArray=new Array();
    
@@ -1650,7 +1693,7 @@ function geometryrendering (pointsString, format, separator, geometry, vectorLay
                       feature = new OpenLayers.Feature.Vector(olPointsArray[0],null,olStyle);
                       break; 
                 case    "line":
-                      //alert("line");
+                     
                       feature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(olPointsArray),null,olStyle);
                       break;          
                }
@@ -3214,7 +3257,6 @@ function generateComboField(field){
                                 var i;
 
                                 for(i=0;i<this.store.getTotalCount();i++){
-                                   // alert("i: "+this.store.getAt(i).get(this.displayField));
                                     if(this.store.getAt(i).get(this.displayField) == this.value)
                                        return(this.store.getAt(i).get(infoValue));
                                 }

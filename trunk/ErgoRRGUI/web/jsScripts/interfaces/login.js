@@ -4,7 +4,7 @@
  * author: Andrea Marongiu
  */
 
-var aboutPage="<div class=\"content\"><b>Developed by:</b><ul><li>Yaman Ustuntas (4C Technologies / kZen)</li><li>Massimiliano Fanciulli (Intecs Informatica e Tecnologia del Software)</li></ul><br/><br/><b>License:</b>General Public License version 3 (GPL3)</div>";
+var aboutPage="<div class=\"content\"><b>Developed by:</b><ul><li> - Yaman Ustuntas <br>(4C Technologies / kZen)</li><li> - Massimiliano Fanciulli <br>(Intecs Informatica e Tecnologia del Software)</li><li> - Andrea Marongiu <br>(Intecs Informatica e Tecnologia del Software)</li></ul><br/><br/><b>License:</b>General Public License version 3 (GPL3)</div>";
 
 var userEOClient,userCIMClient;
 var administrativeArea;
@@ -30,11 +30,43 @@ LoginInterface=function(){
 
 
             var getUserPanelsFunc=function(response){
-                  eval(response); 
+                  
+                  var panelResponse=response;
+                  var getPropertiesFunc=function(response){
+           
+                      interfacesManager.readXMLTextProperties(response);
+                      
+                      eval(panelResponse); 
+                  };
+                  
+                  var getPropertiesError=function(){
+                      
+                  };
+                  
+                  var getPropertiesTimeOut=function(){
+                      Ext.Msg.show({
+                       title:'ErgoRR get Properties: Error',
+                       buttons: Ext.Msg.OK,
+                       msg: 'Request TIME-OUT!',
+                       animEl: 'elId',
+                       icon: Ext.MessageBox.ERROR
+                      });
+                      
+                  };
+            
+                  sendAuthenticationXmlHttpRequestTimeOut("GET",
+                     "rest/resources/properties",
+                     true, null, interfacesManager.user, interfacesManager.password, 800000, getPropertiesFunc, getPropertiesTimeOut,null,
+                     null, getPropertiesError);
+                  
+                  
+                  
+                  
+                  
             }
 
             var getUserPanelsError=function(){
-                  //alert("Error");
+                 
             }
 
             var getUserPanelsTimeOut=function(){
@@ -49,11 +81,14 @@ LoginInterface=function(){
 
            var loginValues=this.formInterface.getFormValues();
         
-           /*document.cookie = "JSESSIONID" + "=" +
-            "; expires=Thu, 01-Jan-70 00:00:01 GMT";*/
+           
             
            this.user= loginValues['user'];
            this.password=loginValues['password'];
+           
+           interfacesManager.user= loginValues['user'];
+           interfacesManager.password=loginValues['password'];
+           
  
            var onSubmit=sendAuthenticationXmlHttpRequestTimeOut("GET",
                      "rest/resources/panels",

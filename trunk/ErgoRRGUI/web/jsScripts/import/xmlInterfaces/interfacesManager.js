@@ -11,10 +11,12 @@ InterfacesManager= function(lang, xmlClientLibPath, proxyUrl, utilsUrl) {
  this.lang="eng";
  this.xmlClientLibPath="";
  this.gisClientLibPath="";
+ this.propertiesXmlURL="";
  this.utilsUrl="Utils";
  this.proxyUrl="ProxyRedirect";
  this.loadScripts= new Array();
  this.loadCSS= new Array();
+ this.properties=null;
  this.initFun=null;
 
 
@@ -41,13 +43,17 @@ InterfacesManager= function(lang, xmlClientLibPath, proxyUrl, utilsUrl) {
      if(gisClientLibPath)
        this.gisClientLibPath=gisClientLibPath;
  }
+ 
+ this.setPropertiesURL= function(propertiesXmlURL){
+     if(propertiesXmlURL)
+       this.propertiesPath=propertiesXmlURL;
+ }
 
 
  this.setLanguage= function(lang){
      if(lang)
        this.lang=lang;
  }
-
 
 
  this.loadGlobalScript= function(url){ 
@@ -106,10 +112,42 @@ this.loadGisCSS= function(url){
     this.extjsImport();
 
     this.widgetsImport();
+    
+    if(this.propertiesXmlURL)
+       this.readProperties(); 
 
  };
  
+ this.readProperties= function(){
  
+  this.properties=new Object();
+  $.ajax({
+          type: "GET",
+          url: this.propertiesURL,
+          prop: this.properties,
+          dataType: "xml",
+          success: function(xml) {
+                $(xml).find('property').each(function(){
+                       
+                         this.prop[$(this).attr('name')]=$(this).attr('value');
+                     }); 
+                 }
+  });
+  
+
+
+ };
+ 
+ this.readXMLTextProperties= function(xmlTextProperties){  
+  var xml = xmlTextProperties;
+  var xmlDoc = $.parseXML( xml );
+  $xml = $( xmlDoc );
+  var prop=new Object();
+  $(xml).find('property').each(function(){
+          prop[$(this).attr('name')]=$(this).attr('value');
+      }); 
+   this.properties=prop;
+ };
 
  this.extjsImport= function(){
 
@@ -211,9 +249,10 @@ this.loadGisCSS= function(url){
 
   /*Spotlight util*/
   interfacesManager.loadScript("import/ext/ux/Spotlight.js");
-
-  /*JSON util*/
+  
+  /*Foramt Util*/
   interfacesManager.loadScript("widgets/format/json.js");
+  interfacesManager.loadScript("widgets/format/xmlKeyValue.js");
 
   /*Encoders*/
   interfacesManager.loadScript("widgets/utils/encoders/base64.js");

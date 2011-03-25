@@ -2,6 +2,7 @@
 
 XmlDoc = function (XmlURL, namespace){
     var xmlDoc;
+    var xmlText;
  
     if(BrowserDetect.browser == "Chrome" || BrowserDetect.browser == "Opera"){
        if(!(XmlURL instanceof XMLDocument)){
@@ -10,10 +11,11 @@ XmlDoc = function (XmlURL, namespace){
          xmlhttp.open("GET", XmlURL, false);
          xmlhttp.send(null);
          xmlDoc = xmlhttp.responseXML;
+         xmlText=xmlhttp.responseText;
        }else
          xmlDoc=XmlURL;
 
-   }else
+   }else{
     if(BrowserDetect.browser == "Firefox"){
           if(!(XmlURL instanceof XMLDocument)){
             xmlDoc = Sarissa.getDomDocument();
@@ -41,10 +43,12 @@ XmlDoc = function (XmlURL, namespace){
             xmlDoc=XmlURL;  
      }
     }
-
-
+    xmlText=new XMLSerializer().serializeToString(xmlDoc);
+}
   return{
     xmlDocument: xmlDoc,
+    
+    xmlText: xmlText,
 
     selectNodes: function (xpath){
         if(BrowserDetect.browser == "Firefox" || BrowserDetect.browser == "Explorer")
@@ -76,12 +80,9 @@ XmlElement = function (objectElement){
     xmlElement: objectElement,
 
     selectNodes: function (xpath){
+        if (this.xmlElement)
         if(BrowserDetect.browser == "Firefox" || BrowserDetect.browser == "Explorer")
-           if (this.xmlElement)
             return this.xmlElement.selectNodes(xpath);
-           else
-               return null;
-
         else{
 
             var elementsName=xpath.split('/');
@@ -97,6 +98,31 @@ XmlElement = function (objectElement){
             }
            return(eleCurrList);
         }
+        else
+               return null;
+    },
+    
+    getAttribute: function(attributeName){
+        
+         if (this.xmlElement)
+            return this.xmlElement.getAttribute(attributeName);
+           else
+             return null;
+    },
+    
+    getchildNodes: function(){
+      
+         if (this.xmlElement)
+             if(BrowserDetect.browser == "Firefox" || BrowserDetect.browser == "Explorer")
+                return this.xmlElement.childNodes;
+             else{
+                
+                 return this.xmlElement.children;
+             }
+                 
+           else
+             return null;
+        
     }
 
   }
