@@ -14,6 +14,8 @@ interfacesManager.loadGlobalScript("jsScripts/interfaces/harvestFromFile.js");
 
 interfacesManager.loadGlobalScript("jsScripts/interfaces/harvestFromURL.js");
 
+interfacesManager.loadGlobalScript("jsScripts/interfaces/logging.js");
+
 
 
 /*Import Form Interfaces -- END*/

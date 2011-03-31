@@ -8,6 +8,7 @@ package it.intecs.pisa.erogorr.ui;
  *
  * @author simone
  */
+import it.intecs.pisa.proxy.util.XmlTools;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.ServletException;
@@ -16,16 +17,14 @@ import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -45,9 +44,7 @@ public class Harvest extends RestServlet {
     private static String SLASH = "/";
     private static String HTTP_SERVICE_BINDING = "httpservice";
     private static String ID_PARAMETER = "id";
-    private static String SERVICE_NAME = "serviceName";
     private static final String RESOURCE_TYPE_NAME = "EarthObservation";
-    private static final String HARVEST_SOAP_ACTION = "http://www.opengis.net/cat/csw/2.0.2/requests#Harvest";
     private static final String CSW_NAMESPACE = "http://www.opengis.net/cat/csw/2.0.2";
     private static final String XML_SCHEMA_NAMESPACE = "http://www.w3.org/2001/XMLSchema";
     private static final String XML_SCHEMA_INSTANCE_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
@@ -57,7 +54,6 @@ public class Harvest extends RestServlet {
     private static final String SOURCE_ELEMENT_NAME = "Source";
     private static final String RESOURCE_TYPE_ELEMENT_NAME = "ResourceType";
     private static final String SERVICE_EXCEPTION_ELEMENT_NAME = "ServiceExceptionReport";
-    private static String FILES_STORED_FOLDER_PATH = "../GUIManagerPlugin/resources/storedData/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -296,28 +292,26 @@ public class Harvest extends RestServlet {
     }
 
     private Document invokeHarvest(String url, Document harvestDocument) throws Exception {
-        HttpMethod method;
-        int statusCode = 0;
-        HttpClient client = new HttpClient();
-
-
-        method = new PostMethod(url);
-        
-        DOMUtil util = new DOMUtil();
-        String content = util.getDocumentAsString(harvestDocument);
-        ((PostMethod)method).setRequestBody(content);
-        
-          // Execute the method.
-          statusCode = client.executeMethod(method);
-
-          if (statusCode != HttpStatus.SC_OK) {
-            System.err.println("Method failed: " + method.getStatusLine());
-          }
-
-        
+       int connStatus;   
+       HttpURLConnection connection = null; 
+       connection = (HttpURLConnection) new URL(url).openConnection();
+       connection.setDoOutput(true);
+       connection.setAllowUserInteraction(false);
+       connection.setRequestMethod("POST");
+       connection.setRequestProperty("Content-type", "text/xml");
+       it.intecs.pisa.proxy.util.IOUtil.copyInputStreamToOutputStream(
+               XmlTools.getDocumentAsInputStream(harvestDocument), 
+               connection.getOutputStream());
+       
+       connStatus=connection.getResponseCode();
+       
+       if(connStatus != 200) {
+          // System.err.println("Method failed: " + method.getStatusLine());
+       }
 
        // Read the response body.
-       Document responseBody = util.inputStreamToDocument(method.getResponseBodyAsStream());
+       Document responseBody = XmlTools.docGenerate(connection.getInputStream());
+       connection.disconnect();
        return responseBody;
 
     }

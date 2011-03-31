@@ -139,6 +139,7 @@ function ajaxResponseManager(request,xhrTimeout,message,eventResponse,eventError
                 }else{
                    if(eventError) 
                      eventError(request.responseText); 
+                   else
                    if(request){
                       Ext.Msg.show({
                           title: 'Error: ' + request.statusText,

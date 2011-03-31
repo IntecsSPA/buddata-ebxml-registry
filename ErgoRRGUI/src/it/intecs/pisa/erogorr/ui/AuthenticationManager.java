@@ -2,14 +2,11 @@
 
 package it.intecs.pisa.erogorr.ui;
 
-import it.intecs.pisa.gisclient.util.XmlTools;
+import it.intecs.pisa.util.DOMUtil;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -66,8 +63,9 @@ public class AuthenticationManager {
     
     private String [] getRoles (String user, String password) throws Exception{
         String [] roles=null;
+        DOMUtil du=new DOMUtil();
         File userDocFile=new File(this.getClass().getResource(USERS_XML).toURI());
-        Document usersDoc= (Document) XmlTools.docGenerate(new FileInputStream(userDocFile));
+        Document usersDoc=du.fileToDocument(userDocFile);
         NodeList userNodeList=usersDoc.getElementsByTagName(USER_ELEMENT_NAME);
         Element currentUser=null;
         for(int i=0; i<userNodeList.getLength(); i++){

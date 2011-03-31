@@ -9,7 +9,7 @@ CatalogueConfiguration=function(){
 
 this.loc=new localization('resources/xml/localization/catalogueConfiguration/'+interfacesManager.lang+".xml");
 
-this.configurationRestUrl="ProxyRedirect?url="+interfacesManager.properties.ergoRRURL+"config&outFormat=application/json";
+this.configurationRestUrl="Redirect?url="+interfacesManager.properties.ergoRRURL+"config&outFormat=application/json";
 
 this.miscHTMLHelp=
     "<h2>"+this.loc.getLocalMessage('repositoryHomeLabel')+"</h2>"+
@@ -415,6 +415,7 @@ this.databaseConfigurationPortal={
 
     var json={'repository.root' : document.getElementById('repoDirField').value,
                 'serviceProvider.name' :  document.getElementById('spNameField').value,
+                'serviceProvider.site' :  document.getElementById('spSiteField').value,
                 'serviceProvider.contact.name' : document.getElementById('spContactNameField').value,
                 'serviceProvider.contact.position' : document.getElementById('spContactPositionField').value,
                 'serviceProvider.contact.phone' : document.getElementById('spContactPhoneField').value,
@@ -491,7 +492,7 @@ this.databaseConfigurationPortal={
 
     request.send(JSON.stringify(json));
     
-    equest.onreadystatechange= function() {
+    request.onreadystatechange= function() {
             if(request.readyState == 4) {
                 if(request.status!=200){
                     Ext.MessageBox.updateProgress(100, "Loaded", "");
