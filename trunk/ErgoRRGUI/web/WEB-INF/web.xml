@@ -3,8 +3,8 @@
     <description>Buddata GUI</description>
     <display-name>Buddata GUI</display-name>
     <servlet>
-        <servlet-name>ProxyRedirect</servlet-name>
-        <servlet-class>it.intecs.pisa.proxy.ProxyRedirect</servlet-class>
+        <servlet-name>XSLTProxy</servlet-name>
+        <servlet-class>it.intecs.pisa.proxy.xsltproxy.XSLTProxy</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetResource</servlet-name>
@@ -22,8 +22,16 @@
         <servlet-name>RestServlet</servlet-name>
         <servlet-class>it.intecs.pisa.erogorr.ui.RestServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
+    <servlet>
         <servlet-name>ProxyRedirect</servlet-name>
+        <servlet-class>it.intecs.pisa.proxy.proxyredirect.ProxyRedirect</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersManager</servlet-name>
+        <servlet-class>it.intecs.pisa.erogorr.ui.UsersManager</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>XSLTProxy</servlet-name>
         <url-pattern>/ProxyRedirect</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -41,6 +49,14 @@
     <servlet-mapping>
         <servlet-name>RestServlet</servlet-name>
         <url-pattern>/rest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProxyRedirect</servlet-name>
+        <url-pattern>/Redirect</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersManager</servlet-name>
+        <url-pattern>/rest/users/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>

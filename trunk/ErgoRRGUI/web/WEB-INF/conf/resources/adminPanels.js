@@ -252,52 +252,24 @@
                     title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogging'),
                     autoScroll:true,
                     border:false,
+                    html: "<div id='logManagerDiv'/>",
                     listeners: {
+                        "collapse": function(){
+                           
+                            
+                        },
                         "expand": function(){
+                            
+                            
+                           if(!ergoRRUIManager.logManagerInterface){
+                               
+                              ergoRRUIManager.logManagerInterface=new LoggingInterface();
+                              
+                           }
+                           
+                           ergoRRUIManager.logManagerInterface.render('logManagerDiv');
 
-                          var myMask=new Ext.LoadMask(ergoRRUIManager.workspacePanel.body,
-                                    {
-                                        msg:"Please wait..."
-                                    }
-                          );
-                           myMask.show();
-                           ergoRRUIManager.workspacePanel.cleanPanel();
-                           var panelHeight=Ext.getCmp("workspaceCataloguePanel").getHeight()-2;
-                           
-                           var newHtml;
-                           var getLogFunc=function(response){
-                               newHtml=response;
-                           };
-                           
-                           var getLogTimeOut=function(){
-                               
-                           };
-                           
-                           var getLogError=function(){
-                               
-                           };
-                           
-                           sendAuthenticationXmlHttpRequestTimeOut("GET",
-                                 "rest/resources/log",
-                                 false, null,ergoRRUIManager.loginInterface.user,
-                                 ergoRRUIManager.loginInterface.password, 800000, 
-                                 getLogFunc, getLogTimeOut,null,
-                                 null, getLogError);
-                                 
-                           new Ext.Panel({
-                               title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogging'),
-                               renderTo: ergoRRUIManager.workspacePanelDIV,
-                               height: panelHeight,
-                               autoScroll: true,
-                               frameId: "catalogueLog_frame",
-                               listeners: {
-                                          "resize" : function(){
-                                            
-                                           }
-                               },
-                               html: newHtml
-                            }).show();
-                           myMask.hide();
+                           ergoRRUIManager.logManagerInterface.updadeLogView();
                         }
                 },
                 iconCls:'nav'

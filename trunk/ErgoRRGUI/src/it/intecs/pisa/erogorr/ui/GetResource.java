@@ -68,10 +68,15 @@ public class GetResource extends RestServlet {
                 if (authenticate(request, "user"))
                     IOUtil.copy(new FileInputStream(new File(webInfResourceFolder, USER_PANELS_RESOURCE)), out);
             }else
-              if (uri.endsWith(REST_RESOURCE_LOG)) {
-                if(authenticate(request, "admin"))
+              if (uri.contains(REST_RESOURCE_LOG)) {
+                if(authenticate(request, "admin")){
+                    String [] splitUri=uri.split("/");
+                    int logNumberRows=LOG_ROWS;
+                    if(!uri.endsWith(REST_RESOURCE_LOG))
+                       logNumberRows=new Integer(splitUri[splitUri.length-1]).intValue(); 
                     logRows=this.getRowsNumber(new FileInputStream(new File(this.getLogFilePath())));
-                    this.copyLastRows(new FileInputStream(new File(this.getLogFilePath())), out, logRows, LOG_ROWS);
+                    this.copyLastRows(new FileInputStream(new File(this.getLogFilePath())), out, logRows, logNumberRows);
+                }    
               }else
                   if (uri.endsWith(REST_RESOURCE_EOP_CLIENT)) {
                     if(authenticate(request, "admin") || authenticate(request, "user"))
@@ -151,24 +156,28 @@ public class GetResource extends RestServlet {
     }
 
     
-    private void copyLastRows (InputStream is, OutputStream out, int rowsNumber, int lastRowsNumber) throws IOException{
+  private void copyLastRows (InputStream is, OutputStream out, int rowsNumber, int lastRowsNumber) throws IOException{
        int firstRow=rowsNumber-lastRowsNumber;
        if(firstRow <0)
            firstRow=0;
        try {
         byte[] c = new byte[1024];
-        int count = 0;
+        int count = 0, i;
         int readChars = 0;
         while ((readChars = is.read(c)) != -1) {
             if(count >= firstRow)
-               out.write(c,0, readChars);
+               out.write(c);
             else{
-                for (int i = 0; i < readChars; ++i) {
-                    if (c[i] == '\n')
+                for ( i = 0; i < readChars; ++i) {
+                    if (c[i] == '\n'){
                         ++count;
+                        if(count >= firstRow)
+                           break;
+                    }    
+                }    
                     if(count >= firstRow)
                       out.write(c,i+1, readChars-(i+1));  
-                }
+                
             }    
         }
         } finally {

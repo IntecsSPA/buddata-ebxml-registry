@@ -57,7 +57,7 @@ LoginInterface=function(){
                   sendAuthenticationXmlHttpRequestTimeOut("GET",
                      "rest/resources/properties",
                      true, null, interfacesManager.user, interfacesManager.password, 800000, getPropertiesFunc, getPropertiesTimeOut,null,
-                     null, getPropertiesError);
+                     null, null);
                   
                   
                   
@@ -66,7 +66,13 @@ LoginInterface=function(){
             }
 
             var getUserPanelsError=function(){
-                 
+                  Ext.Msg.show({
+                       title:'User access: Error',
+                       buttons: Ext.Msg.OK,
+                       msg: 'Wrong user or password.',
+                       animEl: 'elId',
+                       icon: Ext.MessageBox.ERROR
+                   });
             }
 
             var getUserPanelsTimeOut=function(){

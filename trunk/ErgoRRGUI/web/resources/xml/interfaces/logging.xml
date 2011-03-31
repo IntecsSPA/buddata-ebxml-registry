@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- localization="yes" pathLocalization="resources/xml/localization/" -->
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient" >
+    <section name="Log Manager" cols="1">
+        <group label="Log Manager">
+            <input id="logRows" name="logRows" type="numeric" size="10" label="Rows number" value="500"/>
+            <input type="combo" name="logLevel" label="Log Level" size="10" id="logLevel" optional="true" store="VALUES" storeFields="['value']" value="full"
+            storeData="[['trace'],['debug'],['info'],['warn'],['error'],['fatal']]"/>  
+            <!--<input id="logLevel" name="logLevel" type="combo" label="labelPassword"/>-->
+        </group>
+    </section>
+    <requestInformations backgroundColor="#dfe8f6">
+        <buttons>
+            <button name="logUpdateButton" id="logUpdateButton" label="Update" iconImage="" onclick="ergoRRUIManager.logManagerInterface.updadeLogView"/>
+        </buttons>    
+    </requestInformations>
+</inputInterface>

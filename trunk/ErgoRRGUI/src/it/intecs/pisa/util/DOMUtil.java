@@ -27,6 +27,7 @@
  */
 package it.intecs.pisa.util;
 
+import it.intecs.pisa.proxy.util.XMLSerializer2;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
