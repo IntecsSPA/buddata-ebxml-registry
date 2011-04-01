@@ -2,15 +2,17 @@
 <inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient" >
     <section name="Log Manager" cols="1">
         <group label="Log Manager">
-            <input id="logRows" name="logRows" type="numeric" size="10" label="Rows number" value="500"/>
-            <input type="combo" name="logLevel" label="Log Level" size="10" id="logLevel" optional="true" store="VALUES" storeFields="['value']" value="full"
-            storeData="[['trace'],['debug'],['info'],['warn'],['error'],['fatal']]"/>  
-            <!--<input id="logLevel" name="logLevel" type="combo" label="labelPassword"/>-->
+            <input id="logRows" name="logRows" type="numeric" size="10" label="Rows number" value="500" onChange="onChangeNumberRows"/>
+            <input type="combo" name="logLevel" label="Log Level" size="10" id="logLevel" optional="true" store="VALUES" storeFields="['value']" 
+            storeData="[['ALL'],['CONFIG'],['FINE'],['FINER'],['FINEST'],['OFF'],['SEVERE'],['WARNING']]"/> 
         </group>
     </section>
     <requestInformations backgroundColor="#dfe8f6">
         <buttons>
+            <button name="logClearButton" id="logClearButton" label="Clear Log" iconImage="" onclick="ergoRRUIManager.logManagerInterface.clearLog"/>
             <button name="logUpdateButton" id="logUpdateButton" label="Update" iconImage="" onclick="ergoRRUIManager.logManagerInterface.updadeLogView"/>
+            
+            
         </buttons>    
     </requestInformations>
 </inputInterface>
