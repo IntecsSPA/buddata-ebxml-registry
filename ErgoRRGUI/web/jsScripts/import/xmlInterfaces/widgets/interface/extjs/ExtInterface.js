@@ -141,9 +141,10 @@ function createPanelExjFormByXml(xmlDocument,lang){
             buttons[i]=new Ext.Button({
                               id: buttonElements[i].getAttribute("id"),  
                               text: textButton,
+                              onclickFunction: onclickFunction,
                               handler: function(){
-                                  if(onclickFunction)
-                                    eval(onclickFunction+"()");
+                                  if(this.onclickFunction)
+                                    eval(this.onclickFunction+"()");
                               },
                               disabled: disabled,
                               icon:buttonElements[i].getAttribute("icon")
@@ -2877,6 +2878,8 @@ function generateNumericField(field){
                                 allowBlank: allowBlank
 			})]
   };
+  
+  
 
   return(formField);  
 }

@@ -127,7 +127,8 @@ ErgorrCatalogues.Application = function()
 			cimCat.map.addControl(new OpenLayers.Control.MouseDefaults());
 	
 			cimCat.map.addControl(new OpenLayers.Control.LayerSwitcher());
-      
+                        var scalebar = new OpenLayers.Control.ScaleBar();
+                        cimCat.map.addControl(scalebar);
                         
 			toolbar.add(new WebGIS.MapAction.DragPan({map: cimCat.map}));
 			toolbar.add(new WebGIS.MapAction.ZoomInBox({map: cimCat.map}));
