@@ -194,7 +194,7 @@ public class CommonProperties {
         return arr;
     }
     
-    public void removeInstance(){
-        this.instance=null;
+    public static void removeInstance(){
+        CommonProperties.instance=null;
     }
 }
