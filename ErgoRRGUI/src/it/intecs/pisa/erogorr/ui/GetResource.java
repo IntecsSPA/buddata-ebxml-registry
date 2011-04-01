@@ -5,9 +5,12 @@
 
 package it.intecs.pisa.erogorr.ui;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import it.intecs.pisa.util.IOUtil;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -141,6 +144,36 @@ public class GetResource extends RestServlet {
     }// </editor-fold>
 
 
+    
+  
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri;
+        Gson gson=null;
+        JsonObject jObj=null;
+        OutputStream out = resp.getOutputStream();
+        uri = req.getRequestURI();
+        try{
+        if(uri.endsWith(REST_RESOURCE_LOG))
+            if (authenticate(req, "admin")){
+                this.cleanLog();
+                jObj = new JsonObject();
+                jObj.addProperty("success", Boolean.TRUE);
+                gson = new Gson();
+                resp.setHeader("Content-Type", "application/json");
+                out.write(gson.toJson(jObj).getBytes());
+            }    
+        }catch (Exception ex){
+            req.getSession().invalidate();
+            resp.sendError(401);
+        } finally {
+            
+            out.close();
+        }    
+            
+        
+         
+    }
+     
     private String getLogFilePath () throws IOException{
     
         //File rootDir = new File(getServletContext().getRealPath("/"));
@@ -213,6 +246,24 @@ public class GetResource extends RestServlet {
            if(roles[i].equals(role))
               return true;
        return false;
+    }
+    
+    
+     /**
+     *
+     * @param request
+     * @return
+     */
+    private void cleanLog() throws Exception{
+       /* File logFile = new File(this.getLogFilePath());
+        logFile.delete();
+        File newLogFile = new File(this.getLogFilePath());
+        newLogFile.createNewFile();*/
+        
+        FileOutputStream erasor = new FileOutputStream(this.getLogFilePath());
+        erasor.write((new String()).getBytes());
+        erasor.close();
+      
     }
     
     

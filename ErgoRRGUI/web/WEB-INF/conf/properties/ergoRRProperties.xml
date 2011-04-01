@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xmlInterfaceConfiguration>
+   <!-- ErgoRR URL-->
+     <property name="ergoRRURL" value="http://192.168.24.150:8099/ebrimtest/"/>
+
+</xmlInterfaceConfiguration>
+
