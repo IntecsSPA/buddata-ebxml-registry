@@ -197,6 +197,7 @@ public class GetResource extends RestServlet {
         byte[] c = new byte[1024];
         int count = 0, i;
         int readChars = 0;
+        out.write("<pre>".getBytes());
         while ((readChars = is.read(c)) != -1) {
             if(count >= firstRow)
                out.write(c);
@@ -213,7 +214,9 @@ public class GetResource extends RestServlet {
                 
             }    
         }
+          
         } finally {
+            out.write("</pre>".getBytes());  
             is.close();
         }
       }
