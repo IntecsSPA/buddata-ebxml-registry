@@ -1,0 +1,3 @@
+#!/bin/sh
+mv '${ERGO_TOMCAT_INSTALL_PATH}/webapps/${ERGO_DEPLOY_NAME}GUI/ergorrGUI-template.xml' '${ERGO_TOMCAT_INSTALL_PATH}/webapps/${ERGO_DEPLOY_NAME}GUI/${ERGO_DEPLOY_NAME}GUI.xml'
+
