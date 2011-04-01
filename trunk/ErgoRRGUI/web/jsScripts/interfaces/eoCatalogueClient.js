@@ -128,6 +128,8 @@ ErgorrCatalogues.Application = function()
                        // standard Open Layers
                         eopCat.map.addControl(new OpenLayers.Control.MousePosition());
 			eopCat.map.addControl(new OpenLayers.Control.MouseDefaults());
+                        var scalebar = new OpenLayers.Control.ScaleBar();
+                        eopCat.map.addControl(scalebar);
 	
 			eopCat.map.addControl(new OpenLayers.Control.LayerSwitcher());
       
@@ -161,9 +163,19 @@ ErgorrCatalogues.Application = function()
 		},
         
          SendCatalogueRequest: function(){
-            south.expand(true);
-            var serviceRequest=eopCat.formsCatInterfObject.sendXmlKeyValueRequest(
+              if(eopCat.formsCatInterfObject.getFormValues()){
+                south.expand(true);
+                var serviceRequest=eopCat.formsCatInterfObject.sendXmlKeyValueRequest(
                                         "responsePanelID", 99999,"resources/images/loader.gif");
+              }else{
+                  Ext.Msg.show({
+                    title: " EO warning",
+                    msg: "Mandatory Input Missing.",
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.MessageBox.WARNING
+                });
+                  
+              }                          
          },
           // Reset Alphanumeric Filter       
          Reset: function(){

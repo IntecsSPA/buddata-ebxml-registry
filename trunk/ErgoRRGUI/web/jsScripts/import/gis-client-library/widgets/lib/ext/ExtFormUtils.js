@@ -67,11 +67,13 @@ function createPanelExjFormByXml(xmlDocument,lang){
     buttonElements=inputInterfaceXml.selectNodes("/gis:inputInterface/gis:requestInformations/gis:buttons/gis:button");     
       var type,onclickFunction,disabled,disableIfNotMandatoryFields;  
       var contentButtonPanel,textButton;
+
       if(buttonElements.length>0){
         var buttons= new Array();  
         for(i=0;i<buttonElements.length;i++){
            disabled=buttonElements[i].getAttribute("disabled");  
            onclickFunction=buttonElements[i].getAttribute("onclick"); 
+
            disableIfNotMandatoryFields=buttonElements[i].getAttribute("disableIfNotMandatoryFields");
            if(disableIfNotMandatoryFields){
              controlMandatoryButtons.push(buttonElements[i].getAttribute("id"));
