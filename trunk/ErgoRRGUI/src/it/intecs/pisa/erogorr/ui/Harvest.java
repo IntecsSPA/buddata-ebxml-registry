@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -30,7 +32,7 @@ import org.w3c.dom.Element;
 
 /**
  *
- * @author Massimiliano Fanciulli
+ * @author Massimiliano Fanciulli, Andrea Marongiu
  */
 public class Harvest extends RestServlet {
 
@@ -53,7 +55,10 @@ public class Harvest extends RestServlet {
     private static final String HARVEST_ELEMENT_NAME = "Harvest";
     private static final String SOURCE_ELEMENT_NAME = "Source";
     private static final String RESOURCE_TYPE_ELEMENT_NAME = "ResourceType";
-    private static final String SERVICE_EXCEPTION_ELEMENT_NAME = "ServiceExceptionReport";
+    private static final String SERVICE_EXCEPTION_ELEMENT_NAME = "ExceptionReport";
+    
+    
+    private static Logger logger = Logger.getLogger(Harvest.class.getName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -70,9 +75,9 @@ public class Harvest extends RestServlet {
         try {
             uri = request.getRequestURI();
             if (uri.endsWith(REST_HARVEST_FROM_FILE)) {
-                hartvestFromFile(request, response);
+                harvestFromFile(request, response);
             } else if (uri.endsWith(REST_HARVEST_FROM_URL)) {
-                hartvestFromURL(request, response);
+                harvestFromURL(request, response);
 
             }
 
@@ -137,7 +142,7 @@ public class Harvest extends RestServlet {
         }
     }
 
-    private void hartvestFromFile(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    private void harvestFromFile(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
         DOMUtil domutil = new DOMUtil();
         String responseMessage = "";
@@ -162,12 +167,13 @@ public class Harvest extends RestServlet {
         } catch (ZipException exZip) {
             /*Single Metadata*/
             list = false;
-            listSize = 1;
-            harvestDoc = domutil.inputStreamToDocument(new FileInputStream(harvestData));
+            listSize = 1; 
             try {
+                harvestDoc = domutil.inputStreamToDocument(new FileInputStream(harvestData));
                 harvestResult = this.harvestDocument(url, harvestDoc);
 
             } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Could not load Metadata Document File", ex);
                 harvestResult = false;
             }
             if (harvestResult) {
@@ -254,19 +260,14 @@ public class Harvest extends RestServlet {
         }
     }
 
-    private void hartvestFromURL(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    private void harvestFromURL(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String responseMessage = "";
         OutputStream out = resp.getOutputStream();
-        DOMUtil domutil = new DOMUtil();
         String javascriptResponse = "";
         Document harvestDoc = null;
         Document harvestResponse = null;
         String metadataURL = req.getParameter(ID_SOURCE);
-        ZipFile zipFile = null;
-        boolean harvestResult = false;
-        boolean list = true;
-        int countMetadata = 0;
-        int listSize = 0;
+
         
         harvestDoc = getInputHarvestMessage(metadataURL, null);
         try {
@@ -274,7 +275,8 @@ public class Harvest extends RestServlet {
         } catch (Exception ex) {
             responseMessage = "{error : ";
             javascriptResponse = resp.encodeRedirectURL("An error occurred while harvesting data from disk.<br> See the log.");
-            out.write(javascriptResponse.getBytes());
+            responseMessage += "\"" + javascriptResponse + "\"}";
+            out.write(responseMessage.getBytes());
             out.close();
 
         }
@@ -306,7 +308,7 @@ public class Harvest extends RestServlet {
        connStatus=connection.getResponseCode();
        
        if(connStatus != 200) {
-          // System.err.println("Method failed: " + method.getStatusLine());
+          throw new Exception("Harvest Failed");
        }
 
        // Read the response body.

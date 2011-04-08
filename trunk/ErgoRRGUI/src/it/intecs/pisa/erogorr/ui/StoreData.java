@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package it.intecs.pisa.erogorr.ui;
 
 /**
@@ -11,15 +8,12 @@ package it.intecs.pisa.erogorr.ui;
 import com.google.gson.JsonObject;
 import http.utils.multipartrequest.MultipartRequest;
 import http.utils.multipartrequest.ServletMultipartRequest;
-import it.intecs.pisa.erogorr.ui.conf.ErgoRRGUIConfiguration;
 import it.intecs.pisa.util.DateUtil;
 import it.intecs.pisa.util.IOUtil;
 import it.intecs.pisa.util.json.JsonUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -113,19 +107,5 @@ public class StoreData extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private static void copy(InputStream in, OutputStream out) throws IOException {
-        synchronized (in) {
-            synchronized (out) {
-
-                byte[] buffer = new byte[256];
-                while (true) {
-                    int bytesRead = in.read(buffer);
-                    if (bytesRead == -1) {
-                        break;
-                    }
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-        }
-    }
+    
 }
