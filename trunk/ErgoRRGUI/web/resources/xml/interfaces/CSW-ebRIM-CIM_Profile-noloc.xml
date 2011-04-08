@@ -16,7 +16,7 @@
         <group label="Spatial Coverage">
             <input type="bbox" name="bbox" id="bbox" label="Envelope" optional="true" format="W,S,E,N" decimalPrecision="5" decimalSeparator="." size="10" map="cimCat.map"></input>
         </group>
-        <group label="Temporal Coverage">
+        <group label="Metadata Creation">
             <input type="rangedate" name="rangeDate" id="rangeDate" optional="true" labelStart="From" labelEnd="To" format="Y-m-d"></input>       
         </group>
         <!-- ['hits'],,['browse'],['summary'] -->
