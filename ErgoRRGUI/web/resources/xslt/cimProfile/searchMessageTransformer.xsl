@@ -44,16 +44,16 @@ version="1.0">
                       <!-- BBOX FILTER  END -->
 
                       <!-- DATE FILTER START-->
-                      <xsl:if test="gc:rangeDateStartDate">
+                      <xsl:if test="gc:rangeDateStartDate"><!--/wrs:ExtrinsicObject/rim:Slot[@name='http://purl.org/dc/terms/temporal']/rim:ValueList/rim:Value[1]-->
 			<ogc:PropertyIsGreaterThanOrEqualTo>
-                            <ogc:PropertyName>/wrs:ExtrinsicObject/rim:Slot[@name='http://purl.org/dc/terms/temporal']/rim:ValueList/rim:Value[1]</ogc:PropertyName>
+                            <ogc:PropertyName>/wrs:ExtrinsicObject/rim:Slot[@name='http://purl.org/dc/terms/created']/rim:ValueList/rim:Value[1]</ogc:PropertyName>
 			    <ogc:Literal><xsl:value-of select="gc:rangeDateStartDate"/>T00:00:00Z</ogc:Literal>
 			</ogc:PropertyIsGreaterThanOrEqualTo>
 		      </xsl:if>
 
                       <xsl:if test="gc:rangeDateEndDate">
 			<ogc:PropertyIsLessThanOrEqualTo>
-                            <ogc:PropertyName>/wrs:ExtrinsicObject/rim:Slot[@name='http://purl.org/dc/terms/temporal']/rim:ValueList/rim:Value[1]</ogc:PropertyName>
+                            <ogc:PropertyName>/wrs:ExtrinsicObject/rim:Slot[@name='http://purl.org/dc/terms/created']/rim:ValueList/rim:Value[1]</ogc:PropertyName>
                             <ogc:Literal><xsl:value-of select="gc:rangeDateEndDate"/>T23:59:59Z</ogc:Literal>
 			</ogc:PropertyIsLessThanOrEqualTo>
 		      </xsl:if>

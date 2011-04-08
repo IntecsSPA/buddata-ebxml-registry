@@ -11,7 +11,7 @@
 <inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient">
     <section name="Basic Test">
         <group label="">
-            <input type="text" name="collectionId" label="Collection" id="collectionId" optional="false" value="urn:ogc:def:EOP:ESA.EECF.ENVISAT_ASA_GMI_1S" size="30" grow="true"/>
+            <input type="text" name="collectionId" label="Collection" labelAlign="top" id="collectionId" optional="false" value="urn:ogc:def:EOP:ESA.EECF.ENVISAT_ASA_GMI_1S" size="30" grow="true"/>
         </group>
         <group label="Spatial Coverage">
             
