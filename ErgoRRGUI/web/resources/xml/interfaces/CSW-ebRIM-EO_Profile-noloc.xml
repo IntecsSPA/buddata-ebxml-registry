@@ -22,7 +22,7 @@
         </group>
         <group label="Presentation">
             <input type="combo" name="presentation" hideLabel="true" size="15" id="presentation" optional="true" store="VALUES" storeFields="['value']"
-            storeData="[['hits'],['brief'],['full'],['browse'],['summary']]">  
+            storeData="[['hits'],['brief'],['full'],['summary']]">  
           </input>
           <input type="numeric" name="iteratorSize" label="Retrieve" id="iteratorSize" optional="true" value="10" size="5"/>
           <input type="numeric" name="cursor" label="Starting from" id="cursor" optional="true" value="1" size="5"/>
