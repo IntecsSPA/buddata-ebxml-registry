@@ -9,4 +9,4 @@ cp ErgoRR-jaxb/target/ErgoRR-jaxb-1.0-SNAPSHOT.jar ../Installer/distribution/
 cp ErgoRR-persistence/target/ErgoRR-persistence-1.0-SNAPSHOT.jar ../Installer/distribution/
 
 cd ../Installer
-compile ergo_install.xml -b . -o ErgoRR-installer.jar -k standard
+$IZPACK_HOME/bin/compile ergo_install.xml -b . -o ErgoRR-installer.jar -k standard
