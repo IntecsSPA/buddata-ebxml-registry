@@ -10,6 +10,8 @@
 		<str id="UserInputPanel.headline.bundledTomcatProperties" txt="ErgoRR Installer: Tomcat configuration" />
 		<str id="UserInputPanel.headline.db" txt="ErgoRR Installer: Database settings" />
 		<str id="UserInputPanel.headline.dbConfirmation" txt="ErgoRR Installer: Database confirmation" />
+		<str id="UserInputPanel.button.browse" txt="Browse" />
+		<str id="UserInputPanel.button.delete" txt="Delete" />
 		<str id="PacksPanel.headline" txt="ErgoRR Installer: Installation packages" />
 		<str id="InstallPanel.headline" txt="ErgoRR Installer: Installation progress" />
 		<str id="HTMLInfoPanel.headline.existingTomcatInfo" txt="ErgoRR Installer: Tomcat information" />

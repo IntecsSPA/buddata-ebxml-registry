@@ -50,6 +50,7 @@ public class JDBCConnectionValidator implements DataValidator {
 	private String dbDrop;
 	private boolean writeDefaults;
 
+	private String warningMsg = "";
 	private String errorMsg;
 
 	public Status validateData(AutomatedInstallData aid) {
@@ -88,9 +89,9 @@ public class JDBCConnectionValidator implements DataValidator {
 					}
 				}
 			} else {
-				errorMsg = "Invalid connection parameters: Database '" + dbName
-						+ "' already exists.";
-				return Status.ERROR;
+				warningMsg = "Database '" + dbName
+						+ "' already exists and will not be replaced.";
+				return Status.WARNING;
 			}
 		}
 
@@ -120,7 +121,7 @@ public class JDBCConnectionValidator implements DataValidator {
 	}
 
 	public String getWarningMessageId() {
-		return "";
+		return warningMsg;
 	}
 
 	private boolean validateDb(String db) {
