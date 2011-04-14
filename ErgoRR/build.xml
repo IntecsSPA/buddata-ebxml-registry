@@ -97,6 +97,7 @@
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-SpatialRepresentationScheme.xml"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-TopicCategoryScheme.xml"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/CIM-Package.xml"/>
+         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/cim-package-slot-init.xml"/>
     </target>
 
     <target name="db-load-model" depends="db-load-ogc, db-load-eop, db-load-cim">
