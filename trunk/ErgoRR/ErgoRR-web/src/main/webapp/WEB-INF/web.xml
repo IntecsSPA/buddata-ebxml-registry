@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <description>kZen ERGO-RR</description>
     <display-name>kZen ERGO-RR</display-name>
@@ -19,10 +19,19 @@
         <servlet-class>be.kzen.ergorr.interfaces.RESTServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
+    <servlet>
+        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>webservice</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>rest</servlet-name>
-        <url-pattern>/config</url-pattern>
+        <url-pattern>/config/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>rest</servlet-name>
@@ -65,7 +74,14 @@
         <servlet-name>ws-rimquery</servlet-name>
         <url-pattern>/rimquery/*</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>ebXMLRegistrySOAPService</servlet-name>
+        <url-pattern>/ebXMLRegistrySOAPService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>webservice</servlet-name>
+        <url-pattern>/webservice</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
