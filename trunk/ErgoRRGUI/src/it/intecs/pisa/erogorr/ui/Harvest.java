@@ -8,6 +8,7 @@ package it.intecs.pisa.erogorr.ui;
  *
  * @author simone
  */
+import it.intecs.pisa.erogorr.ui.conf.ErgoRRGUIConfiguration;
 import it.intecs.pisa.proxy.util.XmlTools;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,9 +37,6 @@ import org.w3c.dom.Element;
  */
 public class Harvest extends RestServlet {
 
-    protected static final String ERGORR_URL_PROPERTY = "ergoRRURL";
-    
-    
     protected static final String REST_HARVEST_FROM_FILE = "/fromFile";
     protected static final String REST_HARVEST_FROM_URL = "/fromURL";
     protected static final String ID_SOURCE = "source";
@@ -78,7 +76,6 @@ public class Harvest extends RestServlet {
                 harvestFromFile(request, response);
             } else if (uri.endsWith(REST_HARVEST_FROM_URL)) {
                 harvestFromURL(request, response);
-
             }
 
         } catch (Exception ex) {
@@ -227,7 +224,7 @@ public class Harvest extends RestServlet {
 
     private boolean harvestDocument(String url, Document harvestDocument) throws Exception {
         DOMUtil util = null;
-        String harvestURL = ergoRRConf.getProperty(ERGORR_URL_PROPERTY) + HTTP_SERVICE_BINDING;
+        String harvestURL = ergoRRConf.getProperty(ErgoRRGUIConfiguration.ERGORR_LOCAL_URL_PROPERTY) + HTTP_SERVICE_BINDING;
         Document message;
         String filename = java.util.UUID.randomUUID().toString() + ".xml";
         String metadateNamespace = harvestDocument.getDocumentElement().getNamespaceURI();
@@ -271,7 +268,7 @@ public class Harvest extends RestServlet {
         
         harvestDoc = getInputHarvestMessage(metadataURL, null);
         try {
-             harvestResponse=this.invokeHarvest(ergoRRConf.getProperty(ERGORR_URL_PROPERTY) + HTTP_SERVICE_BINDING, harvestDoc);
+             harvestResponse=this.invokeHarvest(ergoRRConf.getProperty(ErgoRRGUIConfiguration.ERGORR_LOCAL_URL_PROPERTY) + HTTP_SERVICE_BINDING, harvestDoc);
         } catch (Exception ex) {
             responseMessage = "{error : ";
             javascriptResponse = resp.encodeRedirectURL("An error occurred while harvesting data from disk.<br> See the log.");
@@ -354,7 +351,7 @@ public class Harvest extends RestServlet {
         int index = requestURL.indexOf(SLASH + SLASH);
         String remainingString = requestURL.substring(index + 2);
         index = remainingString.indexOf(SLASH);
-        String address = remainingString.substring(0, index);
+        String address = ergoRRConf.getProperty(ErgoRRGUIConfiguration.HOST_LOCAL_URL);
         remainingString = remainingString.substring(index + 1);
         String applicationName = remainingString.substring(0, remainingString.indexOf(SLASH));
         return "http://" + address + SLASH + applicationName;

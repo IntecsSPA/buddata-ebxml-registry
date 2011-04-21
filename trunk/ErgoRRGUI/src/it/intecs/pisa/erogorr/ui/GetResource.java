@@ -40,12 +40,21 @@ public class GetResource extends RestServlet {
     protected static final String CIM_CATALOGUE_CLIENT_RESOURCE = "cimCatalogue.html";
     protected static final String EOP_CATALOGUE_CLIENT_RESOURCE = "eopCatalogue.html";
     protected static final String WEBINF_RESOURCES_FOLDER = "WEB-INF/conf/resources/";
-    protected static final String ERGORR_LOG_FOLDER = "../logs";
+    protected static final String ERGORR_LOG_FOLDER = "logs";
     protected static final String ERGORR_LOG_PREFIX = "ergorr.";
     protected static final String ERGORR_LOG_SUFIX = ".log";
     
+    protected static final String LOG_PROPERTIES_PATH_FILE = "WEB-INF/logging.properties";
+    
     protected static final int LOG_ROWS = 500;
     
+    private File logFileDir;
+    
+    public void init(){
+        logFileDir=new File(System.getProperty("catalina.base"),ERGORR_LOG_FOLDER);
+        
+
+    }
 
     
     /** 
@@ -176,8 +185,6 @@ public class GetResource extends RestServlet {
      
     private String getLogFilePath () throws IOException{
     
-        //File rootDir = new File(getServletContext().getRealPath("/"));
-        File logDir= new File(/*rootDir,*/ ERGORR_LOG_FOLDER);
         String logFileName=ERGORR_LOG_PREFIX;
         
         Calendar cal = Calendar.getInstance();//ergorr.2011-03-15.log
@@ -185,7 +192,7 @@ public class GetResource extends RestServlet {
         logFileName+=sdf.format(cal.getTime())+ERGORR_LOG_SUFIX;
 
         
-        return new File(logDir,logFileName).getCanonicalPath();
+        return new File(this.logFileDir,logFileName).getCanonicalPath();
     }
 
     
