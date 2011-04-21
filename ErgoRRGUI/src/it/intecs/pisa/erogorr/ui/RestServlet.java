@@ -2,10 +2,12 @@
 
 package it.intecs.pisa.erogorr.ui;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import it.intecs.pisa.erogorr.ui.conf.ErgoRRGUIConfiguration;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ public class RestServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+            
+       
     
     }
    
@@ -43,18 +47,16 @@ public class RestServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        OutputStream out = response.getOutputStream();
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RestServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RestServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            */
+            this.ergoRRConf.addLocalAddressProperty(request.getLocalAddr(),""+request.getServerPort());
+            JsonObject jObj = new JsonObject();
+            jObj.addProperty("success", Boolean.TRUE);
+            Gson gson = new Gson();
+            response.setHeader("Content-Type", "application/json");
+            out.write(gson.toJson(jObj).getBytes());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         } finally { 
             out.close();
         }
@@ -96,6 +98,7 @@ public class RestServlet extends HttpServlet {
 
 
     public File getPropertiesFile(){
+        System.out.println("------------ "+ getServletContext().getRealPath(PROPERTIES_PATH));
         return new File(getServletContext().getRealPath(PROPERTIES_PATH));
     
     }
