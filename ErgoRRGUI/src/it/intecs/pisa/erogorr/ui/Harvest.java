@@ -351,7 +351,7 @@ public class Harvest extends RestServlet {
         int index = requestURL.indexOf(SLASH + SLASH);
         String remainingString = requestURL.substring(index + 2);
         index = remainingString.indexOf(SLASH);
-        String address = "http://"+ergoRRConf.getProperty(ErgoRRGUIConfiguration.HOST_PROPERTY);
+        String address = ergoRRConf.getProperty(ErgoRRGUIConfiguration.HOST_PROPERTY);
         address+=":"+ergoRRConf.getProperty(ErgoRRGUIConfiguration.PORT_PROPERTY);
         remainingString = remainingString.substring(index + 1);
         String applicationName = remainingString.substring(0, remainingString.indexOf(SLASH));
