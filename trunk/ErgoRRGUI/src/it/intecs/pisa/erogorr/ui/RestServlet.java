@@ -22,6 +22,8 @@ public class RestServlet extends HttpServlet {
     
     protected static final String PROPERTIES_PATH = "WEB-INF/conf/properties/ergoRRProperties.xml";
     
+    protected static final String REST_SET_LOCALHOST = "rest/set";
+    
     public ErgoRRGUIConfiguration ergoRRConf=null;
     
     
@@ -49,18 +51,49 @@ public class RestServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         OutputStream out = response.getOutputStream();
         try {
-            this.ergoRRConf.addLocalAddressProperty(request.getLocalAddr(),""+request.getServerPort());
-            JsonObject jObj = new JsonObject();
-            jObj.addProperty("success", Boolean.TRUE);
-            Gson gson = new Gson();
-            response.setHeader("Content-Type", "application/json");
-            out.write(gson.toJson(jObj).getBytes());
+            String uri = request.getRequestURI();
+            if (uri.contains(REST_SET_LOCALHOST)) {
+                if(authenticate(request, "admin")){
+                if(uri.endsWith(REST_SET_LOCALHOST)){
+                    this.ergoRRConf=new ErgoRRGUIConfiguration(getPropertiesFile());
+                    String host=ergoRRConf.getProperty(ErgoRRGUIConfiguration.HOST_PROPERTY);
+                    String port=ergoRRConf.getProperty(ErgoRRGUIConfiguration.PORT_PROPERTY);
+                    JsonObject jObj = new JsonObject();
+                    if(port==null)port="";
+                    if(host==null)host="";
+                    jObj.addProperty("host", host);
+                    jObj.addProperty("port", port);
+                    Gson gson = new Gson();
+                    response.setHeader("Content-Type", "application/json");
+                    out.write(gson.toJson(jObj).getBytes());
+                   
+                }else{
+                    String [] splitUri=uri.split("/");
+                     this.ergoRRConf.addLocalAddressProperty(splitUri[splitUri.length-2],
+                                                                splitUri[splitUri.length-1]);
+                     JsonObject jObj = new JsonObject();
+                     jObj.addProperty("success", Boolean.TRUE);
+                     Gson gson = new Gson();
+                     response.setHeader("Content-Type", "application/json");
+                     out.write(gson.toJson(jObj).getBytes());
+                }
+              }  
+            }     
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally { 
             out.close();
         }
     } 
+    
+    private boolean authenticate(HttpServletRequest request, String role) throws Exception{
+       AuthenticationManager am= new AuthenticationManager();
+       String [] roles= am.authenticateUser(request);
+       for(int i=0; i<roles.length; i++)
+           if(roles[i].equals(role))
+              return true;
+       return false;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
