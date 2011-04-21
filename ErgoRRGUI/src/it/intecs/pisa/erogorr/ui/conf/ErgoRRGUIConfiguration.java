@@ -24,7 +24,7 @@ public class ErgoRRGUIConfiguration {
     public static final String LOCALHOST_PROPERTY = "checkLocaHost";
     
     public static final String HOST_PROPERTY = "host";
-    public static final String PORT_PROPERTY = "property";
+    public static final String PORT_PROPERTY = "port";
 
     
     private Hashtable configValues;
