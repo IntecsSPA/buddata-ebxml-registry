@@ -7,7 +7,7 @@
     <labelFirebugWarning>Firebug Warning</labelFirebugWarning>
     <labelFirebugMessage>Firebug is known to cause performance issues with the ErgoRR UI Application.</labelFirebugMessage>
 
-    <labelControlPanelConfiguration>Configuration</labelControlPanelConfiguration>
+    <labelControlPanelConfiguration>Catalogue Configuration</labelControlPanelConfiguration>
     <labelControlPanelAbout>About</labelControlPanelAbout>
     <labelControlPanelLogout>Logout</labelControlPanelLogout>
     <labelControlPanelLogging>Catalogue Log</labelControlPanelLogging>

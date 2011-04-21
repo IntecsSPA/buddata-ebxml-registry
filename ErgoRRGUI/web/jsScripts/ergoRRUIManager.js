@@ -16,6 +16,8 @@ interfacesManager.loadGlobalScript("jsScripts/interfaces/harvestFromURL.js");
 
 interfacesManager.loadGlobalScript("jsScripts/interfaces/logging.js");
 
+interfacesManager.loadGlobalScript("jsScripts/interfaces/internalNetwork.js");
+
 
 
 /*Import Form Interfaces -- END*/
@@ -128,7 +130,7 @@ ergoRRUIManager = {
             bodyStyle : {
                 background: ergoRRUIManager.bodyColor
                 },
-            width: BrowserDetect.getWidth(20),
+            width: BrowserDetect.getWidth(30),
             title: "Control Panel",
             collapsible: true,
             collapsed : false,

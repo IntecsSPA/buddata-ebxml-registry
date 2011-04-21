@@ -31,10 +31,10 @@ LoginInterface=function(){
 
             var getUserPanelsFunc=function(response){
                 
-                   sendAuthenticationXmlHttpRequestTimeOut("GET",
+                   /*sendAuthenticationXmlHttpRequestTimeOut("GET",
                      "rest/set",
                      false, null, interfacesManager.user, interfacesManager.password, 800000, function(){}, function(){},null,
-                     null, null); 
+                     null, null); */
                 
                   
                   var panelResponse=response;
