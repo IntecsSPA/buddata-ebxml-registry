@@ -98,7 +98,6 @@ public class RestServlet extends HttpServlet {
 
 
     public File getPropertiesFile(){
-        System.out.println("------------ "+ getServletContext().getRealPath(PROPERTIES_PATH));
         return new File(getServletContext().getRealPath(PROPERTIES_PATH));
     
     }
