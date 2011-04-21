@@ -75,8 +75,31 @@
                     ],
                     iconCls:'settings'
 
+                },{
+                    title: /*ergoRRUIManager.loc.getLocalMessage('labelControlPanelLogging')*/"Internal Network Configuration",
+                    autoScroll:true,
+                    border:false,
+                    html: "<div id='internalNetworkDiv'/>",
+                    listeners: {
+                        "collapse": function(){
+                           
+                            
+                        },
+                        "expand": function(){
+                            
+                            
+                           if(!ergoRRUIManager.internalNetworkInterface){
+                               
+                              ergoRRUIManager.internalNetworkInterface=new InternalNetworkInterface();
+                              
+                           }
+                           
+                           ergoRRUIManager.internalNetworkInterface.render('internalNetworkDiv');
+
+                        }
                 },
-                {
+                iconCls:'settings'
+              },{
                     title: ergoRRUIManager.loc.getLocalMessage('labelControlPanelClient'),
                  
                     border:false,

@@ -56,7 +56,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RestServlet</servlet-name>
-        <url-pattern>/rest/set</url-pattern>
+        <url-pattern>/rest/set/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
