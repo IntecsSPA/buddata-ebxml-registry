@@ -106,7 +106,7 @@ InternalNetworkInterface=function(){
                Ext.Msg.show({
                        title:'Network Configuration',
                        buttons: Ext.Msg.OK,
-                       msg: 'Please inserta all mandatory parameters',
+                       msg: 'Please insert all mandatory parameters',
                        animEl: 'elId',
                        icon: Ext.MessageBox.WARNING
                       });
