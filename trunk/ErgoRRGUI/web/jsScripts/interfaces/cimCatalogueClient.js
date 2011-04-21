@@ -185,7 +185,7 @@ Ext.onReady(cimCat.init, ErgorrCatalogues.Application);
 
 function setErgoRRURL(){
    
-    Ext.getCmp("ServiceUrl").setValue(top.interfacesManager.properties.ergoRRURL+"webservice");
+    Ext.getCmp("ServiceUrl").setValue(top.interfacesManager.properties.ergoRRLocalURL+"webservice");
     
     
 }

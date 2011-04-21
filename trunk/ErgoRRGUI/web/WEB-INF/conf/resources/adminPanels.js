@@ -202,7 +202,7 @@
                                                                     msgCls: "mask-workspace-loading"*/
                                                                 }
                                                       );
-                                        myMask.show();
+                                        myMask.showfaceM
                                         var interfacePanel=null;
                                         switch (n.attributes.type){
                                             case 'HarvestFromFile':

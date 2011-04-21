@@ -47,16 +47,16 @@
         <url-pattern>/rest/harvest/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>RestServlet</servlet-name>
-        <url-pattern>/rest</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ProxyRedirect</servlet-name>
         <url-pattern>/Redirect</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UsersManager</servlet-name>
         <url-pattern>/rest/users/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RestServlet</servlet-name>
+        <url-pattern>/rest/set</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
