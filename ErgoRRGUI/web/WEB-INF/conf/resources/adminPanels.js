@@ -366,6 +366,18 @@
 
 
 
-         
+        var urlCheck=interfacesManager.properties.host;
+        var portCheck=interfacesManager.properties.port;
+
+           if(!( urlCheck && portCheck && urlCheck != '' && portCheck!='')){
+               Ext.Msg.show({
+                       title:'Network Configuration Warning',
+                       buttons: Ext.Msg.OK,
+                       msg: 'Please set your Internal Network Configuration.',
+                       animEl: 'elId',
+                       icon: Ext.MessageBox.WARNING
+                      });
+               
+           }
 
 
