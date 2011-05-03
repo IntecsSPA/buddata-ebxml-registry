@@ -6,6 +6,7 @@ import be.kzen.ergorr.commons.RIMConstants;
 import be.kzen.ergorr.commons.RIMUtil;
 import be.kzen.ergorr.model.rim.AssociationType;
 import be.kzen.ergorr.model.rim.RegistryObjectListType;
+import be.kzen.ergorr.model.rim.RegistryObjectType;
 import javax.activation.DataHandler;
 import be.kzen.ergorr.model.rim.RegistryPackageType;
 import be.kzen.ergorr.model.util.JAXBUtil;
@@ -28,6 +29,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.sax.SAXSource;
 import com.sun.xml.ws.util.ByteArrayDataSource;
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.xml.sax.InputSource;
 
@@ -62,7 +64,7 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
         regPkg.setDescription(RIMUtil.createString("Provides Cataloguing of ISO Metadata extensions to the Basic package of the CSW-ebRIM catalogue profile."));
     }
 
-    public void setObject(Object obj){
+    public void setObject(Object obj) {
         if (obj instanceof String) {
             this.isoString = (String) obj;
             this.isoSAXSource = new SAXSource(new InputSource(new StringReader(this.isoString)));
@@ -98,9 +100,9 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
         SAXSource xsltDoc = null;
         String isoIdentifier = this.getISODataIndetifier();
         String medataInformationID = CIM_ID_PREFIX + isoIdentifier + CIM_METADATA_INFORMATION_ID_SUFIX;
-        parameters[0] = new SaxonXSLTParameter(XSLT_URL_PARAM_NAME, "http://" +
-                CommonProperties.getInstance().get("appserver.url") + "/" +
-                CommonProperties.getInstance().get("deployName") + GET_SERVLET);
+        parameters[0] = new SaxonXSLTParameter(XSLT_URL_PARAM_NAME, "http://"
+                + CommonProperties.getInstance().get("appserver.url") + "/"
+                + CommonProperties.getInstance().get("deployName") + GET_SERVLET);
         parameters[1] = new SaxonXSLTParameter(XSLT_METADATA_INFORMATION_ID_PARAM_NAME,
                 medataInformationID);
         SaxonURIResolver uriResolver = null;
@@ -141,19 +143,28 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
             JAXBElement<RegistryObjectListType> regObjEl;
             regObjEl = (JAXBElement<RegistryObjectListType>) JAXBUtil.getInstance().unmarshall(pipeInput);
             regObjList.getIdentifiable().addAll(regObjEl.getValue().getIdentifiable());
-            associateToPackage(medataInformationID);
+            //associateToPackage(medataInformationID);
+            ArrayList<String> a = new ArrayList<String>();
             Iterator isoTransformObjects = regObjList.getIdentifiable().listIterator();
             while (isoTransformObjects.hasNext()) {
                 JAXBElement current = (JAXBElement) isoTransformObjects.next();
                 Object currentType = current.getValue();
+                RegistryObjectType rO = (RegistryObjectType) currentType;
+                if (!(currentType instanceof RegistryPackageType)) {
+                    System.out.println("Inserting identifier: " + rO.getId());
+                    a.add(rO.getId());
+                }
                 if (currentType instanceof WrsExtrinsicObjectType) {
                     WrsExtrinsicObjectType eoCim = (WrsExtrinsicObjectType) currentType;
                     //  if(eoCim.getId().equalsIgnoreCase(medataInformationID)){
                     eoCim.setRepositoryItem(dh);
                     eoCim.setMimeType("text/xml");
-                    break;
+                    //break;
                     //     }*/
                 }
+            }
+            for (String s : a) {
+                associateToPackage(s);
             }
             // regPkg.setRegistryObjectList(regObjList);
         } catch (JAXBException ex) {
@@ -163,5 +174,4 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
 
         return regObjList;
     }
-
 }
