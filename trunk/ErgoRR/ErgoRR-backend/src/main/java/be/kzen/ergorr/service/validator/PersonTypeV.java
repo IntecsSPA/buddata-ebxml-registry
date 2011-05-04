@@ -37,7 +37,7 @@ public class PersonTypeV extends RegistryObjectTypeV<PersonType> {
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         super.validateToDelete();
 
-        String sql = "select id from t_organization where primarycontant = '" + rimObject.getId() + "'";
+        String sql = "select id from t_organization where primarycontact = '" + rimObject.getId() + "'";
         List<String> orgIdsWithPerson = persistence.getIds(sql);
 
         if (orgIdsWithPerson.size() > 0) {
