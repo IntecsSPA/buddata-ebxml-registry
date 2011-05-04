@@ -22,8 +22,11 @@ import be.kzen.ergorr.exceptions.InvalidReferenceException;
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
+import be.kzen.ergorr.model.rim.ClassificationType;
+import be.kzen.ergorr.model.rim.RegistryPackageType;
 import java.sql.SQLException;
 import java.util.List;
+import javax.xml.bind.JAXBElement;
 
 /**
  * Validates ClassificationNodes.
@@ -71,11 +74,27 @@ public class ClassificationNodeTypeV extends RegistryObjectTypeV<ClassificationN
             throw new ReferenceExistsException(err);
         }
 
+        String sql = "select * from t_classification where classificationnode='" + rimObject.getId() + "'";
+
+        List<JAXBElement<ClassificationType>> clsEls = persistence.query(sql, null, (Class) ClassificationType.class);
+
+        for (JAXBElement<ClassificationType> clsEl : clsEls) {
+            ClassificationType cls = clsEl.getValue();
+
+            // if classification is already to be deleted then don't bother with re-validating it.
+            if (!idExistsInRequest(cls.getClassifiedObject())) {
+                String err = "ClassificationNode " + rimObject.getId() + " cannot be deleted because it is used by external Classifications";
+                throw new ReferenceExistsException(err);
+            }
+        }
+
+        /*
         ids = persistence.getIds("select id from t_classification where classificationnode='" + rimObject.getId() + "'");
 
         if (!ids.isEmpty()) {
-            String err = "ClassificationNode " + rimObject.getId() + " cannot be deleted because it is used by one or more Classifications";
-            throw new ReferenceExistsException(err);
+        String err = "ClassificationNode " + rimObject.getId() + " cannot be deleted because it is used by one or more Classifications";
+        throw new ReferenceExistsException(err);
         }
+         */
     }
 }
