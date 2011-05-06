@@ -28,4 +28,4 @@ cp target/CustomIzPackElements-1.0-SNAPSHOT.jar ../distribution/
 cd -
 
 cd ../Installer
-$IZPACK_HOME/bin/compile ergo_install.xml -b . -o ErgoRR-installeri_${APPVERSION}.jar -k standard
+$IZPACK_HOME/bin/compile ergo_install.xml -b . -o ErgoRR-installer_${APPVERSION}.jar -k standard
