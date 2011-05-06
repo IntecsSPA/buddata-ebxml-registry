@@ -29,3 +29,4 @@ cd -
 
 cd ../Installer
 $IZPACK_HOME/bin/compile ergo_install.xml -b . -o ErgoRR-installer_${APPVERSION}.jar -k standard
+chmod +x ErgoRR-installer_${APPVERSION}.jar
