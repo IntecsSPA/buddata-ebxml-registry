@@ -1,6 +1,9 @@
 Build instructions:
 
 1) Install IzPack from the jar (java -jar IzPack-install-4.3.1.jar)
-2) Update the build script to point to your izpack installation
-3) Update any of the files in the distribution directory that may need updating. Careful, some of them contain variables that will be parsed by IzPack.
-4) Execute the build script
+2) set IZPACK_HOME to your IzPack installation (eg: export IZPACK_HOME=~/IzPack/)
+3) make sure 'ant' is on your $PATH
+4) make sure 'mvn' is on your $PATH
+5) Update any of the files in the distribution directory that may need updating. Careful, some of them contain variables that will be parsed by IzPack.
+6) update 'appversion' tag in ergo_install.xml
+7) Execute the build script (./build_installer.sh)
