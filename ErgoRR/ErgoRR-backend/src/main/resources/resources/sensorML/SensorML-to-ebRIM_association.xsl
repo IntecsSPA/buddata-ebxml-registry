@@ -95,6 +95,20 @@
                 -->
         <xsl:element name="rim:Service" namespace="{$nsrim}">
             <xsl:attribute name="id"><xsl:value-of select="$SERVICE_ID" /></xsl:attribute>
+              <!--
+                        See OGC 07-144r4, section 12.2 "OGC service description"
+                -->
+            <xsl:element name="rim:Classification" namespace="{$nsrim}">
+                <xsl:attribute name="id">
+                    <xsl:value-of
+                        select="concat($idPrefix, $idMiddlefixClassification, generate-id())" />
+                </xsl:attribute>
+                <xsl:attribute name="classifiedObject">
+                <xsl:value-of select="$SERVICE_ID" /></xsl:attribute>
+                <xsl:attribute name="classificationNode"><xsl:value-of
+                    select="$CLASSIFICATION_NODE" /></xsl:attribute>
+            </xsl:element>
+
             <xsl:element name="rim:ServiceBinding" namespace="{$nsrim}">
                 <xsl:attribute name="id"><xsl:value-of
                     select="concat($idPrefix, $idMiddlefixService, generate-id(swe:field[@name='urn:ogc:def:interface:OGC::ServiceURL' or @name='urn:ogc:def:interface:OGC:1.0:ServiceURL']/swe:Text/swe:value))" /></xsl:attribute>
@@ -125,19 +139,7 @@
                 </xsl:element>
 
             </xsl:element>
-            <!--
-                        See OGC 07-144r4, section 12.2 "OGC service description"
-                -->
-            <xsl:element name="rim:Classification" namespace="{$nsrim}">
-                <xsl:attribute name="id">
-                    <xsl:value-of
-                        select="concat($idPrefix, $idMiddlefixClassification, generate-id())" />
-                </xsl:attribute>
-                <xsl:attribute name="classifiedObject">
-                <xsl:value-of select="$SERVICE_ID" /></xsl:attribute>
-                <xsl:attribute name="classificationNode"><xsl:value-of
-                    select="$CLASSIFICATION_NODE" /></xsl:attribute>
-            </xsl:element>
+          
         </xsl:element>
 
     </xsl:template>
