@@ -67,7 +67,7 @@
 
 			<xsl:attribute name="id">
 				<xsl:value-of
-				select="concat($idPrefix, $idMiddlefixRegPack, generate-id(sml:System))" />
+				select="concat($idPrefix, $idSuffixRegPack)" />
 			</xsl:attribute>
 
 			<xsl:attribute name="xsi:schemaLocation"><xsl:value-of
