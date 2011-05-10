@@ -289,7 +289,13 @@
             </xsl:variable>
 
             <xsl:if test="$servicesClassificationNodes">
-                <xsl:copy-of select="$servicesClassificationNodes"/>
+                <xsl:for-each select="$servicesClassificationNodes//rim:ClassificationNode">
+                    <xsl:if test="not(compare(@id, 'urn:ogc:serviceType:WebFeatureService:1.1') = 0 or compare(@id, 'urn:ogc:serviceType:WebMapService:1.3.0') = 0 or
+                            compare(@id, 'urn:ogc:serviceType:WebCoverageService:1.1.2') = 0 or compare(@id, 'urn:ogc:serviceType:CatalogueService:2.0.2') = 0 or
+                            compare(@id, 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM') = 0 )"> 
+                        <xsl:copy-of select="."/>
+                    </xsl:if>
+                </xsl:for-each>
             </xsl:if>
             <!-- Classification Services Handling END -->
 
