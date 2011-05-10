@@ -138,7 +138,6 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
             throw new TranslationException("Could not transform ISO Document.");
         }
 
-
         try {
             JAXBElement<RegistryObjectListType> regObjEl;
             regObjEl = (JAXBElement<RegistryObjectListType>) JAXBUtil.getInstance().unmarshall(pipeInput);
@@ -151,7 +150,7 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
                 Object currentType = current.getValue();
                 RegistryObjectType rO = (RegistryObjectType) currentType;
                 if (!(currentType instanceof RegistryPackageType)) {
-                    System.out.println("Inserting identifier: " + rO.getId());
+                    //System.out.println("Inserting identifier: " + rO.getId());
                     a.add(rO.getId());
                 }
                 if (currentType instanceof WrsExtrinsicObjectType) {
