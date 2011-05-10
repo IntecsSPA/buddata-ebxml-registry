@@ -97,16 +97,26 @@
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-SpatialRepresentationScheme.xml"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-TopicCategoryScheme.xml"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/CIM-Package.xml"/>
-         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/cim-package-slot-init.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/cim-package-slot-init.xml"/>
+    </target>
+    
+    <!-- INTECS Addition 2011-05-10 for loading sensorML Extension Package-->
+    <target name="db-load-sensorML" depends="db-load-basic">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/schemes/SensorML-IntendedApplicationScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/schemes/SensorML-OrbitTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/schemes/SensorML-SystemTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/SensorML-Package.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/SensorML-Package-slot-init.xml"/>
     </target>
 
-    <target name="db-load-model" depends="db-load-ogc, db-load-eop, db-load-cim">
+    <target name="db-load-model" depends="db-load-ogc, db-load-eop, db-load-cim, db-load-sensorML">
     </target>
 
     <target name="db-load-test">
         <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
         <!--be-invoker dataSrc="${basedir}/${ergorr-web}/src/test/data"/-->
-        <be-invoker dataSrc="/Users/yamanustuntas/Desktop/xmlData"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/test/data"/>
     </target>
 
     <path id="libs.ref" description="project libraries">
