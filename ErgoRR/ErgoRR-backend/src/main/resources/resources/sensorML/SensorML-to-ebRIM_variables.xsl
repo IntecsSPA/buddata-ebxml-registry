@@ -59,7 +59,7 @@
         </xsl:choose>
     </xsl:variable>
 
-    <xsl:variable name="idSuffixRegPack" select="'package'" />
+    <xsl:variable name="idSuffixRegPack" select="'pkg'" />
 
     <xsl:variable name="idMiddlefixOrganization" select="'org:'" />
     <xsl:variable name="idMiddlefixPerson" select="'person:'" />
@@ -74,8 +74,12 @@
                   select="'urn:oasis:names:tc:ebxml-regrep:DataType:'" />
     <xsl:variable name="iso19107DataTypePrefix"
                   select="'urn:ogc:def:dataType:ISO-19107:2003:'" />
+
+    <!-- The following variable has been changed for warranty of uniqueness across docs -->
+    <!-- <xsl:variable name="classificationNodeIdPrefix"
+                  select="'urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::'" /> -->
     <xsl:variable name="classificationNodeIdPrefix"
-                  select="'urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::'" />
+                  select="concat($idPrefix, 'classificationnode:')" />
 
     <!-- GLOBAL ATTRIBUTE VALUES -->
     <xsl:variable name="fixedSystemAndComponentClassificationParent"
