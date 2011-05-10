@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+	<rim:ExtrinsicObject id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractProcess:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName" slotType="string"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords" slotType="string"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::BoundedBy" slotType="geometry"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs" slotType="string"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs" slotType="string"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Location" slotType="geometry"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeBegin" slotType="datetime"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeEnd" slotType="datetime"/>
+	</rim:ExtrinsicObject>
+	<rim:ExtrinsicObject id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractPhysicalProcess:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Location" slotType="geometry"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeBegin" slotType="datetime"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeEnd" slotType="datetime"/>
+	</rim:ExtrinsicObject>
+	<rim:Association id="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::AccessibleThrough:Definition" objectType="urn:kzen:ObjectType:SlotDescription"
+		  associationType="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::AccessibleThrough" 
+		  sourceObject="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractProcess"
+		  targetObject="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service">
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ServiceSpecificSensorID" slotType="string"/>
+	</rim:Association>
+	<!-- extension to the SensorML profile for handling EO sensors-->
+	<rim:ExtrinsicObject id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Instrument:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::AcrossTrackPointingLowerBound" slotType="double"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::AcrossTrackPointingUpperBound" slotType="double"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::AlongTrackPointingLowerBound" slotType="double"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::AlongTrackPointingUpperBound" slotType="double"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::NadirSwathWidth" slotType="double"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Mass" slotType="double"/>
+	</rim:ExtrinsicObject>
+	<rim:ExtrinsicObject id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Detector:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::AcrossTrackGroundResolution" slotType="int"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::AlongTrackGroundResolution" slotType="int"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::NumberOfSamples" slotType="int"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::BandType" slotType="int"/>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::SNR" slotType="int"/>
+	</rim:ExtrinsicObject>
+</rim:RegistryObjectList>
