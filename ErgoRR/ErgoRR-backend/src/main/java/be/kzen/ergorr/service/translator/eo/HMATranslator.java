@@ -284,7 +284,10 @@ public class HMATranslator<T extends EarthObservationType> implements Translator
         WrsExtrinsicObjectType e = new WrsExtrinsicObjectType();
 
         String eoId = getEopId();
-        eoId = "urn:" + eoId.replaceAll("_", ":");
+        // Check if the eoId is an urn, otherwise add the prefix "urn:"
+        if (!(eoId.startsWith("urn:")))
+            eoId = "urn:" + eoId;  
+        eoId = eoId.replaceAll("_", ":");
         e.setId(eoId);
         e.setLid(eoId);
 
