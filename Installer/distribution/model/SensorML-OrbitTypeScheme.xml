@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0  http://www.oasis-open.org/committees/regrep/documents/3.0/schema/rim.xsd"
+	lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType" 
+	id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType" 
+	objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme" 
+	isInternal="true" 
+	nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+	<rim:Name>
+		<rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Orbit type taxonomy"/>
+	</rim:Name>
+	<rim:Description>
+		<rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Defines a taxonomy that may be used to classify platform according to their Orbit Types."/>
+	</rim:Description>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType" 
+		code="Sun-Synchronous" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Sun-Synchronous"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Sun-Synchronous">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Sun-Synchronous"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Sun-Synchronous orbit type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType" 
+		code="Geosynchronous" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Geosynchronous"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Geosynchronous">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Geosynchronous"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Geosynchronous orbit type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType" 
+		code="Geostationary" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Geostationary"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Geostationary">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Geostationary"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Geostationary orbit type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType" 
+		code="Low_Earth" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Low_Earth"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::OrbitType:Low_Earth">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Low_Earth"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Low Earth orbit type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+</rim:ClassificationScheme>
