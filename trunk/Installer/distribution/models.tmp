@@ -24,3 +24,9 @@ CIM-RestrictionTypeScheme.xml
 CIM-SpatialRepresentationScheme.xml
 CIM-TopicCategoryScheme.xml
 CIM-Package.xml
+cim-package-slot-init.xml
+SensorML-IntendedApplicationScheme.xml
+SensorML-OrbitTypeScheme.xml
+SensorML-SystemTypeScheme.xml
+SensorML-Package.xml
+SensorML-Package-slot-init.xml
