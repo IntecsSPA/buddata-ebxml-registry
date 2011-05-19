@@ -292,7 +292,7 @@
                 <xsl:for-each select="$servicesClassificationNodes//rim:ClassificationNode">
                     <xsl:if test="not(compare(@id, 'urn:ogc:serviceType:WebFeatureService:1.1') = 0 or compare(@id, 'urn:ogc:serviceType:WebMapService:1.3.0') = 0 or
                             compare(@id, 'urn:ogc:serviceType:WebCoverageService:1.1.2') = 0 or compare(@id, 'urn:ogc:serviceType:CatalogueService:2.0.2') = 0 or
-                            compare(@id, 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM') = 0 )"> 
+                            compare(@id, 'urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM') = 0 )">
                         <xsl:copy-of select="."/>
                     </xsl:if>
                 </xsl:for-each>
@@ -875,14 +875,25 @@
                 </rim:Slot>
             </xsl:if>
             <xsl:for-each select="gmd:EX_Extent/gmd:temporalElement">
-                <rim:Slot name="{$temporalSlotName}" slotType="{$dateTimeSlotType}">
-                    <rim:ValueList>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() = 'TimeInstant']">
+                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() = 'TimeInstant']">
+                    <rim:Slot name="{$temporalBeginSlotName}" slotType="{$dateTimeSlotType}">
+                        <rim:ValueList>
                             <rim:Value>
                                 <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
                             </rim:Value>
-                        </xsl:if>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']">
+                        </rim:ValueList>
+                    </rim:Slot>
+                    <rim:Slot name="{$temporalEndSlotName}" slotType="{$dateTimeSlotType}">
+                        <rim:ValueList>
+                            <rim:Value>
+                                <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
+                            </rim:Value>
+                        </rim:ValueList>
+                    </rim:Slot>
+                </xsl:if>
+                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']">
+                    <rim:Slot name="{$temporalBeginSlotName}" slotType="{$dateTimeSlotType}">
+                        <rim:ValueList>
                             <rim:Value>
                                 <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='begin']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']">
                                     <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='begin']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
@@ -891,6 +902,10 @@
                                     <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='beginPosition']"/>
                                 </xsl:if>
                             </rim:Value>
+                        </rim:ValueList>
+                    </rim:Slot>
+                    <rim:Slot name="{$temporalEndSlotName}" slotType="{$dateTimeSlotType}">
+                        <rim:ValueList>
                             <rim:Value>
                                 <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='end']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']">
                                     <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='end']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
@@ -899,15 +914,15 @@
                                     <xsl:value-of select="gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='endPosition']"/>
                                 </xsl:if>
                             </rim:Value>
-                        </xsl:if>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeEdge">
-                            <!-- Not yet Implemented-->
-                        </xsl:if>
-                        <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeNode">
-                            <!-- Not yet Implemented-->
-                        </xsl:if>
-                    </rim:ValueList>
-                </rim:Slot>
+                        </rim:ValueList>
+                    </rim:Slot>
+                </xsl:if>
+                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeEdge">
+                    <!-- Not yet Implemented-->
+                </xsl:if>
+                <xsl:if test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeNode">
+                    <!-- Not yet Implemented-->
+                </xsl:if>
             </xsl:for-each>
         </xsl:for-each>
         <rim:Name>
