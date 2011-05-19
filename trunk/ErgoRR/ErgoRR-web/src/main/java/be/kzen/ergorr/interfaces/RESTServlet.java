@@ -161,7 +161,7 @@ public class RESTServlet extends HttpServlet
 
     CommonProperties.removeInstance();
 
-    System.setProperty("ergorr.common.properties", getPropertiesFile().getCanonicalPath());
+   // System.setProperty("ergorr.common.properties", getPropertiesFile().getCanonicalPath());
   }
 
   private JsonObject readConfigurationFromRequest(Reader input)
@@ -174,6 +174,7 @@ public class RESTServlet extends HttpServlet
 
   private File getPropertiesFile()
   {
+ 
     return new File(getClass().getClassLoader().getResource("ergorr.properties").getFile());
   }
 
