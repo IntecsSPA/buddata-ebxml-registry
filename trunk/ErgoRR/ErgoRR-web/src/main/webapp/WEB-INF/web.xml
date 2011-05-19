@@ -12,6 +12,13 @@
         <servlet-class>be.kzen.ergorr.interfaces.RegistryHTTPServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+        <servlet>
+        <servlet-name>http-csw-inspire</servlet-name>
+        <display-name>http-csw-inspire</display-name>
+        <description>CSW HTTP interface INSPIRE</description>
+        <servlet-class>be.kzen.ergorr.interfaces.RegistryHTTPInspireServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet>
         <servlet-name>rest</servlet-name>
         <display-name>rest</display-name>
@@ -41,6 +48,11 @@
         <servlet-name>http-csw</servlet-name>
         <url-pattern>/httpservice</url-pattern>
     </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>http-csw-inspire</servlet-name>
+        <url-pattern>/inspire</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>ws-csw</servlet-name>
         <display-name>ws-csw</display-name>
@@ -85,4 +97,6 @@
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
-</web-app>
+
+    http-csw-inspire
+    </web-app>
