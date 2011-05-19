@@ -105,7 +105,7 @@ public class SensorMLTranslator<T extends Object> implements Translator<T> {
         try {
             uriResolver = new SaxonURIResolver(this.getClass().getResource(XSLT_RESOURCE_PATH));
         } catch (URISyntaxException ex) {
-            logger.log(Level.WARNING, "ISO Transformation : URI Resolver Syntax Error  ", ex);
+            logger.log(Level.WARNING, "SensorML Transformation : URI Resolver Syntax Error  ", ex);
         }
         SaxonXSLT saxonUtil = new SaxonXSLT(uriResolver);
         try {
