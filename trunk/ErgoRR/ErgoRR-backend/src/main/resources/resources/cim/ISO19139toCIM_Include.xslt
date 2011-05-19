@@ -23,7 +23,7 @@
     </xsl:variable>
 
     <xsl:variable name="applicationObjectType">
-    <xsl:value-of select="concat( $cimObjectTypeUrnPrefix, 'Application' )"/>
+        <xsl:value-of select="concat( $cimObjectTypeUrnPrefix, 'Application' )"/>
     </xsl:variable>
 
     <xsl:variable name="datasetCollectionObjectType">
@@ -84,7 +84,7 @@
         <xsl:text>urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Service</xsl:text>
     </xsl:variable>
 
-	<xsl:variable name="organizationObjectType">
+    <xsl:variable name="organizationObjectType">
         <xsl:text>urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Organization</xsl:text>
     </xsl:variable>
 
@@ -104,11 +104,11 @@
         <xsl:text>urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::</xsl:text>
     </xsl:variable>
 
-     <!-- The urn should be inherited from the Basic Extension package -->
+    <!-- The urn should be inherited from the Basic Extension package -->
     <xsl:variable name="servicesClassificationScheme">
         <xsl:text>urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services</xsl:text>
     </xsl:variable>
-     <xsl:variable name="servicesClassificationSchemePrefix">
+    <xsl:variable name="servicesClassificationSchemePrefix">
         <xsl:text>urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:</xsl:text>
     </xsl:variable>
 
@@ -326,8 +326,18 @@
         <xsl:text>http://purl.org/dc/terms/spatial</xsl:text>
     </xsl:variable>
 
+    <!-- Changed starting from version 0.1.12: since this version, the mapping is to 2 temporal slots
     <xsl:variable name="temporalSlotName">
         <xsl:text>http://purl.org/dc/terms/temporal</xsl:text>
+    </xsl:variable>
+    -->
+
+    <xsl:variable name="temporalBeginSlotName">
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::TemporalBegin</xsl:text>
+    </xsl:variable>
+
+    <xsl:variable name="temporalEndSlotName">
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::TemporalEnd</xsl:text>
     </xsl:variable>
 
     <xsl:variable name="creatorSlotName">
@@ -427,7 +437,7 @@
     <!--Association ID prefix -->
 
     <xsl:variable name="urnRegisrtryPackageToMetadataInformationAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:HasMember:')"/>
-    
+
     <xsl:variable name="urnCimMetadataPointOfContactAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:MetadataPointOfContact:')"/>
 
     <xsl:variable name="urnCimCitedResponsiblePartyAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:CitedResponsibleParty:')"/>
