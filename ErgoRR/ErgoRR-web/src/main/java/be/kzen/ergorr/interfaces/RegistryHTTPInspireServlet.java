@@ -19,6 +19,7 @@
 package be.kzen.ergorr.interfaces;
 
 import be.kzen.ergorr.commons.CommonProperties;
+import be.kzen.ergorr.commons.IoUtil;
 import be.kzen.ergorr.commons.MimeTypeConstants;
 import be.kzen.ergorr.commons.NamespaceConstants;
 import be.kzen.ergorr.commons.RequestContext;
@@ -53,6 +54,7 @@ import be.kzen.ergorr.service.HarvestService;
 import be.kzen.ergorr.service.RepositoryManager;
 import be.kzen.ergorr.service.TransactionService;
 import be.kzen.ergorr.service.translator.TranslationException;
+import it.intecs.pisa.ergorr.saxon.SaxonDocument;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URISyntaxException;
@@ -72,13 +74,25 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactoryConfigurationException;
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.trans.XPathException;
 import org.w3c.dom.Document;
-import it.intecs.pisa.ergorr.saxon.SaxonDocument;
 import it.intecs.pisa.ergorr.saxon.SaxonURIResolver;
 import it.intecs.pisa.ergorr.saxon.SaxonXSLT;
+import it.intecs.pisa.ergorr.saxon.SaxonXSLTParameter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.net.URL;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 /**
@@ -110,9 +124,40 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
     private static final String OP_GET_REPOSITORY_ITEM = "GetRepositoryItem";
     private static final String INTERNAL_ERROR = "500";
 
-    private static final String XSLT_INSPIRE_2_CIM = "/inspire/XSL/inspire_2_CIM.xsl";
-    private static final String XSLT_CIM_2_INSPIRE = "/inspire/XSL/CIM_2_inspire.xsl";
+    private static final String XSLT_INSPIRE_2_CIM_GET_RECORD_BY_ID = "/inspire/XSL/inspire_2_CIM_GRBI.xslt";
+    private static final String XSLT_INSPIRE_2_CIM_GET_CAPABILITIES = "/inspire/XSL/inspire_2_CIM.xslt";
+    private static final String XSLT_INSPIRE_2_CIM_GET_RECORDS = "/inspire/XSL/inspire_2_CIM.xslt";
+    
+    private static final String XSLT_INSPIRE_CONFIG_PARAMETER="inspire_config";
+    
+    private static final String XSLT_CIM_2_INSPIRE_GET_RECORD_BY_ID = "/inspire/XSL/CIM_2_inspire_GRBI.xslt";
+    private static final String XSLT_CIM_2_INSPIRE_GET_CAPABILITIES = "/inspire/XSL/CIM_2_inspire.xslt";
+    private static final String XSLT_CIM_2_INSPIRE_GET_RECORDS = "/inspire/XSL/CIM_2_inspire.xslt";
+    
     private static final String XSLT_INSPIRE_RESOURCE_PATH = "/inspire/XSL";
+    private static final String XML_INSPIRE_QUERYABLES_PATH = "/inspire/XSL/inspire_queryables_2_CIM.xml";
+    
+    private static final String CSW_NAMESPACE = "http://www.opengis.net/cat/csw/2.0.2";
+    private static final String CSW_PREFIX = "csw";
+    private static final String RESULT_TYPE_XPATH = "//csw:GetRecords/csw:Query/csw:ElementSetName";
+    
+    private static final String RESULT_TYPE_FULL = "full";
+    private static final String RESULT_TYPE_SUMMARY = "summary";
+    private static final String RESULT_TYPE_BRIEF = "brief";
+    
+
+    private static final String XSLT_TYPE_PREFIX = "/iso-";
+    private static final String XSLT_TYPE_SUFFIX = ".xslt";
+    
+    
+    private static final String OPERATION_GET_RECORDS="GetRecords";
+    private static final String OPERATION_GET_CAPABILITIES="GetCapabilities";
+    private static final String OPERATION_GET_RECORD_BY_ID="GetRecordById";
+    
+    
+    
+    
+    
 
     /**
      * {@inheritDoc}
@@ -158,9 +203,43 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Object unmarshalledRequestObj;
         PipedInputStream pipedInput;
+        String resultType=null;
+        URL xsltRequestURL=null, xsltResponseURL=null;
+        SaxonXSLTParameter[] parameters = null;
         try {
-            pipedInput = translate2CIM(request);
+            SaxonDocument saxDocReq,saxBodyRequest;
+            saxDocReq= new SaxonDocument(request.getInputStream());
+            
+            saxDocReq.declareXPathNamespace(CSW_PREFIX, CSW_NAMESPACE);
+            saxDocReq.declareXPathNamespace(CSW_PREFIX, CSW_NAMESPACE);
+            resultType=saxDocReq.evaluateXPath(RESULT_TYPE_XPATH);
+        
+            String rootOperation=saxDocReq.evaluateXPath("//*[local-name()='Body']/*[1]/local-name()");
+            if(rootOperation.equals(OPERATION_GET_CAPABILITIES)){
+              xsltRequestURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM_GET_CAPABILITIES);
+              xsltResponseURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM_GET_CAPABILITIES);
+              
+            }else
+            if(rootOperation.equals(OPERATION_GET_RECORD_BY_ID)){
+               xsltRequestURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM_GET_RECORD_BY_ID); 
+               xsltResponseURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM_GET_CAPABILITIES);
+            }else
+            if(rootOperation.equals(OPERATION_GET_RECORDS)){
+               xsltRequestURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM_GET_RECORDS); 
+               xsltResponseURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM_GET_CAPABILITIES);
+               parameters=new SaxonXSLTParameter[1];
+               parameters[0]=new SaxonXSLTParameter(XSLT_INSPIRE_CONFIG_PARAMETER,
+                     this.getClass().getResource(XML_INSPIRE_QUERYABLES_PATH).toString());
+               
+            }else{
+                logger.log(Level.SEVERE, "Inspire Operation Error"); 
+               response.sendError(response.SC_BAD_REQUEST);
+               return;
+            }   
+            saxBodyRequest=new SaxonDocument(saxDocReq.evaluateXPathNode("//*[local-name()='"+rootOperation+"']"));
+            pipedInput = translate2CIM(saxBodyRequest,xsltRequestURL, parameters);
             unmarshalledRequestObj = JAXBUtil.getInstance().unmarshall(pipedInput);
+                
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Could not unmarshall request", ex);
             response.sendError(response.SC_BAD_REQUEST);
@@ -170,9 +249,10 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
         try {
             JAXBElement requestElement = (JAXBElement) unmarshalledRequestObj;
             JAXBElement responseEl = process(requestElement.getValue(), request);
-
             response.setContentType(MimeTypeConstants.APPLICATION_XML);
-
+            Node cimResponse=JAXBUtil.getInstance().marshall(responseEl);
+            pipedInput=this.translate2inspire(cimResponse, xsltResponseURL, resultType);
+            
             JAXBUtil.getInstance().marshall(responseEl, response.getOutputStream());
             response.setStatus(response.SC_OK);
         } catch (Exception e) {
@@ -662,12 +742,12 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
         return paramName;
     }
 
-    PipedInputStream translate2CIM(HttpServletRequest request) throws IOException, TranslationException, URISyntaxException {
+    PipedInputStream translate2CIM(SaxonDocument saxonReq, URL xsltURL, SaxonXSLTParameter[] param) throws IOException, TranslationException, 
+            URISyntaxException, XPathException, XPathExpressionException, SaxonApiException, XPathFactoryConfigurationException {
 
-        SAXSource source = new SAXSource(new InputSource(request.getInputStream()));
+        SAXSource source = saxonReq.getSAXSource();
         PipedInputStream pipeInput = null;
 
-        URL xsltURL = this.getClass().getResource(XSLT_INSPIRE_2_CIM);
         SAXSource xsltDoc = null;
 
         SaxonURIResolver uriResolver = null;
@@ -686,7 +766,7 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
         }
         
         try {
-            pipeInput = saxonUtil.saxonXSLPipeTransform(source, xsltDoc, null);
+            pipeInput = saxonUtil.saxonXSLPipeTransform(source, xsltDoc, param);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Could not transform SensorML Document.", ex);
             throw new TranslationException("Could not transform SensorML Document.");
@@ -695,12 +775,12 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
         return pipeInput;
     }
 
-    PipedInputStream translate2inspire(HttpServletRequest request) throws IOException, TranslationException, URISyntaxException {
+    PipedInputStream translate2inspire(Node responseNode, URL xsltURL, String resultType) throws IOException, 
+                            TranslationException, URISyntaxException, Exception {
 
-        SAXSource source = new SAXSource(new InputSource(request.getInputStream()));
+        SAXSource source = new SAXSource(new InputSource(getNodeAsInputStream(responseNode)));
         PipedInputStream pipeInput = null;
 
-        URL xsltURL = this.getClass().getResource(XSLT_CIM_2_INSPIRE);
         SAXSource xsltDoc = null;
 
         SaxonURIResolver uriResolver = null;
@@ -720,11 +800,34 @@ public class RegistryHTTPInspireServlet extends HttpServlet {
 
         try {
             pipeInput = saxonUtil.saxonXSLPipeTransform(source, xsltDoc, null);
+            if(! resultType.equalsIgnoreCase(RESULT_TYPE_FULL) ){
+                if(resultType.equalsIgnoreCase(RESULT_TYPE_SUMMARY) || 
+                   resultType.equalsIgnoreCase(RESULT_TYPE_BRIEF)){
+                
+                   URL xslrespTypetURL=this.getClass().getResource(XSLT_INSPIRE_RESOURCE_PATH
+                           +XSLT_TYPE_PREFIX+resultType.toLowerCase()
+                           +XSLT_TYPE_SUFFIX);
+                   xsltDoc = new SAXSource(new InputSource(xslrespTypetURL.openStream()));
+                   source = new SAXSource(new InputSource(pipeInput));
+                   pipeInput = saxonUtil.saxonXSLPipeTransform(source, xsltDoc, null);
+                }
+            
+            }
+            
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Could not transform SensorML Document.", ex);
             throw new TranslationException("Could not transform SensorML Document.");
         }
 
         return pipeInput;
+    }
+    
+    private InputStream getNodeAsInputStream(Node xml)
+            throws Exception {
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        StreamResult res = new StreamResult(out);
+        transformer.transform(new DOMSource(xml), res);
+        return new ByteArrayInputStream(out.toByteArray());
     }
 }
