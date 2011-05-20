@@ -5,8 +5,14 @@ import be.kzen.ergorr.commons.IoUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -20,9 +26,13 @@ import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.WhitespaceStrippingPolicy;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
+import net.sf.saxon.s9api.XdmValue;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.tree.DocumentImpl;
 import net.sf.saxon.xpath.XPathEvaluator;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 /**
@@ -96,11 +106,24 @@ public class SaxonDocument {
         this.xpathComp.declareNamespace(prefix, uri);
 
     }
+    
+    
+    public String evaluateXPathNode(String xpath) throws XPathFactoryConfigurationException, XPathException, XPathExpressionException {
+        System.setProperty("javax.xml.xpath.XPathFactory:"+
+                     NamespaceConstant.OBJECT_MODEL_SAXON,
+                    "net.sf.saxon.xpath.XPathFactoryImpl");
+        XPathFactory xpf = XPathFactory.newInstance(NamespaceConstant.OBJECT_MODEL_SAXON);
+        XPath xpe = xpf.newXPath();
+        NodeInfo doc = ((XPathEvaluator) xpe).setSource(this.getSAXSource());
+        javax.xml.xpath.XPathExpression rootXpath = xpe.compile(xpath);
+        NodeInfo root=(NodeInfo)rootXpath.evaluate(doc, XPathConstants.NODE);
+        return transformToString(root);
+    }
 
     /**
      * @return the saxDoc
      */
-    private SAXSource getSAXSource() {
+    public SAXSource getSAXSource() {
         return(new SAXSource(new InputSource(new StringReader(this.stringDoc))));
     }
 
@@ -111,4 +134,21 @@ public class SaxonDocument {
         return stringDoc;
     }
 
+    
+    private static String transformToString(NodeInfo sourceXML) {
+
+        StringWriter sw = new StringWriter();
+
+        try {
+            TransformerFactory tFactory = new net.sf.saxon.TransformerFactoryImpl();
+            Transformer transformer = tFactory.newTransformer();
+            transformer.transform(sourceXML, new StreamResult(sw));
+        } catch (TransformerConfigurationException ex) {
+            ex.printStackTrace();
+        } catch (TransformerException ex) {
+            ex.printStackTrace();
+        }
+        
+        return sw.toString();
+    }
 }

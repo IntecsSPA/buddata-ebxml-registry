@@ -35,6 +35,7 @@ public class SaxonXSLT {
         this.processor=new Processor(false);
         this.compiler=this.processor.newXsltCompiler();
         this.compiler.setURIResolver(uriResolver);
+ 
     }
 
 
