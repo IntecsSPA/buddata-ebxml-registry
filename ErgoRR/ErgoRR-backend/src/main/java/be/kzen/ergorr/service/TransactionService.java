@@ -46,12 +46,14 @@ import be.kzen.ergorr.query.QueryManager;
 import be.kzen.ergorr.service.translator.TranslationException;
 import be.kzen.ergorr.service.translator.TranslatorFactory;
 import be.kzen.ergorr.service.translator.Translator;
+import it.intecs.pisa.ergorr.saxon.SaxonDocument;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
+import org.w3c.dom.Node;
 
 /**
  * Manages transaction insert/update/delete actions.
@@ -60,7 +62,7 @@ import javax.xml.namespace.QName;
  */
 public class TransactionService {
 
-    private static Logger logger = Logger.getLogger(TransactionService.class.getName());
+    private static final Logger logger = Logger.getLogger(TransactionService.class.getName());
     private RequestContext requestContext;
     private InsertResultType insertResult;
     private int insertsCount;
@@ -140,40 +142,68 @@ public class TransactionService {
      * @param insert Insert data.
      * @throws be.kzen.ergorr.exceptions.ServiceException
      */
-    private void doInsert(InsertType insert) throws ServiceException {
+    private void doInsert(InsertType insert) throws ServiceException{
         logger.fine("Transtaction.doInsert");
         RegistryObjectListType regObjList = new RegistryObjectListType();
 
         for (Object o : insert.getAny()) {
 
             if (!(o instanceof JAXBElement)) {
-                throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Content not recognized as a JAXBElement :" + o.getClass().getName());
-            }
+                
+                if(!(o instanceof Node))
+                 throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Content not recognized as a JAXBElement :" + o.getClass().getName());
+                else{
+                    String objectType=null;
+                    SaxonDocument sx=null;
+                    
+                    try {
+                        sx = new SaxonDocument((Node) o);
+                        objectType = sx.getRootNameSpace();
+                    } catch (Exception ex) {
+                        String err = "Could not recognized Element: " + ((Node)o).getNodeName() + "[namespace: " + ((Node)o).getNamespaceURI()+"]";
+                        logger.log(Level.WARNING, err, ex);
+                        throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
+                    }
+                    try {
+                        Translator translator = TranslatorFactory.getInstance(sx.getXMLDocumentString(), objectType);
+                        regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
+                    } catch (TranslationException ex) {
+                        String err = "Translation failed";
+                        logger.log(Level.WARNING, err, ex);
+                        throw new ServiceException(ErrorCodes.INVALID_REQUEST, err, ex);
+                    } catch (Exception ex) {
+                        String err = "Could not invoke translator for namespace: " + objectType;
+                        logger.log(Level.SEVERE, err, ex);
+                        throw new ServiceException(err, ex);
+                    }
+                
+                }  
+            }else{
+                JAXBElement jaxbEl = (JAXBElement) o;
+                Object obj = jaxbEl.getValue();
 
-            JAXBElement jaxbEl = (JAXBElement) o;
-            Object obj = jaxbEl.getValue();
-
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("Translation root object: " + obj.getClass().toString());
-            }
-            if (obj instanceof IdentifiableType) {
-                regObjList.getIdentifiable().add((JAXBElement<? extends IdentifiableType>) o);
-            } else if (obj instanceof RegistryObjectListType) {
-                RegistryObjectListType reqList = (RegistryObjectListType) obj;
-                regObjList.getIdentifiable().addAll(reqList.getIdentifiable());
-            } else {
-                try {
-                    Translator translator = TranslatorFactory.getInstance(jaxbEl);
-                    regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
-                } catch (TranslationException ex) {
-                    logger.log(Level.WARNING, "Translation error", ex);
-                    throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Transaction error", ex);
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, "Translation root object: {0}", obj.getClass().toString());
                 }
-            }
+                if (obj instanceof IdentifiableType) {
+                    regObjList.getIdentifiable().add((JAXBElement<? extends IdentifiableType>) o);
+                } else if (obj instanceof RegistryObjectListType) {
+                    RegistryObjectListType reqList = (RegistryObjectListType) obj;
+                    regObjList.getIdentifiable().addAll(reqList.getIdentifiable());
+                } else {
+                    try {
+                        Translator translator = TranslatorFactory.getInstance(jaxbEl);
+                        regObjList.getIdentifiable().addAll(translator.translate().getIdentifiable());
+                    } catch (TranslationException ex) {
+                        logger.log(Level.WARNING, "Translation error", ex);
+                        throw new ServiceException(ErrorCodes.TRANSACTION_FAILED, "Transaction error", ex);
+                    }
+                }
+            }    
         }
 
         if (logger.isLoggable(Level.FINE)) {
-            logger.fine("Got " + regObjList.getIdentifiable().size() + " translated objects");
+            logger.log(Level.FINE, "Got {0} translated objects", regObjList.getIdentifiable().size());
         }
         LCManager lcm = new LCManager(requestContext);
         lcm.submit(regObjList);
