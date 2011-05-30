@@ -124,6 +124,10 @@
                                         type: 'CatalogueCapabilities',
                                         leaf: true
                                     },{
+                                        text: ergoRRUIManager.loc.getLocalMessage('labelCatalogueInpsireCapabilities'),
+                                        type: 'CatalogueInspireCapabilities',
+                                        leaf: true
+                                    },{
                                         text: ergoRRUIManager.loc.getLocalMessage('labelEOClientUser'),
                                         type: 'EOClientUser',
                                         leaf: true
@@ -150,6 +154,18 @@
                                                     ergoRRUIManager.workspacePanel.add(capabilitiesPanel);
                                                     ergoRRUIManager.workspacePanel.doLayout();
                                                 break;
+                                            case 'CatalogueInspireCapabilities':
+                                                   ergoRRUIManager.workspacePanel.cleanPanel();
+                                                   var capabilitiesInspirePath="inspire?service=CSW&request=GetCapabilities&version=2.0.2";
+                                                   var capabilitiesInspirePanel=new Ext.Panel({
+                                                        title: ergoRRUIManager.loc.getLocalMessage('labelCatalogueInpsireCapabilities'),
+                                                        id: "CatalogueInspireCapabilities",
+                                                        bodyStyle : {background: "#e4e7e7"},
+                                                        html: "<iframe src='"+interfacesManager.properties.ergoRRURL+capabilitiesInspirePath+"' name='"+n.attributes.type+"_frame' id='"+n.attributes.type+"_frame' scrolling='yes' width='100%' height='100%' marginwidth='0' marginheight='0'></iframe>"
+                                                    });
+                                                    ergoRRUIManager.workspacePanel.add(capabilitiesInspirePanel);
+                                                    ergoRRUIManager.workspacePanel.doLayout();
+                                                break;    
                                             case 'EOClientUser':
                                                    ergoRRUIManager.workspacePanel.cleanPanel();
                                                    var eoClientPanel=new Ext.Panel({
