@@ -338,7 +338,7 @@ public class RegistryHTTPServlet extends HttpServlet {
      * @return TransactionResponse.
      * @throws ServiceExceptionReport
      */
-    private JAXBElement processTransaction(TransactionType transactionReq) throws ServiceExceptionReport {
+    private JAXBElement processTransaction(TransactionType transactionReq) throws ServiceExceptionReport, JAXBException {
         StopWatch sw = new StopWatch();
         RequestContext requestContext = new RequestContext();
         requestContext.setRequest(transactionReq);
