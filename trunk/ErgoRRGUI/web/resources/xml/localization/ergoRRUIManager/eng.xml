@@ -17,6 +17,7 @@
     <labelHarvestFromURL>Harvest from URL</labelHarvestFromURL>
     <labelEOClientUser>Earth Observation (EO) Client</labelEOClientUser>
     <labelCatalogueCapabilities>Catalogue Capabilities</labelCatalogueCapabilities>
+    <labelCatalogueInpsireCapabilities>Catalogue Inspire Capabilities</labelCatalogueInpsireCapabilities>
     <labelCIMClientUser>Cataloguing of ISO Metadata (CIM) Client</labelCIMClientUser>
     <labelConfigurationMisc>Misc</labelConfigurationMisc>
     <labelConfigurationDatabase>Database</labelConfigurationDatabase>

@@ -2,7 +2,6 @@
 
 <xmlInterfaceConfiguration>
    <!-- ErgoRR URL-->
-     <property name="ergoRRURL" value="http://192.168.24.150:8099/ebrimtest/"/>
-
+     <property name="ergoRRURL" value="http://localhost:8099/inspire/"/>
 </xmlInterfaceConfiguration>
 
