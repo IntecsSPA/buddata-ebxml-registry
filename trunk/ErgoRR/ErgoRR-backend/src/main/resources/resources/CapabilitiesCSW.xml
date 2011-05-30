@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wrs:Capabilities
- xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
- xmlns:csw="http://www.opengis.net/cat/csw"
- xmlns:ows="http://www.opengis.net/ows"
- xmlns:ogc="http://www.opengis.net/ogc"
- xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns:gml="http://www.opengis.net/gml"
- xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
- version="1.0.0">
+<wrs:Capabilities xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" xmlns:csw="http://www.opengis.net/cat/csw" xmlns:ows="http://www.opengis.net/ows" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" version="1.0.0">
 <!-- xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 /Users/yamanustuntas/workspace/projects/ERGO/buddata-ebxml-registry/ErgoRR/ErgoRR-web/src/main/webapp/WEB-INF/wsdl/xsd/wrs/1.0.0/wrs.xsd" -->
 
-    <!-- ServiceIdentification -->
-
+    
     <ows:ServiceIdentification>
-        <ows:Title>EarthObservation ebRIM Catalogue</ows:Title>
+        <ows:ServiceType>CSW</ows:ServiceType>
+        <ows:ServiceTypeVersion>2.0.2</ows:ServiceTypeVersion>
+        <ows:Title>Buddata CSW</ows:Title>
         <ows:Abstract>
-  A web-based catalogue service that implements the CSW-ebRIM profile of the
-  OGC Catalogue 2.0 specification, and the EO Extension Package
+        A catalogue service that conforms to the HTTP protocol
+        binding of the OpenGIS Catalogue Service specification
+        version 2.0.2.
         </ows:Abstract>
         <ows:Keywords>
-            <ows:Keyword>registry</ows:Keyword>
-            <ows:Keyword>catalogue</ows:Keyword>
-            <ows:Keyword>ebRIM</ows:Keyword>
-            <ows:Keyword>earth observation</ows:Keyword>
+        <ows:Keyword>CSW</ows:Keyword>
+        <ows:Keyword>Buddata</ows:Keyword>
+        <ows:Keyword>geospatial</ows:Keyword>
+        <ows:Keyword>catalogue</ows:Keyword>
         </ows:Keywords>
-        <ows:ServiceType>urn:ogc:service:catalogue:csw-ebrim</ows:ServiceType>
-        <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
         <ows:Fees>NONE</ows:Fees>
         <ows:AccessConstraints>NONE</ows:AccessConstraints>
     </ows:ServiceIdentification>
+
 
     <!-- ServiceProvider -->
 
@@ -57,6 +49,9 @@
             <ows:Role>$serviceProvider.role$</ows:Role>
         </ows:ServiceContact>
     </ows:ServiceProvider>
+    
+    
+    
     <ows:OperationsMetadata>
 
         <!-- GetCapabilities -->
@@ -64,7 +59,7 @@
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -73,8 +68,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/inspire"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -95,7 +90,7 @@
         <ows:Operation name="GetRecords">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -104,8 +99,7 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -116,45 +110,79 @@
                 <ows:Value>application/xml</ows:Value>
                 <ows:Value>text/xml</ows:Value>
             </ows:Parameter>
-            <ows:Parameter name="outputSchema">
-                <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
-            </ows:Parameter>
+            
             <ows:Parameter name="startPosition">
                 <ows:Value/>
             </ows:Parameter>
             <ows:Parameter name="maxRecords">
                 <ows:Value/>
             </ows:Parameter>
-            <ows:Parameter name="TypeNames">
-                <ows:Value>rim:ExtrinsicObject</ows:Value>
-                <ows:Value>rim:Association</ows:Value>
-                <ows:Value>rim:Classification</ows:Value>
-                <ows:Value>rim:ClassificationNode</ows:Value>
-                <ows:Value>rim:ClassificationScheme</ows:Value>
-                <ows:Value>rim:AdhocQuery</ows:Value>
-                <ows:Value>rim:ExternalIdentifier</ows:Value>
-                <ows:Value>rim:RegistryPackage</ows:Value>
+            <ows:Parameter name="SortBy">
+                <ows:Value/>
             </ows:Parameter>
-            <!--ows:Parameter name="ElementName"/-->
+           
+            <ows:Parameter name="TypeName">
+             <!--<ows:Value>csw:Record</ows:Value>-->
+             <ows:Value>gmd:MD_Metadata</ows:Value>
+            </ows:Parameter>
+          
+            <ows:Parameter name="OutputSchema">
+                <ows:Value>http://www.opengis.net/cat/csw/2.0.2</ows:Value>
+                <ows:Value>http://www.isotc211.org/2005/gmd</ows:Value>
+                <ows:Value>http://www.adv.de/extendedISO</ows:Value>
+            </ows:Parameter>
+            <ows:Parameter name="ResultType">
+                <ows:Value>hits</ows:Value>
+                <ows:Value>results</ows:Value>
+                <ows:Value>validate</ows:Value>
+            </ows:Parameter>
             <ows:Parameter name="ElementSetName">
                 <ows:Value>brief</ows:Value>
                 <ows:Value>summary</ows:Value>
                 <ows:Value>full</ows:Value>
             </ows:Parameter>
-            <ows:Parameter name="CONSTRAINTLANGUAGE">
-                <ows:Value>FILTER</ows:Value>
+            <ows:Parameter name="ConstraintLanguage">
+                <ows:Value>Filter</ows:Value>
             </ows:Parameter>
-            <ows:Parameter name="SortBy">
-                <ows:Value/>
-            </ows:Parameter>
-        </ows:Operation>
+  <!--          <ows:Constraint name="SupportedISOQueryables">
+                <ows:Value>http://arcims.hamm.de/csw/CSWStartup</ows:Value>
+                <ows:Value>Language</ows:Value>
+                <ows:Value>AlternateTitle</ows:Value>
+                <ows:Value>CreationDate</ows:Value>
+                <ows:Value>OrganisationName</ows:Value>
+                <ows:Value>HierarchyLevelName</ows:Value>
+                <ows:Value>ParentIdentifier</ows:Value>
+                <ows:Value>KeywordType</ows:Value>
+                <ows:Value>TopicCategory</ows:Value>
+                <ows:Value>DatasetLanguage</ows:Value>
+                <ows:Value>GeographicDescriptionCode</ows:Value>
+                <ows:Value>SpatialResolution</ows:Value>
+                <ows:Value>TempExtent_begin</ows:Value>
+                <ows:Value>TempExtent_end</ows:Value>
+                <ows:Value>ServiceType</ows:Value>
+                <ows:Value>ServiceTypeVersion</ows:Value>
+                <ows:Value>OperatesOn</ows:Value>
+                <ows:Value>Operation</ows:Value>
+                <ows:Value>DCP</ows:Value>
+                <ows:Value>CouplingType</ows:Value>
+            </ows:Constraint> 
+            <ows:Constraint name="AdditionalQueryables">
+                <ows:Value>Fees</ows:Value>
+            </ows:Constraint> -->
+</ows:Operation>
+
+          
+          
+
+
+
 
         <!-- GetRecordById -->
 
         <ows:Operation name="GetRecordById">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -163,8 +191,8 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Get xlink:href="/inspire"/><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -179,7 +207,9 @@
                 <ows:Value>text/xml</ows:Value>
             </ows:Parameter>
             <ows:Parameter name="outputSchema">
-                <ows:Value>urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0</ows:Value>
+                <ows:Value>http://www.opengis.net/cat/csw/2.0.2</ows:Value>
+                <ows:Value>http://www.isotc211.org/2005/gmd</ows:Value>
+                <ows:Value>http://www.adv.de/extendedISO</ows:Value>
             </ows:Parameter>
             <ows:Parameter name="ElementSetName">
                 <ows:Value>brief</ows:Value>
@@ -188,12 +218,13 @@
             </ows:Parameter>
         </ows:Operation>
 
+
         <!-- DescribeRecord -->
 
-       <!-- <ows:Operation name="DescribeRecord">
+        <ows:Operation name="DescribeRecord">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice">
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -202,50 +233,32 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/>
-                    <ows:Post xlink:href="/httpservice">
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
-            <ows:Parameter name="TypeNames">
-                <ows:Value>rim:RegistryObject</ows:Value>
+            <ows:Parameter name="TypeName">
+                <ows:Value>csw:Record</ows:Value>
+                <ows:Value>gmd:MD_Metadata</ows:Value>
             </ows:Parameter>
-            <ows:Parameter name="outputFormat">
+            <ows:Parameter name="OutputFormat">
                 <ows:Value>application/xml</ows:Value>
-                <ows:Value>text/xml</ows:Value>
             </ows:Parameter>
             <ows:Parameter name="schemaLanguage">
                 <ows:Value>XMLSCHEMA</ows:Value>
             </ows:Parameter>
-        </ows:Operation>-->
-
-        <!-- GetRepositoryItem -->
-
-        <ows:Operation name="GetRepositoryItem">
-            <ows:DCP>
-                <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
-                        <ows:Constraint name="PostEncoding">
-                            <ows:Value>XML</ows:Value>
-                        </ows:Constraint>
-                    </ows:Post>
-                </ows:HTTP>
-            </ows:DCP>
-            <ows:Parameter name="id">
-                <ows:Value/>
-            </ows:Parameter>
         </ows:Operation>
+
 
         <!-- Harvest -->
 
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -254,20 +267,20 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
-            <ows:Parameter name="resourceType">
-                <ows:Value>eop:EarthObservation</ows:Value>
-                <ows:Value>sar:EarthObservation</ows:Value>
-                <ows:Value>atm:EarthObservation</ows:Value>
-                <ows:Value>opt:EarthObservation</ows:Value>
-                <ows:Value>rim:RegistryObjectList</ows:Value>
+            <ows:Parameter name="ResourceType">
+                <ows:Value>http://www.isotc211.org/schemas/2005/gmd/</ows:Value>
+                <!--<ows:Value>http://www.opengis.net/wms</ows:Value>-->
+            </ows:Parameter>
+            <ows:Parameter name="ResourceFormat">
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/plain</ows:Value>
             </ows:Parameter>
         </ows:Operation>
 
@@ -276,7 +289,7 @@
         <ows:Operation name="Transaction">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>SOAP</ows:Value>
                         </ows:Constraint>
@@ -285,8 +298,7 @@
             </ows:DCP>
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="/httpservice"/><!-- DO NOT EDIT: replaced at runtime -->
-                    <ows:Post xlink:href="/httpservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/inspire">
                         <ows:Constraint name="PostEncoding">
                             <ows:Value>XML</ows:Value>
                         </ows:Constraint>
@@ -294,12 +306,12 @@
                 </ows:HTTP>
             </ows:DCP>
         </ows:Operation>
-        <ows:Parameter name="service">
-            <ows:Value>urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM</ows:Value>
-        </ows:Parameter>
-        <ows:Parameter name="version">
-            <ows:Value>2.0.2</ows:Value>
-        </ows:Parameter>
+        
+        <ows:Constraint name="IsoProfiles">
+            <ows:Value>http://www.isotc211.org/2005/gmd</ows:Value>
+            <!--ows:Value>http://www.adv.de/extendedISO</ows:Value-->
+        </ows:Constraint>
+
         <ows:ExtendedCapabilities>
             <!-- DO NOT EDIT: replaced at runtime -->
         </ows:ExtendedCapabilities>
@@ -350,4 +362,3 @@
         </ogc:Id_Capabilities>
     </ogc:Filter_Capabilities>
 </wrs:Capabilities>
-
