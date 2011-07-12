@@ -94,6 +94,7 @@ public class RegistryHTTPServlet extends HttpServlet {
     private static final String VERSION_NAME = "2.0.2";
     private static final String PARAM_ELEMENT_SET_NAME = "ElementSetName";
     private static final String PARAM_OUTPUT_FORMAT = "outputFormat";
+    private static final String PARAM_OUTPUT_SCHEMA = "outputSchema";
     private static final String PARAM_REQUEST = "request";
     private static final String PARAM_ID = "Id";
     private static final String OP_GET_CAPABILITIES = "GetCapabilities";
@@ -433,7 +434,7 @@ public class RegistryHTTPServlet extends HttpServlet {
     protected void streamItemFromRepository(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType(MimeTypeConstants.TEXT_XML); // TODO - read from ExtrinsicObject contenttype
         ServletOutputStream out = response.getOutputStream();
-        String id = request.getParameter(PARAM_ID);
+        String id = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(), PARAM_ID));
 
         if (id != null && !id.trim().equals("")) {
             RepositoryManager repoMngr = new RepositoryManager();
@@ -514,7 +515,7 @@ public class RegistryHTTPServlet extends HttpServlet {
     private Object extractGetRecordByIdTypeFromHttpGet(HttpServletRequest request) throws Exception {
         GetRecordByIdType getRecordById = new GetRecordByIdType();
 
-        String elementSetNameParam = request.getParameter(PARAM_ELEMENT_SET_NAME);
+        String elementSetNameParam = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(), PARAM_ELEMENT_SET_NAME));
         if (elementSetNameParam == null) {
             elementSetNameParam = ElementSetType.SUMMARY.value();
         } else if ((elementSetNameParam.equals(ElementSetType.BRIEF.value())
@@ -530,7 +531,7 @@ public class RegistryHTTPServlet extends HttpServlet {
             throw new Exception(err);
         }
 
-        String outputFormatParam = request.getParameter(PARAM_OUTPUT_FORMAT);
+        String outputFormatParam = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(),PARAM_OUTPUT_FORMAT));
         if (outputFormatParam == null) {
             outputFormatParam = MimeTypeConstants.APPLICATION_XML;
         } else if (!outputFormatParam.equals(MimeTypeConstants.APPLICATION_XML)) {
@@ -541,10 +542,10 @@ public class RegistryHTTPServlet extends HttpServlet {
             throw new Exception(err);
         }
 
-        String outputSchemaParam = request.getParameter("outputSchema");
+        String outputSchemaParam = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(),PARAM_OUTPUT_SCHEMA));
         if (outputSchemaParam == null) {
             outputSchemaParam = NamespaceConstants.CSW;
-        } else if (!outputSchemaParam.equals(NamespaceConstants.CSW)) {
+        } else if (!outputSchemaParam.equals(NamespaceConstants.CSW) && !outputSchemaParam.equals(NamespaceConstants.RIM)) {
             String err = "User did not provide a valid outputSchema: " + outputSchemaParam;
 
             if (logger.isLoggable(Level.INFO)) {
@@ -553,7 +554,7 @@ public class RegistryHTTPServlet extends HttpServlet {
             throw new Exception(err);
         }
 
-        String id = request.getParameter(PARAM_ID);
+        String id = request.getParameter(getRequestParameterIgnoringCase(request.getParameterNames(),PARAM_ID));
         if (id == null || id.trim().equals("")) {
             String err = "User did not provide an ID";
 
