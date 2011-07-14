@@ -14,8 +14,17 @@
 
     <xsl:variable name="isoId" select="/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"/>
 
-    <xsl:variable name="cimIDPrefix" select="concat( 'urn:CIM:' , $isoId , ':')"/>
-
+    <xsl:variable name="cimIDPrefix">
+        <xsl:choose>
+            <xsl:when test="contains($isoId, 'urn:')">
+                <xsl:value-of select="concat($isoId , ':')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="concat( 'urn:CIM:' , $isoId , ':')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+		
     <!--	CIM Extrinsic Objects -->
 
     <xsl:variable name="cimObjectTypeUrnPrefix">
@@ -338,6 +347,10 @@
 
     <xsl:variable name="temporalEndSlotName">
         <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::TemporalEnd</xsl:text>
+    </xsl:variable>
+    
+    <xsl:variable name="lineageSlotName">
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::Lineage</xsl:text>
     </xsl:variable>
 
     <xsl:variable name="creatorSlotName">
