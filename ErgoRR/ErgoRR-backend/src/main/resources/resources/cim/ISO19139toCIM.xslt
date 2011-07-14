@@ -5,14 +5,25 @@
     <xsl:param name="metadataInformationId">urn:CIM:metadataInformationId:1</xsl:param>
 
     <xsl:include href="ISO19139toCIM_Include.xslt"/>
-
-    <xsl:variable name="resourceMetadataId" select="concat( 'urn:CIM:', $isoId, ':ResourceMetadata' )"/>
+    
+    <xsl:variable name="resourceMetadataId">
+        <xsl:choose>
+            <xsl:when test="contains($isoId, 'urn:')">
+                <xsl:value-of select="concat($isoId, ':ResourceMetadata')"/> 
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="concat( 'urn:CIM:', $isoId, ':ResourceMetadata')"/> 
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable> 
 
     <xsl:template match="gmd:MD_Metadata">
         <!--xsl:variable name="metadataInformationId" select="$urnCimMetadataInformationExtrinsicObjectID"/-->
         <xsl:variable name="registryPackageId" select="concat( $metadataInformationId , ':pkg')"/>
         <rim:RegistryObjectList>
-            <xsl:attribute name="iso19139Id"><xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/></xsl:attribute>
+            <xsl:attribute name="iso19139Id">
+                <xsl:value-of select="./gmd:fileIdentifier/gco:CharacterString"/>
+            </xsl:attribute>
 
             <!-- Keywords -->
             <xsl:variable name="descriptiveKeywordsClassificationNodes">
@@ -23,9 +34,9 @@
                                 <rim:Name>
                                     <rim:LocalizedString xml:lang="en" value="{.}"/>
                                 </rim:Name>
-                                <rim:Description>
+                                <!-- <rim:Description>
                                     <rim:LocalizedString xml:lang="en" value="{concat( . , ' Generic Keyword ' )}"/>
-                                </rim:Description>
+                                </rim:Description> -->
                             </rim:ClassificationNode>
                         </xsl:for-each>
                     </xsl:if>
@@ -73,9 +84,9 @@
                                     <rim:Name>
                                         <rim:LocalizedString xml:lang="en" value="{.}"/>
                                     </rim:Name>
-                                    <rim:Description>
+                                    <!-- <rim:Description>
                                         <rim:LocalizedString xml:lang="en" value="{concat( . , ' - Thesaurus (', $thesaurusName, ') Keyword' )}"/>
-                                    </rim:Description>
+                                    </rim:Description> -->
                                 </rim:ClassificationNode>
                             </xsl:for-each>
                         </rim:ClassificationScheme>
@@ -97,7 +108,7 @@
             <!-- Classification Services Handling START -->
             <!-- References to chapter 8.4 "OGC service types" of document OGC 07-144r4 on CSW-ebRIM Basic Extension package-->
             <xsl:variable name="servicesClassificationNodes">
-            <xsl:variable name="serviceType" select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
+                <xsl:variable name="serviceType" select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName"/>
                 <xsl:choose>
 
                     <xsl:when test="$serviceType = 'WFS' ">
@@ -106,11 +117,15 @@
                                 <xsl:choose>
                                     <xsl:when test="count(gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion) > 0">
                                         <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
-                                            <value><xsl:value-of select="."></xsl:value-of></value>
+                                            <value>
+                                                <xsl:value-of select="."></xsl:value-of>
+                                            </value>
                                         </xsl:for-each>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <value><xsl:value-of select=" '1.1' "></xsl:value-of></value>
+                                        <value>
+                                            <xsl:value-of select=" '1.1' "></xsl:value-of>
+                                        </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </versions>
@@ -134,11 +149,15 @@
                                 <xsl:choose>
                                     <xsl:when test="count(gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion) > 0">
                                         <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
-                                            <value><xsl:value-of select="."></xsl:value-of></value>
+                                            <value>
+                                                <xsl:value-of select="."></xsl:value-of>
+                                            </value>
                                         </xsl:for-each>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <value><xsl:value-of select=" '1.3' "></xsl:value-of></value>
+                                        <value>
+                                            <xsl:value-of select=" '1.3' "></xsl:value-of>
+                                        </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </versions>
@@ -162,11 +181,15 @@
                                 <xsl:choose>
                                     <xsl:when test="count(gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion) > 0">
                                         <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
-                                            <value><xsl:value-of select="."></xsl:value-of></value>
+                                            <value>
+                                                <xsl:value-of select="."></xsl:value-of>
+                                            </value>
                                         </xsl:for-each>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <value><xsl:value-of select=" '1.1.2' "></xsl:value-of></value>
+                                        <value>
+                                            <xsl:value-of select=" '1.1.2' "></xsl:value-of>
+                                        </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </versions>
@@ -190,11 +213,15 @@
                                 <xsl:choose>
                                     <xsl:when test="count(gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion) > 0">
                                         <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
-                                            <value><xsl:value-of select="."></xsl:value-of></value>
+                                            <value>
+                                                <xsl:value-of select="."></xsl:value-of>
+                                            </value>
                                         </xsl:for-each>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <value><xsl:value-of select=" '2.0.2' "></xsl:value-of></value>
+                                        <value>
+                                            <xsl:value-of select=" '2.0.2' "></xsl:value-of>
+                                        </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </versions>
@@ -218,11 +245,15 @@
                                 <xsl:choose>
                                     <xsl:when test="count(gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion) > 0">
                                         <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
-                                            <value><xsl:value-of select="."></xsl:value-of></value>
+                                            <value>
+                                                <xsl:value-of select="."></xsl:value-of>
+                                            </value>
                                         </xsl:for-each>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <value><xsl:value-of select=" '1.3' "></xsl:value-of></value>
+                                        <value>
+                                            <xsl:value-of select=" '1.3' "></xsl:value-of>
+                                        </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </versions>
@@ -246,11 +277,15 @@
                                 <xsl:choose>
                                     <xsl:when test="count(gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion) > 0">
                                         <xsl:for-each select="gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion/gco:CharacterString">
-                                            <value><xsl:value-of select="."></xsl:value-of></value>
+                                            <value>
+                                                <xsl:value-of select="."></xsl:value-of>
+                                            </value>
                                         </xsl:for-each>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <value><xsl:value-of select=" '1.0.0' "></xsl:value-of></value>
+                                        <value>
+                                            <xsl:value-of select=" '1.0.0' "></xsl:value-of>
+                                        </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </versions>
@@ -457,6 +492,27 @@
                     </rim:ValueList>
                 </rim:Slot>
             </xsl:if>
+            
+            <!-- Management of the Lineage information--> 
+            <xsl:if test="/gmd:MD_Metadata/gmd:dataQualityInfo[1]/*/gmd:lineage/*/gmd:statement/gco:CharacterString">
+                <rim:Slot name="{$lineageSlotName}" slotType="xsd:string">
+                    <rim:ValueList>
+                        <rim:Value>
+                            <xsl:value-of select="/gmd:MD_Metadata/gmd:dataQualityInfo[1]/*/gmd:lineage/*/gmd:statement/gco:CharacterString"/>
+                        </rim:Value>   
+                    </rim:ValueList>
+                </rim:Slot>
+            </xsl:if>
+            <xsl:if test="/gmd:MD_Metadata/gmd:dataQualityInfo[1]/*/gmd:lineage/*/gmd:source/*/gmd:description/gco:CharacterString">
+                <rim:Slot name="{$sourceSlotName}" slotType="xsd:string">
+                    <rim:ValueList>
+                        <rim:Value>
+                            <xsl:value-of select="/gmd:MD_Metadata/gmd:dataQualityInfo[1]/*/gmd:lineage/*/gmd:source/*/gmd:description/gco:CharacterString"/>
+                        </rim:Value>   
+                    </rim:ValueList>
+                </rim:Slot>                    
+            </xsl:if>
+            
 
             <xsl:if test="gmd:MD_DataIdentification">
                 <xsl:call-template name="datametadata">
@@ -771,13 +827,19 @@
 
     <xsl:template name="specifyTypeOfResourceMetadata">
         <xsl:if test="gmd:MD_DataIdentification">
-            <xsl:attribute name="objectType"><xsl:value-of select="$dataMetadataObjectType"/></xsl:attribute>
+            <xsl:attribute name="objectType">
+                <xsl:value-of select="$dataMetadataObjectType"/>
+            </xsl:attribute>
         </xsl:if>
         <xsl:if test="gmd:MD_ServiceIdentification">
-            <xsl:attribute name="objectType"><xsl:value-of select="$dataMetadataObjectType"/></xsl:attribute>
+            <xsl:attribute name="objectType">
+                <xsl:value-of select="$dataMetadataObjectType"/>
+            </xsl:attribute>
         </xsl:if>
         <xsl:if test="srv:SV_ServiceIdentification">
-            <xsl:attribute name="objectType"><xsl:value-of select="$serviceMetadataObjectType"/></xsl:attribute>
+            <xsl:attribute name="objectType">
+                <xsl:value-of select="$serviceMetadataObjectType"/>
+            </xsl:attribute>
         </xsl:if>
     </xsl:template>
 
