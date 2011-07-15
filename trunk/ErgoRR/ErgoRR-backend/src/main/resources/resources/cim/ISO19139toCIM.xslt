@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:saxon="http://saxon.sf.net/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gml32="http://www.opengis.net/gml/3.2" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
+<xsl:stylesheet version="2.0" xmlns:saxon="http://saxon.sf.net/" 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+        xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+        xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+        xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" 
+        xmlns:gco="http://www.isotc211.org/2005/gco" 
+        xmlns:gmx="http://www.isotc211.org/2005/gmx" 
+        xmlns:srv="http://www.isotc211.org/2005/srv" 
+        xmlns:gml32="http://www.opengis.net/gml/3.2" 
+        xmlns:gml="http://www.opengis.net/gml" 
+        xmlns:xlink="http://www.w3.org/1999/xlink">
     <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
     <xsl:param name="cswURL">http://hrt-11.pisa.intecs.it/ergorr2/httpservice</xsl:param>
     <xsl:param name="metadataInformationId">urn:CIM:metadataInformationId:1</xsl:param>
@@ -29,14 +39,30 @@
             <xsl:variable name="descriptiveKeywordsClassificationNodes">
                 <xsl:for-each select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
                     <xsl:if test="not(gmd:MD_Keywords/gmd:thesaurusName/*)">
-                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword/gco:CharacterString">
-                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordSchemeClassificationScheme}" code="{.}" id="{concat( $keywordSchemeClassificationSchemePrefix, . )}">
+                        <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
+                            <xsl:variable name="keywordId">
+                                <xsl:call-template name="getIdByNodeContent">
+                                    <xsl:with-param name="node" select="."/>
+                                </xsl:call-template>
+                            </xsl:variable>
+                            <xsl:variable name="keywordName">
+                                <xsl:call-template name="getNodeContent">
+                                    <xsl:with-param name="node" select="."/>
+                                </xsl:call-template>
+                            </xsl:variable>
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordSchemeClassificationScheme}" code="{$keywordId}" id="{concat( $keywordSchemeClassificationSchemePrefix, $keywordId )}">
+                                <xsl:if test="gmx:Anchor">
+                                    <rim:Slot name="{$urlSlotName}" slotType="{$uriSlotType}">
+                                        <rim:ValueList>
+                                            <rim:Value>
+                                                <xsl:value-of select="gmx:Anchor/@xlink:href"/>
+                                            </rim:Value>
+                                        </rim:ValueList>
+                                    </rim:Slot>              
+                                </xsl:if>
                                 <rim:Name>
-                                    <rim:LocalizedString xml:lang="en" value="{.}"/>
-                                </rim:Name>
-                                <!-- <rim:Description>
-                                    <rim:LocalizedString xml:lang="en" value="{concat( . , ' Generic Keyword ' )}"/>
-                                </rim:Description> -->
+                                    <rim:LocalizedString xml:lang="en" value="{$keywordName}"/>
+                                </rim:Name>                             
                             </rim:ClassificationNode>
                         </xsl:for-each>
                     </xsl:if>
@@ -78,15 +104,31 @@
                                 </rim:Description>
                             </xsl:if>
                             <xsl:variable name="urnCimKeywordThesaurusSchemeClassificationIDPrefix" select="concat( $cimIDPrefix , 'Classification:KeywordThesaurusScheme:')"/>
-                            <xsl:for-each select="gmd:MD_Keywords/gmd:keyword/gco:CharacterString">
+                            <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
+                                <xsl:variable name="keywordId">
+                                    <xsl:call-template name="getIdByNodeContent">
+                                        <xsl:with-param name="node" select="."/>
+                                    </xsl:call-template>
+                                </xsl:variable>
+                                <xsl:variable name="keywordName">
+                                    <xsl:call-template name="getNodeContent">
+                                        <xsl:with-param name="node" select="."/>
+                                    </xsl:call-template>
+                                </xsl:variable>
                                 <xsl:variable name="keywordThesaurusSchemeClassificationId" select="concat( $urnCimKeywordThesaurusSchemeClassificationIDPrefix, generate-id(.) )"/>
-                                <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordThesaurusSchemeClassificationScheme}" code="{.}" id="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, . )}">
+                                <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordThesaurusSchemeClassificationScheme}" code="{$keywordId}" id="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, $keywordId)}">
+                                    <xsl:if test="gmx:Anchor">
+                                        <rim:Slot name="{$urlSlotName}" slotType="{$uriSlotType}">
+                                            <rim:ValueList>
+                                                <rim:Value>
+                                                    <xsl:value-of select="gmx:Anchor/@xlink:href"/>
+                                                </rim:Value>
+                                            </rim:ValueList>
+                                        </rim:Slot>              
+                                    </xsl:if>
                                     <rim:Name>
-                                        <rim:LocalizedString xml:lang="en" value="{.}"/>
-                                    </rim:Name>
-                                    <!-- <rim:Description>
-                                        <rim:LocalizedString xml:lang="en" value="{concat( . , ' - Thesaurus (', $thesaurusName, ') Keyword' )}"/>
-                                    </rim:Description> -->
+                                        <rim:LocalizedString xml:lang="en" value="{$keywordName}"/>
+                                    </rim:Name>                                  
                                 </rim:ClassificationNode>
                             </xsl:for-each>
                         </rim:ClassificationScheme>
@@ -1273,11 +1315,11 @@
                     <rim:ExternalIdentifier id="{$externalIdentifierId}" registryObject="{$citedItemId}" identificationScheme="{$codespace}" value="{$codevalue}"/>
                 </xsl:if>
             </xsl:for-each>
-            <xsl:if test="$citationInformationNode/gmd:title/gmx:anchor/@xlink:href">
-                <rim:Slot name="{$referencesSlotName}" slotType="xsd:string">
+            <xsl:if test="$citationInformationNode/gmd:title/gmx:Anchor/@xlink:href">
+                <rim:Slot name="{$urlSlotName}" slotType="{$uriSlotType}">
                     <rim:ValueList>
                         <rim:Value>
-                            <xsl:value-of select="$citationInformationNode/gmd:title/gmx:anchor/@xlink:href"/>
+                            <xsl:value-of select="$citationInformationNode/gmd:title/gmx:Anchor/@xlink:href"/>
                         </rim:Value>
                     </rim:ValueList>
                 </rim:Slot>
