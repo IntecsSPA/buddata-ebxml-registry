@@ -352,7 +352,11 @@
     <xsl:variable name="lineageSlotName">
         <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::Lineage</xsl:text>
     </xsl:variable>
-
+    
+    <xsl:variable name="urlSlotName">
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::Url</xsl:text>
+    </xsl:variable>
+    
     <xsl:variable name="creatorSlotName">
         <xsl:text>http://purl.org/dc/elements/1.1/creator</xsl:text>
     </xsl:variable>
@@ -418,6 +422,9 @@
     </xsl:variable>
     <xsl:variable name="stringSlotType">
         <xsl:text>urn:oasis:names:tc:ebxml-regrep:DataType:String</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="uriSlotType">
+        <xsl:text>urn:oasis:names:tc:ebxml-regrep:DataType:URI</xsl:text>
     </xsl:variable>
 
 
