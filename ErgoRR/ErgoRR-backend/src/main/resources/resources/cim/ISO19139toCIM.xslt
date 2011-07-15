@@ -38,7 +38,12 @@
             <!-- Keywords -->
             <xsl:variable name="descriptiveKeywordsClassificationNodes">
                 <xsl:for-each select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
-                    <xsl:if test="not(gmd:MD_Keywords/gmd:thesaurusName/*)">
+                    <xsl:variable name="isThesaurusName">
+                        <xsl:call-template name="getNodeContent">
+                            <xsl:with-param name="node" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
+                        </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:if test="string-length($isThesaurusName) = 0">
                         <xsl:for-each select="gmd:MD_Keywords/gmd:keyword">
                             <xsl:variable name="keywordId">
                                 <xsl:call-template name="getIdByNodeContent">
@@ -75,7 +80,12 @@
 
             <xsl:variable name="descriptiveKeywordsClassificationSchemes">
                 <xsl:for-each select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
-                    <xsl:if test="gmd:MD_Keywords/gmd:thesaurusName">
+                    <xsl:variable name="isThesaurusName">
+                        <xsl:call-template name="getNodeContent">
+                            <xsl:with-param name="node" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
+                        </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:if test="string-length($isThesaurusName) > 0">
                         <!-- gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title     thesaurusIdentifier-->
                         <xsl:variable name="thesaurusIdentifier">
                             <xsl:call-template name="getIdByNodeContent">
