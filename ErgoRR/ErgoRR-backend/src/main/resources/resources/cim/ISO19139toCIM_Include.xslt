@@ -319,11 +319,11 @@
     </xsl:variable>
 
     <xsl:variable name="resolutionSlotName">
-        <xsl:text>urn:x-ogc:specification:csw-ebrim-cim:Slot:resolution</xsl:text>
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::Resolution</xsl:text>
     </xsl:variable>
 
     <xsl:variable name="scaleDenominatorSlotName">
-        <xsl:text>urn:x-ogc:specification:csw-ebrim-cim:Slot:scaleDenominator</xsl:text>
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::ScaleDenominator</xsl:text>
     </xsl:variable>
 
 
