@@ -99,7 +99,11 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
         URL xsltURL = this.getClass().getResource(XSLT_ISO_TO_CIM_PATH);
         SAXSource xsltDoc = null;
         String isoIdentifier = this.getISODataIndetifier();
-        String medataInformationID = CIM_ID_PREFIX + isoIdentifier + CIM_METADATA_INFORMATION_ID_SUFIX;
+        String medataInformationID = isoIdentifier + CIM_METADATA_INFORMATION_ID_SUFIX;
+        if (medataInformationID.contains("urn:") == false) {
+            medataInformationID = CIM_ID_PREFIX + medataInformationID;
+        }
+
         parameters[0] = new SaxonXSLTParameter(XSLT_URL_PARAM_NAME, "http://"
                 + CommonProperties.getInstance().get("appserver.url") + "/"
                 + CommonProperties.getInstance().get("deployName") + GET_SERVLET);
@@ -109,7 +113,11 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
 
         /* InternationalStringType packageDescription=new InternationalStringType();
         packageDescription.*/
-        regPkg.setId(CIM_ID_PREFIX + isoIdentifier + ":pkg");
+        if (isoIdentifier.startsWith("urn:")) {
+            regPkg.setId(isoIdentifier + ":pkg");
+        } else {
+            regPkg.setId(CIM_ID_PREFIX + isoIdentifier + ":pkg");
+        }
         regPkg.setLid(regPkg.getId());
 
 
