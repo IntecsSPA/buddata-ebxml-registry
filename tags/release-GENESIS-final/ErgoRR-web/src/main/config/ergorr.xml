@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/ergorr" docBase="ergorr" debug="5" reloadable="true" crossContext="true">
+    <Resource name="jdbc/ergorr"
+        auth="Container"
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+        username="ergouser"
+        password="test"
+        driverClassName="org.postgresql.Driver"
+        url="jdbc:postgresql://localhost:5432/ergorr"
+        maxWait="1000"
+        removeAbandoned="true"
+        maxActive="30"
+        maxIdle="10"
+        removeAbandonedTimeout="60"
+        validationQuery="select 1 as num"
+        logAbandoned="true"/>
+</Context>
+<!-- 
+This file is used by Tomcat for database connection DataSource configuration.
+Set the proper attributes and put this file in:
+<tomcat_dir>/conf/Catalina/localhost/
+
+Note: The file name should be the same name as the web application .war file.
+      E.g. If the web application is called ErgoRR-web-war.war then 
+           this file should be named ErgoRR-web-war.xml
+-->

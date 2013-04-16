@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryPackage xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+                     id="urn:ogc:def:registryPackage:OGC-CSW-ebRIM-Sensor::SensorML"
+                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage"
+                     xmlns:xi="http://www.w3.org/2001/XInclude"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0  http://www.oasis-open.org/committees/regrep/documents/3.0/schema/rim.xsd">
+    <rim:Slot name="http://purl.org/dc/elements/1.1/date">
+        <rim:ValueList>
+            <rim:Value>2011-03-01</rim:Value>
+        </rim:ValueList>
+    </rim:Slot>
+    <rim:Name>
+        <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="SensorML Extension Package for CSW-ebRIM"/>
+    </rim:Name>
+    <rim:Description>
+        <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Provides a SensorML Extension to the Basic Package of the CSW-ebRIM specification."/>
+    </rim:Description>
+    <rim:VersionInfo versionName="0.1" comment="First draft version of the SensorML Extension Package"/>
+    <rim:RegistryObjectList>
+        <!-- ClassificationScheme -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  -->
+        <xi:include href="schemes/SensorML-IntendedApplicationScheme.xml"/>
+        <xi:include href="schemes/SensorML-SystemTypeScheme.xml"/>
+        <!-- extension to the SensorML profile for handling EO sensors-->
+        <xi:include href="schemes/SensorML-OrbitTypeScheme.xml"/>
+
+        <!-- extension package must be member of root package -->
+        <rim:Association id="urn:ogc:sensorML:asso"
+                         sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root"
+                         associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
+                         targetObject="urn:ogc:def:registryPackage:OGC-CSW-ebRIM-Sensor::SensorML"/>
+
+        <!-- extensions to canonical ObjectType scheme -->
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        <rim:ClassificationNode code="AbstractProcess"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractProcess"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractProcess"
+                                parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="AbstractProcess"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents a generic Abstract Process"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="AbstractPhysicalProcess"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractPhysicalProcess"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractPhysicalProcess"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractProcess">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="AbstractPhysicalProcess"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents a generic Abstract Physical Process"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="System"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractPhysicalProcess">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="System"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents a SensorML System"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="Component"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::AbstractPhysicalProcess">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Component"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents a SensorML Component"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <!-- extension to the SensorML profile for handling EO sensors-->
+        <rim:ClassificationNode code="Platform"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Platform"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Platform"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Platform"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents an EO Platform"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="Instrument"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Instrument"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Instrument"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Instrument"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents an EO Instrument"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="InstrumentMode"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::InstrumentMode"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::InstrumentMode"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Instrument">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="InstrumentMode"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents an EO Instrument Mode"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="Detector"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Detector"
+                                id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Detector"
+                                parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Detector"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Represents an EO Detector"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <!-- extensions to canonical AssociationType scheme -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  -->
+        <rim:ClassificationNode code="ComposedOf"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::ComposedOf"
+                                id="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::ComposedOf"
+                                parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="ComposedOf"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Associates a System to its sub-systems (System or Component)"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="AccessibleThrough"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::AccessibleThrough"
+                                id="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::AccessibleThrough"
+                                parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="AccessibleThrough"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Associates a System or Component to a Service"/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <!-- extension to the SensorML profile for handling EO sensors-->
+        <rim:ClassificationNode code="ConfiguredBy"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::ConfiguredBy"
+                                id="urn:ogc:def:associationType:OGC-CSW-ebRIM-Sensor::ConfiguredBy"
+                                parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="ConfiguredBy"/>
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" charset="UTF-8" value=" Links an Instrument (System) to its InstrumentMode (System)."/>
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <!-- extension of the ISO 19119 service taxonomy with OGC SWE service types. Version number not taken into account -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  -->
+
+        <rim:ClassificationNode code="SOS"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                id="urn:ogc:serviceType:SensorObservationService"
+                                lid="urn:ogc:serviceType:SensorObservationService"
+                                parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" value="Sensor Observation Service (SOS)" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" value="Provides access to sensor information (SensorML) and measured sensor observations (OM)." />
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="SIR"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                id="urn:ogc:serviceType:SensorInstanceRegistry"
+                                lid="urn:ogc:serviceType:SensorInstanceRegistry"
+                                parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Registry">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" value="Sensor Instance Registry (SIR)" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US"
+                                     value="Provides functionality for discovering sensors as well as SWE services. Generally the SIR interface consists of two parts: sensor discovery and sensor status handling. The discovery part of the SIR interface deals with sensor metadata (based on SensorML) and metadata of the services that encapsulate the sensors. The sensor status handling handling part provides functionality for handling the status of sensors." />
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="SAS"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                id="urn:ogc:serviceType:SensorAlertService"
+                                lid="urn:ogc:serviceType:SensorAlertService"
+                                parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Subscription">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" value="Sensor Alert Service (SAS)" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" value="Provides access to sensor alerts, as in an event notification system, that are advertised by sensor nodes." />
+            </rim:Description>
+        </rim:ClassificationNode>
+
+        <rim:ClassificationNode code="SPS"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+                                id="urn:ogc:serviceType:SensorPlanningService"
+                                lid="urn:ogc:serviceType:SensorPlanningService"
+                                parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement">
+            <rim:Name>
+                <rim:LocalizedString xml:lang="en-US" value="Sensor Planning Service (SPS)" />
+            </rim:Name>
+            <rim:Description>
+                <rim:LocalizedString xml:lang="en-US" value="Tasks sensors or sensor systems." />
+            </rim:Description>
+        </rim:ClassificationNode>
+
+    </rim:RegistryObjectList>
+</rim:RegistryPackage>

@@ -1,0 +1,279 @@
+
+
+<!-- 
+CORE RETURNABLE
+MD_Metadata.fileIdentifier
+MD_Metadata.hierarchyLevel.MD_ScopeCode@codeListValue11
+MD_Metadata.dateStamp.Date
+
+MD_Metadata.identificationInfo.AbstractMD_Identification.citation.CI_Citation.title
+MD_Metadata.identificationInfo.AbstractMD_Identification.pointOfContact.CI_ResponsibleParty.organisationName[role.CI_RoleCode@codeListValue=’originator’]
+MD_Metadata.identificationInfo.AbstractMD_Identification.descriptiveKeywords.MD_Keywords.keyword
+MD_Metadata.identificationInfo.MD_DataIdentification.topicCategory
+MD_Metadata.identificationInfo.AbstractMD_Identification.abstract
+MD_Metadata.identificationInfo.AbstractMD_Identification.pointOfContact.CI_ResponsibleParty.organisationName[role.CI_RoleCode@codeListValue=’publisher’]
+MD_Metadata.identificationInfo.AbstractMD_Identification.pointOfContact.CI_ResponsibleParty.organisationName[role.CI_RoleCode@codeListValue=’author’]
+MD_Metadata.distributionInfo.MD_Distribution.distributionFormat.MD_Format.name
+MD_Metadata.language
+MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.westBoundLongitude
+MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.southBoundLatitude
+MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.eastBoundLongitude
+MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.northBoundLatitude
+MD_Metadata.identificationInfo.AbstractMD_Identification.aggregationInfo
+MD_Metadata.identificationInfo.AbstractMD_Identification.resourceConstraints.MD_LegalConstraints.accessConstraints@codeListValue
+
+
+
+ -->
+
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:gmi="http://www.isotc211.org/2005/gmi" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gmx="http://www.isotc211.org/2005/gmx" id="3e879e8be7c6a9872321c29fa54af8f88ca6e997"> 
+	<fileIdentifier> 
+		<gco:CharacterString>3e879e8be7c6a9872321c29fa54af8f88ca6e997</gco:CharacterString> 
+	</fileIdentifier> 
+	<!-- parentIdentifier> 
+		<gco:CharacterString>de.dlr.wdc.POLYPHEMUS_CHEM.L4.VMR.DAILY.NO2</gco:CharacterString> 
+	</parentIdentifier--> 
+	<hierarchyLevel> 
+		<MD_ScopeCode codeList="MD_ScopeCode" codeListValue="dataset"/> 
+	</hierarchyLevel> 
+	<!-- contact> 
+		<CI_ResponsibleParty> 
+			<organisationName> 
+				<gco:CharacterString>DLR, WDC-RSAT</gco:CharacterString> 
+			</organisationName> 
+			<contactInfo> 
+				<CI_Contact> 
+					<address> 
+						<CI_Address> 
+							<electronicMailAddress> 
+								<gco:CharacterString>wdc@dlr.de</gco:CharacterString> 
+							</electronicMailAddress> 
+						</CI_Address> 
+					</address> 
+					<onlineResource> 
+						<CI_OnlineResource> 
+							<linkage> 
+								<URL>wdc.dlr.de</URL> 
+							</linkage> 
+						</CI_OnlineResource> 
+					</onlineResource> 
+				</CI_Contact> 
+			</contactInfo> 
+			<role> 
+				<CI_RoleCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#CI_RoleCode" codeListValue="distributor">distributor</CI_RoleCode> 
+			</role> 
+		</CI_ResponsibleParty> 
+	</contact--> 
+	<dateStamp> 
+		<gco:DateTime>2009-05-19T09:11:00</gco:DateTime> 
+	</dateStamp> 
+	<!--metadataStandardName> 
+		<gco:CharacterString>ISO 19139 / GENESIS Profile V1.0</gco:CharacterString> 
+	</metadataStandardName--> 
+	<!--metadataStandardVersion> 
+		<gco:CharacterString>ISO 19115</gco:CharacterString> 
+	</metadataStandardVersion--> 
+	<!--referenceSystemInfo> 
+		<MD_ReferenceSystem> 
+			<referenceSystemIdentifier> 
+				<RS_Identifier> 
+					<authority> 
+						<CI_Citation> 
+							<title> 
+								<gco:CharacterString>OGC WKT</gco:CharacterString>
+							</title> 
+							<date> 
+								<CI_Date> 
+									<date> 
+										<gco:DateTime>2009-06-19T09:11:00</gco:DateTime> 
+									</date> 
+									<dateType> 
+										<CI_DateTypeCode codeListValue="revision" codeList="resources/Codelist/gmxCodelists.xml#revision">revision</CI_DateTypeCode> 
+									</dateType> 
+								</CI_Date>								
+							</date> 
+						</CI_Citation> 
+					</authority> 
+					<code> 
+						<gco:CharacterString>GEOGCS["Unknown",DATUM["Unnamed",SPHEROID["Unknown",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]</gco:CharacterString> 
+					</code> 
+				</RS_Identifier> 
+			</referenceSystemIdentifier> 
+		</MD_ReferenceSystem> 
+	</referenceSystemInfo--> 
+	
+	
+	<!-- 
+	MD_Metadata.identificationInfo.AbstractMD_Identification.citation.CI_Citation.title
+	MD_Metadata.identificationInfo.AbstractMD_Identification.abstract
+	MD_Metadata.identificationInfo.MD_DataIdentification.topicCategory
+	
+	MD_Metadata.identificationInfo.AbstractMD_Identification.pointOfContact.CI_ResponsibleParty.organisationName[role.CI_RoleCode@codeListValue=’originator’]
+	MD_Metadata.identificationInfo.AbstractMD_Identification.descriptiveKeywords.MD_Keywords.keyword
+
+	MD_Metadata.identificationInfo.AbstractMD_Identification.pointOfContact.CI_ResponsibleParty.organisationName[role.CI_RoleCode@codeListValue=’publisher’]
+	MD_Metadata.identificationInfo.AbstractMD_Identification.pointOfContact.CI_ResponsibleParty.organisationName[role.CI_RoleCode@codeListValue=’author’]
+	MD_Metadata.distributionInfo.MD_Distribution.distributionFormat.MD_Format.name -->
+	
+	
+	<identificationInfo> 
+		<MD_DataIdentification> 
+			<citation> 
+				<CI_Citation> 
+					<title> 
+						<gco:CharacterString>de.dlr.wdc.POLYPHEMUS_CHEM.L4.VMR.DAILY.NO2</gco:CharacterString>
+					</title> 
+					<!--date> 
+						<CI_Date> 
+							<date> 
+								<gco:DateTime>2009-05-19T09:11:00</gco:DateTime> 
+							</date> 
+							<dateType> 
+								<CI_DateTypeCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode> 
+							</dateType> 
+						</CI_Date> 
+					</date--> 
+					<!--citedResponsibleParty> 
+						<CI_ResponsibleParty id="Responsible_Citation"> 
+							<organisationName> 
+								<gco:CharacterString>WDC-RSAT</gco:CharacterString> 
+							</organisationName> 
+							<contactInfo> 
+								<CI_Contact> 
+									<onlineResource> 
+										<CI_OnlineResource> 
+											<linkage> 
+												<URL>http://wdc.dlr.de</URL> 
+											</linkage> 
+										</CI_OnlineResource> 
+									</onlineResource> 
+								</CI_Contact> 
+							</contactInfo> 
+							<role> 
+								<CI_RoleCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#CI_RoleCode" codeListValue="distributor">distributor</CI_RoleCode> 
+							</role> 
+						</CI_ResponsibleParty> 
+					</citedResponsibleParty--> 
+				</CI_Citation> 
+			</citation> 
+			<abstract> 
+				<gco:CharacterString>NO2 derived by the 3D Eulerian chemical transport model POLYPHEMUS.</gco:CharacterString> 
+			</abstract> 
+			<!--status> 
+				<MD_ProgressCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode> 
+			</status--> 
+			<resourceFormat> 
+				<MD_Format> 
+					<name> 
+						<gco:CharacterString>NetCDF</gco:CharacterString> 
+					</name> 
+					<version> 
+						<gco:CharacterString>3</gco:CharacterString> 
+					</version> 
+				</MD_Format> 
+			</resourceFormat> 
+			<resourceConstraints> 
+				<MD_LegalConstraints> 
+					<otherConstraints> 
+						<gco:CharacterString>accessConstraint: None; useConstraint: None</gco:CharacterString> 
+					</otherConstraints> 
+				</MD_LegalConstraints> 
+			</resourceConstraints> 
+			<spatialRepresentationType> 
+				<MD_SpatialRepresentationTypeCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="grid">grid</MD_SpatialRepresentationTypeCode> 
+			</spatialRepresentationType> 
+			<language> 
+				<gco:CharacterString>en</gco:CharacterString> 
+			</language> 
+			<topicCategory> 
+				<MD_TopicCategoryCode>geoscientificInformation</MD_TopicCategoryCode> 
+			</topicCategory> 
+			<extent> 
+				<EX_Extent> 
+					<geographicElement> 
+						<EX_GeographicBoundingBox> 
+							<westBoundLongitude> 
+								<gco:Decimal>5.00</gco:Decimal> 
+							</westBoundLongitude> 
+							<eastBoundLongitude> 
+								<gco:Decimal>15.25</gco:Decimal> 
+							</eastBoundLongitude> 
+							<southBoundLatitude> 
+								<gco:Decimal>45.00</gco:Decimal> 
+							</southBoundLatitude> 
+							<northBoundLatitude> 
+								<gco:Decimal>51.25</gco:Decimal> 
+							</northBoundLatitude> 
+						</EX_GeographicBoundingBox> 
+					</geographicElement> 
+					<temporalElement> 
+						<EX_TemporalExtent> 
+							<extent> 
+								<gml:TimePeriod gml:id="templatetimeperiod"> 
+									<gml:beginPosition>2006-01-01T00:00:00</gml:beginPosition> 
+									<gml:endPosition>2006-01-01T23:59:59</gml:endPosition> 
+									<gml:timeInterval factor="0" radix="10" unit="day">1</gml:timeInterval> 
+								</gml:TimePeriod> 
+							</extent> 
+						</EX_TemporalExtent> 
+					</temporalElement> 
+				</EX_Extent> 
+			</extent> 
+		</MD_DataIdentification> 
+	</identificationInfo> 
+	<contentInfo> 
+		<MD_CoverageDescription id="any_id"> 
+			<attributeDescription> 
+				<gco:RecordType>NO2#nonCF</gco:RecordType> 
+			</attributeDescription> 
+			<contentType> 
+				<MD_CoverageContentTypeCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#MD_CoverageContentTypeCode" codeListValue="physicalMeasurement">physicalMeasurement/class</MD_CoverageContentTypeCode> 
+			</contentType> 
+		</MD_CoverageDescription> 
+	</contentInfo> 
+	<distributionInfo> 
+		<MD_Distribution> 
+			<distributionFormat> 
+				<MD_Format> 
+					<name> 
+						<gco:CharacterString>GeoTIFF</gco:CharacterString> 
+					</name> 
+					<version> 
+						<gco:CharacterString>1</gco:CharacterString> 
+					</version> 
+				</MD_Format> 
+			</distributionFormat> 
+			<distributor> 
+				<MD_Distributor> 
+					<distributorContact> 
+						<CI_ResponsibleParty> 
+							<organisationName> 
+								<gco:CharacterString>DLR, WDC-RSAT</gco:CharacterString> 
+							</organisationName> 
+							<role> 
+								<CI_RoleCode codeList="http://wis.wmo.int/2006/catalogues/gmxCodelists.xml#CI_RoleCode" codeListValue="resourceProvider">distributor</CI_RoleCode> 
+							</role> 
+						</CI_ResponsibleParty> 
+					</distributorContact> 
+				</MD_Distributor> 
+			</distributor> 
+			<transferOptions> 
+				<MD_DigitalTransferOptions> 
+					<transferSize> 
+						<gco:Real>186432</gco:Real> 
+					</transferSize> 
+					<onLine> 
+						<CI_OnlineResource> 
+							<linkage> 
+								<URL>http://wdc.dlr.de/data_lib_genesis/DLR/POLY-AQ-test/poly_aq_2006-01-01.nc</URL> 
+							</linkage> 
+							<protocol> 
+								<gco:CharacterString>http</gco:CharacterString> 
+							</protocol>							
+						</CI_OnlineResource> 
+					</onLine> 
+				</MD_DigitalTransferOptions> 
+			</transferOptions> 
+		</MD_Distribution> 
+	</distributionInfo>	
+</MD_Metadata> 
