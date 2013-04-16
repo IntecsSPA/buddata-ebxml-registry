@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-
-<xmlInterfaceConfiguration>
-   <!-- ErgoRR URL-->
-     <property name="ergoRRURL" value="http://${ERGO_APPSERVER_URL}/${ERGO_DEPLOY_NAME}/"/>
-
-</xmlInterfaceConfiguration>
-
