@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ErgoRRGUI" basedir=".">
+  <description>ErgoRRGUI build file</description>
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property name="src" location="src"/>
+  <property name="resources" location="resources"/>
+  <property name="temp" location="temp"/>
+  <property name="build" location="gui-build"></property>
+  <property name="dist" location="gui-dist"></property>
+  
+
+  <property name="properties-file" value="../ErgoRR/conf/ergorr.properties"/>
+  <property environment="env"/>
+  <property file="${properties-file}"/>
+  
+  <!--Creating the building classpath -->
+  <path id="build.classpath">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="only-compile-libs">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source ">
+    <mkdir dir="${temp}"/>
+    <javac srcdir="${src}" destdir="${temp}" classpathref="build.classpath" nowarn="yes" target="1.6"/>
+    <copy toDir="${temp}/it/intecs/pisa/erogorr/ui/conf" overwrite="yes">
+      <fileset file="${src}/it/intecs/pisa/erogorr/ui/conf/ergoRRGUIUsers.xml"/>
+    </copy>
+    <mkdir dir="${build}/web/WEB-INF/lib"/>
+    <mkdir dir="${build}/web/WEB-INF/classes"/>
+    <copy toDir="${build}/web" overwrite="yes">
+      <fileset dir="web"/>
+    </copy>
+    <copy toDir="${build}/web/WEB-INF/lib" overwrite="yes">
+      <fileset dir="lib"/>
+    </copy>
+    <copy toDir="${build}/web/WEB-INF/classes" overwrite="yes">
+      <fileset dir="${temp}"/>
+    </copy>
+    <copy toDir="${build}/web/WEB-INF/classes" overwrite="yes">
+      <fileset file="${resources}/logging.properties"/>
+    </copy>
+      <copy file="${build}/web/WEB-INF/conf/properties/ergoRRPropertiesTemplate.xml" 
+			  tofile="${build}/web/WEB-INF/conf/properties/ergoRRProperties.xml" overwrite="yes"/>
+    <delete dir="${temp}"/>
+  </target>
+
+  <target name="build" description="war package" depends="init,compile">
+    <mkdir dir="${temp}"/>
+    <mkdir dir="${temp}/ErgoRRGUI"/>
+    <copy toDir="${temp}/ErgoRRGUI" overwrite="yes">
+      <fileset dir="${build}/web"/>
+    </copy>
+    <mkdir dir="${dist}"/>
+    <jar file="${dist}/${deployName}GUI.war">
+      <fileset dir="${temp}/ErgoRRGUI"/>
+    </jar>
+    <delete dir="${temp}"/>
+  </target>
+
+<!-- Clean files -->
+  <target name="clean" description="delete build directory">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+  
+  <target name="undeploy">
+    <delete file="${env.CATALINA_HOME}/webapps/${deployName}GUI.war"/>
+    <delete dir="${env.CATALINA_HOME}/webapps/${deployName}GUI"/>
+    <echo message="Waiting 5 seconds for tomcat to undeploy properly ..."/>
+    <sleep seconds="5"/>
+  </target>
+  
+  <!-- Tomcat Deploy -->
+  <target name="deploy" depends="undeploy">
+    <copy file="${build}/web/WEB-INF/conf/contextTemplate.xml" tofile="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}GUI.xml"/>
+    <replace file="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}GUI.xml" token="!!name!!" value="${deployName}GUI"/>
+     <unwar src="${dist}/${deployName}GUI.war" dest="${env.CATALINA_HOME}/webapps/${deployName}GUI"/> 
+     <sleep seconds="3"/> 
+    <replace file="${env.CATALINA_HOME}/webapps/${deployName}GUI/WEB-INF/conf/properties/ergoRRProperties.xml" token="!!applicationurl!!" value="${appserver.url}"/>  
+     <replace file="${env.CATALINA_HOME}/webapps/${deployName}GUI/WEB-INF/conf/properties/ergoRRProperties.xml" token="!!name!!" value="${deployName}"/>
+  </target>
+ 
+</project>
