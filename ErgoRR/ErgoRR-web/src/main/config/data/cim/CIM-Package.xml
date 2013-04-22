@@ -37,7 +37,7 @@
 		<rim:Association id="urn:ogc:cim:association:root" sourceObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root" associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" targetObject="urn:ogc:def:ebRIM-RegistryPackage:OGC:CIM"/>
 
                 <!-- Extrinsic object types : Application, DatasetCollection, ElementaryDataset, ResourceMetadata, ServiceMetadata, ResponsibleParty, MetadataInformation, LegalConstraints, SecurityConstraints, Format, IdentifiedItem, ServiceOperation, CitedItem -->
-		<rim:ClassificationNode code="Application" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:ebRIM-ObjectType:OGC:Application" id="urn:ogc:def:ebRIM-ObjectType:OGC:Application" parent="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExtrinsicObject">
+		<rim:ClassificationNode code="Application" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::Application" id="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::Application" parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::ResourceMetadata">
 			<rim:Name>
 				<rim:LocalizedString value="Application"/>
 			</rim:Name>
@@ -46,11 +46,8 @@
 			</rim:Description>
 		</rim:ClassificationNode>
 
-
-
-
-		<!--DatasetCollection inherits from Dataset, which is already an extrinsic object type-->
-		<rim:ClassificationNode code="DatasetCollection" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::DatasetCollection" id="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::DatasetCollection" parent="urn:ogc:def:ebRIM-ObjectType:OGC:Dataset">
+		<!--DatasetCollection inherits from DataMetadata, since OGC CIM v. 0.1.12 -->
+		<rim:ClassificationNode code="DatasetCollection" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::DatasetCollection" id="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::DatasetCollection" parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::DataMetadata">
 			<rim:Name>
 				<rim:LocalizedString value="Dataset Collection"/>
 			</rim:Name>
@@ -58,8 +55,8 @@
 				<rim:LocalizedString xml:lang="en" value="A collection of datasets sharing the same product specification"/>
 			</rim:Description>
 		</rim:ClassificationNode>
-		<!--ElementaryDataset inherits from Dataset, which is already an extrinsic object type-->
-		<rim:ClassificationNode code="ElementaryDataset" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::ElementaryDataset" id="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::ElementaryDataset" parent="urn:ogc:def:ebRIM-ObjectType:OGC:Dataset">
+		<!--ElementaryDataset inherits from DataMetadata, since OGC CIM v. 0.1.12 -->
+		<rim:ClassificationNode code="ElementaryDataset" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::ElementaryDataset" id="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::ElementaryDataset" parent="urn:ogc:def:objectType:OGC-CSW-ebRIM-CIM::DataMetadata">
 			<rim:Name>
 				<rim:LocalizedString value="Elementary Dataset"/>
 			</rim:Name>
@@ -185,14 +182,15 @@
 				<rim:LocalizedString xml:lang="en" value="Associates a DatasetCollection with a set of Dataset"/>
 			</rim:Description>
 		</rim:ClassificationNode>
-		<rim:ClassificationNode code="DatasetDescription" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::DatasetDescription" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::DatasetDescription" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+                <!-- Superseded since OGC CIM 0.1.12-->
+		<!-- <rim:ClassificationNode code="DatasetDescription" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::DatasetDescription" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::DatasetDescription" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
 			<rim:Name>
 				<rim:LocalizedString value="DatasetDescription"/>
 			</rim:Name>
 			<rim:Description>
 				<rim:LocalizedString xml:lang="en" value="Associates a description of Data Resource Metadata with a Dataset"/>
 			</rim:Description>
-		</rim:ClassificationNode>
+		</rim:ClassificationNode> -->
 		<rim:ClassificationNode code="OperatesOn" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::OperatesOn" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::OperatesOn" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
 			<rim:Name>
 				<rim:LocalizedString value="OperatesOn"/>
@@ -201,22 +199,24 @@
 				<rim:LocalizedString xml:lang="en" value="Associates the Metadata of a service with the Metadata of the data that the service operates on as input or output"/>
 			</rim:Description>
 		</rim:ClassificationNode>
-		<rim:ClassificationNode code="ServiceDescription" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ServiceDescription" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ServiceDescription" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+                <!-- Superseded since OGC CIM 0.1.12-->
+		<!-- <rim:ClassificationNode code="ServiceDescription" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ServiceDescription" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ServiceDescription" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
 			<rim:Name>
 				<rim:LocalizedString value="ServiceDescription"/>
 			</rim:Name>
 			<rim:Description>
 				<rim:LocalizedString xml:lang="en" value="Associates a description of Service Metadata with a Service"/>
 			</rim:Description>
-		</rim:ClassificationNode>
-		<rim:ClassificationNode code="ApplicationDescription" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ApplicationDescription" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ApplicationDescription" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+		</rim:ClassificationNode> -->
+                <!-- Superseded since OGC CIM 0.1.12-->
+		<!-- <rim:ClassificationNode code="ApplicationDescription" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ApplicationDescription" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ApplicationDescription" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
 			<rim:Name>
 				<rim:LocalizedString value="ApplicationDescription"/>
 			</rim:Name>
 			<rim:Description>
 				<rim:LocalizedString xml:lang="en" value="Associates a description of a metadata record with an Application"/>
 			</rim:Description>
-		</rim:ClassificationNode>
+		</rim:ClassificationNode> -->
 		<rim:ClassificationNode code="ResourceMetadataInformation" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ResourceMetadataInformation" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::ResourceMetadataInformation" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
 			<rim:Name>
 				<rim:LocalizedString value="ResourceMetadataInformation"/>
@@ -303,6 +303,15 @@
 			</rim:Name>
 			<rim:Description>
 				<rim:LocalizedString xml:lang="en" value="Provides information about the name and email address for an organization that is responsible for the metadata resource"/>
+			</rim:Description>
+		</rim:ClassificationNode>
+                <!-- INTECS addition to deal with the definition of new thesaurii as per section 11.10.12 of OGC 07-038r3, version 0.1.12 -->
+                <rim:ClassificationNode code="Thesaurus" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" lid="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::Thesaurus" id="urn:ogc:def:associationType:OGC-CSW-ebRIM-CIM::Thesaurus" parent="urn:oasis:names:tc:ebxml-regrep:classificationScheme:AssociationType">
+			<rim:Name>
+				<rim:LocalizedString value="Thesaurus"/>
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en" value="Provides information about a thesaurus"/>
 			</rim:Description>
 		</rim:ClassificationNode>
 
