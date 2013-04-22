@@ -245,6 +245,7 @@
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'Subset' )"/>
     </xsl:variable>
 
+<!--  Superseded in OGC CIM v. 0.1.12
     <xsl:variable name="datasetDescriptionAssociationType">
         <xsl:value-of select="concat( $cimAssociationTypeUrnPrefix, 'DatasetDescription' )"/>
     </xsl:variable>
@@ -256,6 +257,7 @@
     <xsl:variable name="applicationDescriptionAssociationType">
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'ApplicationDescription' )"/>
     </xsl:variable>
+-->
 
     <xsl:variable name="resourceMetadataInformationAssociationType">
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'ResourceMetadataInformation' )"/>
@@ -301,7 +303,9 @@
         <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'MetadataPointOfContact' )"/>
     </xsl:variable>
 
-
+    <xsl:variable name="thesaurusAssociationType">
+        <xsl:value-of select="concat($cimAssociationTypeUrnPrefix, 'Thesaurus' )"/>
+    </xsl:variable>
 
     <!--	Slots -->
 
@@ -354,7 +358,7 @@
     </xsl:variable>
     
     <xsl:variable name="urlSlotName">
-        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::Url</xsl:text>
+        <xsl:text>urn:ogc:def:slot:OGC-CSW-ebRIM-CIM::url</xsl:text>
     </xsl:variable>
     
     <xsl:variable name="creatorSlotName">
@@ -474,7 +478,8 @@
 
     <xsl:variable name="urnCimAuthorityAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:Authority:')"/>
 
-
+	 <xsl:variable name="urnCimThesaurusAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:Thesaurus:')"/>
+	 
 
     <!--Classification ID prefix -->
 
