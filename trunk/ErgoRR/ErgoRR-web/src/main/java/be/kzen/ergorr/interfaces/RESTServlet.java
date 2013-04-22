@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -129,19 +130,18 @@ public class RESTServlet extends HttpServlet
     return jsonStr;
   }
 
-  public Properties loadProperties()
-  {
-    try
-    {
-      Properties props = new Properties();
+    public Properties loadProperties() {
+        try {
+            Properties props = new Properties();
 
-      props.load(new FileInputStream(getPropertiesFile()));
+            props.load(new FileInputStream(getPropertiesFile()));
 
-      return props;
-    } catch (IOException ex) {
-      logger.log(Level.SEVERE, "Could not load ergorr.properties", ex);
-    }return null;
-  }
+            return props;
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "Could not load ergorr.properties", ex);
+        }
+        return null;
+    }
 
   public void saveProperties(JsonObject obj)
     throws IOException
@@ -174,9 +174,14 @@ public class RESTServlet extends HttpServlet
 
   private File getPropertiesFile()
   {
- 
-    return new File(getClass().getClassLoader().getResource("ergorr.properties").getFile());
-  }
+      File propertiesFile = null;
+        try {
+           propertiesFile = new File(getClass().getClassLoader().getResource("ergorr.properties").toURI());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(RESTServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return propertiesFile;
+}
 
   private boolean authenticateUser(HttpServletRequest request)
   {
