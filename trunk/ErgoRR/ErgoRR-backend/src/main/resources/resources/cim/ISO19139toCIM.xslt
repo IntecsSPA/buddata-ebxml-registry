@@ -18,8 +18,8 @@
     
     <xsl:variable name="resourceMetadataId">
         <xsl:choose>
-            <xsl:when test="contains($isoId, 'urn:')">
-                <xsl:value-of select="concat($isoId, ':ResourceMetadata')"/> 
+            <xsl:when test="contains( $isoId, 'urn:')">
+                <xsl:value-of select="concat( $isoId, ':ResourceMetadata')"/> 
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat( 'urn:CIM:', $isoId, ':ResourceMetadata')"/> 
@@ -99,10 +99,10 @@
                         </xsl:variable>
                         <xsl:variable name="thesaurusDescription" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"/>
                         <xsl:variable name="keywordThesaurusSchemeClassificationScheme">
-                            <xsl:value-of select="concat( $cimClassificationSchemeUrnPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier )"/>
+                            <xsl:value-of select="concat( $cimIDPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier )"/>
                         </xsl:variable>
                         <xsl:variable name="keywordThesaurusSchemeClassificationSchemePrefix">
-                            <xsl:value-of select="concat( $cimClassificationSchemeUrnPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier , ':' )"/>
+                            <xsl:value-of select="concat( $cimIDPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier , ':' )"/>
                         </xsl:variable>
                         <rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="{$keywordThesaurusSchemeClassificationScheme}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme" isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
                             <rim:Name>
@@ -125,7 +125,7 @@
                                         <xsl:with-param name="node" select="."/>
                                     </xsl:call-template>
                                 </xsl:variable>
-                                <xsl:variable name="keywordThesaurusSchemeClassificationId" select="concat( $urnCimKeywordThesaurusSchemeClassificationIDPrefix, generate-id(.) )"/>
+                                <xsl:variable name="keywordThesaurusSchemeClassificationId" select="concat( $keywordThesaurusSchemeClassificationSchemePrefix, generate-id(.) )"/>
                                 <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$keywordThesaurusSchemeClassificationScheme}" code="{$keywordId}" id="{concat( $keywordThesaurusSchemeClassificationSchemePrefix, $keywordId)}">
                                     <xsl:if test="gmx:Anchor">
                                         <rim:Slot name="{$urlSlotName}" slotType="{$uriSlotType}">
@@ -147,7 +147,7 @@
                             <xsl:with-param name="citationInformationNode" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation"/>
                             <xsl:with-param name="citedItemEOId" select="$citedItemId"/>
                         </xsl:call-template>
-                        <!--rim:Association id="{$citedResponsiblePartyAssociationId}" associationType="{$citedResponsiblePartyAssociationType}" sourceObject="{$citedItemId}" targetObject="{$organizationId}"/-->
+                        <rim:Association id="{concat($urnCimThesaurusAssociationIDPrefix, ':', generate-id(.))}" associationType="{$thesaurusAssociationType}" sourceObject="{$keywordThesaurusSchemeClassificationScheme}" targetObject="{$citedItemId}"/>
                     </xsl:if>
                 </xsl:for-each>
             </xsl:variable>
@@ -485,7 +485,7 @@
         <xsl:param name="descriptiveKeywordsClassificationSchemes"/>
         <xsl:param name="servicesClassificationNodes"/>
 
-        <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$resourceMetadataObjectType}">
+        <wrs:ExtrinsicObject id="{$resourceMetadataId}">
             <xsl:call-template name="specifyTypeOfResourceMetadata"/>
 
             <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevelName">
@@ -585,30 +585,6 @@
                 </xsl:call-template>
             </xsl:if>
 
-            <xsl:for-each select="/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode">
-                <xsl:variable name="objTypeClassificationID" select="concat( $objectTypeClassificationIDPrefix, generate-id(.))"/>
-                <!-- Dataset,  ElementaryDataset, DatasetCollection, Service and Application-->
-                <xsl:if test="@codeListValue = 'series' ">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$datasetCollectionObjectType}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'dataset' and string-length(/gmd:MD_Metadata/gmd:parentIdentifier) = 0">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$datasetObjectType}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'dataset' and string-length(/gmd:MD_Metadata/gmd:parentIdentifier) > 0">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$elementaryDatasetObjectType}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'service'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$serviceObjectType}">
-                    </rim:Classification>
-                </xsl:if>
-                <xsl:if test="@codeListValue = 'application'">
-                    <rim:Classification id="{$objTypeClassificationID}" classifiedObject="{$resourceMetadataId}" classificationNode="{$applicationObjectType}">
-                    </rim:Classification>
-                </xsl:if>
-            </xsl:for-each>
             <!--  ................................................................................................................... -->
             <xsl:call-template name="createDescriptiveKeywordsClassificationIdByNodes">
                 <xsl:with-param name="classificationNodes" select="$descriptiveKeywordsClassificationNodes"/>
@@ -878,23 +854,45 @@
     </xsl:template>
 
     <xsl:template name="specifyTypeOfResourceMetadata">
-        <xsl:if test="gmd:MD_DataIdentification">
-            <xsl:attribute name="objectType">
-                <xsl:value-of select="$dataMetadataObjectType"/>
-            </xsl:attribute>
-        </xsl:if>
-        <xsl:if test="gmd:MD_ServiceIdentification">
-            <xsl:attribute name="objectType">
-                <xsl:value-of select="$dataMetadataObjectType"/>
-            </xsl:attribute>
-        </xsl:if>
-        <xsl:if test="srv:SV_ServiceIdentification">
-            <xsl:attribute name="objectType">
-                <xsl:value-of select="$serviceMetadataObjectType"/>
-            </xsl:attribute>
-        </xsl:if>
+        <xsl:variable name="mainObjectType">
+            <xsl:choose>
+                <xsl:when test="srv:SV_ServiceIdentification">
+                    <xsl:value-of select="$serviceMetadataObjectType"/>
+                </xsl:when>
+                <xsl:otherwise>								
+                    <xsl:value-of select="$dataMetadataObjectType"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="hierarchyLevelCode" select="/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue"/>
+        <xsl:variable name="objectTypeValue">
+            <xsl:choose>
+	                <!-- DataMetadata,  ElementaryDataset, DatasetCollection, ServiceMetadata and Application-->
+                <xsl:when test="$hierarchyLevelCode = 'series' ">
+                    <xsl:value-of select="$datasetCollectionObjectType"/>
+                </xsl:when>
+                <xsl:when test="$hierarchyLevelCode = 'dataset' and string-length(/gmd:MD_Metadata/gmd:parentIdentifier) = 0">
+                    <xsl:value-of select="$dataMetadataObjectType"/>
+                </xsl:when>
+                <xsl:when test="$hierarchyLevelCode = 'dataset' and string-length(/gmd:MD_Metadata/gmd:parentIdentifier) > 0">
+                    <xsl:value-of select="$elementaryDatasetObjectType"/>
+                </xsl:when>
+                <xsl:when test="$hierarchyLevelCode = 'service' ">
+                    <xsl:value-of select="$serviceMetadataObjectType"/>
+                </xsl:when>
+                <xsl:when test="$hierarchyLevelCode = 'application' ">
+                    <xsl:value-of select="$applicationObjectType"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$mainObjectType"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable> 
+        <xsl:attribute name="objectType">
+            <xsl:value-of select="$objectTypeValue"/>
+        </xsl:attribute>
     </xsl:template>
-
+    
     <xsl:template name="servicemetadata">
         <xsl:param name="servicemetadata-id"/>
         <xsl:param name="servicesClassificationNodes"/>
@@ -1374,10 +1372,14 @@
         <xsl:param name="node"/>
         <xsl:choose>
             <xsl:when test="$node/gco:CharacterString">
-                <xsl:value-of select="translate(translate( $node/gco:CharacterString,' ','_' ), ',','_')"/>
+                <!-- <xsl:value-of select="translate(translate( $node/gco:CharacterString,' ','_' ), ',','_')"/> -->
+                <!-- <xsl:value-of select="translate( $node/gco:CharacterString,' %/?#','' )"/> -->
+                <xsl:value-of select="encode-for-uri($node/gco:CharacterString)"/>
             </xsl:when>
             <xsl:when test="$node/gmx:Anchor">
-                <xsl:value-of select="translate(translate( $node/gmx:Anchor,' ',':' ), ',','_')"/>
+                <!-- <xsl:value-of select="translate(translate( $node/gmx:Anchor,' ',':' ), ',','_')"/> -->
+                <!-- <xsl:value-of select="translate( $node/gmx:Anchor,' %/?#','' )"/> -->
+                <xsl:value-of select="encode-for-uri($node/gmx:Anchor)"/>
             </xsl:when>
         </xsl:choose>
     </xsl:template>
