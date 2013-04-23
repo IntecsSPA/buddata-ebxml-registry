@@ -208,7 +208,7 @@
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <value>
-                                            <xsl:value-of select=" '1.3' "></xsl:value-of>
+                                            <xsl:value-of select=" '1.3.0' "></xsl:value-of>
                                         </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -291,7 +291,7 @@
                         </xsl:for-each>
                     </xsl:when>
 
-                    <xsl:when test="$serviceType = 'CSW-ebRIM' ">
+                    <xsl:when test="$serviceType = 'WRS' ">
                         <xsl:variable name="serviceTypeVersion">
                             <versions>
                                 <xsl:choose>
@@ -304,7 +304,7 @@
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <value>
-                                            <xsl:value-of select=" '1.3' "></xsl:value-of>
+                                            <xsl:value-of select=" '1.0.1' "></xsl:value-of>
                                         </value>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -312,7 +312,7 @@
                         </xsl:variable>
                         <xsl:for-each select="$serviceTypeVersion//value">
                             <xsl:variable name="serviceTypeVersionSuffix" select="concat(':', .)"/>
-                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CatalogueService:2.0.2" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM', $serviceTypeVersionSuffix)}">
+                            <rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="urn:ogc:serviceType:CatalogueService:2.0.2" code="{concat($serviceType, $serviceTypeVersionSuffix)}" id="{concat('urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM', $serviceTypeVersionSuffix)}">
                                 <rim:Name>
                                     <rim:LocalizedString xml:lang="en" value="{concat($serviceType, $serviceTypeVersionSuffix)}"/>
                                 </rim:Name>
@@ -711,7 +711,12 @@
         <xsl:for-each select="srv:SV_ServiceIdentification/srv:operatesOn">
             <xsl:variable name="identifier" select="substring-after(@xlink:href, '#')"/>
             <xsl:if test="not(empty($identifier))">
-                <xsl:variable name="resourceMetadataId" select="concat( 'urn:CIM:', $identifier, ':ResourceMetadata' )"/>
+                <xsl:variable name="identifierPrefix">
+                    <xsl:if test="not(starts-with($identifier,'urn:'))">
+                        <xsl:value-of select=" 'urn:CIM:' "/>
+                    </xsl:if>
+                </xsl:variable>
+                <xsl:variable name="resourceMetadataId" select="concat( $identifierPrefix, $identifier, ':ResourceMetadata' )"/>
                 <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$dataMetadataObjectType}"/>
                 <xsl:variable name="operatesOnId" select="concat( $operatesOnAssociationType, ':', generate-id(.))"/>
                 <!-- Controllare se ci va la resource che linkata dal metadata-->
