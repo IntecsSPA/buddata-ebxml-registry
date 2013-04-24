@@ -676,7 +676,7 @@
     <xsl:template name="serviceoperation">
         <xsl:param name="servicemetadata-id"/>
         <xsl:for-each select="srv:SV_ServiceIdentification/srv:containsOperations">
-            <xsl:variable name="serviceOperationId" select="concat( $serviceOperationObjectType, ':', generate-id(.))"/>
+            <xsl:variable name="serviceOperationId" select="concat( $urnCimServiceOperationExtrinsicObjectIDPrefix, ':', generate-id(.))"/>
             <rim:ExtrinsicObject id="{$serviceOperationId}" objectType="{$serviceOperationObjectType}">
                 <xsl:for-each select="srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage">
                     <xsl:variable name="url" select="gmd:URL"/>
@@ -700,7 +700,7 @@
                     </xsl:if>
                 </xsl:for-each>
             </rim:ExtrinsicObject>
-            <xsl:variable name="containsOperationId" select="concat( $containsOperationAssociationType, ':', generate-id(.))"/>
+            <xsl:variable name="containsOperationId" select="concat( $urnCimContainsOperationAssociationIDPrefix, ':', generate-id(.))"/>
             <!-- Controllare se ci va la resource che linkata dal metadata-->
             <rim:Association id="{$containsOperationId}" associationType="{$containsOperationAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$serviceOperationId}"/>
         </xsl:for-each>
@@ -717,8 +717,8 @@
                     </xsl:if>
                 </xsl:variable>
                 <xsl:variable name="resourceMetadataId" select="concat( $identifierPrefix, $identifier, ':ResourceMetadata' )"/>
-                <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$dataMetadataObjectType}"/>
-                <xsl:variable name="operatesOnId" select="concat( $operatesOnAssociationType, ':', generate-id(.))"/>
+                <wrs:ExtrinsicObject id="{$resourceMetadataId}" objectType="{$datasetCollectionObjectType}"/>
+                <xsl:variable name="operatesOnId" select="concat( $urnCimOperatesOnAssociationIDPrefix, ':', generate-id(.))"/>
                 <!-- Controllare se ci va la resource che linkata dal metadata-->
                 <rim:Association id="{$operatesOnId}" associationType="{$operatesOnAssociationType}" sourceObject="{$servicemetadata-id}" targetObject="{$resourceMetadataId}"/>
             </xsl:if>

@@ -433,10 +433,6 @@
 
 
 
-
-
-
-
     <!--ExtrinsicObject ID prefix -->
 
     <xsl:variable name="urnCimMetadataInformationExtrinsicObjectID" select="concat( $cimIDPrefix , 'ExtrinsicObject:MetadataInformation')"/>
@@ -456,6 +452,8 @@
     <xsl:variable name="urnCimCitedItemExtrinsicObjectIDPrefix" select="concat( $cimIDPrefix , 'ExtrinsicObject:CitedItem:')"/>
 
     <xsl:variable name="urnCimReferenceSpecificationExtrinsicObjectIDPrefix" select="concat( $cimIDPrefix , 'ExtrinsicObject:ReferenceSpecification:')"/>
+    
+     <xsl:variable name="urnCimServiceOperationExtrinsicObjectIDPrefix" select="concat( $cimIDPrefix , 'ExtrinsicObject:ServiceOperation:')"/>
 
 
     <!--Association ID prefix -->
@@ -478,7 +476,11 @@
 
     <xsl:variable name="urnCimAuthorityAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:Authority:')"/>
 
-	 <xsl:variable name="urnCimThesaurusAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:Thesaurus:')"/>
+    <xsl:variable name="urnCimThesaurusAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:Thesaurus:')"/>
+	 
+    <xsl:variable name="urnCimContainsOperationAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:ContainsOperation:')"/>
+	  
+    <xsl:variable name="urnCimOperatesOnAssociationIDPrefix" select="concat( $cimIDPrefix , 'Association:OperatesOn:')"/>
 	 
 
     <!--Classification ID prefix -->
