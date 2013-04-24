@@ -48,7 +48,7 @@
 		<repository>
 			<id>Geo Solutions</id>
 			<name>Geo Solution Maven Repository</name>
-			<url>http://mvn.geo-solutions.it</url>
+			<url>http://maven.geo-solutions.it/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
