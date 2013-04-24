@@ -171,7 +171,9 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
                 }
             }
             for (String s : a) {
-                associateToPackage(s);
+                if (s.contains(isoIdentifier)) {
+                    associateToPackage(s);
+                }
             }
             // regPkg.setRegistryObjectList(regObjList);
         } catch (JAXBException ex) {
