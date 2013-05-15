@@ -3,7 +3,7 @@ Prerequisites
 1. JDK 1.6.x
    Make sure that you have set the JAVA_HOME environment variable.
 
-2. Apache Tomcat 5.5+ (Optional)
+2. Apache Tomcat 6.0.x (Optional)
    Please make sure that you have set the CATALINA_HOME environment variable if you want to use an 
    existing Apache Tomcat installation.
 
