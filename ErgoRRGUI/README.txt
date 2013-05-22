@@ -10,4 +10,4 @@ ant -f gui-build.xml build
 
 ant -f gui-build.xml deploy (assumes CATALINA_HOME set)
 
-ant -f guil-build.xml clean (removes "build" and "dist" directory)
+ant -f gui-build.xml clean (removes "build" and "dist" directory)
