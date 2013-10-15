@@ -125,7 +125,7 @@ public class SqlQuery {
         }
 
         StringBuilder selectSql = new StringBuilder();
-        selectSql.append(SyntaxElements.SELECT).append(returnObj.getSqlAlias()).append(SyntaxElements.ALL_COLUMNS)
+        selectSql.append(SyntaxElements.SELECT_DISTINCT).append(returnObj.getSqlAlias()).append(SyntaxElements.ALL_COLUMNS)
                 .append(whereClause.toString());
 
         if (sortBy != null && sortBy.length() > 0) {
@@ -166,7 +166,7 @@ public class SqlQuery {
             buildWhereClause();
         }
 
-        return SyntaxElements.SELECT + "count(" + returnObj.getSqlAlias() + SyntaxElements.CLOSE_BR + whereClause.toString();
+        return SyntaxElements.SELECT + "count(DISTINCT " + returnObj.getSqlAlias() + SyntaxElements.CLOSE_BR + whereClause.toString();
     }
 
     /**
