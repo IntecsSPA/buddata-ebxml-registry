@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0  http://www.oasis-open.org/committees/regrep/documents/3.0/schema/rim.xsd"
+	lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication" 
+	id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication" 
+	objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme" 
+	isInternal="true" 
+	nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+	<rim:Name>
+		<rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Intended application taxonomy"/>
+	</rim:Name>
+	<rim:Description>
+		<rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Defines a taxonomy that may be used to classify sensors according to their purpose."/>
+	</rim:Description>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication" 
+		code="EOInstrumentApplication" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="EOInstrumentApplication"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Identifies the Applications for EO Instruments"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-Aerosols" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-Aerosols"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-Aerosols">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/aerosols_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-Aerosols"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Aerosols"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-HumidityFields" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-HumidityFields"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-HumidityFields">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/atmos_humid_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-HumidityFields"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Atmospheric Humidity Fields"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-TemperatureFields" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-TemperatureFields"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-TemperatureFields">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/atmos_temp_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-TemperatureFields"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Atmospheric Temperature Fields"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-Winds" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-Winds"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-Winds">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/atmos_winds_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-Winds"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Atmospheric Winds"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-CloudParticles" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-CloudParticles"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-CloudParticles">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/cloud_particle_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-CloudParticles"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Cloud Particle Properties/Profile"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-CloudType" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-CloudType"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-CloudType">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/cloud_type_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-CloudType"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Cloud Type/Cloud Amount"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-CloudTopTemp" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-CloudTopTemp"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-CloudTopTemp">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/cloud_type_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-CloudTopTemp"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Cloud Top Temperature"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-WaterPrecipitation" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-WaterPrecipitation"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-WaterPrecipitation">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/liquid_water_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-WaterPrecipitation"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Liquid Water/Precipitation Rate"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-Ozone" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-Ozone"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-Ozone">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/ozone_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-Ozone"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Ozone"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-RadiationBudget" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-RadiationBudget"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-RadiationBudget">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/rad_budget_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-RadiationBudget"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Radiation Budget"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Atmosphere-TraceGases" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-TraceGases"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Atmosphere-TraceGases">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/trace_gases_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere-TraceGases"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Atmosphere - Trace Gases"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Land-AlbedoReflectance" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-AlbedoReflectance"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-AlbedoReflectance">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/albedo_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Land-AlbedoReflectance"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Land - Albedo/Reflectance"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Land-Topography" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-Topography"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-Topography">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/land_topog_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Land-Topography"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Land - Topography"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Land-SoilMoisture" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-SoilMoisture"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-SoilMoisture">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/soil_moisture_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Land-SoilMoisture"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Land - Soil Moisture"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Land-Vegetation" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-Vegetation"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-Vegetation">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/vegetation_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Land-Vegetation"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Land - Vegetation"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Land-SurfaceTemperature" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-SurfaceTemperature"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-SurfaceTemperature">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/surface_temp_land_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Land-SurfaceTemperature"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Land - Surface Temperature"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Land-Multi-purposeImagery" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-Multi-purposeImagery"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Land-Multi-purposeImagery">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/multi_purpose_land_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Land-Multi-purposeImagery"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Land - Multi-purpose Imagery"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ocean-ColorBiology" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-ColorBiology"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-ColorBiology">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/ocean_colour_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ocean-ColorBiology"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ocean - Color/Biology"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ocean-TopographyCurrents" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-TopographyCurrents"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-TopographyCurrents">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/ocean_topog_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ocean-TopographyCurrents"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ocean - Topography/Currents"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ocean-SurfaceWinds" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-SurfaceWinds"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-SurfaceWinds">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/ocean_topog_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ocean-SurfaceWinds"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ocean - Surface Winds"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ocean-SurfaceTemperature" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-SurfaceTemperature"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-SurfaceTemperature">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/ocean_temp_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ocean-SurfaceTemperature"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ocean - Surface Temperature"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ocean-WaveHeight" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-WaveHeight"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-WaveHeight">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/wave_height_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ocean-WaveHeight"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ocean - Wave Height/Spectrum"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ocean-Multi-purposeImagery" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-Multi-purposeImagery"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ocean-Multi-purposeImagery">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/multi_purpose_ocean_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ocean-Multi-purposeImagery"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ocean - Multi-purpose Imagery"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ice-Topography" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ice-Topography"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ice-Topography">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/ice_sheet_topog_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ice-Topography"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Snow/Ice - Ice Sheet Topography"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Snow-Cover" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Snow-Cover"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Snow-Cover">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/snow_cover_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Snow-Cover"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Snow/Ice - Snow Cover/Edge/Depth"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Ice-Cover" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ice-Cover"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Ice-Cover">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/sea_ice_cover_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Ice-Cover"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Snow/Ice - Sea Ice Cover/Edge/Thickness"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:EOInstrumentApplication" 
+		code="Gravity-MagneticGeodynamic" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Gravity-MagneticGeodynamic"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication:Gravity-MagneticGeodynamic">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/gravity_pop.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Gravity-MagneticGeodynamic"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Gravity - Magnetic/Geodynamic Measurements"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+</rim:ClassificationScheme>

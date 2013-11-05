@@ -1,0 +1,141 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <name>ErgoRR-web</name>
+    <description>Web client interfaces for the ErgoRR service.</description>
+    <url>http://code.google.com/p/buddata-ebxml-registry</url>
+
+    <groupId>be.kzen.ergorr</groupId>
+    <artifactId>ErgoRR-web</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
+
+    <parent>
+        <groupId>be.kzen</groupId>
+        <artifactId>ergorr</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>be.kzen.ergorr</groupId>
+            <artifactId>ErgoRR-persistence</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>be.kzen.ergorr</groupId>
+            <artifactId>ErgoRR-backend</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>6.0.18</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.3.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <element>${project.parent.basedir}/conf</element>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.parent.basedir}/conf/ergorr.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceExcludes>WEB-INF/lib/webservices-api-*.jar</warSourceExcludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <tasks>
+                                <condition property="wsdlFileName" value="CSW-service-secure.wsdl" else="CSW-service-unsecure.wsdl">
+                                    <istrue value="${security.enabled}"/>
+                                </condition>
+
+                                <copy file="${project.basedir}/src/main/config/wsdl/${wsdlFileName}"
+                                      tofile="${project.build.directory}/${deployName}/WEB-INF/wsdl/CSW-service.wsdl"/>
+
+                                <copy file="${project.parent.basedir}/conf/ergorr.properties" todir="${project.build.directory}/classes"/>
+                                <copy file="./src/main/config/template-datasource.xml" tofile="${project.build.directory}/${deployName}.xml"/>
+                                <replace file="${project.build.directory}/${deployName}.xml" token="!!name!!" value="${deployName}"/>
+                                <replace file="${project.build.directory}/${deployName}.xml" token="!!db.url!!" value="${db.url}"/>
+                                <replace file="${project.build.directory}/${deployName}.xml" token="!!db.user!!" value="${db.user}"/>
+                                <replace file="${project.build.directory}/${deployName}.xml" token="!!db.password!!" value="${db.password}"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <finalName>${deployName}</finalName>
+    </build>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+    </properties>
+</project>
+

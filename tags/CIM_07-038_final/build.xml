@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ergorr-deploy" basedir=".">
+    <property name="mave-repo" value="${user.home}/.m2/repository"/>
+    <property name="jar-postgresql" value="${mave-repo}/postgresql/postgresql/8.2-504.jdbc3/postgresql-8.2-504.jdbc3.jar"/>
+    <property name="jar-webservice-api" value="${mave-repo}/javax/xml/webservices-api/1.5/webservices-api-1.5.jar"/>
+    <property name="jar-webservice-rt" value="${mave-repo}/com/sun/xml/ws/webservices-rt/1.5/webservices-rt-1.5.jar"/>
+    <property name="jar-activation" value="${mave-repo}/javax/activation/activation/1.1/activation-1.1.jar"/>
+    <property name="jar-postgis" value="${mave-repo}/org/postgis/postgis/1.3.3/postgis-1.3.3.jar"/>
+
+    <property name="ergorr-web" value="ErgoRR-web"/>
+    <property name="ergorr-persistence" value="ErgoRR-persistence"/>
+    <property name="properties-file" value="./conf/ergorr.properties"/>
+    <property environment="env"/>
+
+    <property file="${properties-file}"/>
+
+    <target name="db-build" depends="db-create, db-create-tables"/>
+    
+    <target name="db-create">
+        <taskdef name="createdb" classname="be.kzen.ergorr.deploy.ant.CreateDbTask" classpathref="libs.ref" onerror="ignore"/>
+        <createdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}" template="${db.templatePostgis}"/>
+    </target>
+
+    <target name="db-drop">
+        <taskdef name="dropdb" classname="be.kzen.ergorr.deploy.ant.DropDbTask" classpathref="libs.ref" onerror="ignore"/>
+        <dropdb dbName="${deployName}" dbUrl="${db.url}" dbUser="${db.user}" dbPassword="${db.password}"/>
+    </target>
+
+    <target name="db-create-tables">
+        <sql driver="org.postgresql.Driver" classpath="${jar-postgresql}"
+        url="jdbc:postgresql://${db.url}/${deployName}"
+        userid="${db.user}"
+        password="${db.password}" src="${ergorr-persistence}/src/main/config/database.sql"/>
+    </target>
+
+    <target name="deploy">
+        <delete file="${env.CATALINA_HOME}/webapps/${deployName}.war"/>
+        <delete dir="${env.CATALINA_HOME}/webapps/${deployName}"/>
+        <echo message="Waiting 5 seconds for tomcat to undeploy properly ..."/>
+        <sleep seconds="5"/>
+        <copy file="${ergorr-web}/target/${deployName}.xml" tofile="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}.xml"/>
+        <unwar src="${ergorr-web}/target/${deployName}.war" dest="${env.CATALINA_HOME}/webapps/${deployName}"/>
+        <sleep seconds="3"/>
+    </target>
+
+    <target name="tomcat-setup">
+        <copy file="${jar-webservice-api}" todir="${env.CATALINA_HOME}/common/endorsed"/>
+        <copy file="${jar-postgresql}" todir="${env.CATALINA_HOME}/common/lib"/>
+        <echo>***********************************</echo>
+        <echo>*         Restart Tomcat</echo>
+        <echo>***********************************</echo>
+    </target>
+
+    <target name="db-load-rim">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <!-- RIM -->
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/rim/rim-objecttype-scheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/rim/rim-datatype-scheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/rim/rim-associationtype-scheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/rim/rim-querylanguage-scheme.xml"/>
+        <!-- ERGO -->
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/ergo/ergo.xml"/>
+    </target>
+
+    <target name="db-load-ogc" depends="db-load-rim">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/ogc/OGC-root-package.xml"/>
+    </target>
+
+    <target name="db-load-eop" depends="db-load-rim">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/eo/eo-rim-model.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/eo/eo-slot-init.xml"/>
+    </target>
+
+    <target name="db-load-basic" depends="db-load-rim, db-load-ogc">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/basic-package/schemes/ISO19119-Services-Scheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/basic-package/schemes/UNSD-Regions-Scheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/basic-package/Basic-Package.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/basic-package/basic-package-slot-init.xml"/>
+    </target>
+
+    <target name="db-load-cim" depends="db-load-basic">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-CharacterSetScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-CitedResponsiblePartyScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-ClassificationCodeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-CouplingTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-DCPListScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-FormatNameAndVersionScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-KeywordScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-KeywordTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-MetadataStandardNameAndVersionScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-RestrictionCodeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-RestrictionTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-SpatialRepresentationScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-TopicCategoryScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/CIM-Package.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/cim-package-slot-init.xml"/>
+    </target>
+    
+    <!-- INTECS Addition 2011-05-10 for loading sensorML Extension Package-->
+    <target name="db-load-sensorML" depends="db-load-basic">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/schemes/SensorML-IntendedApplicationScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/schemes/SensorML-OrbitTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/schemes/SensorML-SystemTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/SensorML-Package.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/sensorML/SensorML-Package-slot-init.xml"/>
+    </target>
+
+    <target name="db-load-model" depends="db-load-ogc, db-load-eop, db-load-cim, db-load-sensorML">
+    </target>
+
+    <target name="db-load-test">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <!--be-invoker dataSrc="${basedir}/${ergorr-web}/src/test/data"/-->
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/test/data"/>
+    </target>
+
+    <path id="libs.ref" description="project libraries">
+        <pathelement path="${jar-postgresql}"/>
+        <pathelement path="${jar-postgis}"/>
+        <pathelement path="${jar-webservice-api}"/>
+        <pathelement path="${jar-webservice-rt}"/>
+        <pathelement path="${jar-activation}"/>
+        <pathelement path="ErgoRR-backend/target/classes"/>
+        <pathelement path="ErgoRR-commons/target/classes"/>
+        <pathelement path="ErgoRR-jaxb/target/classes"/>
+        <pathelement path="ErgoRR-persistence/target/classes"/>
+        <pathelement path="ErgoRR-web/target/classes"/>
+    </path>
+</project>
