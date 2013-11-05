@@ -54,36 +54,61 @@ public class CommonProperties {
 
     /**
      * Load the common properties.
-     * First looks up the system variable "ergorr.common.properties"
-     * and if it exists, uses the path for the properties file.
-     * Otherwise loads "ergorr.properties" file from class path.
+     * Loads "ergorr.properties" file from class path.
      *
      */
     public void loadProperties() {
         try {
             props = new Properties();
-            File propFile=null;
-            String sysPropPath = System.getProperty("ergorr.common.properties");
+         
+            File propFile = new File(getClass().getClassLoader().getResource("ergorr.properties").getFile());
 
-            if (sysPropPath == null) {
-                propFile = new File(getClass().getClassLoader().getResource("ergorr.properties").getFile());
-               // props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
-                
+            if (propFile.exists()) {
+                props.load(new FileInputStream(propFile));
             } else {
-                 propFile = new File(sysPropPath);
-            }     
-                if (propFile.exists()) {
-                    props.load(new FileInputStream(propFile));
-                } else {
-                    logger.log(Level.WARNING, "System property 'ergorr.common.properties' is set but file could not be found: " + sysPropPath);
-                    props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
-                }
-           // }
+                props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
+            }
+            // }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Could not load ergorr.properties", ex);
         }
     }
 
+    /** 
+     * OBSOLETE: common properties are read directly by the "ergorr.properties" file
+     * 
+     * Load the common properties.
+     * First looks up the system variable "ergorr.common.properties"
+     * and if it exists, uses the path for the properties file.
+     * Otherwise loads "ergorr.properties" file from class path.
+     *
+     *
+    public void loadProperties() {
+    try {
+    props = new Properties();
+    File propFile=null;
+    String sysPropPath = System.getProperty("ergorr.common.properties");
+    
+    if (sysPropPath == null) {
+    propFile = new File(getClass().getClassLoader().getResource("ergorr.properties").getFile());
+    // props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
+    
+    } else {
+    propFile = new File(sysPropPath);
+    }     
+    if (propFile.exists()) {
+    props.load(new FileInputStream(propFile));
+    } else {
+    logger.log(Level.WARNING, "System property 'ergorr.common.properties' is set but file could not be found: " + sysPropPath);
+    props.load(this.getClass().getClassLoader().getResourceAsStream("ergorr.properties"));
+    }
+    // }
+    } catch (IOException ex) {
+    logger.log(Level.SEVERE, "Could not load ergorr.properties", ex);
+    }
+    } */
+    
+    
     /**
      * Get property from common properties.
      *
@@ -195,8 +220,8 @@ public class CommonProperties {
 
         return arr;
     }
-    
-    public static void removeInstance(){
-        CommonProperties.instance=null;
+
+    public static void removeInstance() {
+        CommonProperties.instance = null;
     }
 }
