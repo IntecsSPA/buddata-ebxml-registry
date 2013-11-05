@@ -19,9 +19,11 @@
 package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
+import be.kzen.ergorr.model.rim.ClassificationNodeType;
 import be.kzen.ergorr.model.rim.ClassificationSchemeType;
 import java.sql.SQLException;
 import java.util.List;
+import javax.xml.bind.JAXBElement;
 
 /**
  * Validates ClassificationSchemes.
@@ -36,16 +38,36 @@ public class ClassificationSchemeTypeV extends RegistryObjectTypeV<Classificatio
     @Override
     public void validateToDelete() throws ReferenceExistsException, SQLException {
         super.validateToDelete();
-        List<String> ids = persistence.getIds("select id from t_classificationnode where parent='" + rimObject.getId() + "'");
 
+        /*
+        List<String> ids = persistence.getIds("select id from t_classificationnode where parent='" + rimObject.getId() + "'");
+        
         if (!ids.isEmpty()) {
-            String idStr = "";
-            for (String id : ids) {
-                idStr += id + " | ";
+        String idStr = "";
+        for (String id : ids) {
+        idStr += id + " | ";
+        }
+        
+        String err = "ClassificationScheme " + rimObject.getId() + " cannot be deleted because this has child ClassificationNode(s) " + idStr;
+        throw new ReferenceExistsException(err);
+        }
+         */
+
+        String sql = "select * from t_classificationnode where parent='" + rimObject.getId() + "'";
+
+        List<JAXBElement<ClassificationNodeType>> clsNodeEls = persistence.query(sql, null, (Class) ClassificationNodeType.class);
+
+        for (JAXBElement<ClassificationNodeType> clsNodeEl : clsNodeEls) {
+            ClassificationNodeType clsNode = clsNodeEl.getValue();
+
+            // if classification node is already to be deleted then don't bother with re-validating it.
+            if (!idExistsInRequest(clsNode.getId())) {
+                ClassificationNodeTypeV clsNodeV = new ClassificationNodeTypeV();
+                clsNodeV.setFlatIdents(flatIdents);
+                clsNodeV.setRequestContext(requestContext);
+                clsNodeV.setRimObject(clsNode);
+                clsNodeV.validateToDelete();
             }
-            
-            String err = "ClassificationScheme " + rimObject.getId() + " cannot be deleted because this has child ClassificationNode(s) " + idStr;
-            throw new ReferenceExistsException(err);
         }
     }
 }
