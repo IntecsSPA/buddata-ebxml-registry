@@ -40,7 +40,14 @@ import javax.xml.bind.JAXBElement;
 public class RegistryObjectTypeV<T extends RegistryObjectType> extends AbstractValidator<T> {
 
     private static Logger logger = Logger.getLogger(RegistryObjectTypeV.class.getName());
-    private static final String URN_REGEX = "^urn:[\\w-.]*:[\\w-.:]*";
+ 
+    //The following commented definition of URN_REGEX 
+    //does not comply with the definition of the URN syntax as per RFC 2141. 
+    //A new definition has been provided, in line with the mentioned doc.
+    
+    //private static final String URN_REGEX = "^urn:[\\w-.]*:[\\w-.:]*";
+    private static final String URN_REGEX = "urn:[a-zA-Z0-9][a-zA-Z0-9-]{1,31}:([a-zA-Z0-9()+,.:=@;$_!*'-]|%[0-9A-Fa-f]{2})+";
+
 
     /**
      * {@inheritDoc}
