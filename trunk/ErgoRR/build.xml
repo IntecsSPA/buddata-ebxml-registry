@@ -40,16 +40,18 @@
         <sleep seconds="5"/>
         <copy file="${ergorr-web}/target/${deployName}.xml" tofile="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}.xml"/>
         <unwar src="${ergorr-web}/target/${deployName}.war" dest="${env.CATALINA_HOME}/webapps/${deployName}"/>
+        <copy  file="${jar-postgresql}" todir="${env.CATALINA_HOME}/webapps/${deployName}/WEB-INF/lib"/>
         <sleep seconds="3"/>
     </target>
 
-    <target name="tomcat-setup">
+    <!-- This held for apache 5.5.x -->
+	<!-- <target name="tomcat-setup">
         <copy file="${jar-webservice-api}" todir="${env.CATALINA_HOME}/common/endorsed"/>
         <copy file="${jar-postgresql}" todir="${env.CATALINA_HOME}/common/lib"/>
         <echo>***********************************</echo>
         <echo>*         Restart Tomcat</echo>
         <echo>***********************************</echo>
-    </target>
+    </target> -->
 
     <target name="db-load-rim">
         <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
@@ -81,6 +83,7 @@
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/basic-package/basic-package-slot-init.xml"/>
     </target>
 
+   <!-- OLD CIM Version (0.1.12)
     <target name="db-load-cim" depends="db-load-basic">
         <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-CharacterSetScheme.xml"/>
@@ -98,6 +101,30 @@
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/schemes/CIM-TopicCategoryScheme.xml"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/CIM-Package.xml"/>
         <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/cim/cim-package-slot-init.xml"/>
+    </target>
+-->
+    
+     <target name="db-load-cim" depends="db-load-basic">
+        <taskdef name="be-invoker" classname="be.kzen.ergorr.deploy.ant.BackendInvokerTask" classpathref="libs.ref"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-CharacterSetScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-CitedResponsiblePartyScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-ClassificationCodeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-CouplingTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-DCPListScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-FormatNameAndVersionScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-KeywordSchemeDiscipline.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-KeywordSchemePlace.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-KeywordSchemeStratum.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-KeywordSchemeTemporal.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-KeywordSchemeTheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-KeywordSchemeUntyped.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-MetadataStandardNameAndVersionScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-RestrictionCodeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-RestrictionTypeScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-SpatialRepresentationScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/schemes/I15-TopicCategoryScheme.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/I15-Package.xml"/>
+        <be-invoker dataSrc="${basedir}/${ergorr-web}/src/main/config/data/i15/I15-package-slot-init.xml"/>
     </target>
     
     <!-- INTECS Addition 2011-05-10 for loading sensorML Extension Package-->
