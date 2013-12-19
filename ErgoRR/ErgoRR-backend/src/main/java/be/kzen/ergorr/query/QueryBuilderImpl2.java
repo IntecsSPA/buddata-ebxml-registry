@@ -50,6 +50,7 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
@@ -166,7 +167,33 @@ public class QueryBuilderImpl2 implements QueryBuilder {
         String returnType = getReturnType();
         List<QName> qnames = filterQuery.getTypeNames();
 
-
+        /* 
+         * The following "for" loop transforms possible occurrences of multiple aliases
+         * for the same object into multiple objects with a unique alias
+         */
+        for (ListIterator<QName> iter = qnames.listIterator(); iter.hasNext();) {
+            QName qname = iter.next();
+            if (qname != null) {
+                String fullType = qname.getLocalPart();
+                int idx = fullType.indexOf("_");
+                if (idx > 0) {
+                    String[] split = fullType.split("_");
+                    if (split.length > 2) {
+                        String updatedLocalPart = split[0].concat("_" + split[1]);
+                        String namespaceURI = qname.getNamespaceURI();
+                        String prefix = qname.getPrefix();
+                        QName updatedQname = new QName(namespaceURI, updatedLocalPart, prefix);
+                        iter.set(updatedQname);
+                        for (int i = 2; i < split.length; i++) {
+                            String newLocalPart = split[0].concat("_" + split[i]);
+                            QName newQname = new QName(namespaceURI, newLocalPart, prefix);
+                            iter.add(newQname);
+                        }
+                    }
+                }
+            }
+        }
+       
         if (!qnames.isEmpty()) {
             for (QName qname : qnames) {
                 if (qname != null) {
