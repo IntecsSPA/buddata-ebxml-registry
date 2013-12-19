@@ -84,7 +84,8 @@ public class ISOTranslator<T extends Object> implements Translator<T> {
             SaxonDocument saxonDoc = new SaxonDocument(this.isoString);
             saxonDoc.declareXPathNamespace("gmd", ISO_GMD_NAMESPACE);
             saxonDoc.declareXPathNamespace("gco", ISO_GCO_NAMESPACE);
-            identifier = saxonDoc.evaluateXPath("//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString");
+            //identifier = saxonDoc.evaluateXPath("//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString");
+            identifier = saxonDoc.evaluateXPath("//*[local-name()='MI_Metadata' or local-name()='MD_Metadata']/gmd:fileIdentifier/gco:CharacterString");
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Could not retrieve ISO Identifier.", ex);
             throw new TranslationException("Could not retrieve ISO Identifier.");
