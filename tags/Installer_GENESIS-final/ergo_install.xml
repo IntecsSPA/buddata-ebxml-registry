@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<installation version="1.0">
+	<!--Basis settings -->
+	<info>
+		<appname>ErgoRR</appname>
+		<appversion>version 3.0.0</appversion>
+		<authors>
+			<author email="" name="kZen Labs"/>
+			<author email="" name="Intecs S.p.A."/>
+		</authors>
+		<url>http://code.google.com/p/buddata-ebxml-registry/</url>
+		<javaversion>1.6</javaversion>
+		<requiresjdk>yes</requiresjdk>
+		<writeinstallationinformation>no</writeinstallationinformation>
+		<run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+		<uninstaller write="no"/>
+	</info>
+	<!-- Layout tweaks -->
+	<guiprefs height="550" resizable="no" width="700">
+		<modifier key="useFlags" value="yes"/>
+		<modifier key="langDisplayType" value="default"/>
+		<modifier key="useHeadingPanel" value="yes"/>
+		<modifier key="useHeadingForSummary" value="yes"/>
+		<modifier key="headingImageOnLeft" value="yes"/>
+		<modifier key="headingLineCount" value="2"/>
+		<modifier key="headingFontSize" value="1.5"/>
+		<modifier key="headingBackgroundColor" value="0x00ffffff"/>
+	</guiprefs>
+
+	<!-- Language -->
+	<locale>
+		<langpack iso3="eng"/>
+	</locale>
+
+	<!-- Resources used by the various panels -->
+	<resources>
+		<res id="CustomLangpack.xml_eng" parse="yes" src="CustomLangpack.xml_eng"/>
+		<res id="LicencePanel.licence" parse="yes" src="distribution/LICENSE-GPLv3.txt"/>
+		<res id="userInputSpec.xml" src="ergo_install_userInputSpec.xml"/>
+		<res id="HTMLInfoPanel.prereq" src="ergo_install_prerequisites.xml"/>
+		<res id="HTMLInfoPanel.existingTomcatInfo" src="ergo_install_existing_tomcat_info.xml"/>
+	</resources>
+
+
+	<!--Condition definitions -->
+	<conditions>
+		<condition type="variable" id="showStandAloneProperties">
+			<name>ERGO_INSTALL_TYPE</name>
+			<value>alone</value>
+		</condition>
+		<condition type="variable" id="showExistingTomcatProperties">
+			<name>ERGO_INSTALL_TYPE</name>
+			<value>existing</value>
+		</condition>
+		<condition type="variable" id="showBundledTomcatProperties">
+			<name>ERGO_INSTALL_TYPE</name>
+			<value>bundled</value>
+		</condition>
+		 <condition type="or" id="showTomcatProperties">
+             <condition type="ref" refid="showExistingTomcatProperties"/>
+             <condition type="ref" refid="showBundledTomcatProperties"/>
+       </condition>
+	</conditions>
+
+	<!-- Merge libraries needed at runtime -->
+	<jar src="distribution/activation-1.1.jar"/>
+	<jar src="distribution/commons-collections-2.1.jar"/>
+	<jar src="distribution/commons-logging-1.0.4.jar"/>
+	<jar src="distribution/CustomIzPackElements-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/ehcache-1.2.3.jar"/>
+	<jar src="distribution/ErgoRR-backend-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/ErgoRR-backend-client-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/ErgoRR-client-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/ErgoRR-commons-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/ErgoRR-jaxb-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/ErgoRR-persistence-1.0-SNAPSHOT.jar"/>
+	<jar src="distribution/jsr107cache-1.0.jar"/>
+	<jar src="distribution/jsr250-api-1.0.jar"/>
+	<jar src="distribution/postgis-1.3.3.jar"/>
+	<jar src="distribution/postgresql-8.2-504.jdbc3.jar"/>
+	<jar src="distribution/saxpath-1.0-FCS.jar"/>
+	<jar src="distribution/webservices-api-1.5.jar"/>
+	<jar src="distribution/webservices-rt-1.5.jar"/>
+	<jar src="distribution/webservices-tools-1.5.jar"/>
+
+	<listeners>
+		<listener installer="be.kzen.ergorr.installer.izpack.event.LoadDBInstallListener"/>
+	</listeners>
+
+
+	<!-- Define the flow of the installer -->
+	<panels>
+		<panel classname="CheckedHelloPanel"/>
+		<panel classname="LicencePanel" id="licence"/>
+		<panel classname="HTMLInfoPanel" id="prereq"/>
+		<panel classname="UserInputPanel" id="basic"/>
+		<panel classname="UserInputPanel" id="advanced"/>
+		<panel classname="UserInputPanel" id="serviceProvider"/>
+		<panel classname="UserInputPanel" id="standAloneProperties" condition="showStandAloneProperties"/>
+		<panel classname="UserInputPanel" id="existingTomcatProperties" condition="showExistingTomcatProperties"/>
+		<panel classname="UserInputPanel" id="bundledTomcatProperties" condition="showBundledTomcatProperties"/>
+		<panel classname="UserInputPanel" id="db">
+			<validator classname="be.kzen.ergorr.installer.izpack.validator.jdbc.JDBCConnectionValidator"/>
+		</panel>
+		<panel classname="UserInputPanel" id="dbConfirmation">
+			<validator classname="be.kzen.ergorr.installer.izpack.validator.jdbc.JDBCConnectionValidator"/>
+		</panel>
+		<panel classname="PacksPanel"/>
+		<panel classname="InstallPanel"/>
+		<panel classname="HTMLInfoPanel" id="existingTomcatInfo" condition="showExistingTomcatProperties"/>
+		<panel classname="SimpleFinishPanel"/>
+	</panels>
+
+	<!--
+		Defines which files are available for installation. Still have to figure out a way to only show the pack we selected
+		in UserInputPanel:basic
+	-->
+	<packs>
+		<pack name="Back-end only" preselected="no" required="no" condition="showStandAloneProperties" group="Back-end">
+			<description/>
+
+			<file override="update" src="distribution/ErgoRR-backend-1.0-SNAPSHOT.jar" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+			<file override="update" src="distribution/ErgoRR-backend-client-1.0-SNAPSHOT.jar" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+			<file override="update" src="distribution/ErgoRR-client-1.0-SNAPSHOT.jar" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+			<file override="update" src="distribution/ErgoRR-commons-1.0-SNAPSHOT.jar" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+			<file override="update" src="distribution/ErgoRR-jaxb-1.0-SNAPSHOT.jar" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+			<file override="update" src="distribution/ErgoRR-persistence-1.0-SNAPSHOT.jar" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+			<file override="true" src="distribution/ergorr.properties" targetdir="$ERGO_BACKEND_INSTALL_PATH/"/>
+
+			<fileset dir="distribution/model" defaultexcludes="yes" targetdir="$ERGO_BACKEND_INSTALL_PATH/defaults/model">
+			</fileset>
+
+			<!--
+				<file override="true" src="distribution/model"
+				targetdir="$ERGO_BACKEND_INSTALL_PATH/defaults" />
+			-->
+
+			<parsable targetfile="$ERGO_BACKEND_INSTALL_PATH/ergorr.properties" type="plain"/>
+		</pack>
+		
+		<pack name="Deploy in existing Apache Tomcat" preselected="no" required="no" condition="showExistingTomcatProperties" group="ExistingTomcat">
+			<description>Deploy the application to an existing Apache Tomcat
+				installation</description>
+
+			<fileset dir="distribution/unpacked-war" defaultexcludes="yes" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<file override="update" src="distribution/ergorr-template.xml" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+			<file override="true" src="distribution/ergorr.properties" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/classes/"/>
+
+			<file override="asktrue" src="distribution/postgresql-8.2-504.jdbc3.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/lib"/>
+
+			<file override="asktrue" src="distribution/webservices-api-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/"/>
+			<file override="asktrue" src="distribution/webservices-rt-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/"/>
+					
+			<!-- INTECS MRB BEGIN Addition to make java 1.6.x work with tomcat 5.5.x-->
+			<file override="asktrue" src="distribution/servlet-api.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/"/>
+			<!-- END Addition-->
+
+			<fileset dir="distribution/model" defaultexcludes="yes" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/defaults/model"/>
+
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/ergorr-template.xml" type="plain"/>
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/classes/ergorr.properties" type="plain"/>
+
+			<file os="unix" override="true" src="distribution/moveConfig.sh" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<file os="mac" override="true" src="distribution/moveConfig.sh" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<file os="windows" override="true" src="distribution/moveConfig.bat" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<parsable os="unix" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<parsable os="mac" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<parsable os="windows" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.bat"/>
+
+			<executable os="unix" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<executable os="mac" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<executable os="windows" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.bat"/>
+
+		</pack>
+		
+		<pack name="Deploy in bundled Apache Tomcat" preselected="no" required="no" condition="showBundledTomcatProperties" group="BundledTomcat">
+			<description>Installs Apache Tomcat 5.5.28 and deploys the application.</description>
+
+			<fileset dir="distribution/bundled-tomcat/apache-tomcat-5.5.28/" defaultexcludes="yes" targetdir="$ERGO_TOMCAT_INSTALL_PATH/"/>
+
+			<fileset dir="distribution/unpacked-war" defaultexcludes="yes" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<file override="update" src="distribution/ergorr-template.xml" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+			<file override="true" src="distribution/ergorr.properties" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/classes/"/>
+
+			<!--
+				<file override="asktrue" src="distribution/postgresql-8.2-504.jdbc3.jar"
+				targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/lib" />
+			-->
+			<file override="asktrue" src="distribution/postgresql-8.2-504.jdbc3.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/lib/"/>
+
+
+			<file override="asktrue" src="distribution/webservices-api-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/"/>
+			<file override="asktrue" src="distribution/webservices-rt-1.5.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/"/>	
+					
+			<!-- INTECS MRB BEGIN Addition to make java 1.6.x work with tomcat 5.5.x-->
+			<file override="asktrue" src="distribution/servlet-api.jar" targetdir="$ERGO_TOMCAT_INSTALL_PATH/common/endorsed/"/>
+			<!-- END Addition-->
+
+			<fileset dir="distribution/model" defaultexcludes="yes" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/defaults/model"/>
+
+			<file os="unix" override="true" src="distribution/moveConfig.sh" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<file os="mac" override="true" src="distribution/moveConfig.sh" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<file os="windows" override="true" src="distribution/moveConfig.bat" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/"/>
+
+			<parsable os="unix" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<parsable os="mac" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<parsable os="windows" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.bat"/>
+
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/ergorr-template.xml" type="plain"/>
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/conf/server.xml" type="plain"/>
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/conf/tomcat-users.xml" type="plain"/>
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/WEB-INF/classes/ergorr.properties" type="plain"/>
+
+			<executable os="unix" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<executable os="mac" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.sh"/>
+
+			<executable os="windows" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/$ERGO_DEPLOY_NAME/moveConfig.bat"/>
+
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/catalina.sh"/>
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/digest.sh"/>
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/setclasspath.sh"/>
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/shutdown.sh"/>
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/startup.sh"/>
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/tool-wrapper.sh"/>
+			<executable stage="never" keep="true" targetfile="$ERGO_TOMCAT_INSTALL_PATH/bin/version.sh"/>
+		</pack>
+		<pack name="Deploy the Graphical User Interface" preselected="no" required="no" group="ExistingTomcat,BundledTomcat" condition="showTomcatProperties">
+			<description>Installs the GUI for managing the Catalogue</description>
+	
+		<!-- ERGORR GUI START -->
+
+    <fileset dir="distribution/unpacked-war-gui" defaultexcludes="yes" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/"/>
+
+			<file override="update" src="distribution/ergorrGUI-template.xml" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/"/>
+      <file override="update" src="distribution/ergoRRProperties.xml" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/WEB-INF/conf/properties/"/>
+
+			<parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/ergorrGUI-template.xml" type="plain"/>
+      <parsable targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/WEB-INF/conf/properties/ergoRRProperties.xml" type="plain"/>
+
+
+			<file os="unix" override="true" src="distribution/moveConfigGUI.sh" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/"/>
+
+			<file os="mac" override="true" src="distribution/moveConfigGUI.sh" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/"/>
+
+			<file os="windows" override="true" src="distribution/moveConfigGUI.bat" targetdir="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/"/>
+
+			<parsable os="unix" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/moveConfigGUI.sh"/>
+
+			<parsable os="mac" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/moveConfigGUI.sh"/>
+
+			<parsable os="windows" type="plain" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/moveConfigGUI.bat"/>
+
+			<executable os="unix" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/moveConfigGUI.sh"/>
+
+			<executable os="mac" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/moveConfigGUI.sh"/>
+
+			<executable os="windows" stage="postinstall" targetfile="$ERGO_TOMCAT_INSTALL_PATH/webapps/${ERGO_DEPLOY_NAME}GUI/moveConfigGUI.bat"/>
+
+    <!-- ERGORR GUI END-->
+		</pack>
+	</packs>
+</installation>
