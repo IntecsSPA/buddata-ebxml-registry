@@ -493,7 +493,7 @@ CREATE TABLE t_person (
 --personName flattened
   firstname                VARCHAR(64),
   middlename               VARCHAR(64),
-  lastname                 VARCHAR(64)
+  lastname                 VARCHAR(128)
 --telephoneNumbers is in TelephoneNumber table
 );
 
