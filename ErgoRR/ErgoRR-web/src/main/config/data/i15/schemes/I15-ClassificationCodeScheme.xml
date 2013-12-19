@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme 
+  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode"
+  objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+  isInternal="true"
+  nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+       <rim:Name>
+          <rim:LocalizedString xml:lang="en" value="ISO 19115 Classification Code"/>
+       </rim:Name>
+       <rim:Description>
+          <rim:LocalizedString xml:lang="en" value="Defines a classification of handling restrictions on the dataset"/>
+       </rim:Description>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode" 
+         code="unclassified"
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode:unclassified">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="unclassified"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="available for general disclosure"/>
+          </rim:Description>
+       </rim:ClassificationNode>
+       
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode" 
+         code="restricted"
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode:restricted">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="restricted"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="not for general disclosure"/>
+          </rim:Description>
+       </rim:ClassificationNode>
+
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode" 
+         code="confidential"
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode:confidential">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="confidential"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="available for someone who can be entrusted with information"/>
+          </rim:Description>
+       </rim:ClassificationNode>
+
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode" 
+         code="secret"
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode:secret">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="secret"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="kept or meant to be kept private, unknown, or hidden from all but a select group of people"/>
+          </rim:Description>
+       </rim:ClassificationNode>
+  
+       <rim:ClassificationNode 
+         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode" 
+         code="topSecret"
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::ClassificationCode:topSecret">
+          <rim:Name>
+            <rim:LocalizedString xml:lang="en" value="topSecret"/>
+          </rim:Name>
+          <rim:Description>
+            <rim:LocalizedString xml:lang="en" value="of the highest secrecy"/>
+          </rim:Description>
+       </rim:ClassificationNode>
+    
+</rim:ClassificationScheme>
