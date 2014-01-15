@@ -248,6 +248,14 @@
     <xsl:variable name="KeywordSchemeUntypedClassificationSchemePrefix">
         <xsl:value-of select="concat( $cimClassificationSchemeUrnPrefix, 'KeywordSchemeUntyped:')"/>
     </xsl:variable>
+    
+    <xsl:variable name="IdentifierClassificationScheme">
+        <xsl:value-of select="concat( $cimClassificationSchemeUrnPrefix, 'IdentifierScheme')"/>
+    </xsl:variable>
+    <xsl:variable name="IdentifierClassificationSchemePrefix">
+        <xsl:value-of select="concat( $cimClassificationSchemeUrnPrefix, 'IdentifierScheme:')"/>
+    </xsl:variable>
+    
    
 <!-- END NEW in I15-->
 
@@ -823,8 +831,7 @@
        <xsl:variable name="urnCimKeywordSchemeThemeClassificationIDPrefix" select="concat( $cimIDPrefix , 'Classification:KeywordSchemeTheme:')"/>
        
        <xsl:variable name="urnCimKeywordSchemeUntypedClassificationIDPrefix" select="concat( $cimIDPrefix , 'Classification:KeywordSchemeUntyped:')"/>
-       
-       
+      
 
     <!-- Others-->
 
@@ -833,7 +840,8 @@
 	 <xsl:variable name="urnCimPersonIDPrefix" select="concat( $cimIDPrefix , 'Person:')"/>
  
     <xsl:variable name="urnCimExternalIdentifierIDPrefix" select="concat( $cimIDPrefix , 'ExternalIdentifier:')"/>
-
+    
+   
 
 
 </xsl:stylesheet>
