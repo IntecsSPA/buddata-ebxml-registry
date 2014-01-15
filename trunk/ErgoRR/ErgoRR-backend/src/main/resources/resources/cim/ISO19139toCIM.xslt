@@ -571,7 +571,20 @@
 				<xsl:with-param name="classificationSchemes" select="$descriptiveKeywordsClassificationSchemes"/>
 			</xsl:call-template>
 			<!--  ................................................................................................................... -->
-			<!--xsl:variable name="idRepo" select="translate( $metadataInformationId, ':', '_' )"/-->
+			<!-- External identifers handling-->
+			<xsl:for-each select="gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier | 
+											gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier">
+				<!-- <xsl:variable name="codespace" select="gmd:codeSpace/gco:CharacterString"/> -->
+				<xsl:variable name="codevalue" select="gmd:code/gco:CharacterString"/>
+				<xsl:variable name="externalIdentifierId" select="concat( $urnCimExternalIdentifierIDPrefix, generate-id(.))"/>
+				<xsl:variable name="identifierScheme" select="concat( $IdentifierClassificationSchemePrefix, 'resourceIdentifier')"/>
+				<rim:ExternalIdentifier id="{$externalIdentifierId}" registryObject="{$resourceMetadataId}" identificationScheme="{$identifierScheme}" value="{$codevalue}"/>
+			</xsl:for-each>
+			<!-- Even if the following external identifier is redundant, since it duplicates the info already contained in the identifier slot of the MetadataInformation registry object,
+				it is added to make available a relevant piece of info (the file identifier) also in the main registry oject (derived from Resource Metadata) -->
+			<xsl:variable name="externalIdentifierId" select="concat( $urnCimExternalIdentifierIDPrefix, generate-id(.))"/>
+			<xsl:variable name="identifierScheme" select="concat( $IdentifierClassificationSchemePrefix, 'fileIdentifier')"/>
+			<rim:ExternalIdentifier id="{$externalIdentifierId}" registryObject="{$resourceMetadataId}" identificationScheme="{$identifierScheme}" value="{$isoId}"/>
 			<wrs:repositoryItemRef xlink:href="{concat( $cswURL, '?request=GetRepositoryItem&amp;service=CSW-ebRIM&amp;Id=', $resourceMetadataId)}"/>
 		</wrs:ExtrinsicObject>
 		<!-- Registration of Graphic Overview Information-->
@@ -974,14 +987,6 @@
 			<xsl:variable name="topicCategory" select="gmd:MD_TopicCategoryCode"/>
 			<!-- TODO what is the ID of the topicCategory classificationNode ?  {$topicCategory} -->
 			<rim:Classification id="{$topicCategoryClassificationId}" classifiedObject="{$dataset-id}" classificationNode="{concat( $topicCategoryClassificationSchemePrefix, $topicCategory )}"/>
-		</xsl:for-each>
-		<xsl:for-each select="gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier">
-			<xsl:variable name="codespace" select="gmd:code/gmd:CI_DateTypeCode/@codeSpace"/>
-			<xsl:variable name="codevalue" select="gmd:code/gmd:CI_DateTypeCode/@codeListValue"/>
-			<xsl:if test="string-length($codespace) > 0">
-				<xsl:variable name="externalIdentifierId" select="concat( $urnCimExternalIdentifierIDPrefix, generate-id(.))"/>
-				<rim:ExternalIdentifier id="{$externalIdentifierId}" registryObject="{$dataset-id}" identificationScheme="{$codespace}" value="{$codevalue}"/>
-			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 	<!-- 
