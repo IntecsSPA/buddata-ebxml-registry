@@ -19,6 +19,7 @@
         <rim:Slot name="http://purl.org/dc/elements/1.1/coverage" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/format" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/elements/1.1/type" slotType="string"/>
+        <rim:Slot name="http://purl.org/dc/terms/type" slotType="string"/>      
         <rim:Slot name="http://purl.org/dc/elements/1.1/identifier" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/terms/conformsTo" slotType="string"/>
         <rim:Slot name="http://purl.org/dc/terms/references" slotType="string"/>

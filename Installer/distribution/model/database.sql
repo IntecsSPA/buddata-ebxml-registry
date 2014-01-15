@@ -223,7 +223,7 @@ CREATE TABLE t_description (
 --LocalizedString attributes flattened for Description
   charset                  VARCHAR(32),
   lang                     VARCHAR(32) NOT NULL,
-  value_                   VARCHAR(1024) NOT NULL,
+  value_                   VARCHAR(2048) NOT NULL,
 --The RegistryObject id for the parent RegistryObject for which this is a Name
   parent			VARCHAR(256) NOT NULL,
   PRIMARY KEY (parent, lang)
@@ -493,7 +493,7 @@ CREATE TABLE t_person (
 --personName flattened
   firstname                VARCHAR(64),
   middlename               VARCHAR(64),
-  lastname                 VARCHAR(64)
+  lastname                 VARCHAR(128)
 --telephoneNumbers is in TelephoneNumber table
 );
 

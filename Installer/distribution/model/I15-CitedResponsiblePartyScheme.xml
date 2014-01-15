@@ -2,7 +2,7 @@
 <rim:ClassificationScheme 
   xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty"
+  id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty"
   objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
   isInternal="true"
   nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
@@ -15,9 +15,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty" 
          code="publisher"
-         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty:publisher">
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty:publisher">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="publisher"/>
           </rim:Name>
@@ -28,9 +28,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty" 
          code="originator"
-         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty:originator">
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty:originator">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="originator"/>
           </rim:Name>
@@ -41,9 +41,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty" 
          code="author"
-         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty:author">
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty:author">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="author"/>
           </rim:Name>
@@ -54,9 +54,9 @@
        
        <rim:ClassificationNode 
          objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
-         parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty" 
+         parent="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty" 
          code="pointOfContact"
-         id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-CIM::CitedResponsibleParty:pointOfContact">
+         id="urn:ogc:def:ebRIM-ClassificationScheme:OGC-I15::CitedResponsibleParty:pointOfContact">
           <rim:Name>
             <rim:LocalizedString xml:lang="en" value="pointOfContact"/>
           </rim:Name>

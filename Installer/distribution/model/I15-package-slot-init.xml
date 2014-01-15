@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+
+    <rim:ExtrinsicObject id="urn:ogc:def:ebRIM-ObjectType:OGC-I15::ReferenceSpecification:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Conformance" slotType="string"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Explanation" slotType="string"/>
+    </rim:ExtrinsicObject>
+
+    <rim:ExtrinsicObject id="urn:ogc:def:ebRIM-ObjectType:OGC-I15::DataMetadata:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Resolution" slotType="double"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::ScaleDenominator" slotType="int"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Envelope" slotType="geometry"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::TemporalBegin" slotType="datetime"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::TemporalEnd" slotType="datetime"/>      
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Lineage" slotType="string"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::SupplementalInformation" slotType="string"/>
+    </rim:ExtrinsicObject>
+    
+    <rim:ExtrinsicObject id="urn:ogc:def:ebRIM-ObjectType:OGC-I15::ServiceMetadata:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Lineage" slotType="string"/>
+    </rim:ExtrinsicObject>
+    
+    <rim:ExtrinsicObject id="urn:ogc:def:ebRIM-ObjectType:OGC-I15::DataQuality:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::ScopeLevel" slotType="string"/>
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::ScopeDescription" slotType="string"/>
+    </rim:ExtrinsicObject>
+
+    <rim:ExtrinsicObject id="urn:ogc:def:ebRIM-ObjectType:OGC-I15::ProcessStep:Definition" objectType="urn:kzen:ObjectType:SlotDescription">
+        <rim:Slot name="urn:ogc:def:ebRIM-slot:OGC-I15::Rationale" slotType="string"/>
+    </rim:ExtrinsicObject>
+    
+</rim:RegistryObjectList>
