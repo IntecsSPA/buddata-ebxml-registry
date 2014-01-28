@@ -3,14 +3,26 @@
 	xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" 
 	version="2.0">
     <endpoint
-    name="ergorr"
+    name="ergorr1.1"
     interface="be.kzen.ergorr.interfaces.soap.csw.CswPortType"
     implementation="be.kzen.ergorr.interfaces.soap.CswServiceImpl"
     wsdl="WEB-INF/wsdl/CSW-service.wsdl"
     service="{http://www.kzen.be/ergorr/interfaces/soap}webservice"
     port="{http://www.kzen.be/ergorr/interfaces/soap}CswPort"
-    url-pattern="/webservice/*"
+    url-pattern="/webservice/1.1/*"
     enable-mtom="false"/>
+    
+    <endpoint
+    name="ergorr1.2"
+    interface="be.kzen.ergorr.interfaces.soap.csw.CswPortType"
+    implementation="be.kzen.ergorr.interfaces.soap.CswServiceImpl"
+    wsdl="WEB-INF/wsdl/CSW-service.wsdl"
+    service="{http://www.kzen.be/ergorr/interfaces/soap}webservice"
+    port="{http://www.kzen.be/ergorr/interfaces/soap}CswPort1.2"
+    url-pattern="/webservice/1.2/*"
+    enable-mtom="false"
+    binding="http://java.sun.com/xml/ns/jaxws/2003/05/soap/bindings/HTTP/"/>
+</endpoints>
     <endpoint
     name="rimlcm"
     interface="be.kzen.ergorr.interfaces.soap.rim.LifeCycleManagerPortType"
