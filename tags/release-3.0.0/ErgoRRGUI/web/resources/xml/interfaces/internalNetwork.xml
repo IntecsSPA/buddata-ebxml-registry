@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- localization="yes" pathLocalization="resources/xml/localization/" -->
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient" >
+    <section name="Network Configuration" cols="1">
+        <group label="Network Configuration">
+            <input type="text" name="internalNetworkUrl" label="Local URL" size="20" optional="false" id="internalNetworkUrl" value=""/> 
+            <input id="internalNetworkPort" name="internalNetworkPort" type="numeric" optional="false" size="10" label="Local Port" value=""/>
+            
+        </group>
+    </section>
+    <requestInformations backgroundColor="#dfe8f6">
+        <buttons>
+            <button name="internalNetworkButton" id="internalNetworkButton" label="Save" iconImage="" onclick="ergoRRUIManager.internalNetworkInterface.updadeInternalNetworkConfiguration"/>
+           
+        </buttons>    
+    </requestInformations>
+</inputInterface>

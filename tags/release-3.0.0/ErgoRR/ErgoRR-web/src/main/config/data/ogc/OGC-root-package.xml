@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryPackage
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  id="urn:ogc:def:ebRIM-RegistryPackage:OGC:Root"
+  objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+      
+</rim:RegistryPackage>

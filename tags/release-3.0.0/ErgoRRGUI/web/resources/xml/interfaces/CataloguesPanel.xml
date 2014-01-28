@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : FilterPanel.xml
+    Created on : 5 agosto 2008, 11.38
+    Author     : Maro
+    Description:
+        Purpose of the document follows.
+-->
+
+<inputInterface xmlns="http://gisClient.pisa.intecs.it/gisClient">
+   <section name="Catalogues"> 
+        <group label="Select a catalogue interfaces: ">  
+          <input type="combo" name="catalogueInt" hideLabel="true" id="catalogueInt" optional="false" size="30" onChange="tbxCat.onChangeCatalog" store="VALUES" storeFields="['name', 'description','formFileXml', 'requestXsl', 'resultXsl']"
+          storeData="[['CSW-ebRIM-CIM_Profile-07-038r3 0.1.11','This option allows testing the Search operation of a catalogue compliant with the CSW-ebRIM-CIM_Profile-07-038 r3 version 0.1.11','resources/xml/interfaces/CSW-ebRIM-CIM_Profile-noloc.xml','',''],['CSW-ebRIM-EO_Profile-06-131r6','This option allows testing the Search operation of a catalogue compliant with the CSW-ebRIM-EO_Profile-06-131 r6 ','resources/xml/interfaces/CSW-ebRIM-EO_Profile-noloc.xml','','']]">
+          </input>
+        </group>
+        <group label="Description">
+            <input type="label" id="catalogueDescription" name="catalogueDescription" value=""></input> 
+        </group>
+   </section> 
+</inputInterface>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewContext xmlns="http://www.opengis.net/context" xmlns:gml="http://www.opengis.net/gml" xmlns:sld="http://www.opengis.net/sld" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="mars" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/context http://schemas.opengeospatial.net/context/1.0.0/context.xsd">
+	<General>
+		<Window height="331" width="560"/>
+
+                 <!--BoundingBox
+                    SRS="EPSG:4326" 
+                    maxx="9.0" 
+                    maxy="52.5" 
+                    minx="4.0" 
+                    miny="47.5"/-->
+                    
+		<Title>BackroundMap</Title>
+		<Abstract> </Abstract>
+	</General>
+	<LayerList>
+                <!-- ************************************* -->
+		<!-- ********** Blue Marble      ********** -->
+		<!-- ************************************* -->
+		<!--Layer hidden="0" queryable="0">
+			
+			<Server service="OGC:WMS" title="OGC:WMS" version="1.0.0">
+				<OnlineResource xlink:href="http://twin1:8080/rastercache/service/wms" xlink:type="simple"/>
+			</Server>
+			<Name>it.geosolutions:blueMarble_TrueRes</Name>
+			<Title>blueMarble_TrueRes</Title>
+			<SRS>EPSG:4326</SRS>
+			<FormatList>
+				<Format current="1">image/jpeg</Format>
+			</FormatList>
+			<StyleList>
+				<Style current="1">
+					<Name>default</Name>
+					<Title>default</Title>
+				</Style>
+			</StyleList>
+                        <Extension>
+                            <ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-180.0000000" miny="-90.00000000" maxx="180.00000000" maxy="90.00000000"/>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">10</ol:numZoomLevels>
+                            <ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">true</ol:isBaseLayer>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
+                           
+                        </Extension>
+		</Layer-->
+
+		<Layer hidden="0" queryable="0">
+			<!-- ************************************* -->
+			<!-- ********** Demis world dem ********** -->
+			<!-- ************************************* -->
+			<Server service="OGC:WMS" title="OGC:WMS" version="1.0.0">
+				<OnlineResource xlink:href="http://www2.demis.nl/WMS/wms.asp?wms=WorldMap" xlink:type="simple"/>
+			</Server>
+			<Name>Bathymetry,Countries,Topography,Hillshading</Name>
+			<Title>DEMIS World Dem</Title>
+			<SRS>EPSG:4326</SRS>
+			<FormatList>
+				<Format current="1">image/gif</Format>
+			</FormatList>
+			<StyleList>
+				<Style current="1">
+					<Name>default</Name>
+					<Title>default</Title>
+				</Style>
+			</StyleList>
+                        <Extension>
+                            <!--ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-130.0000000" miny="14.00000000" maxx="-60.00000000" maxy="55.00000000"/>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">4</ol:numZoomLevels-->
+                            <ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">true</ol:isBaseLayer>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
+                        </Extension>
+		</Layer>
+
+                <Layer queryable="0" hidden="0">
+                        <!-- ************************************ -->
+			<!-- ********** Bluemarble ************** -->
+			<!-- ************************************ -->
+			<Server service="wms" version="1.1.1" title="wms">
+				<OnlineResource xlink:type="simple" xlink:href="http://demo.opengeo.org/geoserver/wms"/>
+			</Server>
+			<Name>bluemarble</Name>
+			<Title>Bluemarble</Title>
+			<SRS>EPSG:4326</SRS>
+			<FormatList>
+				<Format current="1">image/png</Format>
+			</FormatList>
+                        <Extension>
+                            <!--ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-130.0000000" miny="14.00000000" maxx="-60.00000000" maxy="55.00000000"/>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">4</ol:numZoomLevels-->
+                            <ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">true</ol:isBaseLayer>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
+                        </Extension>
+		</Layer>
+
+                <Layer queryable="0" hidden="0">
+                        <!-- *************************** -->
+			<!-- ********** basic ********** -->
+			<!-- *************************** -->
+			<Server service="wms" version="1.1.1" title="wms2">
+				<OnlineResource xlink:type="simple" xlink:href="http://labs.metacarta.com/wms/vmap0"/>
+			</Server>
+			<Name>basic</Name>
+			<Title>basic</Title>
+			<SRS>EPSG:4326</SRS>
+			<FormatList>
+				<Format current="1">image/png</Format>
+			</FormatList>
+                        <Extension>
+                            <!--ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-130.0000000" miny="14.00000000" maxx="-60.00000000" maxy="55.00000000"/>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">4</ol:numZoomLevels-->
+                            <ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">true</ol:isBaseLayer>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
+                        </Extension>
+
+		</Layer>
+
+
+                <Layer queryable="0" hidden="0">
+                        <!-- *************************** -->
+			<!-- ********** geoservices***** -->
+			<!-- *************************** -->
+			<Server service="wms" version="1.1.1" title="wms2">
+				<OnlineResource xlink:type="simple" xlink:href="http://geoservices.knmi.nl/cgi-bin/worldmaps.cgi"/>
+			</Server>
+			<Name>world_raster</Name>
+			<Title>geoservices world_raster</Title>
+			<SRS>EPSG:4326</SRS>
+			<FormatList>
+				<Format current="1">image/png</Format>
+			</FormatList>
+                        <Extension>
+                            <!--ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-130.0000000" miny="14.00000000" maxx="-60.00000000" maxy="55.00000000"/>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">4</ol:numZoomLevels-->
+                            <ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">true</ol:isBaseLayer>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
+                        </Extension>
+
+		</Layer>
+
+                <!--Layer queryable="0" hidden="0"-->
+                        <!-- ******************************** -->
+			<!-- ********** Google WMS ********** -->
+			<!-- ******************************** -->
+			<!--Server service="wms" version="1.1.1" title="wms2">
+				<OnlineResource xlink:type="simple" xlink:href="http://192.168.24.84:8084/GoogleWMS/wms"/>
+			</Server>
+			<Name>WorldCartografico</Name>
+			<Title>WorldCartografico2</Title>
+			<SRS>EPSG:54004</SRS>
+			<FormatList>
+				<Format current="1">image/png</Format>
+			</FormatList>
+                        <Extension-->
+                            <!--ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-130.0000000" miny="14.00000000" maxx="-60.00000000" maxy="55.00000000"/>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">4</ol:numZoomLevels-->
+                            <!--ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">true</ol:isBaseLayer>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
+                        </Extension>
+
+		</Layer-->
+                
+    
+                <!--Layer queryable="0" hidden="0">
+
+			<Server service="wms" version="1.1.1" title="wms">
+				<OnlineResource xlink:type="simple" xlink:href="http://pisa007.pisa.intecs.it/geoserver/wms"/>
+			</Server>
+			<Name>nurc:observation</Name>
+			<Title>observations</Title>
+			<SRS>EPSG:4326</SRS>
+			<FormatList>
+				<Format current="1">image/png</Format>
+			</FormatList>
+                        <StyleList>
+                            <Style current="1">
+                                <SLD>
+                                   <StyledLayerDescriptor xmlns="http://www.opengis.net/sld" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                       <NamedLayer>
+                                           <Name>nurc:observation</Name>
+                                           <UserStyle>
+                                               <Name>nurc:observationStyle</Name>
+                                               <IsDefault>1</IsDefault>
+                                               <FeatureTypeStyle>
+                                                   <Rule>
+                                                       <Name>defaultSelection</Name>
+                                                       <Title>defaultSelection</Title>
+                                                       <PointSymbolizer>
+                                                           <Graphic>
+                                                               <Mark>
+                                                                   <WellKnownName>triangle</WellKnownName>
+                                                                   <Fill>
+                                                                       <CssParameter name="fill">#339933</CssParameter>
+                                                                   </Fill>
+                                                                   <Stroke>
+                                                                       <CssParameter name="stroke">#000000</CssParameter>
+                                                                       <CssParameter name="stroke-opacity">1</CssParameter>
+                                                                       <CssParameter name="stroke-width">0.2</CssParameter>
+                                                                   </Stroke>
+                                                               </Mark>
+                                                               <Size>12</Size>
+                                                          </Graphic>
+                                                      </PointSymbolizer>
+                                                   </Rule>
+                                              </FeatureTypeStyle>
+                                         </UserStyle>
+                                     </NamedLayer>
+                                 </StyledLayerDescriptor> 
+                                </SLD>
+                            </Style>
+                        </StyleList>
+                        <Extension>
+                            <ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-131.0294952" miny="14.56289673" maxx="-61.02950287" maxy="54.56289673"/>
+                            <ol:transparent xmlns:ol="http://openlayers.org/context">TRUE</ol:transparent>
+                            <ol:id xmlns:ol="http://openlayers.org/context">observations</ol:id>
+                            <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">4</ol:numZoomLevels>
+                            <ol:units xmlns:ol="http://openlayers.org/context">degrees</ol:units>
+                            <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer>
+                            <ol:opacity xmlns:ol="http://openlayers.org/context">0.8</ol:opacity>
+                            <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
+                            <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
+                        </Extension>
+		</Layer-->
+
+</LayerList>
+</ViewContext>

@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
+xmlns:ows="http://www.opengis.net/ows"
+xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+xmlns:wsp="http://www.w3.org/ns/ws-policy"
+xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy"
+xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+xmlns:sc="http://schemas.sun.com/2006/03/wss/server"
+xmlns:sc1="http://schemas.sun.com/2006/03/wss/client"
+xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+xmlns:tns="http://www.kzen.be/ergorr/interfaces/soap"
+targetNamespace="http://www.kzen.be/ergorr/interfaces/soap">
+
+       <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2" schemaLocation="xsd/csw/2.0.2/CSW-discovery.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2" schemaLocation="xsd/csw/2.0.2/CSW-publication.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/ows" schemaLocation="xsd/ows/1.0.0/owsExceptionReport.xsd"/>
+            <xsd:import namespace="http://www.opengis.net/cat/wrs/1.0" schemaLocation="xsd/wrs/1.0.0/wrs.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="GetCapabilitiesRequest">
+        <wsdl:part name="Body" element="csw:GetCapabilities"/>
+    </wsdl:message>
+    <wsdl:message name="GetCapabilitiesResponse">
+        <wsdl:part element="wrs:Capabilities" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="DescribeRecordRequest">
+        <wsdl:part name="Body" element="csw:DescribeRecord"/>
+    </wsdl:message>
+    <wsdl:message name="DescribeRecordResponse">
+        <wsdl:part element="csw:DescribeRecordResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordsRequest">
+        <wsdl:part name="Body" element="csw:GetRecords"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordsResponse">
+        <wsdl:part element="csw:GetRecordsResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordByIdRequest">
+        <wsdl:part name="Body" element="csw:GetRecordById"/>
+    </wsdl:message>
+    <wsdl:message name="GetRecordByIdResponse">
+        <wsdl:part element="csw:GetRecordByIdResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="GetDomainRequest">
+        <wsdl:part name="Body" element="csw:GetDomain"/>
+    </wsdl:message>
+    <wsdl:message name="GetDomainResponse">
+        <wsdl:part element="csw:GetDomainResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="HarvestRequest">
+        <wsdl:part name="Body" element="csw:Harvest"/>
+    </wsdl:message>
+    <wsdl:message name="HarvestResponse">
+        <wsdl:part element="csw:HarvestResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="TransactionRequest">
+        <wsdl:part name="Body" element="csw:Transaction"/>
+    </wsdl:message>
+    <wsdl:message name="TransactionResponse">
+        <wsdl:part element="csw:TransactionResponse" name="Body"/>
+    </wsdl:message>
+    <wsdl:message name="ServiceExceptionReport">
+        <wsdl:part element="ows:ExceptionReport" name="Body"/>
+    </wsdl:message>
+    <wsdl:portType name="CswPortType">
+        <wsdl:operation name="csw.getCapabilities">
+            <wsdl:input message="tns:GetCapabilitiesRequest"/>
+            <wsdl:output message="tns:GetCapabilitiesResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.describeRecord">
+            <wsdl:input message="tns:DescribeRecordRequest"/>
+            <wsdl:output message="tns:DescribeRecordResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecords">
+            <wsdl:input message="tns:GetRecordsRequest"/>
+            <wsdl:output message="tns:GetRecordsResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecordById">
+            <wsdl:input message="tns:GetRecordByIdRequest"/>
+            <wsdl:output message="tns:GetRecordByIdResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getDomain">
+            <wsdl:input message="tns:GetDomainRequest"/>
+            <wsdl:output message="tns:GetDomainResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.harvest">
+            <wsdl:input message="tns:HarvestRequest"/>
+            <wsdl:output message="tns:HarvestResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+        <wsdl:operation name="csw.transaction">
+            <wsdl:input message="tns:TransactionRequest"/>
+            <wsdl:output message="tns:TransactionResponse"/>
+            <wsdl:fault name="ServiceExceptionReport" message="tns:ServiceExceptionReport"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CswBinding" type="tns:CswPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsp:PolicyReference URI="#ErgoRR_Binding_Policy"/>
+        <wsdl:operation name="csw.getCapabilities">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetCapabilities"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.describeRecord">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#DescribeRecord"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecords">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecords"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getRecordById">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetRecordsById"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.getDomain">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#GetDomain"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.harvest">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#Harvest"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="csw.transaction">
+            <soap:operation soapAction="http://www.opengis.net/cat/csw/2.0.2/requests#Transaction"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceExceptionReport">
+                <soap:fault use="literal" name="ServiceExceptionReport"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="webservice">
+        <wsdl:port name="CswPort" binding="tns:CswBinding">
+            <soap:address location="TO_BE_REPLACED_AT_RUNTIME"/>
+        </wsdl:port>
+    </wsdl:service>
+
+    <wsp:Policy wsu:Id="ErgoRR_Binding_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sc1:KeyStore wspp:visibility="private" alias="xws-security-client" keypass="changeit" storepass="changeit" type="JKS" location="/opt/certs/client-keystore.jks"/>
+                <sc1:TrustStore wspp:visibility="private" peeralias="xws-security-server" storepass="changeit" type="JKS" location="/opt/certs/client-truststore.jks"/>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+</wsdl:definitions>
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/${ERGO_DEPLOY_NAME}" docBase="${ERGO_DEPLOY_NAME}" debug="5" reloadable="true" crossContext="true">
+    <Resource name="jdbc/${ERGO_DEPLOY_NAME}"
+        auth="Container"
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+        username="${ERGO_DB_USERNAME}"
+        password="${ERGO_DB_PASSWORD}"
+        driverClassName="org.postgresql.Driver"
+        url="jdbc:postgresql://${ERGO_DB_URL}/${ERGO_DEPLOY_NAME}"
+        maxWait="1000"
+        removeAbandoned="true"
+        maxActive="30"
+        maxIdle="10"
+        removeAbandonedTimeout="60"
+        validationQuery="select 1 as num"
+        logAbandoned="true"/>
+</Context>

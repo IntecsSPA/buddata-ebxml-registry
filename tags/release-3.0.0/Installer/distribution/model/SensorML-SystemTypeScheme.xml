@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:ClassificationScheme  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0  http://www.oasis-open.org/committees/regrep/documents/3.0/schema/rim.xsd"
+	lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes" 
+	id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes" 
+	objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme" 
+	isInternal="true" 
+	nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+	<rim:Name>
+		<rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="System types taxonomy"/>
+	</rim:Name>
+	<rim:Description>
+		<rim:LocalizedString xml:lang="en-US" charset="UTF-8" value="Defines a taxonomy that may be used to classify sensors according to their types."/>
+	</rim:Description>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes" 
+		code="PlatformType" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:PlatformType"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:PlatformType">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="PlatformType"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Platform system type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::PlatformType" 
+		code="Satellite" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Satellite"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Satellite">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Satellite"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Satellite platform type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::PlatformType" 
+		code="Aircraft" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Aircraft"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Aircraft">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Aircraft"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Aircraft platform type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+		<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::PlatformType" 
+		code="Helicopter" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Helicopter"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Helicopter">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Helicopter"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Helicopter platform type "/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes" 
+		code="SensorType" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:SensorType"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:SensorType">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="SensorType"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Sensor system type "/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SensorType" 
+		code="EOInstrumentType" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:EOInstrumentType"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:EOInstrumentType">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="EOInstrumentType"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="EO Instrument Type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::EOInstrumentType" 
+		code="ImagingMultispectralRadiometer" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:ImagingMultispectralRadiometer"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:ImagingMultispectralRadiometer">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/part3_1_pop6.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="ImagingMultispectralRadiometer"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Instrument measuring radiation intensity in multiple narrow, precisely calibrated spectral channels."/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::EOInstrumentType" 
+		code="StereoImagingRadiometer" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:StereoImagingRadiometer"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:StereoImagingRadiometer">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="StereoImagingRadiometer"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Instrument measuring radiation intensity from multiple view angles to reconstruct surface topography."/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::EOInstrumentType" 
+		code="ImagingMicrowaveRadar" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:ImagingMicrowaveRadar"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:ImagingMicrowaveRadar">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/part3_1_pop8.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="ImagingMicrowaveRadar"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Instrument transmitting at frequencies of around 1 to 10GHz and measuring the backscattered signals to generate microwave images of Earth‟s surface at high spatial resolutions (between 10m and 100m)."/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::EOInstrumentType" 
+		code="Lidar" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Lidar"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:Lidar">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/part3_1_pop9.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="Lidar"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Ranging instrument measuring the radiation that is returned either from particles in the atmosphere or from the Earth‟s surface when illuminated by a laser source."/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ................................................................................................................................................................................... -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::EOInstrumentType" 
+		code="RadarAltimeters" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:RadarAltimeters"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:RadarAltimeters">
+		<rim:Slot name="http://purl.org/dc/elements/1.1/source">
+			<rim:ValueList>
+				<rim:Value>http://www.eohandbook.com/eohb05/ceos/part3_1_pop12.html</rim:Value>
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="RadarAltimeters"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Non-imaging instrument which use the ranging capability of radar to measure the surface topographic profile parallel to the platform track. They provide precise measurements of the platform‟s altitude by measuring the time interval between the transmission and reception of very short electromagnetic pulses."/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes" 
+		code="DetectorType" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:DetectorType"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:DetectorType">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="DetectorType"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Detector system type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<rim:ClassificationNode 
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" 
+		parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes" 
+		code="InstrumentModeType" 
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:InstrumentModeType"
+		lid="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes:InstrumentModeType">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en" value="InstrumentModeType"/>
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en" value="Instrument mode system type"/>
+		</rim:Description>
+	</rim:ClassificationNode>
+</rim:ClassificationScheme>

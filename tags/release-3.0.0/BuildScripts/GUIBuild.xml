@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ErgoRRGUI" default="createWarFromRepository" basedir=".">
+  <description>ErgoRRGUI build file</description>
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property name="src" location="ErgoRRGUI/src"/>
+  <property name="resources" location="ErgoRRGUI/resources"/>
+  <property name="build" location="ErgoRRGUI/web"/>
+  <property name="temp" location="temp"/>
+  <property name="tempZipDir" location="temp"/>
+  <property name="revision" value="HEAD"/>
+  <property name="svnroot" value="http://buddata-ebxml-registry.googlecode.com/svn/trunk/ErgoRRGUI"/>
+  <property name="properties-file" value="../ErgoRR/conf/ergorr.properties"/>
+  <property environment="env"/>
+  <property file="${properties-file}"/>
+  <!--Creating the building classpath -->
+  <path id="build.classpath">
+    <fileset dir="ErgoRRGUI/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="ErgoRRGUI/only-compile-libs">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+  <target name="compileErgoRRGUI" depends="init" description="compile the source ">
+    <mkdir dir="${temp}"/>
+    <javac srcdir="${src}" destdir="${temp}" classpathref="build.classpath" nowarn="yes" target="1.6"/>
+
+    <copy toDir="${temp}/it/intecs/pisa/erogorr/ui/conf" overwrite="yes">
+      <fileset file="${src}/it/intecs/pisa/erogorr/ui/conf/ergoRRGUIUsers.xml"/>
+    </copy>
+    <mkdir dir="ErgoRRGUI/web/WEB-INF/lib"/>
+    <mkdir dir="ErgoRRGUI/web/WEB-INF/classes"/>
+    <copy toDir="ErgoRRGUI/web/WEB-INF/lib" overwrite="yes">
+      <fileset dir="ErgoRRGUI/lib"/>
+    </copy>
+    <copy toDir="ErgoRRGUI/web/WEB-INF/classes" overwrite="yes">
+      <fileset dir="${temp}"/>
+    </copy>
+    <copy toDir="ErgoRRGUI/web/WEB-INF/classes" overwrite="yes">
+      <fileset file="${resources}/logging.properties"/>
+    </copy>
+    <delete dir="${temp}"/>
+  </target>
+  <target name="buildPackageErgoRRGUI" depends="init,compileErgoRRGUI"/>
+  <target name="buildWarPackageErgoRRGUI" depends="init,compileErgoRRGUI,warErgoRRGUI"/>
+  <target name="buildPackageErgoRRGUIForInstaller" depends="init,compileErgoRRGUI,unpackedwarErgoRRGUI"/>
+  <target name="warErgoRRGUI" description="war package">
+    <delete file="${deployName}GUI.war"/>
+    <mkdir dir="${temp}"/>
+    <mkdir dir="${temp}/ErgoRRGUI"/>
+    <copy toDir="${temp}/ErgoRRGUI" overwrite="yes">
+      <fileset dir="ErgoRRGUI/web"/>
+    </copy>
+    <jar file="${deployName}GUI.war">
+      <fileset dir="${temp}/ErgoRRGUI"/>
+    </jar>
+    <delete dir="${temp}"/>
+  </target>
+
+<target name="unpackedwarErgoRRGUI" description="war package">
+    <mkdir dir="unpacked-war-gui"/>
+    <copy toDir="unpacked-war-gui" overwrite="yes">
+      <fileset dir="ErgoRRGUI/web"/>
+    </copy>
+    
+    <delete file="unpacked-war-gui/WEB-INF/conf/properties/ergoRRProperties.xml"/>
+  </target>
+
+  <target name="svnDownloadErgoRRGUI" depends="">
+    <echo>Donwload ErgoRRGUI packages from SVN</echo>
+    <mkdir dir="${basedir}/ErgoRRGUI"/>
+    <exec executable="svn">
+      <arg value="export"/>
+      <arg value="--force"/>
+      <arg value="-r"/>
+      <arg value="${revision}"/>
+      <arg value="${svnroot}"/>
+      <arg value="${basedir}/ErgoRRGUI"/>
+    </exec>
+  </target>
+  <!-- Clean files -->
+  <target name="cleanErgoRRGUI" description="delete build directory">
+    <delete dir="ErgoRRGUI"/>
+  </target>
+  <!-- Tomcat Deploy -->
+  <target name="deployErgoRRGUI">
+    <delete file="${env.CATALINA_HOME}/webapps/${deployName}GUI.war"/>
+    <delete dir="${env.CATALINA_HOME}/webapps/${deployName}GUI"/>
+    <echo message="Waiting 5 seconds for tomcat to undeploy properly ..."/>
+    <sleep seconds="5"/>
+    <copy file="ErgoRRGUI/web/WEB-INF/conf/contextTemplate.xml" tofile="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}.xml"/>
+    <replace file="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}.xml" token="!!name!!" value="${deployName}"/>
+    <replace file="${env.CATALINA_HOME}/webapps/${deployName}GUI/WEB-INF/conf/properties/ergoRRProperties.xml" token="!!name!!" value="${deployName}"/>
+    <replace file="${env.CATALINA_HOME}/webapps/${deployName}GUI/WEB-INF/conf/properties/ergoRRPropertiesTemplate.xml" token="!!applicationurl!!" value="${appserver.url}"/>
+   <copy file="ErgoRRGUI/web/WEB-INF/conf/contextTemplate.xml" tofile="${env.CATALINA_HOME}/conf/Catalina/localhost/${deployName}.xml"/>
+    <unwar src="${deployName}GUI.war" dest="${env.CATALINA_HOME}/webapps/${deployName}"/>
+    <sleep seconds="3"/>
+  </target>
+  <target name="createWarFromRepository" depends="createWarFromRepositoryErgoRRGUI"/>
+  <target name="createWarFromRepositoryErgoRRGUI" depends="svnDownloadErgoRRGUI,buildWarPackageErgoRRGUI,cleanErgoRRGUI"/>
+  <target name="createUnpackedWarForInstaller" depends="svnDownloadErgoRRGUI,buildPackageErgoRRGUIForInstaller,cleanErgoRRGUI"/>
+</project>

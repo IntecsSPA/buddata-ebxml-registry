@@ -1,0 +1,16 @@
+.webgis-mapaction-wfsobservations {
+	background-image: url(../img/query.png) !important;
+        background-repeat: no-repeat;
+}
+
+.webgis-mapaction-toolboxclient .x-btn-text {
+	background-image: url(../img/desktop/icons/Toolbox_gear_green.jpg)
+}
+
+.webgis-mapaction-toolboxcatalogueclient .x-btn-text {
+	background-image: url(../img/desktop/icons/Toolbox_gear_green.jpg)
+}
+
+.webgis-mapaction-wsclient .x-btn-text {
+	background-image: url(../img/desktop/icons/Toolbox_gear_green.jpg)
+}
