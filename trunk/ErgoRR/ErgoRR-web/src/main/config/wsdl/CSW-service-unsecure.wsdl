@@ -186,7 +186,10 @@ xmlns:wrs="http://www.opengis.net/cat/wrs/1.0">
     </wsdl:binding>
     <wsdl:service name="webservice">
         <wsdl:port name="CswPort" binding="tns:CswBinding">
-            <soap:address location="TO_BE_REPLACED_AT_RUNTIME"/>
+            <soap:address location="TO_BE_REPLACED_AT_RUNTIME/1.1"/>
+        </wsdl:port>
+        <wsdl:port name="CswPort1.2" binding="tns:CswBinding">
+            <soap:address location="TO_BE_REPLACED_AT_RUNTIME/1.2"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
