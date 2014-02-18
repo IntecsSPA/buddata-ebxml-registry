@@ -422,8 +422,8 @@
 		<xsl:param name="descriptiveKeywordsClassificationSchemes"/>
 		<xsl:param name="servicesClassificationNodes"/>
 		<!-- Classiifcation Node for format name and version START-->
-		<xsl:for-each select="/*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format |
-										   /*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorFormat/gmd:MD_Format">
+		<xsl:for-each-group select="/*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format |
+										   /*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorFormat/gmd:MD_Format" group-by="concat(encode-for-uri(gmd:name/gco:CharacterString), encode-for-uri(gmd:version/gco:CharacterString))">
 			<xsl:variable name="formatName">
 				<xsl:value-of select="gmd:name/gco:CharacterString"/>
 			</xsl:variable>
@@ -437,7 +437,7 @@
 					<rim:LocalizedString xml:lang="en" value="{concat($formatName, ':', $formatVersion, ' version')}"/>
 				</rim:Description>
 			</rim:ClassificationNode>
-		</xsl:for-each>
+		</xsl:for-each-group>
 		<!-- Classiifcation Node for format name and version END-->
 		<wrs:ExtrinsicObject id="{$resourceMetadataId}">
 			<xsl:call-template name="specifyTypeOfResourceMetadata"/>
@@ -496,8 +496,8 @@
 												/*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorFormat/gmd:MD_Format">
 				<rim:Slot name="{$formatSlotName}" slotType="{$stringSlotType}">
 					<rim:ValueList>
-						<xsl:for-each select="/*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format |
-												/*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorFormat/gmd:MD_Format">
+						<xsl:for-each-group select="/*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format |
+										   /*/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorFormat/gmd:MD_Format" group-by="concat(encode-for-uri(gmd:name/gco:CharacterString), encode-for-uri(gmd:version/gco:CharacterString))">
 							<xsl:variable name="formatName" select="gmd:name/gco:CharacterString"/>
 							<xsl:variable name="formatVersion" select="gmd:version/gco:CharacterString"/>
 							<xsl:variable name="encodedCode" select="concat(encode-for-uri($formatName), ':', encode-for-uri($formatVersion))"/>
@@ -505,7 +505,7 @@
 							<rim:Value>
 								<xsl:value-of select="$formatIdentifier"/>
 							</rim:Value>
-						</xsl:for-each>
+						</xsl:for-each-group>
 					</rim:ValueList>
 				</rim:Slot>
 			</xsl:if>
@@ -633,7 +633,7 @@
 			<rim:ExtrinsicObject id="{$serviceOperationId}" objectType="{$serviceOperationObjectType}">
 				<xsl:for-each select="srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage">
 					<xsl:variable name="url" select="gmd:URL"/>
-					<rim:Slot name="http://purl.org/dc/terms/references" slotType="xsd:URI">
+					<rim:Slot name="http://purl.org/dc/terms/references" slotType="{$uriSlotType}">
 						<rim:ValueList>
 							<rim:Value>
 								<xsl:value-of select="$url"/>
