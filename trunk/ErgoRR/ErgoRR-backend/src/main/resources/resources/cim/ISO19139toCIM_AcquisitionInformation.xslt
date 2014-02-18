@@ -129,7 +129,10 @@
 				</rim:ValueList>
 			</rim:Slot>
 			<rim:Name>
+				<!-- This mapping should be the correct one according to the latest gmi schema
 				<rim:LocalizedString charset="{$metadataCharacterSet}" xml:lang="{$metadataLanguage}" value="{gmi:type/gmi:MI_SensorTypeCode/@codeListValue}"/>
+				-->
+				<rim:LocalizedString charset="{$metadataCharacterSet}" xml:lang="{$metadataLanguage}" value="{gmi:type/gmi:MI_SensorTypeCode/@id}"/>
 			</rim:Name>
 			<xsl:if test="gmi:description/gco:CharacterString">
 				<rim:Description>
