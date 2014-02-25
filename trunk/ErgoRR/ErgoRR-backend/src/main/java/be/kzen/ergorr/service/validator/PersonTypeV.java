@@ -20,7 +20,9 @@ package be.kzen.ergorr.service.validator;
 
 import be.kzen.ergorr.exceptions.ReferenceExistsException;
 import be.kzen.ergorr.model.rim.PersonType;
+import be.kzen.ergorr.model.rim.OrganizationType;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,8 +43,22 @@ public class PersonTypeV extends RegistryObjectTypeV<PersonType> {
         List<String> orgIdsWithPerson = persistence.getIds(sql);
 
         if (orgIdsWithPerson.size() > 0) {
-            String err = "Person with ID '" + rimObject.getId() + "' is referenced as primary contact by " + orgIdsWithPerson.size() + " Organization(s).";
-            throw new ReferenceExistsException(err);
+
+            List<String> orgIdsCausingErr = new ArrayList<String>();
+
+            for (String orgIdWithPerson : orgIdsWithPerson) {
+                if (!idExistsInRequest(orgIdWithPerson, OrganizationType.class)) {
+                    orgIdsCausingErr.add(orgIdWithPerson);
+                }
+            }
+
+            if (orgIdsCausingErr.size() > 0) {
+                String err = "Cannot delete Person with ID '" + rimObject.getId() + "' because it is referenced as primary contact by " + orgIdsCausingErr.size() + " Organization(s): ";
+                for (String orgIdCausingErr : orgIdsCausingErr) {
+                    err += "'" + orgIdCausingErr + "' ";
+                }
+                throw new ReferenceExistsException(err);
+            }
         }
     }
 }
