@@ -17,7 +17,7 @@
         <ows:Title>EarthObservation ebRIM Catalogue</ows:Title>
         <ows:Abstract>
   A web-based catalogue service that implements the CSW-ebRIM profile of the
-  OGC Catalogue 2.0 specification, and the EO Extension Package
+  OGC Catalogue 2.0 specification, and the EO and i15 Extension Package
         </ows:Abstract>
         <ows:Keywords>
             <ows:Keyword>registry</ows:Keyword>
@@ -64,9 +64,14 @@
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice/1.1"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
-                            <ows:Value>SOAP</ows:Value>
+                            <ows:Value>SOAP 1.1</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                    <ows:Post xlink:href="/webservice/1.2"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP 1.2</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
@@ -95,9 +100,14 @@
         <ows:Operation name="GetRecords">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice/1.1"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
-                            <ows:Value>SOAP</ows:Value>
+                            <ows:Value>SOAP 1.1</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                    <ows:Post xlink:href="/webservice/1.2"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP 1.2</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
@@ -154,9 +164,14 @@
         <ows:Operation name="GetRecordById">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice/1.1"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
-                            <ows:Value>SOAP</ows:Value>
+                            <ows:Value>SOAP 1.1</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                    <ows:Post xlink:href="/webservice/1.2"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP 1.2</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
@@ -245,9 +260,14 @@
         <ows:Operation name="Harvest">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice/1.1"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
-                            <ows:Value>SOAP</ows:Value>
+                            <ows:Value>SOAP 1.1</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                    <ows:Post xlink:href="/webservice/1.2"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP 1.2</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
@@ -268,6 +288,7 @@
                 <ows:Value>atm:EarthObservation</ows:Value>
                 <ows:Value>opt:EarthObservation</ows:Value>
                 <ows:Value>rim:RegistryObjectList</ows:Value>
+                <ows:Value>MetadataSet.ISO19139</ows:Value>
             </ows:Parameter>
         </ows:Operation>
 
@@ -276,9 +297,14 @@
         <ows:Operation name="Transaction">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Post xlink:href="/webservice"><!-- DO NOT EDIT: replaced at runtime -->
+                    <ows:Post xlink:href="/webservice/1.1"><!-- DO NOT EDIT: replaced at runtime -->
                         <ows:Constraint name="PostEncoding">
-                            <ows:Value>SOAP</ows:Value>
+                            <ows:Value>SOAP 1.1</ows:Value>
+                        </ows:Constraint>
+                    </ows:Post>
+                     <ows:Post xlink:href="/webservice/1.2"><!-- DO NOT EDIT: replaced at runtime -->
+                        <ows:Constraint name="PostEncoding">
+                            <ows:Value>SOAP 1.2</ows:Value>
                         </ows:Constraint>
                     </ows:Post>
                 </ows:HTTP>
