@@ -66,6 +66,9 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <compilerArguments>
+						<bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+					</compilerArguments>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
@@ -134,8 +137,6 @@
         </plugins>
         <finalName>${deployName}</finalName>
     </build>
-    <properties>
-        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-    </properties>
+    <properties></properties>
 </project>
 
