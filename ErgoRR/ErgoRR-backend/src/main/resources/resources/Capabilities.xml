@@ -282,7 +282,7 @@
                     </ows:Post>
                 </ows:HTTP>
             </ows:DCP>
-            <ows:Parameter name="resourceType">
+            <ows:Parameter name="ResourceType">
                 <ows:Value>eop:EarthObservation</ows:Value>
                 <ows:Value>sar:EarthObservation</ows:Value>
                 <ows:Value>atm:EarthObservation</ows:Value>
