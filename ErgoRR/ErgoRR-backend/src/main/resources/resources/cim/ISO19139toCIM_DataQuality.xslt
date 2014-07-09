@@ -198,48 +198,48 @@
 					</rim:ValueList>
 				</rim:Slot>
 			</xsl:if>
-				<xsl:if test="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:geographicElement">
-					<rim:Slot name="{$spatialSlotName}" slotType="{$envelopeSlotType}">
-						<wrs:ValueList>
-							<xsl:for-each select="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:geographicElement">
-								<wrs:AnyValue>
-									<gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
-										<gml:lowerCorner>
-											<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude/gco:Decimal"/>
-											<xsl:text> </xsl:text>
-											<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal"/>
-										</gml:lowerCorner>
-										<gml:upperCorner>
-											<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude/gco:Decimal"/>
-											<xsl:text> </xsl:text>
-											<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude/gco:Decimal"/>
-										</gml:upperCorner>
-									</gml:Envelope>
-								</wrs:AnyValue>
-							</xsl:for-each>
-						</wrs:ValueList>
-					</rim:Slot>
-				</xsl:if>
-				<xsl:variable name="temporalBegin" select="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:temporalElement[1]/gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='begin']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
-				<xsl:if test="not(empty(temporalBegin))">
-					<rim:Slot name="{$temporalBeginSlotName}" slotType="{$dateTimeSlotType}">
-						<rim:ValueList>
-							<rim:Value>
-								<xsl:value-of select="$temporalBegin"/>
-							</rim:Value>
-						</rim:ValueList>
-					</rim:Slot>
-				</xsl:if>
-				<xsl:variable name="temporalEnd" select="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:temporalElement[1]/gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='end']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
-				<xsl:if test="not(empty(temporalEnd))">
-					<rim:Slot name="{$temporalEndSlotName}" slotType="{$dateTimeSlotType}">
-						<rim:ValueList>
-							<rim:Value>
-								<xsl:value-of select="$temporalEnd"/>
-							</rim:Value>
-						</rim:ValueList>
-					</rim:Slot>
-				</xsl:if>
+			<xsl:if test="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:geographicElement">
+				<rim:Slot name="{$spatialSlotName}" slotType="{$envelopeSlotType}">
+					<wrs:ValueList>
+						<xsl:for-each select="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:geographicElement">
+							<wrs:AnyValue>
+								<gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
+									<gml:lowerCorner>
+										<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude/gco:Decimal"/>
+										<xsl:text> </xsl:text>
+										<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal"/>
+									</gml:lowerCorner>
+									<gml:upperCorner>
+										<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude/gco:Decimal"/>
+										<xsl:text> </xsl:text>
+										<xsl:value-of select="gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude/gco:Decimal"/>
+									</gml:upperCorner>
+								</gml:Envelope>
+							</wrs:AnyValue>
+						</xsl:for-each>
+					</wrs:ValueList>
+				</rim:Slot>
+			</xsl:if>
+			<xsl:variable name="temporalBegin" select="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:temporalElement[1]/gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='begin']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
+			<xsl:if test="not(empty(temporalBegin))">
+				<rim:Slot name="{$temporalBeginSlotName}" slotType="{$dateTimeSlotType}">
+					<rim:ValueList>
+						<rim:Value>
+							<xsl:value-of select="$temporalBegin"/>
+						</rim:Value>
+					</rim:ValueList>
+				</rim:Slot>
+			</xsl:if>
+			<xsl:variable name="temporalEnd" select="$sourceNode/gmd:sourceExtent/gmd:EX_Extent/gmd:temporalElement[1]/gmd:EX_TemporalExtent/gmd:extent/*[local-name() ='TimePeriod']/*[local-name() ='end']/*[local-name() ='TimeInstant']/*[local-name() ='timePosition']"/>
+			<xsl:if test="not(empty(temporalEnd))">
+				<rim:Slot name="{$temporalEndSlotName}" slotType="{$dateTimeSlotType}">
+					<rim:ValueList>
+						<rim:Value>
+							<xsl:value-of select="$temporalEnd"/>
+						</rim:Value>
+					</rim:ValueList>
+				</rim:Slot>
+			</xsl:if>
 			<rim:Description>
 				<rim:LocalizedString xml:lang="{$metadataLanguage}" charset="{$metadataCharacterSet}" value="{$sourceNode/gmd:LI_Source/gmd:description/gco:CharacterString}"/>
 			</rim:Description>
@@ -252,34 +252,36 @@
 	-->
 	<xsl:template name="createDataQualityConformanceResults">
 		<xsl:for-each select="/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report//gmd:result">
-			<xsl:variable name="referenceSpecificationID" select="concat ( $urnCimReferenceSpecificationExtrinsicObjectIDPrefix, count(.) )"/>
-			<rim:ExtrinsicObject id="{$referenceSpecificationID}" objectType="{$referenceSpecificationObjectType}">
-				<xsl:for-each select="gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date">
-					<xsl:call-template name="slot-date-with-type">
-						<xsl:with-param name="date" select="gmd:CI_Date/gmd:date"/>
-						<xsl:with-param name="dateType" select="gmd:CI_Date/gmd:dateType"/>
-					</xsl:call-template>
-				</xsl:for-each>
-				<xsl:if test="gmd:DQ_ConformanceResult/gmd:pass/gco:Boolean">
-					<rim:Slot name="{$conformanceSlotName}" slotType="{$stringSlotType}">
-						<rim:ValueList>
-							<rim:Value>
-								<xsl:value-of select="gmd:DQ_ConformanceResult/gmd:pass/gco:Boolean"/>
-							</rim:Value>
-						</rim:ValueList>
-					</rim:Slot>
-				</xsl:if>
-				<rim:Name>
-					<xsl:variable name="nameK">
-						<xsl:call-template name="getNodeContent">
-							<xsl:with-param name="node" select="gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:title"/>
+			<xsl:if test="gmd:DQ_ConformanceResult">
+				<xsl:variable name="referenceSpecificationID" select="concat ( $urnCimReferenceSpecificationExtrinsicObjectIDPrefix, generate-id(.))"/>
+				<rim:ExtrinsicObject id="{$referenceSpecificationID}" objectType="{$referenceSpecificationObjectType}">
+					<xsl:for-each select="gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date">
+						<xsl:call-template name="slot-date-with-type">
+							<xsl:with-param name="date" select="gmd:CI_Date/gmd:date"/>
+							<xsl:with-param name="dateType" select="gmd:CI_Date/gmd:dateType"/>
 						</xsl:call-template>
-					</xsl:variable>
-					<rim:LocalizedString value="{$nameK}"/>
-				</rim:Name>
-			</rim:ExtrinsicObject>
-			<xsl:variable name="specificationAssociationTypeId" select="concat($urnCimSpecificationAssociationIDPrefix, generate-id(.))"/>
-			<rim:Association id="{$specificationAssociationTypeId}" associationType="{$specificationAssociationType}" sourceObject="{$resourceMetadataId}" targetObject="{$referenceSpecificationID}"/>
+					</xsl:for-each>
+					<xsl:if test="gmd:DQ_ConformanceResult/gmd:pass/gco:Boolean">
+						<rim:Slot name="{$conformanceSlotName}" slotType="{$stringSlotType}">
+							<rim:ValueList>
+								<rim:Value>
+									<xsl:value-of select="gmd:DQ_ConformanceResult/gmd:pass/gco:Boolean"/>
+								</rim:Value>
+							</rim:ValueList>
+						</rim:Slot>
+					</xsl:if>
+					<rim:Name>
+						<xsl:variable name="nameK">
+							<xsl:call-template name="getNodeContent">
+								<xsl:with-param name="node" select="gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:title"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<rim:LocalizedString value="{$nameK}"/>
+					</rim:Name>
+				</rim:ExtrinsicObject>
+				<xsl:variable name="specificationAssociationTypeId" select="concat($urnCimSpecificationAssociationIDPrefix, generate-id(.))"/>
+				<rim:Association id="{$specificationAssociationTypeId}" associationType="{$specificationAssociationType}" sourceObject="{$resourceMetadataId}" targetObject="{$referenceSpecificationID}"/>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 </xsl:stylesheet>

@@ -105,52 +105,49 @@
 				Begin keywords in new classiifcation schemes
 				-->
 			<xsl:variable name="descriptiveKeywordsClassificationSchemes">
-				<xsl:for-each select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords">
-					<xsl:variable name="isThesaurusName">
-						<xsl:call-template name="getNodeContent">
-							<xsl:with-param name="node" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
-						</xsl:call-template>
-					</xsl:variable>
-					<xsl:if test="string-length($isThesaurusName) > 0">
-						<xsl:variable name="thesaurusIdentifier">
-							<xsl:call-template name="getIdByNodeContent">
-								<xsl:with-param name="node" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
+				<xsl:for-each-group select="gmd:identificationInfo/*[local-name() = 'SV_ServiceIdentification' or local-name() = 'MD_DataIdentification' ]/gmd:descriptiveKeywords" group-by="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString | gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gmx:Anchor">
+					<xsl:for-each select="current-group()">
+						<xsl:variable name="isThesaurusName" select="current-grouping-key()"/>
+						<xsl:if test="string-length($isThesaurusName) > 0">
+							<xsl:variable name="thesaurusIdentifier" select="encode-for-uri(normalize-space(current-grouping-key()))"/>
+							<xsl:variable name="thesaurusName" select="current-grouping-key()"/>
+							<xsl:variable name="thesaurusDescription" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"/>
+							<xsl:variable name="keywordThesaurusSchemeClassificationScheme">
+								<xsl:choose>
+									<xsl:when test="position()=1">
+										<xsl:value-of select="concat( $cimIDPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier )"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat( $cimIDPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier, '-', position())"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="keywordThesaurusSchemeClassificationSchemePrefix">
+								<xsl:value-of select="concat($keywordThesaurusSchemeClassificationScheme, ':' )"/>
+							</xsl:variable>
+							<rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="{$keywordThesaurusSchemeClassificationScheme}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme" isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+								<rim:Name>
+									<rim:LocalizedString xml:lang="en" value="{$thesaurusName}"/>
+								</rim:Name>
+								<xsl:if test="$thesaurusDescription">
+									<rim:Description>
+										<rim:LocalizedString xml:lang="en" value="{$thesaurusDescription}"/>
+									</rim:Description>
+								</xsl:if>
+								<xsl:call-template name="createClassificationNodes">
+									<xsl:with-param name="nodeDescriptiveKeywords" select="."/>
+									<xsl:with-param name="parentClassificationScheme" select="$keywordThesaurusSchemeClassificationScheme"/>
+								</xsl:call-template>
+							</rim:ClassificationScheme>
+							<xsl:variable name="citedItemId" select="concat( $urnCimCitedItemExtrinsicObjectIDPrefix, generate-id(.))"/>
+							<xsl:call-template name="CitationInformation">
+								<xsl:with-param name="citationInformationNode" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation"/>
+								<xsl:with-param name="citedItemEOId" select="$citedItemId"/>
 							</xsl:call-template>
-						</xsl:variable>
-						<xsl:variable name="thesaurusName">
-							<xsl:call-template name="getNodeContent">
-								<xsl:with-param name="node" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
-							</xsl:call-template>
-						</xsl:variable>
-						<xsl:variable name="thesaurusDescription" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"/>
-						<xsl:variable name="keywordThesaurusSchemeClassificationScheme">
-							<xsl:value-of select="concat( $cimIDPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier )"/>
-						</xsl:variable>
-						<xsl:variable name="keywordThesaurusSchemeClassificationSchemePrefix">
-							<xsl:value-of select="concat( $cimIDPrefix, 'KeywordThesaurusScheme:', $thesaurusIdentifier , ':' )"/>
-						</xsl:variable>
-						<rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="{$keywordThesaurusSchemeClassificationScheme}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme" isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
-							<rim:Name>
-								<rim:LocalizedString xml:lang="en" value="{$thesaurusName}"/>
-							</rim:Name>
-							<xsl:if test="$thesaurusDescription">
-								<rim:Description>
-									<rim:LocalizedString xml:lang="en" value="{$thesaurusDescription}"/>
-								</rim:Description>
-							</xsl:if>
-							<xsl:call-template name="createClassificationNodes">
-								<xsl:with-param name="nodeDescriptiveKeywords" select="."/>
-								<xsl:with-param name="parentClassificationScheme" select="$keywordThesaurusSchemeClassificationScheme"/>
-							</xsl:call-template>
-						</rim:ClassificationScheme>
-						<xsl:variable name="citedItemId" select="concat( $urnCimCitedItemExtrinsicObjectIDPrefix, generate-id(.))"/>
-						<xsl:call-template name="CitationInformation">
-							<xsl:with-param name="citationInformationNode" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation"/>
-							<xsl:with-param name="citedItemEOId" select="$citedItemId"/>
-						</xsl:call-template>
-						<rim:Association id="{concat($urnCimThesaurusAssociationIDPrefix, ':', generate-id(.))}" associationType="{$thesaurusAssociationType}" sourceObject="{$keywordThesaurusSchemeClassificationScheme}" targetObject="{$citedItemId}"/>
-					</xsl:if>
-				</xsl:for-each>
+							<rim:Association id="{concat($urnCimThesaurusAssociationIDPrefix, ':', generate-id(.))}" associationType="{$thesaurusAssociationType}" sourceObject="{$keywordThesaurusSchemeClassificationScheme}" targetObject="{$citedItemId}"/>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:for-each-group>
 			</xsl:variable>
 			<xsl:if test="$descriptiveKeywordsClassificationSchemes">
 				<xsl:copy-of select="$descriptiveKeywordsClassificationSchemes"/>
@@ -727,12 +724,13 @@
 					<rim:Classification id="{$citedResponsiblePartyAssociationClassificationId}" classifiedObject="{$citedResponsiblePartyAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role )}"/>
 				</xsl:if>
 			</rim:Association>
+			<!-- The following rows are no longer needed since the Person tied to the Organization is already created, if applicable) in the "organization" template
 			<xsl:if test="not(empty(gmd:CI_ResponsibleParty/gmd:individualName/gco:CharacterString))">
 				<xsl:variable name="personName" select="gmd:CI_ResponsibleParty/gmd:individualName/gco:CharacterString"/>
 				<rim:Person id="{concat($urnCimPersonIDPrefix, ':', generate-id())}" objectType="{$personObjectType}">
 					<rim:PersonName lastName="{$personName}"/>
 				</rim:Person>
-			</xsl:if>
+			</xsl:if> -->
 		</xsl:for-each>
 	</xsl:template>
 	<!-- 
@@ -966,7 +964,7 @@
 			<rim:LocalizedString value="{$name}"/>
 		</rim:Name>
 		<rim:Description>
-			<xsl:variable name="abstract" select="gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString"/>
+			<xsl:variable name="abstract" select="normalize-space(gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString)"/>
 			<rim:LocalizedString value="{$abstract}"/>
 		</rim:Description>
 		<xsl:for-each select="gmd:MD_DataIdentification/gmd:spatialRepresentationType">
@@ -1247,17 +1245,23 @@
     -->
 	<xsl:template name="getIdByNodeContent">
 		<xsl:param name="node"/>
+		<xsl:variable name="identifier">
+			<xsl:choose>
+				<xsl:when test="$node/gco:CharacterString">
+					<xsl:value-of select="encode-for-uri(normalize-space($node/gco:CharacterString))"/>
+				</xsl:when>
+				<xsl:when test="$node/gmx:Anchor">
+					<xsl:value-of select="encode-for-uri(normalize-space($node/gmx:Anchor))"/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$node/gco:CharacterString">
-				<!-- <xsl:value-of select="translate(translate( $node/gco:CharacterString,' ','_' ), ',','_')"/> -->
-				<!-- <xsl:value-of select="translate( $node/gco:CharacterString,' %/?#','' )"/> -->
-				<xsl:value-of select="encode-for-uri($node/gco:CharacterString)"/>
+			<xsl:when test="string-length($identifier) > 256">
+				<xsl:value-of select="substring($identifier, 1, 256)"/>
 			</xsl:when>
-			<xsl:when test="$node/gmx:Anchor">
-				<!-- <xsl:value-of select="translate(translate( $node/gmx:Anchor,' ',':' ), ',','_')"/> -->
-				<!-- <xsl:value-of select="translate( $node/gmx:Anchor,' %/?#','' )"/> -->
-				<xsl:value-of select="encode-for-uri($node/gmx:Anchor)"/>
-			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$identifier"/>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<!-- 
