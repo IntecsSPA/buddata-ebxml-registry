@@ -77,7 +77,7 @@ public class SqlQuery {
      * @param maxResults Maximum number of results.
      */
     public void setMaxResults(int maxResults) {
-        if (maxResults < 1 || maxResults > ALLOWED_MAX_RESULTS) {
+        if (maxResults < 0 || maxResults > ALLOWED_MAX_RESULTS) {
             maxResults = ALLOWED_MAX_RESULTS;
         }
         this.maxResults = maxResults;
