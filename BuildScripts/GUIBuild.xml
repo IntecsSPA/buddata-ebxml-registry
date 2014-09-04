@@ -29,8 +29,10 @@
 
   <target name="compileErgoRRGUI" depends="init" description="compile the source ">
     <mkdir dir="${temp}"/>
-    <javac srcdir="${src}" destdir="${temp}" classpathref="build.classpath" nowarn="yes" target="1.6"/>
-
+       <!-- If the target attribute of the "javac" task is not specified, the target is the JVM running ant. 
+		Disabled (even if NOT recommended) to allow compilation for different JVM -->
+    <!-- <javac srcdir="${src}" destdir="${temp}" classpathref="build.classpath" nowarn="yes" target="1.6"/> -->
+    <javac srcdir="${src}" destdir="${temp}" classpathref="build.classpath" nowarn="yes"/>
     <copy toDir="${temp}/it/intecs/pisa/erogorr/ui/conf" overwrite="yes">
       <fileset file="${src}/it/intecs/pisa/erogorr/ui/conf/ergoRRGUIUsers.xml"/>
     </copy>
