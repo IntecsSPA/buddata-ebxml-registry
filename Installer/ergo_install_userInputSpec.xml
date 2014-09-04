@@ -15,7 +15,8 @@
 			<spec txt="Installation type">
 				<choice txt="Stand-alone application" value="alone" set="true" />
 				<choice txt="Use existing tomcat" value="existing" />
-				<choice txt="Install with bundled tomcat" value="bundled" />
+				<!-- The following option is currently not supported -->
+				<!-- <choice txt="Install with bundled tomcat" value="bundled" /> -->
 			</spec>
 		</field>
 	</panel>
