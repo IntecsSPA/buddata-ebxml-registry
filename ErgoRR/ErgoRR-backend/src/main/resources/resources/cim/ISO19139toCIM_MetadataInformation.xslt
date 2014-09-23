@@ -63,7 +63,7 @@
 					<xsl:variable name="role" select="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue"/>
 					<!-- heikki : the codelist for rolecode has *many* more options than just PointOfCOntact, Author, Originator, Publisher.
                                  If it is not one of those 4, I ignore it so no classification will be created. Does not make any sense. -->
-					<xsl:variable name="metadataPointOfContactAssociationClassificationId" select="concat( $citedResponsiblePartyClassificationSchemePrefix, generate-id(.) )"/>
+					<xsl:variable name="metadataPointOfContactAssociationClassificationId" select="concat( $urnCimCitedResponsiblePartyClassificationIDPrefix, generate-id(.) )"/>
 					<rim:Classification id="{$metadataPointOfContactAssociationClassificationId}" classifiedObject="{$metadataPointOfContactAssociationId}" classificationNode="{concat( $citedResponsiblePartyClassificationSchemePrefix, $role)}"/>
 				</rim:Association>
 			</xsl:if>
