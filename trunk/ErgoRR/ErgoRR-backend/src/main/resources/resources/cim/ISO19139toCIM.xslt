@@ -1314,7 +1314,9 @@
 	<xsl:template name="createDescriptiveKeywordsClassificationIdByNodes">
 		<xsl:param name="classificationNodes"/>
 		<xsl:for-each select="$classificationNodes//rim:ClassificationNode">
-			<xsl:variable name="keywordSchemeClassificationId" select="concat(@parent, ':', generate-id(.) )"/>
+			<!-- <xsl:variable name="keywordSchemeClassificationId" select="concat(@parent, ':', generate-id(.) )"/> -->
+			<xsl:variable name="keywordScheme" select="substring-after(@parent, '::')"/>
+			<xsl:variable name="keywordSchemeClassificationId" select="concat($cimIDPrefix , 'Classification:', $keywordScheme, ':', generate-id())"/>
 			<rim:Classification id="{$keywordSchemeClassificationId}" classifiedObject="{$resourceMetadataId}" classificationNode="{@id}"/>
 		</xsl:for-each>
 	</xsl:template>
