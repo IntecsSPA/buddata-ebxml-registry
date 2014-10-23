@@ -33,6 +33,7 @@ import be.kzen.ergorr.model.csw.GetRecordsType;
 import be.kzen.ergorr.model.csw.InsertResultType;
 import be.kzen.ergorr.model.csw.InsertType;
 import be.kzen.ergorr.model.csw.QueryType;
+import be.kzen.ergorr.model.csw.ResultType;
 import be.kzen.ergorr.model.csw.TransactionResponseType;
 import be.kzen.ergorr.model.csw.TransactionSummaryType;
 import be.kzen.ergorr.model.csw.TransactionType;
@@ -267,6 +268,10 @@ public class TransactionService {
      */
     private void doDelete(DeleteType delete) throws ServiceException {
         GetRecordsType getRecords = new GetRecordsType();
+        
+        getRecords.setResultType(ResultType.RESULTS);
+        getRecords.setMaxRecords(new BigInteger("-1"));
+        
         QueryType query = new QueryType();
         String typeName = CommonFunctions.removePrefix(delete.getTypeName());
         QName objQNameToDelete = new QName(NamespaceConstants.RIM, typeName, "rim");
