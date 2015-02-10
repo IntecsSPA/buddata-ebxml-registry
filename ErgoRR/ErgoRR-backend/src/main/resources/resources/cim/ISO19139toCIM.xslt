@@ -1245,23 +1245,13 @@
     -->
 	<xsl:template name="getIdByNodeContent">
 		<xsl:param name="node"/>
-		<xsl:variable name="identifier">
-			<xsl:choose>
-				<xsl:when test="$node/gco:CharacterString">
-					<xsl:value-of select="encode-for-uri(normalize-space($node/gco:CharacterString))"/>
-				</xsl:when>
-				<xsl:when test="$node/gmx:Anchor">
-					<xsl:value-of select="encode-for-uri(normalize-space($node/gmx:Anchor))"/>
-				</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="string-length($identifier) > 256">
-				<xsl:value-of select="substring($identifier, 1, 256)"/>
+			<xsl:when test="$node/gco:CharacterString">
+				<xsl:value-of select="encode-for-uri(normalize-space($node/gco:CharacterString))"/>
 			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$identifier"/>
-			</xsl:otherwise>
+			<xsl:when test="$node/gmx:Anchor">
+				<xsl:value-of select="encode-for-uri(normalize-space($node/gmx:Anchor))"/>
+			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 	<!-- 
@@ -1295,7 +1285,19 @@
 					<xsl:with-param name="node" select="."/>
 				</xsl:call-template>
 			</xsl:variable>
-			<rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$parentClassificationScheme}" code="{$keywordId}" id="{concat( $parentClassificationScheme, ':', $keywordId )}">
+			<xsl:variable name="tmpKeywordIdFull" select="concat( $parentClassificationScheme, ':', $keywordId )"/>
+			<xsl:variable name="keywordIdFull">
+				<xsl:choose>
+					<xsl:when test="string-length($tmpKeywordIdFull) > 256">
+						<xsl:value-of select="concat( $parentClassificationScheme, ':', generate-id() )"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$tmpKeywordIdFull"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<!-- <xsl:comment select="concat('The identifier length and value: ', string-length($keywordIdFull), '.    ', $keywordIdFull)"/> -->
+			<rim:ClassificationNode objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode" parent="{$parentClassificationScheme}" code="{$keywordId}" id="{$keywordIdFull}">
 				<xsl:if test="gmx:Anchor">
 					<rim:Slot name="{$sourceSlotName}" slotType="{$uriSlotType}">
 						<rim:ValueList>
